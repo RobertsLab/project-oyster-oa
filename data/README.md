@@ -1,6 +1,6 @@
 
 
-# Metadata for `PugetSound-2016-samples.csv`
+## Metadata for `PugetSound-DNR-samples-2016.csv`
 
 
 --Round: Exposure period 1 (June to July 2016), exposure period 2 (July to August 2016)       
