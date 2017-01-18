@@ -24,6 +24,6 @@ allsamples <- rbind(sample1A, sample8A, sample12, sample20, sample27, sample28, 
 
 #Step 4: Create a histogram using frequency of MZ ratios and export as a png
 
-png("MZratios-larval-samples-histogram", width = 800, height = 800)
+png("MZratios-larval-samples-histogram.png", width = 800, height = 800)
 hist(allsamples$MZratio, freq = TRUE, main= "M/Z ratio frequency for larval Crassostrea gigas samples", col="darkturquoise", xlab= "M/Z ratios", ylab = "Frequency")
 dev.off()
