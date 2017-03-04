@@ -1,1 +1,1 @@
-Combined-gigas-QC.txt
+/home/srlab/Documents/DNR_PECAN_Run_1_20170303/Combined-gigas-QC.txt
