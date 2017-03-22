@@ -24,10 +24,19 @@ area.tra <- data.trans(area.tra, method = 'log', plot = FALSE)
 #Make MDS dissimilarity matrix
 proc.nmds <- metaMDS(area.tra, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE)
 
-#Make figure
+#Make preliminary NMDS plot
 fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
 points(fig.nmds, 'sites', col=c(1:5), pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20))
 legend(x= , y=, pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20), legend=c('bareCaseInlet', 'bareFidalgoBay', 'bareWillapaBay', 'bareSkokomishRiver', 'barePortGamble', 'eelgrassCaseInlet', 'eelgrassFidalgoBay', 'eelgrassWillapaBay', 'eelgrassSkokomishRiver', 'eelgrassPortGamble'), col=c(1:5))
+
+#Export preliminary NMDS plot
+png(filename = "preliminaryNMDS.png")
+fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
+points(fig.nmds, 'sites', col=c(1:5), pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20))
+legend(x= , y=, pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20), legend=c('bareCaseInlet', 'bareFidalgoBay', 'bareWillapaBay', 'bareSkokomishRiver', 'barePortGamble', 'eelgrassCaseInlet', 'eelgrassFidalgoBay', 'eelgrassWillapaBay', 'eelgrassSkokomishRiver', 'eelgrassPortGamble'), col=c(1:5))
+dev.off()
+
+#Modify NMDS plot
 
 #Step 3: Heatmap
 
