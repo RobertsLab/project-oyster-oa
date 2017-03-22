@@ -1,10 +1,10 @@
 #In this script, I'll visualize my preliminary data to see what differences there are between eelgrass and bare patches across sites.
 
 #Step 1: Import data
-averageAreaAdjustedMerged <- read.csv(file = "/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Skyline_20170314/Oyster-AverageAdjustedMergedArea.csv", header = TRUE, na.strings = "NA")
+averageAreaAdjustedMerged <- read.csv(file = "/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Preliminary_Analyses_20170321/Oyster-AverageAdjustedMergedArea.csv", header = TRUE, na.strings = "NA")
 averageAreaAdjustedMerged <- within(averageAreaAdjustedMerged, rm("X")) #Removing the extra column "X"
 averageAreaAdjustedMerged[is.na(averageAreaAdjustedMerged)] <- 0 #Replace NAs with 0s
-averageAreaAdjustedMerged #Confirm changes
+head(averageAreaAdjustedMerged) #Confirm changes
 
 #Step 2: Nonmetric multidimensional scaling plot (NMDS)
 #Load the source file for the biostats package
@@ -18,7 +18,7 @@ rownames(area.protID2) <- averageAreaAdjustedMerged[,1]
 
 #Transpose the file so that rows and columns are switched and normalized by log(x+1)
 area.t <- t(area.protID2)
-area.tra <- (area.t+1)
+area.tra <- (area.t + 1)
 area.tra <- data.trans(area.tra, method = 'log', plot = FALSE)
 
 #Make MDS dissimilarity matrix
@@ -37,6 +37,28 @@ legend(x= , y=, pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20), legend=c('bareCas
 dev.off()
 
 #Modify NMDS plot
+#I showed my preliminary NMDS plot to Emma and she made a change to my code, removing the score column from my data.
+
+#Transpose the file so that rows and columns are switched and normalized by log(x+1)
+area2.t <- t(area.protID2[,1:10])
+area2.tra <- (area2.t+1)
+area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE)
+
+#Make MDS dissimilarity matrix
+proc.nmds <- metaMDS(area.tra, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE)
+
+#Make figure
+fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
+#bare=circle
+#eelgrass=triangle
+#case=red
+#fidalgo=blue
+#willapa=black
+#skokomish=green
+#gamble=magenta
+
+points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5)))
+legend(-0.01,0.02, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 
 #Step 3: Heatmap
 
