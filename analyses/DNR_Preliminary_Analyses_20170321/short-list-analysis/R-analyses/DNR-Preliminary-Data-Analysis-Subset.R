@@ -47,9 +47,9 @@ library(pheatmap)
 #Data should be log(x) or log(x+1) transformed for this analysis, so I'll use my area.tra dataset.
 
 #Create heatmap
-pheatmap(area.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = F)
+pheatmap(area.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = T)
 
 #Export preliminary heatmap as a .png
-png(filename = "preliminaryHeatmap.png")
+png(filename = "/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Preliminary_Analyses_20170321/short-list-analysis/R-analyses/preliminaryHeatmap.png", res = 300)
 pheatmap(area.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = F)
 dev.off()
