@@ -1,48 +1,24 @@
-#In this script, I'll visualize my preliminary data to see what differences there are between eelgrass and bare patches across sites.
+#In this script, I'll visualize my stress subset data to see what differences there are between eelgrass and bare patches across sites.
 
 #Step 1: Import data
-averageAreaAdjustedMerged <- read.csv(file = "/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Preliminary_Analyses_20170321/Oyster-AverageAdjustedMergedArea.csv", header = TRUE, na.strings = "NA")
-averageAreaAdjustedMerged <- within(averageAreaAdjustedMerged, rm("X")) #Removing the extra column "X"
-averageAreaAdjustedMerged[is.na(averageAreaAdjustedMerged)] <- 0 #Replace NAs with 0s
-head(averageAreaAdjustedMerged) #Confirm changes
+stressProteins <- read.table("/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Preliminary_Analyses_20170321/short-list-analysis/nmds-heatmap-short-list.txt", header = TRUE, na.strings = "NA")
+stressProteins[is.na(stressProteins)] <- 0 #Replace NAs with 0s
+stressProteins #Confirm changes
 
 #Step 2: Nonmetric multidimensional scaling plot (NMDS)
 #Load the source file for the biostats package
-source("biostats.R")
+source("/Users/yaamini/Documents/project-oyster-oa/analyses/DNR_Preliminary_Analyses_20170321/biostats.R")
 install.packages("vegan") #Install vegan package
 library(vegan)
 
 #Make sure first column of protein names is recognized as row names instead of values
-area.protID2 <- averageAreaAdjustedMerged[-1]
-rownames(area.protID2) <- averageAreaAdjustedMerged[,1]
+area.protID2 <- stressProteins[-1]
+rownames(area.protID2) <- stressProteins[,1]
 
 #Transpose the file so that rows and columns are switched and normalized by log(x+1)
-area.t <- t(area.protID2)
-area.tra <- (area.t + 1)
+area.t <- t(area.protID2[,1:10])
+area.tra <- (area.t+1)
 area.tra <- data.trans(area.tra, method = 'log', plot = FALSE)
-
-#Make MDS dissimilarity matrix
-proc.nmds <- metaMDS(area.tra, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE)
-
-#Make preliminary NMDS plot
-fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
-points(fig.nmds, 'sites', col=c(1:5), pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20))
-legend(x= , y=, pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20), legend=c('bareCaseInlet', 'bareFidalgoBay', 'bareWillapaBay', 'bareSkokomishRiver', 'barePortGamble', 'eelgrassCaseInlet', 'eelgrassFidalgoBay', 'eelgrassWillapaBay', 'eelgrassSkokomishRiver', 'eelgrassPortGamble'), col=c(1:5))
-
-#Export preliminary NMDS plot
-png(filename = "preliminaryNMDS.png")
-fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
-points(fig.nmds, 'sites', col=c(1:5), pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20))
-legend(x= , y=, pch=c(15, 15, 15, 15, 15, 20, 20, 20, 20, 20), legend=c('bareCaseInlet', 'bareFidalgoBay', 'bareWillapaBay', 'bareSkokomishRiver', 'barePortGamble', 'eelgrassCaseInlet', 'eelgrassFidalgoBay', 'eelgrassWillapaBay', 'eelgrassSkokomishRiver', 'eelgrassPortGamble'), col=c(1:5))
-dev.off()
-
-#Modify NMDS plot
-#I showed my preliminary NMDS plot to Emma and she made a change to my code, removing the score column from my data.
-
-#Transpose the file so that rows and columns are switched and normalized by log(x+1)
-area2.t <- t(area.protID2[,1:10])
-area2.tra <- (area2.t+1)
-area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE)
 
 #Make MDS dissimilarity matrix
 proc.nmds <- metaMDS(area.tra, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE)
@@ -58,7 +34,7 @@ fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xl
 #gamble=magenta
 
 points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5)))
-legend(-0.01,0.02, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
+legend(x = -0.10, y = 0.05, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 
 ###################################################
 
@@ -77,16 +53,3 @@ pheatmap(area.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows 
 png(filename = "preliminaryHeatmap.png")
 pheatmap(area.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = F)
 dev.off()
-
-#Modify heatmap parameters
-
-#Step 4: Bubble Plots
-#ggplot bubble plots
-library(ggplot2)
-library(ggthemes)
-
-#I had to use geom_jitter because my points were too close together, you may want to use geom_point
-#width and height are specific to jitter
-#alpha makes the bubbles transparent
-#geom_hline puts horizontal lines between y-axis values
-ggplot(data) + geom_jitter(aes(x=column name with x values, y=column name with y values, colour=column to dictate point color, size=column to dictate bubble sizes), alpha=0.5, width=0.2, height=0.2) + labs(y='y-axis label') + geom_hline(yintercept=c(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5), color='grey80') + theme_tufte()
