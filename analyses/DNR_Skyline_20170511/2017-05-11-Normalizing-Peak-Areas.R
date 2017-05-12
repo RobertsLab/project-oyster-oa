@@ -9,3 +9,27 @@ TICvalues <- TICvalues[-c(17, 21, 22, 23),] #Delete the rows with TIC values for
 TICvalues #Confirm changes
 
 #Divide the Peak Area values with the appropriate TIC values
+peakAreas[,4] <- peakAreas$X1.Area/TICvalues$oyster[1]
+peakAreas[,5] <- peakAreas$X1.Area/TICvalues$oyster[2]
+peakAreas[,6] <- peakAreas$X1.Area/TICvalues$oyster[3]
+peakAreas[,7] <- peakAreas$X1.Area/TICvalues$oyster[4]
+peakAreas[,8] <- peakAreas$X1.Area/TICvalues$oyster[5]
+peakAreas[,9] <- peakAreas$X1.Area/TICvalues$oyster[6]
+peakAreas[,10] <- peakAreas$X1.Area/TICvalues$oyster[7]
+peakAreas[,11] <- peakAreas$X1.Area/TICvalues$oyster[8]
+peakAreas[,12] <- peakAreas$X1.Area/TICvalues$oyster[9]
+peakAreas[,13] <- peakAreas$X1.Area/TICvalues$oyster[10]
+peakAreas[,14] <- peakAreas$X1.Area/TICvalues$oyster[11]
+peakAreas[,15] <- peakAreas$X1.Area/TICvalues$oyster[12]
+peakAreas[,16] <- peakAreas$X1.Area/TICvalues$oyster[13]
+peakAreas[,17] <- peakAreas$X1.Area/TICvalues$oyster[14]
+peakAreas[,18] <- peakAreas$X1.Area/TICvalues$oyster[15]
+peakAreas[,19] <- peakAreas$X1.Area/TICvalues$oyster[16]
+peakAreas[,20] <- peakAreas$X1.Area/TICvalues$oyster[17]
+peakAreas[,21] <- peakAreas$X1.Area/TICvalues$oyster[18]
+peakAreas[,22] <- peakAreas$X1.Area/TICvalues$oyster[19]
+peakAreas[,23] <- peakAreas$X1.Area/TICvalues$oyster[20]
+peakAreas[,24] <- peakAreas$X1.Area/TICvalues$oyster[21]
+
+#Save peakAreas as a new CSV file
+write.csv(x = peakAreas, file = "2017-05-11-normalized-peak-areas")
