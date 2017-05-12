@@ -42,7 +42,7 @@ write.csv(x = peakAreas, file = "2017-05-11-normalized-peak-areas.csv")
 
 #### Renaming Column Headers without Normalizing ####
 
-peakAreas <- read.csv("2017-05-11-peak-areas.csv", na.strings = "#N/A") #Import peak area data
+peakAreas <- read.csv("2017-05-11-peak-areas.csv") #Import peak area data
 
 #Rename column headers to include DNR vial number, eelgrass condition and sample site.
 
