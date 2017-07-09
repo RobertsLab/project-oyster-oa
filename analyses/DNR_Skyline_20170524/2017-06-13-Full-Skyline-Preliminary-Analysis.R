@@ -94,3 +94,8 @@ head(skylineProteinAccession) #confirm merge
 
 #Write out alltreatments_DEG_Uniprot as a tab file. Remove row and column names using "row.names" and "col.names" arguments
 write.table(skylineProteinAccession, "2017-06-13-Skyline-ProteinAccession-nohead.txt", col.names = F, row.names = F)
+
+#### MERGE WITH ANNOTATIONS ####
+proteinAnnotationsEvalues <- read.csv(file = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/DNR_TransitionSelection_20170707/2017-07-07-Preliminary-Transitions/2017-07-07-Gigas-Annotations-Evalues.csv", header = FALSE, col.names = c("C1", "averageProteinAreas.protein", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "Evalue", "C14", "C15", "reviewed", "Annotation", "C18", "Species", "C20", "BiologicalProcess", "GOTerm", "Pathway", "C24", "C25", "C26")) #Import full annotation
+fullSkylineAnnotations <- merge(x = averageProteinAreasMerged, y = proteinAnnotationsEvalues, by = "averageProteinAreas.protein")
+write.csv(fullSkylineAnnotations, "2017-07-09-Full-Skyline-Output-Annotations.csv")
