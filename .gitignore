@@ -41,3 +41,7 @@ analyses/DNR_Skyline_20170512/2017-05-12-normalized-protein-go-terms.tabular
 analyses/DNR_Skyline_20170512/2017-05-12-normalized-protein-transitions-GO-terms.tabular
 
 analyses/DNR_Skyline_20170512/MSstats/2017-05-13-peptide-results-MSstats.csv
+
+analyses/DNR_Skyline_20170524/2017-06-10-peptide-transition-results-MSstats-no-pivot-error-checked.csv
+
+analyses/DNR_Skyline_20170524/2017-06-10-protein-areas-only-error-checked.csv

@@ -127,7 +127,7 @@ row.names(comparison) <- c("BareCI-BareFB", "BareCI-BarePG", "BareCI-BareSK", "B
 testResultSiteEelgrassComparison <- groupComparison(contrast.matrix = comparison, data = QuantData) #Compare pairs
 testResultSiteEelgrassComparison$ComparisonResult #View results
 proteinComparisonSiteEelgrassResults <- testResultSiteEelgrassComparison$ComparisonResult #Save as new dataframe
-write.csv(proteinComparisonSiteEelgrassResults, "2017-06-30-MSstats-Sites-Differential-Expression.csv", col.names = c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue"), row.names = F) #Write out data frame
+write.csv(proteinComparisonSiteEelgrassResults, "2017-06-30-MSstats-Sites-Eelgrass-Differential-Expression.csv", col.names = c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue"), row.names = F) #Write out data frame
 
 #### GROUP COMPARISON PLOTS ####
 
