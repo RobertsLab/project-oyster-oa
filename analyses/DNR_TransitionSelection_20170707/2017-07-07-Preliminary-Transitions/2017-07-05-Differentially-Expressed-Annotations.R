@@ -6,7 +6,6 @@ proteinAccessionCodes <- read.table(file = "background-proteome-accession.txt", 
 proteinAccessionCodes <- within(proteinAccessionCodes, rm("V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12")) #Removing the extra columns
 names(proteinAccessionCodes) <- c("Protein", "accession")
 head(proteinAccessionCodes) #View uploaded data and confirm changes
-proteinAnnotations <- read.table(file = "2017-07-05-Gigas-Annotations.tabular")
 
 #### IMPORT ANNOTATIONS ####
 
