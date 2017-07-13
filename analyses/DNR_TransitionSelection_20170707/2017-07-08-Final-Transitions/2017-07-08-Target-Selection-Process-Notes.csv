@@ -169,3 +169,5 @@ CHOYP_MRP1.5.10|m.34368,Multidrug resistance-associated protein 1 (ATP-binding c
 CHOYP_PDIA1.1.1|m.5297,Protein disulfide-isomerase (PDI) (EC 5.3.4.1) (Cellular thyroid hormone-binding protein) (Prolyl 4-hydroxylase subunit beta),3,11,,,,,,,,,,,,,,,,,,,,,,,,,
 CHOYP_PDIA3.1.1|m.60223,Protein disulfide-isomerase A3 (EC 5.3.4.1) (Endoplasmic reticulum resident protein 57) (ER protein 57) (ERp57) (Glucose-regulated thiol oxidoreductase 58 kDa protein),3,10,,,,,,,,,,,,,,,,,,,,,,,,,
 CHOYP_PSA.1.1|m.27259,Puromycin-sensitive aminopeptidase (PSA) (EC 3.4.11.14) (Cytosol alanyl aminopeptidase) (AAP-S),3,9,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"Narrowed down list with Emma to also include PRTC peptides, see Github for final list",,,,,,,,,,,,,,,,,,,,,,,,,,,,
