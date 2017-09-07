@@ -14,16 +14,18 @@ head(sequenceFile) #Confirm import
 sequenceFile <- sequenceFile[,c(2,3)] #Keep only the Replicate.Name and Comment columns
 names(sequenceFile) <- c("Replicate.Name", "Sample.Number")
 head(sequenceFile) #Confirm change
-masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names
+masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names. 
 head(masterSRMData) #Confirm merge
 tail(masterSRMData) #Confirm merge
 
-biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv") #Import site and eelgrass condition information (i.e. biological replicate information)
+biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
 head(biologicalReplicates) #Confirm import
-masterSRMData <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
-masterSRMData <- masterSRMData[,-8] #Remove TIC Area column
-head(masterSRMData) #Confirm merge and change
-tail(masterSRMData) #Confirm merge and change
+tail(biologicalReplicates) #Confirm import
+masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list. OBLNK2-1 and OBLNK2-2 not included.
+head(masterSRMDataBiologicalReplicates)
+masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
+head(masterSRMDataBiologicalReplicates) #Confirm change
+write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv")
 
 #### MODIFY DATAFRAME ####
 
