@@ -45,6 +45,13 @@ is.numeric(SRMDataNMDS$Area) #Confirm change
 
 #The goal is to have the row names of my new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
 
+#My first step is to change my dataframe from long to wide (i.e. cast it)
+library(reshape2) #Instal package to pivot table
+SRMDataNMDSPivoted <- dcast(SRMDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion + Area ~ Sample.Number) #Cast table
+head(SRMDataNMDSPivoted)
+
+?dcast
+
 #Pivot the table
 #Merge protein/peptide/fragment into one column
 #remove unmerged columns
