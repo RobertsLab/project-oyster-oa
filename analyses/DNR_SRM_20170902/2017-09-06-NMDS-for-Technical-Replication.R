@@ -75,10 +75,15 @@ area2.t <- t(area.protID2) #Transpose the file so that rows and columns are swit
 #area2.tra <- (area2.t+1) #Add 1 to all values before transforming
 #area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
-#Make MDS dissimilarity matrix
+#Make MDS dissimilarity matrix using bray distance
 proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE)
 stressplot(proc.nmds)
 ordiplot(proc.nmds)
+
+#Made MDS dissimilarity matrix using euclidean distance
+proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE)
+stressplot(proc.nmds.euclidean)
+ordiplot(proc.nmds.euclidean)
 
 #### BIOSTATS.R SOURCE CODE ####
 
