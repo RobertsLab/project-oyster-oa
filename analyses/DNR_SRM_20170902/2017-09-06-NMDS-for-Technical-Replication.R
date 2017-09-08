@@ -11,8 +11,8 @@ head(SRMAreas) #Confirm import
 
 sequenceFile <- read.csv("2017-07-28-SRM-Samples-Sequence-File.csv", na.strings = "N/A") # Import sequence file
 head(sequenceFile) #Confirm import
-sequenceFile <- sequenceFile[,c(2,3)] #Keep only the Replicate.Name and Comment columns
-names(sequenceFile) <- c("Replicate.Name", "Sample.Number")
+sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
+names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
 head(sequenceFile) #Confirm change
 masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names. 
 head(masterSRMData) #Confirm merge
