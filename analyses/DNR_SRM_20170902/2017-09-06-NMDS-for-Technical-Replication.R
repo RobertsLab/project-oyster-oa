@@ -47,12 +47,11 @@ is.numeric(SRMDataNMDS$Area) #Confirm change
 
 #My first step is to change my dataframe from long to wide (i.e. cast it)
 library(reshape2) #Instal package to pivot table
-SRMDataNMDSPivoted <- dcast(SRMDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion + Area ~ Sample.Number) #Cast table
-head(SRMDataNMDSPivoted)
+SRMDataNMDSPivoted <- dcast(SRMDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Area used as value column by default.
+head(SRMDataNMDSPivoted) #Confirm cast.
+write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
-?dcast
 
-#Pivot the table
 #Merge protein/peptide/fragment into one column
 #remove unmerged columns
 #use merged column as rownames for NDMS
