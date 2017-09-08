@@ -106,25 +106,27 @@ plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 #ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 #dev.off()
 
-#### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATES ####
+#### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
 NMDSCoordinates <- proc.nmds.euclidean$points #Save NMDS coordinates of each point in a new dataframe
 head(NMDSCoordinates) #Confirm dataframe creation
 nSamples <- length(NMDSCoordinates)/2 #Calculate the number of samples
 sampleDistances <- vector(length = nSamples) #Create an empty vector to store distance values
 for(i in 1:92) { #For rows in NMDSCoordinates
-  sampleDistances[i] <- sqrt((NMDSCoordinates[i,1]-NMDSCoordinates[i,2])^2 + (NMDSCoordinates[i+1,1]-NMDSCoordinates[i+1,2])^2) #Calculate distance between technical replicate ordinations
+  sampleDistances[i] <- sqrt((NMDSCoordinates[i,1]-NMDSCoordinates[i,2])^2 + (NMDSCoordinates[i+1,1]-NMDSCoordinates[i+1,2])^2) #Calculate distance between ordinations
   print(sampleDistances[i]) #Print the distance value
 }
 sampleDistances #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
-technicalReplicateDistances <- data.frame(x = technicalReplicates[seq(from = 1, to = 91, by = 2)], 
-                                          y = sampleDistances[seq(from = 1, to = 91, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
+technicalReplicateDistances <- data.frame(Sample = technicalReplicates[seq(from = 1, to = 91, by = 2)], 
+                                          Distance = sampleDistances[seq(from = 1, to = 91, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
 head(technicalReplicateDistances) #Confirm dataframe creation
 
+#### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
+
+plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
 
 #### NOTES FROM JULIAN ####
 
-#proc.nmds.euclidean$points --> x&y coordinates --> find distance between each tech rep 
 #shy away from cluster --> testing among groups instead (are the groups sig diff from eachother)
 #ANOSIM: ranked dissimilarities (+NMDS) (can do two-way analysis)
 #permanova + PCoA = PCA with euclidean
