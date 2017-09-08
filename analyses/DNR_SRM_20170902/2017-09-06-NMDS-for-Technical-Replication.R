@@ -27,21 +27,28 @@ masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Rem
 head(masterSRMDataBiologicalReplicates) #Confirm change
 write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv")
 
-#### MODIFY DATAFRAME ####
+#### SUBSET DATA FOR NMDS PLOT ####
 
-masterSRMDataCorrected <- masterSRMData
-masterSRMDataCorrected[is.na(masterSRMData)] <- 0 #Replace NAs with 0s and save as a new dataframe
-head(masterSRMDataCorrected) #Confirm changes
-transform(masterSRMDataCorrected, Peptide.Retention.Time = as.numeric(Peptide.Retention.Time)) #Make sure retention times are recognized as numeric variables
-transform(masterSRMDataCorrected, Area = as.numeric(Area)) #Make sure area is recognized as a numeric variable
-sapply(masterSRMDataCorrected, class) #Confirm that changes were made
-is.numeric(masterSRMDataCorrected$Area) #Confirm changes were made
-is.numeric(masterSRMDataCorrected$Peptide.Retention.Time) #Confirm changes were made
+#For the NMDS, I want only the protein/peptide/transition information and peak area
 
-SRMDataTargetsOnly <- masterSRMDataCorrected[! masterSRMDataCorrected$Protein.Name %in% "PRTC peptides", ] #Create a dataset without PRTC peptides
-head(SRMDataTargetsOnly) #Confirm changes
-SRMDataTargetsOnly <- SRMDataTargetsOnly[, -c(5, 7, 9, 10)] #Remove everything that wasn't directly from Skyline and the transition ion
-head(SRMDataTargetsOnly) #Confirm changes
+SRMDataNMDS <- masterSRMDataBiologicalReplicates #Duplicate master list into a new dataframe
+head(SRMDataNMDS) #Confirm copy
+tail(SRMDataNMDS) #Confirm copy
+SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 9, 10)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
+head(SRMDataNMDS) #Confirm column removal
+SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
+head(SRMDataNMDS) #Confirm removal
+transform(SRMDataNMDS, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
+is.numeric(SRMDataNMDS$Area) #Confirm change
+
+#### REFORMAT DATAFRAME FOR NMDS ####
+
+#The goal is to have the row names of my new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
+
+#Pivot the table
+#Merge protein/peptide/fragment into one column
+#remove unmerged columns
+#use merged column as rownames for NDMS
 
 #### NON-NORMALIZED NMDS PLOT ####
 
@@ -51,6 +58,10 @@ head(SRMDataTargetsOnly) #Confirm changes
 source("biostats.R") #Either load the source R script or copy paste. Must run this code before NMDS.
 install.packages("vegan") #Install vegan package
 library(vegan)
+
+
+masterSRMDataCorrected <- masterSRMData
+masterSRMDataCorrected[is.na(masterSRMData)] <- 0 #Replace NAs with 0s and save as a new dataframe
 
 #Make sure first column of protein names is recognized as row names instead of values
 area.protID2 <- SRMDataTargetsOnly[-7]
