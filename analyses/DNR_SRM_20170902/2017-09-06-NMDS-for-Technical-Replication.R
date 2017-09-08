@@ -25,7 +25,7 @@ masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalRepl
 head(masterSRMDataBiologicalReplicates)
 masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
 head(masterSRMDataBiologicalReplicates) #Confirm change
-write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
+#write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
 
 #### SUBSET DATA FOR NMDS PLOT ####
 
@@ -63,7 +63,7 @@ SRMDataNMDSPivoted$RowNames <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNMD
 head(SRMDataNMDSPivoted) #Confirm column merge
 SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataNMDSPivoted) #Confirm column removal
-write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
+#write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #### NMDS PLOT ####
 
@@ -102,9 +102,9 @@ plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 #ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
 #ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
-#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-NotNormalized.jpeg", width = 1000, height = 1000)
-#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-#dev.off()
+jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+dev.off()
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
@@ -117,13 +117,16 @@ for(i in 1:92) { #For rows in NMDSCoordinates
   print(sampleDistances[i]) #Print the distance value
 }
 sampleDistances #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
+technicalReplicates <- rownames(NMDSCoordinates) #Save rownames as a new vector
 technicalReplicateDistances <- data.frame(Sample = technicalReplicates[seq(from = 1, to = 91, by = 2)], 
                                           Distance = sampleDistances[seq(from = 1, to = 91, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
 head(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
+jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
+dev.off()
 
 #### NOTES FROM JULIAN ####
 
@@ -133,7 +136,6 @@ plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Dis
 #different sensitivity to sample size
 
 #### BIOSTATS.R SOURCE CODE ####
-
 
 `all.subsets.gam` <-
   function(y,x.smooth,x.parametric=NULL,family=binomial(link=logit),
