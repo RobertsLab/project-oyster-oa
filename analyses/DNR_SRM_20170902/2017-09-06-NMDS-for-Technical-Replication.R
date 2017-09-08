@@ -64,54 +64,21 @@ source("biostats.R") #Either load the source R script or copy paste. Must run th
 install.packages("vegan") #Install vegan package
 library(vegan)
 
-#Replace NAs with 0s since metaMDS doens't work with NA values
 SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivoted #Duplicate dataframe
 SRMDataNMDSPivotedCorrected[is.na(SRMDataNMDSPivotedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
 
-#Make sure last column of protein names is recognized as row names instead of values
-area.protID2 <- SRMDataNMDSPivotedCorrected[-93]
-rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93]
+area.protID2 <- SRMDataNMDSPivotedCorrected[-93] #Save all area data as a new dataframe
+rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
 
-#Transpose the file so that rows and columns are switched
-area2.t <- t(area.protID2[,1:92])
-#area2.tra <- (area2.t+1)
-#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE)
+area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
+#area2.tra <- (area2.t+1) #Add 1 to all values before transforming
+#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
 #Make MDS dissimilarity matrix
-proc.nmds <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE)
+proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE)
 stressplot(proc.nmds)
-plot(proc.nmds)
-
-#Make figure
-fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
-#bare=circle
-#eelgrass=triangle
-#case=red
-#fidalgo=blue
-#willapa=black
-#skokomish=green
-#gamble=magenta
-
-# points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5)))
-# legend(0,0.06, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black')) 
-
-#### FULL HEATMAP ####
-
-#Install package
-install.packages("pheatmap")
-library(pheatmap)
-
-#Data should be log(x) or log(x+1) transformed for this analysis, so I'll use my area2.tra dataset.
-
-#Create heatmap
-pheatmap(area2.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = F)
-
-#Export preliminary heatmap as a .png
-png(filename = "fullHeatmap.png")
-pheatmap(area2.tra, cluster_rows = T, cluster_cols = T, clustering_distance_rows = 'euclidean', clustering_distance_cols = 'euclidean', clustering_method = 'average', show_rownames = T, show_colnames = F)
-dev.off()
-
+ordiplot(proc.nmds)
 
 #### BIOSTATS.R SOURCE CODE ####
 
