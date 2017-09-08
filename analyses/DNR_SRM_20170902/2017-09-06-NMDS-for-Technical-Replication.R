@@ -14,7 +14,7 @@ head(sequenceFile) #Confirm import
 sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
 names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
 head(sequenceFile) #Confirm change
-masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names. 
+masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names.
 head(masterSRMData) #Confirm merge
 tail(masterSRMData) #Confirm merge
 
@@ -25,7 +25,7 @@ masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalRepl
 head(masterSRMDataBiologicalReplicates)
 masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
 head(masterSRMDataBiologicalReplicates) #Confirm change
-#write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv")
+write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
 
 #### SUBSET DATA FOR NMDS PLOT ####
 
