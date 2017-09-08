@@ -49,11 +49,11 @@ is.numeric(SRMDataNMDS$Area) #Confirm change
 library(reshape2) #Instal package to pivot table
 SRMDataNMDSPivoted <- dcast(SRMDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Area used as value column by default.
 head(SRMDataNMDSPivoted) #Confirm cast.
-write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 SRMDataNMDSPivoted$RowNames <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNMDSPivoted$Peptide.Sequence, SRMDataNMDSPivoted$Fragment.Ion) #Merge Protein, Peptide and Transition information into one column
 head(SRMDataNMDSPivoted) #Confirm column merge
 SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataNMDSPivoted) #Confirm column removal
+write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #### NON-NORMALIZED NMDS PLOT ####
 
