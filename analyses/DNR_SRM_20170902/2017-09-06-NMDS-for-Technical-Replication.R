@@ -105,6 +105,9 @@ stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
 ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
 ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
+
+
+
 #### BIOSTATS.R SOURCE CODE ####
 
 
