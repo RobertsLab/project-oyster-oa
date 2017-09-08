@@ -72,11 +72,15 @@ area.protID2 <- SRMDataNMDSPivotedCorrected[-93] #Save all area data as a new da
 rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
 
 area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
-#area2.tra <- (area2.t+1) #Add 1 to all values before transforming
-#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+area2.tra <- (area2.t+1) #Add 1 to all values before transforming
+area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
 proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance
 stressplot(proc.nmds) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
+ordiplot(proc.nmds) #Plot basic NMDS
+
+proc.nmds.log <- metaMDS(area2.tra, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance and log transformation
+stressplot(proc.nmds.log) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
 ordiplot(proc.nmds) #Plot basic NMDS
 
 proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
