@@ -57,13 +57,13 @@ head(SRMNormalizedDataNMDS) #Confirm column removal
 
 #My first step is to change my dataframe from long to wide (i.e. cast it)
 library(reshape2) #Instal package to pivot table
-SRMDataNMDSPivoted <- dcast(SRMDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Area used as value column by default.
+SRMDataNMDSPivoted <- dcast(SRMNormalizedDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Normalized.Area used as value column by default.
 head(SRMDataNMDSPivoted) #Confirm cast.
 SRMDataNMDSPivoted$RowNames <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNMDSPivoted$Peptide.Sequence, SRMDataNMDSPivoted$Fragment.Ion) #Merge Protein, Peptide and Transition information into one column
 head(SRMDataNMDSPivoted) #Confirm column merge
 SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataNMDSPivoted) #Confirm column removal
-#write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
+write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #### NON-NORMALIZED NMDS PLOT ####
 
