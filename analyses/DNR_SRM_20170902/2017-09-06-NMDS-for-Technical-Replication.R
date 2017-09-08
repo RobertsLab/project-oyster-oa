@@ -25,7 +25,7 @@ masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalRepl
 head(masterSRMDataBiologicalReplicates)
 masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
 head(masterSRMDataBiologicalReplicates) #Confirm change
-write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv")
+#write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv")
 
 #### SUBSET DATA FOR NMDS PLOT ####
 
@@ -36,8 +36,8 @@ head(SRMDataNMDS) #Confirm copy
 tail(SRMDataNMDS) #Confirm copy
 SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 9, 10)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
 head(SRMDataNMDS) #Confirm column removal
-SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
-head(SRMDataNMDS) #Confirm removal
+#SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
+#head(SRMDataNMDS) #Confirm removal
 transform(SRMDataNMDS, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
 is.numeric(SRMDataNMDS$Area) #Confirm change
 
@@ -53,7 +53,7 @@ SRMDataNMDSPivoted$RowNames <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNMD
 head(SRMDataNMDSPivoted) #Confirm column merge
 SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataNMDSPivoted) #Confirm column removal
-write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
+#write.csv(SRMDataNMDSPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #### NON-NORMALIZED NMDS PLOT ####
 
@@ -94,6 +94,11 @@ proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 
 stressplot(proc.nmds.euclidean) #Make Shepard plot
 ordiplot(proc.nmds.euclidean) #Plot basic NMDS
 ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+
+proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
+stressplot(proc.nmds.euclidean.log) #Make Shepard plot
+ordiplot(proc.nmds.euclidean.log) #Plot basic NMDS
+ordiplot(proc.nmds.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
 stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
