@@ -78,14 +78,27 @@ area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) trans
 proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance
 stressplot(proc.nmds) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
 ordiplot(proc.nmds) #Plot basic NMDS
+ordiplot(proc.nmds, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+
+proc.nmds.autotransform <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using bray distance and autotransformation
+stressplot(proc.nmds.autotransform) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
+ordiplot(proc.nmds.autotransform) #Plot basic NMDS
+ordiplot(proc.nmds.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 proc.nmds.log <- metaMDS(area2.tra, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance and log transformation
 stressplot(proc.nmds.log) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
-ordiplot(proc.nmds) #Plot basic NMDS
+ordiplot(proc.nmds.log) #Plot basic NMDS
+ordiplot(proc.nmds.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
 stressplot(proc.nmds.euclidean) #Make Shepard plot
 ordiplot(proc.nmds.euclidean) #Plot basic NMDS
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+
+proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
+stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
+ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
+ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 #### BIOSTATS.R SOURCE CODE ####
 
