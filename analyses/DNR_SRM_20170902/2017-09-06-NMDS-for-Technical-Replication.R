@@ -36,8 +36,8 @@ head(SRMDataNMDS) #Confirm copy
 tail(SRMDataNMDS) #Confirm copy
 SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 9, 10)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
 head(SRMDataNMDS) #Confirm column removal
-#SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
-#head(SRMDataNMDS) #Confirm removal
+SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
+head(SRMDataNMDS) #Confirm removal
 transform(SRMDataNMDS, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
 is.numeric(SRMDataNMDS$Area) #Confirm change
 
@@ -105,8 +105,11 @@ stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
 ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
 ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
+#The euclidean non-transformed option gives me an actual cluster map, so I will save that one as a .jpeg
 
-
+jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-NotNormalized.jpeg")
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+dev.off()
 
 #### BIOSTATS.R SOURCE CODE ####
 
