@@ -75,11 +75,13 @@ rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93]
 
 #Transpose the file so that rows and columns are switched
 area2.t <- t(area.protID2[,1:92])
-#area2.tra <- (area2.t+1) NO NEED TO TRANSFORM YET
-#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #NO NEED TO TRANSFORM YET
+#area2.tra <- (area2.t+1)
+#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE)
 
 #Make MDS dissimilarity matrix
-proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 100, autotransform = TRUE)
+proc.nmds <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE)
+stressplot(proc.nmds)
+plot(proc.nmds)
 
 #Make figure
 fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
@@ -91,8 +93,8 @@ fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xl
 #skokomish=green
 #gamble=magenta
 
-points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5))) #Looks like all of the points are on top of eachother.......
-legend(0,0.06, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black')) 
+# points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5)))
+# legend(0,0.06, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black')) 
 
 #### FULL HEATMAP ####
 
