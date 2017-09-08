@@ -64,21 +64,22 @@ source("biostats.R") #Either load the source R script or copy paste. Must run th
 install.packages("vegan") #Install vegan package
 library(vegan)
 
+#Replace NAs with 0s since metaMDS doens't work with NA values
+SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivoted #Duplicate dataframe
+SRMDataNMDSPivotedCorrected[is.na(SRMDataNMDSPivotedCorrected)] <- 0 #Replace NAs with 0s
+head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
 
-masterSRMDataCorrected <- masterSRMData
-masterSRMDataCorrected[is.na(masterSRMData)] <- 0 #Replace NAs with 0s and save as a new dataframe
+#Make sure last column of protein names is recognized as row names instead of values
+area.protID2 <- SRMDataNMDSPivotedCorrected[-93]
+rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93]
 
-#Make sure first column of protein names is recognized as row names instead of values
-area.protID2 <- SRMDataTargetsOnly[-7]
-rownames(area.protID2) <- SRMDataTargetsOnly[,7]
-
-#Transpose the file so that rows and columns are switched and normalized by log(x+1)
-area2.t <- t(area.protID2[,1:10])
-area2.tra <- (area2.t+1)
-area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE)
+#Transpose the file so that rows and columns are switched
+area2.t <- t(area.protID2[,1:92])
+#area2.tra <- (area2.t+1) NO NEED TO TRANSFORM YET
+#area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #NO NEED TO TRANSFORM YET
 
 #Make MDS dissimilarity matrix
-proc.nmds <- metaMDS(area2.tra, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE)
+proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 100, autotransform = TRUE)
 
 #Make figure
 fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5)
