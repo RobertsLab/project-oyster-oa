@@ -34,12 +34,22 @@ write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-D
 SRMDataNMDS <- masterSRMDataBiologicalReplicates #Duplicate master list into a new dataframe
 head(SRMDataNMDS) #Confirm copy
 tail(SRMDataNMDS) #Confirm copy
-SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 9, 10)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
+SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 10, 11)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
 head(SRMDataNMDS) #Confirm column removal
 SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
 head(SRMDataNMDS) #Confirm removal
 transform(SRMDataNMDS, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
 is.numeric(SRMDataNMDS$Area) #Confirm change
+transform(SRMDataNMDS, TIC = as.numeric(TIC)) #Make sure TIC is recognized as a numeric variable
+is.numeric(SRMDataNMDS$TIC) #Confirm change
+
+#### NORMALIZE BY TIC VALUES ####
+
+SRMNormalizedDataNMDS <- SRMDataNMDS #Duplicate dataframe
+SRMNormalizedDataNMDS$Normalized.Area <- SRMNormalizedDataNMDS$Area/SRMDataNMDS$TIC #Divide areas by corresponding TIC values
+head(SRMNormalizedDataNMDS) #Confirm division
+SRMNormalizedDataNMDS <- SRMNormalizedDataNMDS[,-c(5,6)] #Remove nonnormalized area and TIC columns
+head(SRMNormalizedDataNMDS) #Confirm column removal
 
 #### REFORMAT DATAFRAME FOR NMDS ####
 
@@ -74,21 +84,6 @@ rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last colum
 area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
 #area2.tra <- (area2.t+1) #Add 1 to all values before transforming
 #area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
-
-#proc.nmds <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance
-#stressplot(proc.nmds) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
-#ordiplot(proc.nmds) #Plot basic NMDS
-#ordiplot(proc.nmds, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-
-#proc.nmds.autotransform <- metaMDS(area2.t, distance = 'bray', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using bray distance and autotransformation
-#stressplot(proc.nmds.autotransform) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
-#ordiplot(proc.nmds.autotransform) #Plot basic NMDS
-#ordiplot(proc.nmds.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-
-#proc.nmds.log <- metaMDS(area2.tra, distance = 'bray', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using bray distance and log transformation
-#stressplot(proc.nmds.log) #Make Shepard Plot (plot of ordination distances against fit of original dissimilarities)
-#ordiplot(proc.nmds.log) #Plot basic NMDS
-#ordiplot(proc.nmds.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
 stressplot(proc.nmds.euclidean) #Make Shepard plot
