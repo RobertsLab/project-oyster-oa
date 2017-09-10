@@ -39,10 +39,41 @@ area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) trans
 
 proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
 stressplot(proc.nmds.euclidean) #Make Shepard plot
-ordiplot(proc.nmds.euclidean) #Plot basic NMDS
 vec.proc.nmds.euclidean <- envfit(proc.nmds.euclidean$points, area2.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "point", display = "sites") #Plot refined NMDS displaying only sample points
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
 plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#### NMDS REFINEMENT ####
+
+#Create a dataframe with biological replicate information for samples used in NMDS
+temporaryData <- data.frame(Sample.Number = technicalReplicates,
+                            y = rep(x = 0, times = length(technicalReplicates))) #Create a temporary dataframe with technical replicate names used in NMDS
+head(temporaryData) #Confirm dataframe creation
+NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
+head(NMDSColorShapeCustomization) #Confirm merge
+tail(NMDSColorShapeCustomization) #Confirm merge
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[-c(89:90),-4] #Remove OBLNK2 and empty column
+tail(NMDSColorShapeCustomization) #Confirm removal
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[seq(from = 1, to = 87, by = 2),] #Keep only every other row
+head(NMDSColorShapeCustomization)
+tail(NMDSColorShapeCustomization)
+
+#Create a color and shape palette
+NMDSColorShapeCustomization[,4] <-
+
+fig.nmds <- ordiplot(proc.nmds, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Willapa Bay = Black
+#Skokomish River Delta = Green
+#Port Gamble Bay = Magenta
+
+points(fig.nmds, 'sites', col=c('red', 'blue', 'black', 'green', 'magenta','red', 'blue', 'black', 'green', 'magenta'), pch=c(rep(16,5), rep(17,5)))
+legend(topleft, pch=c(rep(16,5), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 
 #proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
 #stressplot(proc.nmds.euclidean.log) #Make Shepard plot
