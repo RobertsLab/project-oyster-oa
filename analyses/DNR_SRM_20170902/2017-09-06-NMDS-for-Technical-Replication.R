@@ -21,7 +21,7 @@ tail(masterSRMData) #Confirm merge
 biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
 head(biologicalReplicates) #Confirm import
 tail(biologicalReplicates) #Confirm import
-masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list. OBLNK2-1 and OBLNK2-2 not included.
+masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
 head(masterSRMDataBiologicalReplicates)
 masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
 head(masterSRMDataBiologicalReplicates) #Confirm change
@@ -76,8 +76,8 @@ SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivoted #Duplicate dataframe
 SRMDataNMDSPivotedCorrected[is.na(SRMDataNMDSPivotedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
 
-area.protID2 <- SRMDataNMDSPivotedCorrected[-93] #Save all area data as a new dataframe
-rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
+area.protID2 <- SRMDataNMDSPivotedCorrected[-91] #Save all area data as a new dataframe
+rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,91] #Make sure last column of protein names is recognized as row names instead of values
 head(area.protID2) #Confirm changes
 
 area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
@@ -89,22 +89,22 @@ proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 
 stressplot(proc.nmds.euclidean) #Make Shepard plot
 ordiplot(proc.nmds.euclidean) #Plot basic NMDS
 vec.proc.nmds.euclidean <- envfit(proc.nmds.euclidean$points, area2.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites", cex = 0.2) #Plot refined NMDS displaying only samples with their names
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 
-#proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
+proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
 #stressplot(proc.nmds.euclidean.log) #Make Shepard plot
 #ordiplot(proc.nmds.euclidean.log) #Plot basic NMDS
-#ordiplot(proc.nmds.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+ordiplot(proc.nmds.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
-#proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
+proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
 #stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
 #ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
-#ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
-jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-dev.off()
+#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
+#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#dev.off()
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
@@ -112,21 +112,22 @@ NMDSCoordinates <- proc.nmds.euclidean$points #Save NMDS coordinates of each poi
 head(NMDSCoordinates) #Confirm dataframe creation
 nSamples <- length(NMDSCoordinates)/2 #Calculate the number of samples
 sampleDistances <- vector(length = nSamples) #Create an empty vector to store distance values
-for(i in 1:92) { #For rows in NMDSCoordinates
+for(i in 1:90) { #For rows in NMDSCoordinates
   sampleDistances[i] <- sqrt((NMDSCoordinates[i,1]-NMDSCoordinates[i,2])^2 + (NMDSCoordinates[i+1,1]-NMDSCoordinates[i+1,2])^2) #Calculate distance between ordinations
   print(sampleDistances[i]) #Print the distance value
 }
 sampleDistances #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
 technicalReplicates <- rownames(NMDSCoordinates) #Save rownames as a new vector
-technicalReplicateDistances <- data.frame(Sample = technicalReplicates[seq(from = 1, to = 91, by = 2)], 
-                                          Distance = sampleDistances[seq(from = 1, to = 91, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
+technicalReplicateDistances <- data.frame(Sample = technicalReplicates[seq(from = 1, to = 90, by = 2)], 
+                                          Distance = sampleDistances[seq(from = 1, to = 90, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
 head(technicalReplicateDistances) #Confirm dataframe creation
+tail(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
-dev.off()
+#dev.off()
 
 #### NOTES FROM JULIAN ####
 
