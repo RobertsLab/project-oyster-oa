@@ -1,6 +1,62 @@
 #Before going through this script, I went through "2017-09-06-NMDS-for-Technical-Replication"
 
+#### AVERAGE TECHNICAL REPLICATES ####
 
+#After examining how my technical replicates are clustering together, I will average and proceed with an ANOSIM and NMDS
+
+head(SRMDataNMDSPivotedCorrected) #Dataset I'll use to average technical replicates, from my first R script (NMDS for Technical Replication)
+SRMDataNMDSAveraged <- data.frame(x = rep(x = 0, times = 111),
+                                  y = rep(x = 0, times = 111)) #Create an empty dataframe to store averaged values
+row.names(SRMDataNMDSAveraged) <- SRMDataNMDSPivotedCorrected$RowNames #Add row names
+head(SRMDataNMDSAveraged) #Confirm changes
+for(i in 1:89) { #Average normalized area values for consecutive columns
+  SRMDataNMDSAveraged[,i] <- (SRMDataNMDSPivotedCorrected[,i]+SRMDataNMDSPivotedCorrected[,i+1])/2
+}
+head(SRMDataNMDSAveraged) #Confirm averaging
+SRMDataNMDSAveraged <- SRMDataNMDSAveraged[seq(from = 1, to = 89, by = 2)] #Remove even-numbered columns, since those consecutive columns are not technical replicates
+head(SRMDataNMDSAveraged) #Confirm column removal
+colnames(SRMDataNMDSAveraged) <- technicalReplicates[seq(from = 1, to = 89, by = 2)] #Add column names
+head(SRMDataNMDSAveraged) #Confirm column naming
+
+#### NMDS FOR SITE AND EELGRASS CLUSTERING ####
+
+#Load the source file for the biostats package
+source("biostats.R") #Either load the source R script or copy paste. Must run this code before NMDS. It can be found the project-oyster-oa repo >> analyses >> DNR_Preliminary_Analyses_20170321. It is also at the bottom of this script.
+install.packages("vegan") #Install vegan package
+library(vegan)
+
+SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
+SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
+head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
+
+area.protID2 <- SRMDataNMDSAveragedCorrected[,-45] #Save all area data as a new dataframe except for OBLNK2
+head(area.protID2) #Confirm changes
+
+area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
+head(area2.t) #Confirm transposition
+area2.tra <- (area2.t+1) #Add 1 to all values before transforming
+area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+
+proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
+stressplot(proc.nmds.euclidean) #Make Shepard plot
+ordiplot(proc.nmds.euclidean) #Plot basic NMDS
+vec.proc.nmds.euclidean <- envfit(proc.nmds.euclidean$points, area2.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "point", display = "sites") #Plot refined NMDS displaying only sample points
+plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
+#stressplot(proc.nmds.euclidean.log) #Make Shepard plot
+#ordiplot(proc.nmds.euclidean.log) #Plot basic NMDS
+#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "point", display = "sites") #Plot refined NMDS displaying only sample points
+
+#proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
+#stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
+#ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
+#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "point", display = "sites") #Plot refined NMDS displaying only sample points
+
+#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
+#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#dev.off()
 
 #### NOTES FROM JULIAN ####
 
