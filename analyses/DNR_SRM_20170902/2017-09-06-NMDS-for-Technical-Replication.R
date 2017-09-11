@@ -1,3 +1,5 @@
+# AS OF SUNDAY SEPT. 10 AT 10:40 P.M., THERE ARE TWO SAMPLES (106-1 AND 71-1) THAT ARE MISSING FORM THE SRM AREAS FILE. THEY WILL BE RE-ADDED IN SKYLINE AND THE CODE WILL BE TWEAKED THE MONDAY SEPT. 11.
+
 #In this script, I'll use an NMDS plot to see if my technical replicates are similar.
 
 #### IMPORT DATA ####
@@ -118,6 +120,9 @@ for(i in 1:90) { #For rows in NMDSCoordinates
 }
 sampleDistances #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
 technicalReplicates <- rownames(NMDSCoordinates) #Save rownames as a new vector
+
+technicalReplicates
+
 technicalReplicateDistances <- data.frame(Sample = technicalReplicates[seq(from = 1, to = 90, by = 2)], 
                                           Distance = sampleDistances[seq(from = 1, to = 90, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
 head(technicalReplicateDistances) #Confirm dataframe creation
