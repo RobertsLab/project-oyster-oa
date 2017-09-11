@@ -117,9 +117,24 @@ legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet',
 #legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 #dev.off()
 
-#### NOTES FROM JULIAN ####
+#### ANOSIM ####
 
-#shy away from cluster --> testing among groups instead (are the groups sig diff from eachother)
-#ANOSIM: ranked dissimilarities (+NMDS) (can do two-way analysis)
-#permanova + PCoA = PCA with euclidean
-#different sensitivity to sample size
+proc.nmds.averaged.euclidean #Dissimilarity matrix
+ANOSIMReplicates <- biologicalReplicates[c(1:49),] #Subset sample numbers used as IDs in ANOSIM
+row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
+ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
+head(ANOSIMReplicates) #Confirm changes
+
+# KEEP GETTING ERROR: Error in rowSums(x, na.rm = TRUE) : 'x' must be an array of at least two dimensions SO THIS CODE DOESN'T WORK ... ?!?!?
+
+siteANOSIM <- anosim(dat = proc.nmds.averaged.euclidean, grouping = ANOSIMReplicates$Site) #One-way ANOSIM by Site
+summary(siteANOSIM)
+plot(siteANOSIM)
+simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Site)
+
+eelgrassANOSIM <- anosim(dat = proc.nmds.averaged.euclidean, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassANOSIM)
+plot(eelgrassANOSIM)
+simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Eelgrass.Condition)
+
+#Two-way ANOSIM by Site and Eelgrass presence
