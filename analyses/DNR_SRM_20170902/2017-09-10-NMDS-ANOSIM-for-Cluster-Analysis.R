@@ -9,14 +9,14 @@ SRMDataNMDSAveraged <- data.frame(x = rep(x = 0, times = 111),
                                   y = rep(x = 0, times = 111)) #Create an empty dataframe to store averaged values
 row.names(SRMDataNMDSAveraged) <- SRMDataNMDSPivotedCorrected$RowNames #Add row names
 head(SRMDataNMDSAveraged) #Confirm changes
-for(i in 1:89) { #Average normalized area values for consecutive columns
+for(i in 1:(length(SRMDataNMDSNonNormalizedPivotedCorrected)-1)) { #Average normalized area values for consecutive columns
   SRMDataNMDSAveraged[,i] <- (SRMDataNMDSPivotedCorrected[,i]+SRMDataNMDSPivotedCorrected[,i+1])/2
 }
 head(SRMDataNMDSAveraged) #Confirm averaging
-SRMDataNMDSAveraged <- SRMDataNMDSAveraged[seq(from = 1, to = 89, by = 2)] #Remove even-numbered columns, since those consecutive columns are not technical replicates
+SRMDataNMDSAveraged <- SRMDataNMDSAveraged[seq(from = 1, to = (length(SRMDataNMDSNonNormalizedPivotedCorrected)-1), by = 2)] #Remove even-numbered columns, since those consecutive columns are not technical replicates
 head(SRMDataNMDSAveraged) #Confirm column removal
-colnames(SRMDataNMDSAveraged) <- technicalReplicates[seq(from = 1, to = 89, by = 2)] #Add column names
-head(SRMDataNMDSAveraged) #Confirm column naming
+colnames(SRMDataNMDSAveraged) <- technicalReplicates[seq(from = 1, to = (length(SRMDataNMDSNonNormalizedPivotedCorrected)-1), by = 2)] #Add column names
+colnames(SRMDataNMDSAveraged) #Confirm column naming
 
 #### NMDS FOR SITE AND EELGRASS CLUSTERING ####
 
@@ -29,19 +29,19 @@ SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
 SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 
-area.protID2 <- SRMDataNMDSAveragedCorrected[,-45] #Save all area data as a new dataframe except for OBLNK2
-head(area.protID2) #Confirm changes
+area.protID3 <- SRMDataNMDSAveragedCorrected[,-49] #Save all area data as a new dataframe except for OBLNK2
+head(area.protID3) #Confirm changes
 
-area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
-head(area2.t) #Confirm transposition
-area2.tra <- (area2.t+1) #Add 1 to all values before transforming
-area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+area3.t <- t(area.protID3) #Transpose the file so that rows and columns are switched
+head(area3.t) #Confirm transposition
+area3.tra <- (area3.t+1) #Add 1 to all values before transforming
+area3.tra <- data.trans(area3.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
-proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
-stressplot(proc.nmds.euclidean) #Make Shepard plot
-vec.proc.nmds.euclidean <- envfit(proc.nmds.euclidean$points, area2.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
-plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+proc.nmds.averaged.euclidean <- metaMDS(area3.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
+stressplot(proc.nmds.averaged.euclidean) #Make Shepard plot
+vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area2.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
+plot(vec.proc.nmds.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 
 #### ASSIGN COLORS AND SHAPES ####
 
@@ -52,11 +52,11 @@ head(temporaryData) #Confirm dataframe creation
 NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
 head(NMDSColorShapeCustomization) #Confirm merge
 tail(NMDSColorShapeCustomization) #Confirm merge
-NMDSColorShapeCustomization <- NMDSColorShapeCustomization[-c(89:90),-2] #Remove OBLNK2 and empty column
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[-c(97:98),-2] #Remove OBLNK2 and empty column
 tail(NMDSColorShapeCustomization) #Confirm removal
-NMDSColorShapeCustomization <- NMDSColorShapeCustomization[seq(from = 1, to = 87, by = 2),] #Keep only every other row
-head(NMDSColorShapeCustomization)
-tail(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[seq(from = 1, to = 95, by = 2),] #Keep only every other row
+head(NMDSColorShapeCustomization) #Confirm changes
+NMDSColorShapeCustomization$Sample.Number #Confirm changes
 
 #Create a color and shape palette
 attach(NMDSColorShapeCustomization)
@@ -87,7 +87,7 @@ head(NMDSColorShapeCustomization) #Confirm change
 
 #### NMDS REFINEMENT ####
 
-fig.nmds <- ordiplot(proc.nmds.euclidean, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
 #Bare = circle
@@ -99,10 +99,22 @@ fig.nmds <- ordiplot(proc.nmds.euclidean, choices=c(1,2), type='none', display='
 #Port Gamble Bay = Magenta
 
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
-legend("bottomleft", pch = c(rep(16, 17), 1, 2), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
+legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 
-#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
-#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#jpeg(filename = "2017-09-11-NMDS-Analysis-Averaged", width = 1000, height = 1000)
+#fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Willapa Bay = Black
+#Skokomish River Delta = Green
+#Port Gamble Bay = Magenta
+
+#points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+#legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 #dev.off()
 
 #### NOTES FROM JULIAN ####
