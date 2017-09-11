@@ -15,7 +15,7 @@ head(sequenceFile) #Confirm import
 sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
 names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
 head(sequenceFile) #Confirm change
-masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names to use for analysis.Note: rows lost because 16's technical replicate is no longer included in the analysis.
+masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names to use for analysis.
 head(masterSRMData) #Confirm merge
 tail(masterSRMData) #Confirm merge
 
@@ -104,7 +104,6 @@ plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 #dev.off()
 
 #Only the euclidean non-transformed version gives me an NMDS plot, but there looks like there's variation that should be accounted for by normalizing.
-
 
 #### NORMALIZE BY TIC VALUES ####
 
