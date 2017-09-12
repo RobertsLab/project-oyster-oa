@@ -60,7 +60,7 @@ SRMDataNMDSNonNormalizedPivoted$RowNames <- paste(SRMDataNMDSNonNormalizedPivote
 head(SRMDataNMDSNonNormalizedPivoted) #Confirm column merge
 SRMDataNMDSNonNormalizedPivoted <- SRMDataNMDSNonNormalizedPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataNMDSNonNormalizedPivoted) #Confirm column removal
-write.csv(SRMDataNMDSNonNormalizedPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
+#write.csv(SRMDataNMDSNonNormalizedPivoted, file = "2017-09-07-SRM-Data-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #Now I can make an NMDS plot
 
@@ -83,11 +83,11 @@ area.tra <- (area.t+1) #Add 1 to all values before transforming
 area.tra <- data.trans(area.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
 proc.nmds.nonnorm.euclidean <- metaMDS(area.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
-stressplot(proc.nmds.nonnorm.euclidean) #Make Shepard plot
-ordiplot(proc.nmds.nonnorm.euclidean) #Plot basic NMDS
-vec.proc.nmds.nonnorm.euclidean <- envfit(proc.nmds.nonnorm.euclidean$points, area.t, perm = 1000) #Calculate loadings
+#stressplot(proc.nmds.nonnorm.euclidean) #Make Shepard plot
+#ordiplot(proc.nmds.nonnorm.euclidean) #Plot basic NMDS
+#vec.proc.nmds.nonnorm.euclidean <- envfit(proc.nmds.nonnorm.euclidean$points, area.t, perm = 1000) #Calculate loadings
 ordiplot(proc.nmds.nonnorm.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+#plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 
 #proc.nmds.nonnorm.euclidean.log <- metaMDS(area.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
 #stressplot(proc.nmds.nonnorm.euclidean.log) #Make Shepard plot
