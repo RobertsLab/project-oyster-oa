@@ -121,20 +121,22 @@ dev.off()
 
 #### ANOSIM ####
 
-proc.nmds.nonnorm.averaged.euclidean #Dissimilarity matrix
+dissimArea3.t <- vegdist(area3.t, "euclidean") #Calculate dissimilarity matrix
 ANOSIMReplicates <- biologicalReplicates[c(1:49),] #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
 head(ANOSIMReplicates) #Confirm changes
 
-# KEEP GETTING ERROR: Error in rowSums(x, na.rm = TRUE) : 'x' must be an array of at least two dimensions SO THIS CODE DOESN'T WORK ... ?!?!?
+ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Condition) #Make sure residual factors are no longer present
+ANOSIMReplicates$Site <- factor(ANOSIMReplicates$Site) #Make sure residual factors are no longer present
+str(ANOSIMReplicates) #Confirm new factors
 
-siteNonNormANOSIM <- anosim(dat = proc.nmds.nonnorm.averaged.euclidean, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+siteNonNormANOSIM <- anosim(dat = dissimArea3.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site presence
 summary(siteNonNormANOSIM)
 plot(siteNonNormANOSIM)
 simper(proc.nmds.nonnorm.averaged.euclidean, ANOSIMReplicates$Site)
 
-eelgrassNonNormANOSIM <- anosim(dat = proc.nmds.nonnorm.averaged.euclidean, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+eelgrassNonNormANOSIM <- anosim(dat = dissimArea3.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassNonNormANOSIM)
 plot(eelgrassNonNormANOSIM)
 simper(proc.nmds.nonnorm.averaged.euclidean, ANOSIMReplicates$Eelgrass.Condition)
@@ -263,20 +265,23 @@ legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet',
 
 #### ANOSIM ####
 
-proc.nmds.averaged.euclidean #Dissimilarity matrix
+dissimArea4.t <- vegdist(area4.t, "euclidean") #Calculate dissimilarity matrix
 ANOSIMReplicates <- biologicalReplicates[c(1:49),] #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
 head(ANOSIMReplicates) #Confirm changes
 
-# KEEP GETTING ERROR: Error in rowSums(x, na.rm = TRUE) : 'x' must be an array of at least two dimensions SO THIS CODE DOESN'T WORK ... ?!?!?
+str(ANOSIMReplicates) #Examine structure
+ANOSIMReplicates$Site <- factor(ANOSIMReplicates$Site) #Make sure only preesnt factors are recognized
+ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Condition) #Make sure only preesnt factors are recognized
+str(ANOSIMReplicates) #Confirm structure
 
-siteANOSIM <- anosim(dat = proc.nmds.averaged.euclidean, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+siteANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
 summary(siteANOSIM)
 plot(siteANOSIM)
 simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Site)
 
-eelgrassANOSIM <- anosim(dat = proc.nmds.averaged.euclidean, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+eelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassANOSIM)
 plot(eelgrassANOSIM)
 simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Eelgrass.Condition)
