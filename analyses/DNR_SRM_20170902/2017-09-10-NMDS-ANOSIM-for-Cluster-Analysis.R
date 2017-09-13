@@ -155,7 +155,7 @@ SRMDataNMDSAveraged <- data.frame(x = rep(x = 0, times = 111),
                                   y = rep(x = 0, times = 111)) #Create an empty dataframe to store averaged values
 row.names(SRMDataNMDSAveraged) <- SRMDataNMDSPivotedCorrected$RowNames #Add row names
 head(SRMDataNMDSAveraged) #Confirm changes
-for(i in 1:(length(SRMDataNMDSPivotedCorrected)-1)) { #Average normalized area values for consecutive columns
+for(i in 1:(length(SRMDataNMDSPivotedCorrected))) { #Average normalized area values for consecutive columns
   SRMDataNMDSAveraged[,i] <- (SRMDataNMDSPivotedCorrected[,i]+SRMDataNMDSPivotedCorrected[,i+1])/2
 }
 head(SRMDataNMDSAveraged) #Confirm averaging
@@ -163,6 +163,7 @@ SRMDataNMDSAveraged <- SRMDataNMDSAveraged[seq(from = 1, to = (length(SRMDataNMD
 head(SRMDataNMDSAveraged) #Confirm column removal
 colnames(SRMDataNMDSAveraged) <- technicalReplicates[seq(from = 1, to = (length(SRMDataNMDSPivotedCorrected)-1), by = 2)] #Add column names
 colnames(SRMDataNMDSAveraged) #Confirm column naming
+head(SRMDataNMDSAveraged) #Confirm column naming
 
 #### NMDS FOR SITE AND EELGRASS CLUSTERING ####
 
@@ -175,8 +176,8 @@ SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
 SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 
-area.protID4 <- SRMDataNMDSAveragedCorrected[,-49] #Save all area data as a new dataframe except for OBLNK2
-head(area.protID3) #Confirm changes
+area.protID4 <- SRMDataNMDSAveragedCorrected #Save all area data as a new dataframe
+head(area.protID4) #Confirm changes
 
 area4.t <- t(area.protID4) #Transpose the file so that rows and columns are switched
 head(area4.t) #Confirm transposition
@@ -198,9 +199,9 @@ head(temporaryData) #Confirm dataframe creation
 NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
 head(NMDSColorShapeCustomization) #Confirm merge
 tail(NMDSColorShapeCustomization) #Confirm merge
-NMDSColorShapeCustomization <- NMDSColorShapeCustomization[-c(97:98),-2] #Remove OBLNK2 and empty column
-tail(NMDSColorShapeCustomization) #Confirm removal
-NMDSColorShapeCustomization <- NMDSColorShapeCustomization[seq(from = 1, to = 95, by = 2),] #Keep only every other row
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[,-2] #Remove empty column
+head(NMDSColorShapeCustomization) #Confirm removal
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[seq(from = 1, to = 91, by = 2),] #Keep only every other row
 head(NMDSColorShapeCustomization) #Confirm changes
 NMDSColorShapeCustomization$Sample.Number #Confirm changes
 
@@ -248,7 +249,7 @@ points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSCol
 legend("bottomleft", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 
 #jpeg(filename = "2017-09-11-NMDS-Analysis-Averaged", width = 1000, height = 1000)
-#fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type='none', display='sites', xlab='Axis 1', ylab='Axis 2', cex=0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
 #Bare = circle

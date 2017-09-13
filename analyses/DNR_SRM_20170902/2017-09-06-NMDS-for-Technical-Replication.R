@@ -2,7 +2,7 @@
 
 #### IMPORT DATA ####
 
-SRMAreas <- read.csv("2017-09-11-Gigas-SRM-ReplicatesOnly-PostDilutionCurve-NoPivot-Report.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
+SRMAreas <- read.csv("2017-09-12-Gigas-SRM-ReplicatesOnly-PostDilutionCurve-NoPivot-RevisedSettings-Report.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
 head(SRMAreas) #Confirm import
 tail(SRMAreas) #Confirm import
 
@@ -23,8 +23,6 @@ biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.cs
 head(biologicalReplicates) #Confirm import
 tail(biologicalReplicates) #Confirm import
 masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
-head(masterSRMDataBiologicalReplicates)
-masterSRMDataBiologicalReplicates <- masterSRMDataBiologicalReplicates[,-8] #Remove TIC Area column since it is empty
 head(masterSRMDataBiologicalReplicates) #Confirm change
 #write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
 
@@ -73,8 +71,8 @@ SRMDataNMDSNonNormalizedPivotedCorrected <- SRMDataNMDSNonNormalizedPivoted #Dup
 SRMDataNMDSNonNormalizedPivotedCorrected[is.na(SRMDataNMDSNonNormalizedPivotedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSNonNormalizedPivotedCorrected) #Confirm there are no NAs
 
-area.protID <- SRMDataNMDSNonNormalizedPivotedCorrected[-99] #Save all area data as a new dataframe
-rownames(area.protID) <- SRMDataNMDSNonNormalizedPivotedCorrected[,99] #Make sure last column of protein names is recognized as row names instead of values
+area.protID <- SRMDataNMDSNonNormalizedPivotedCorrected[-93] #Save all area data as a new dataframe
+rownames(area.protID) <- SRMDataNMDSNonNormalizedPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
 head(area.protID) #Confirm changes
 
 area.t <- t(area.protID) #Transpose the file so that rows and columns are switched
@@ -138,8 +136,8 @@ SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivoted #Duplicate dataframe
 SRMDataNMDSPivotedCorrected[is.na(SRMDataNMDSPivotedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
 
-area.protID2 <- SRMDataNMDSPivotedCorrected[-99] #Save all area data as a new dataframe
-rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,99] #Make sure last column of protein names is recognized as row names instead of values
+area.protID2 <- SRMDataNMDSPivotedCorrected[-93] #Save all area data as a new dataframe
+rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
 head(area.protID2) #Confirm changes
 
 area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
@@ -189,5 +187,5 @@ tail(technicalReplicateDistances) #Confirm dataframe creation
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
 #jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
-plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
+#plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
 #dev.off()
