@@ -18,7 +18,7 @@ After exposure, a subset of oysters were exposed to a one hour heat shock of 40Â
 
 ## Repository Contents
 
-In alphabetical order:
+Each larger folder also has its own README.md file with additional information. Folders in alphabetical order:
 
 
 `analyses`:
