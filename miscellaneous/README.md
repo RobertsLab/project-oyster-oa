@@ -1,34 +1,12 @@
-# project-oyster-oa
+# `miscellaneous` Subdirectory Structure
 
-This repository focuses on efforts examining the impact of ocean acidification on Pacific oysters, *Crassostrea gigas*.
+Documents that do not fall into other categories.
 
-## Projects
+## [DNR](https://github.com/RobertsLab/project-oyster-oa/tree/master/miscellaneous/DNR)
 
-Each project has a distinct ID used in all folder naming conventions to make sorting through the repository easier.
+- [Meeting notes](https://github.com/RobertsLab/project-oyster-oa/blob/master/miscellaneous/DNR/Meeting-Notes.jpg) from 2016-09-15 meeting with Micah Horowith (DNR) and Alex Lowe (UW Biology)
+- [Presentation](https://github.com/RobertsLab/project-oyster-oa/blob/master/miscellaneous/DNR/Padilla-Bay-Eelgrass-Background.pdf) providing background on eelgrass and water chemistry in Padilla Bay 
 
-### Exploring Proteomic Variation in Pacific Oysters (ID: DNR)
+## Manchester
 
-In June 2016, 150 sibling *C. gigas* were outplanted at five different locations in Washington (leads: Micah Horowith (DNR) and Alex Lowe (UW Biology)). Four of these sites were located in Puget Sound — Case Inlet, Fidalgo Bay, Port Gamble Bay, Skokomish River Delta — and another in southern Washington, Willapa Bay. At each site, oysters were placed in both bare and eelgrass patches. After one month, gill tissue samples were collected and flash frozen. [Yaamini Venkataraman](yaaminiv.github.io) began proteomic analyses on samples to see if environmental variables like pH, dissolved oxygen, and temperature at each site and habitat drove differential protein expression.
-
-### Pacific Oyster Ocean Acidification Trials at Chew Hatchery (ID: Manchester)
-
-Adult *C. gigas* from Willapa Bay were exposed to either low and ambient pH conditions for seven weeks (February 4, 2017 to April 8, 2017). Before and after exposure, ctnidia, mantle and adductor tissues were collected, along with gonad tissue for histology. Live weights and shell lengths were also recorded.
-
-After exposure, a subset of oysters were exposed to a one hour heat shock of 40ºC on June 5, 2017. Oysters were then conditioned for a strip spawn at 23ºC. Oysters were spawned on July 30, 2017 to create five groups based on parental life histories. Larvae survived for 20 days without growing past 60 microns. This trial will allow us to understand how parental life history affected larval production and differential mortality.
-
-## Repository Contents
-
-Each larger folder also has its own README.md file with additional information. Folders in alphabetical order:
-
-
-`analyses`:
-
-`data`:
-
-`images`:
-
-`miscellaneous`:
-
-`notebooks`:
-
-`presentations`:
+No contents as of 2017-09-27
