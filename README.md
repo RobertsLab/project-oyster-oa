@@ -18,7 +18,7 @@ After exposure, a subset of oysters were exposed to a one hour heat shock of 40Â
 
 ## Repository Contents
 
-Each larger folder also has its own README.md file with additional information. With the exception of `analyses`, all folder contents are divided by project ID. Some highlights are outlined below.
+Each larger folder also has its own README.md file with additional information. With the exception of `analyses`, all folder contents are divided by project ID. Some files in [`.gitignore`](https://github.com/RobertsLab/project-oyster-oa/blob/master/.gitignore); highlights are outlined below.
 
 [`analyses`](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses): Output for multiple analyses. Project IDs are detailed in the folder names themselves.
 

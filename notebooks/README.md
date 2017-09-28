@@ -1,34 +1,41 @@
-# project-oyster-oa
+# `notebooks` Subdirectory Structure
 
-This repository focuses on efforts examining the impact of ocean acidification on Pacific oysters, *Crassostrea gigas*.
+Jupyter notebooks detailing analytical pipelines for easy reproducibility.
 
-## Projects
+## [DNR](https://github.com/RobertsLab/project-oyster-oa/tree/master/notebooks/DNR)
 
-Each project has a distinct ID used in all folder naming conventions to make sorting through the repository easier.
+### Shotgun Proteomics
 
-### Exploring Proteomic Variation in Pacific Oysters (ID: DNR)
+Analysis of all proteins characterized by mass spectrometer
 
-In June 2016, 150 sibling *C. gigas* were outplanted at five different locations in Washington (leads: Micah Horowith (DNR) and Alex Lowe (UW Biology)). Four of these sites were located in Puget Sound — Case Inlet, Fidalgo Bay, Port Gamble Bay, Skokomish River Delta — and another in southern Washington, Willapa Bay. At each site, oysters were placed in both bare and eelgrass patches. After one month, gill tissue samples were collected and flash frozen. [Yaamini Venkataraman](yaaminiv.github.io) began proteomic analyses on samples to see if environmental variables like pH, dissolved oxygen, and temperature at each site and habitat drove differential protein expression.
+- [2017-04-12-Demultiplex-Raw-Files.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-04-12-Demultiplex-Raw-Files.ipynb): Separated overlapping m/z windows from mass spectrometry data using MSConvert
+- [2017-06-13-Full-Skyline-Preliminary-Analysis.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-13-Full-Skyline-Preliminary-Analysis.ipynb): Used revised `.blib`to generate usable Skyline data
 
-### Pacific Oyster Ocean Acidification Trials at Chew Hatchery (ID: Manchester)
+### Selected Reaction Monitoring
 
-Adult *C. gigas* from Willapa Bay were exposed to either low and ambient pH conditions for seven weeks (February 4, 2017 to April 8, 2017). Before and after exposure, ctnidia, mantle and adductor tissues were collected, along with gonad tissue for histology. Live weights and shell lengths were also recorded.
+Determination of differential protein expression and evaluation of protein targets as potential biomarkers
 
-After exposure, a subset of oysters were exposed to a one hour heat shock of 40ºC on June 5, 2017. Oysters were then conditioned for a strip spawn at 23ºC. Oysters were spawned on July 30, 2017 to create five groups based on parental life histories. Larvae survived for 20 days without growing past 60 microns. This trial will allow us to understand how parental life history affected larval production and differential mortality.
-
-## Repository Contents
-
-Each larger folder also has its own README.md file with additional information. Folders in alphabetical order:
+- [2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb): Used MSStats to identify differentially expressed proteins based on site and eelgrass condition.
+- [2017-07-05-Examining-Protein-Annotations.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-05-Examining-Protein-Annotations.ipynb): Functional analysis to identify targets for SRM analysis
+- [2017-07-07-SRM-Target-Identification-in-Skyline.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-07-SRM-Target-Identification-in-Skyline.ipynb): Combined protein annotation analysis with MSStats output to refine SRM targets in Skyline
 
 
-`analyses`:
+### Irrelevant Analyses
 
-`data`:
+Outputs that were not used further in the pipeline (i.e. failed attempts and dead ends)
 
-`images`:
+- [2017-02-28-DIA-Analysis-PECAN.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-02-28-DIA-Analysis-PECAN.ipynb): Unsuccessful attempt to create `.blib` for downstream Skyline analyses. A large computing capacity was necessary for PECAN. Emma Timmins-Schiffman was able to successfully use DIA data to create a sample-specific `.blib`.
+- [2017-03-07-Reconvert-mzML-Files.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-03-07-Reconvert-mzML-Files.ipynb): Reconversion of `RAW` files to `mzML` format. Repeat error of "no usable MS2 data."
+- [2017-03-08-Formatting-PECAN-Inputs.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-03-08-Formatting-PECAN-Inputs.ipynb): Formatted PECAN inputs for use. Reformatting was successfulm but attempt to use PECAN was not.
+- [2017-03-14-Skyline-Test-Run.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-03-14-Skyline-Test-Run.ipynb): Generated protein area data using previously generated oyster seed `.blib`. 
+- [2017-03-21-Preliminary-Proteomic-Data-Analyses.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-03-21-Preliminary-Proteomic-Data-Analyses.ipynb): Proteomic analyses from data generated by oyster seed `.blib`.
+- [2017-05-11-Selecting-SRM-Targets.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-05-11-Selecting-SRM-Targets.ipynb): Tried selecting SRM targets using less powerful statistical methods.
+- [2017-05-12-Selecting-SRM-Targets-with-MSstats.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-05-12-Selecting-SRM-Targets-with-MSstats.ipynb): First attempt to use MSStats to identify SRM targets before properly formatting data.
 
-`miscellaneous`:
+## Manchester
 
-`notebooks`:
+No notebooks as of 2017-09-27.
 
-`presentations`:
+
+
+
