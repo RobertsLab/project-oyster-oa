@@ -1,4 +1,4 @@
-# Gigas-gonad-histology
+# Gigas-preOA-gonad-histology
 
 *C. gigas* gonad histology images from 2017-02-04 sampling. Oyster samples were collected before exposing individuals to low or ambient pH conditions. Images were taken by Grace Crandall. 
 
