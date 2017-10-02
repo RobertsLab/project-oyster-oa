@@ -72,6 +72,8 @@ Relevant photos for downstream analysis.
 
 - [February Oyster Sampling](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/2017-2-4-Oyster-Sampling)
 - [*C. gigas* Gonad Histology](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology)
+  - [Before OA experiment](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology/2017-02-04-Sampling)
+  - [After OA experiment](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology/2017-04-08-Sampling)
 - [*C. gigas* Larval Images](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae)
 
 ### [miscellaneous](https://github.com/RobertsLab/project-oyster-oa/tree/master/miscellaneous)
@@ -96,6 +98,7 @@ Jupyter notebook that detail reproducible methods for data analysis
 - [SRM Target Selection in MSStats](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb)
 - [Protein Annotations](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-05-Examining-Protein-Annotations.ipynb)
 - [SRM Target ID in Skyline](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-07-SRM-Target-Identification-in-Skyline.ipynb)
+- [SRM Analysis Pipeline](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-09-28-SRM-Skyline-Data-Pipeline.ipynb)
 
 **Manchester**
 
