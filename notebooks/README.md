@@ -18,6 +18,7 @@ Determination of differential protein expression and evaluation of protein targe
 - [2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb): Used MSStats to identify differentially expressed proteins based on site and eelgrass condition.
 - [2017-07-05-Examining-Protein-Annotations.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-05-Examining-Protein-Annotations.ipynb): Functional analysis to identify targets for SRM analysis
 - [2017-07-07-SRM-Target-Identification-in-Skyline.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-07-SRM-Target-Identification-in-Skyline.ipynb): Combined protein annotation analysis with MSStats output to refine SRM targets in Skyline
+- [2017-09-28-SRM-Skyline-Data-Pipeline.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-09-28-SRM-Skyline-Data-Pipeline.ipynb): Instructions for taking RAW data and processing it in Skyline, then analyzing Skyline output
 
 
 ### Irrelevant Analyses
