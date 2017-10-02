@@ -21,7 +21,7 @@ Photos taken by Yaamini Venkataraman from Manchester sampling before pH exposure
 
 ### [Gigas-gonad-histology](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology)
 
-Images of gonad histology by Grace Crandall from 2017-02-04 sampling
+Images of adult gonad histology by Grace Crandall from [pre-experimental sampling](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology/2017-02-04-Sampling) and [post-experimental sampling](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology/2017-04-08-Sampling).
 
 ### [Gigas-larvae](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae)
 
