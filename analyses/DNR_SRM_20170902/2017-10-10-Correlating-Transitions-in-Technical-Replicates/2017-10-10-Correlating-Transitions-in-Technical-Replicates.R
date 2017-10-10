@@ -58,6 +58,15 @@ SRMDataTargetsOnlyPivoted$RowNames <- paste(SRMDataTargetsOnlyPivoted$Protein.Na
 head(SRMDataTargetsOnlyPivoted) #Confirm column merge
 SRMDataTargetsOnlyPivoted <- SRMDataTargetsOnlyPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataTargetsOnlyPivoted) #Confirm column removal
+SRMDataTargetsOnlyPivotedCorrected <- SRMDataTargetsOnlyPivoted #Duplicate dataframe
+SRMDataTargetsOnlyPivotedCorrected[is.na(SRMDataTargetsOnlyPivotedCorrected)] <- 0 #Replace NAs with 0s
+head(SRMDataTargetsOnlyPivotedCorrected) #Confirm there are no NAs
+
+#### CREATE PLOTS FOR EACH TRANSITION ####
+
+#I will use a loop to go through each line fo the SRMDataTargetsOnlyPivoted dataframe and plot the first technical replicate on the x-axis, and the second technical replicate on the y-axis
+
+plot(x= SRMDataTargetsOnlyPivoted$`O135-1`, y = SRMDataTargetsOnlyPivoted$`O135-2`)
 
 #### REFORMAT PRTC ONLY DATAFRAME ####
 
