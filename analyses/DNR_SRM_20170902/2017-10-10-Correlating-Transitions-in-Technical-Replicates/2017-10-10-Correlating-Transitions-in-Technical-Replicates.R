@@ -45,7 +45,7 @@ is.numeric(SRMDataTargetsOnly$TIC) #Confirm change
 
 #### REFORMAT TARGET ONLY DATAFRAME ####
 
-#The goal is to have the row names of my new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
+#First I will make a new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
 
 SRMDataTargetsOnly <- SRMDataTargetsOnly[,-6] #Remove TIC column
 head(SRMDataTargetsOnly) #Confirm creation
@@ -58,15 +58,21 @@ SRMDataTargetsOnlyPivoted$RowNames <- paste(SRMDataTargetsOnlyPivoted$Protein.Na
 head(SRMDataTargetsOnlyPivoted) #Confirm column merge
 SRMDataTargetsOnlyPivoted <- SRMDataTargetsOnlyPivoted[,-c(1:3)] #Remove unmerged columns
 head(SRMDataTargetsOnlyPivoted) #Confirm column removal
+
 SRMDataTargetsOnlyPivotedCorrected <- SRMDataTargetsOnlyPivoted #Duplicate dataframe
 SRMDataTargetsOnlyPivotedCorrected[is.na(SRMDataTargetsOnlyPivotedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataTargetsOnlyPivotedCorrected) #Confirm there are no NAs
+rownames(SRMDataTargetsOnlyPivotedCorrected) <- SRMDataTargetsOnlyPivotedCorrected$RowNames #Set RowNames column as dataframe rownames
+SRMDataTargetsOnlyPivotedCorrected <- subset(SRMDataTargetsOnlyPivotedCorrected, select = -c(RowNames)) #Remove RowNames column
+head(SRMDataTargetsOnlyPivotedCorrected) #Confirm changes
+
+#Now I'll take my dataframe and split it into two: one for each batch of technical replicates.
+
+#Finally, I'll take each dataframe and melt it. The resulting dataframes will have transitions in the columns and samples in the rows.
 
 #### CREATE PLOTS FOR EACH TRANSITION ####
 
-#I will use a loop to go through each line fo the SRMDataTargetsOnlyPivoted dataframe and plot the first technical replicate on the x-axis, and the second technical replicate on the y-axis
-
-plot(x= SRMDataTargetsOnlyPivoted$`O135-1`, y = SRMDataTargetsOnlyPivoted$`O135-2`)
+plot(x= SRMDataTargetsOnlyPivotedCorrected$`O137-1`, y = SRMDataTargetsOnlyPivotedCorrected$`O137-2`) #x = first column of first dataframe, y = first column of second dataframe
 
 #### REFORMAT PRTC ONLY DATAFRAME ####
 
