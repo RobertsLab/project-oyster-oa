@@ -35,7 +35,6 @@ head(SRMDataTargetsOnly) #Confirm copy
 tail(SRMDataTargetsOnly) #Confirm copy
 SRMDataTargetsOnly <- SRMDataTargetsOnly[,-c(2, 5, 7, 10, 11)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
 head(SRMDataTargetsOnly) #Confirm column removal
-SRMDataPRTCOnly <- SRMDataTargetsOnly[SRMDataTargetsOnly$Protein.Name %in% "PRTC peptides", ] #Save PRTC peptide data as a new dataframe
 SRMDataTargetsOnly <- SRMDataTargetsOnly[! SRMDataTargetsOnly$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data from target protein dataframe
 head(SRMDataTargetsOnly) #Confirm removal
 transform(SRMDataTargetsOnly, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
@@ -82,11 +81,18 @@ head(SRMDataTransposedReplicateTwo) #Confirm transposition
 
 #### CREATE PLOTS FOR EACH TRANSITION ####
 
-plot(x= SRMDataTargetsOnlyPivotedCorrected$`O137-1`, y = SRMDataTargetsOnlyPivotedCorrected$`O137-2`) #x = first column of first dataframe, y = first column of second dataframe
+correlationFilenames <- data.frame(filenames = colnames(SRMDataTransposedReplicateOne),
+                                   modifier = rep(".jpeg", 111)) #Make a dataframe of filenames
+correlationFilenames$full <- paste(correlationFilenames$filenames, correlationFilenames$modifier) #Merge the two columns together in a third column. This column has the full filename that will be used
+head(correlationFilenames) #Confirm changes
 
-#### REFORMAT PRTC ONLY DATAFRAME ####
+nTransitions <- nrow(SRMDataTargetsReplicateOne) #Number of transitions used
 
-transform(SRMDataPRTCOnly, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
-is.numeric(SRMDataPRTCOnly$Area) #Confirm change
-transform(SRMDataPRTCOnly, TIC = as.numeric(TIC)) #Make sure TIC is recognized as a numeric variable
-is.numeric(SRMDataPRTCOnly$TIC) #Confirm change
+fileName <- correlationFilenames$full[1] #Set filename choice as the first entry
+transitionModel <- lm(SRMDataTransposedReplicateTwo[,8] ~ SRMDataTransposedReplicateOne[,8]) #Predict Replicate 2 from Replicate 1
+jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+plot(x= SRMDataTransposedReplicateOne[,8], y = SRMDataTransposedReplicateTwo[,8], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[1], type = "n") #Create plot, but do not plot points
+text(x = SRMDataTransposedReplicateOne[,8], y = SRMDataTransposedReplicateTwo[,8], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
+abline(transitionModel, col = "red") #Plot regression
+summary(transitionModel)$adj.r.squared
+dev.off() #Turn off plotting mechanism
