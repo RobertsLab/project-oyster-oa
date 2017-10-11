@@ -68,7 +68,12 @@ head(SRMDataTargetsOnlyPivotedCorrected) #Confirm changes
 
 #Now I'll take my dataframe and split it into two: one for each batch of technical replicates.
 
-#Finally, I'll take each dataframe and melt it. The resulting dataframes will have transitions in the columns and samples in the rows.
+SRMDataTargetsReplicateOne <- SRMDataTargetsOnlyPivotedCorrected[, c(seq(from = 1, to = (length(SRMDataTargetsOnlyPivotedCorrected) - 1), by = 2))] #Subset all odd columns (first replicate)
+colnames(SRMDataTargetsReplicateOne) #Confirm subset
+SRMDataTargetsReplicateTwo <- SRMDataTargetsOnlyPivotedCorrected[, c(seq(from = 2, to = length(SRMDataTargetsOnlyPivotedCorrected), by = 2))] #Subset all even columns (first replicate)
+colnames(SRMDataTargetsReplicateTwo) #Confirm subset
+
+#Finally, I'll transpose each dataframe. The resulting dataframes will have transitions in the columns and samples in the rows.
 
 #### CREATE PLOTS FOR EACH TRANSITION ####
 
