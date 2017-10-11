@@ -88,11 +88,13 @@ head(correlationFilenames) #Confirm changes
 
 nTransitions <- nrow(SRMDataTargetsReplicateOne) #Number of transitions used
 
-fileName <- correlationFilenames$full[1] #Set filename choice as the first entry
-transitionModel <- lm(SRMDataTransposedReplicateTwo[,8] ~ SRMDataTransposedReplicateOne[,8]) #Predict Replicate 2 from Replicate 1
-jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
-plot(x= SRMDataTransposedReplicateOne[,8], y = SRMDataTransposedReplicateTwo[,8], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[1], type = "n") #Create plot, but do not plot points
-text(x = SRMDataTransposedReplicateOne[,8], y = SRMDataTransposedReplicateTwo[,8], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
-abline(transitionModel, col = "red") #Plot regression
-summary(transitionModel)$adj.r.squared
-dev.off() #Turn off plotting mechanism
+for(i in 1:nTransitions) { #For all transitions
+  transitionModel <- lm(SRMDataTransposedReplicateTwo[,i] ~ SRMDataTransposedReplicateOne[,i]) #Predict Replicate 2 from Replicate 1
+  fileName <- correlationFilenames$full[i] #Set filename choice as the ith entry
+  jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+  plot(x= SRMDataTransposedReplicateOne[,i], y = SRMDataTransposedReplicateTwo[,i], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[i], type = "n") #Create plot, but do not plot points
+  text(x = SRMDataTransposedReplicateOne[,i], y = SRMDataTransposedReplicateTwo[,i], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
+  abline(transitionModel, col = "red") #Plot regression
+  legend("topleft", bty = "n", legend = paste("R2 =", format(summary(transitionModel)$adj.r.squared, digits=4))) #Plot R-squared value
+  dev.off() #Turn off plotting mechanism
+}
