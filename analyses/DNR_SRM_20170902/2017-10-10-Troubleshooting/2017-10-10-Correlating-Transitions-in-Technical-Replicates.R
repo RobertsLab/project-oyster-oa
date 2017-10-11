@@ -75,6 +75,11 @@ colnames(SRMDataTargetsReplicateTwo) #Confirm subset
 
 #Finally, I'll transpose each dataframe. The resulting dataframes will have transitions in the columns and samples in the rows.
 
+SRMDataTransposedReplicateOne <- t(SRMDataTargetsReplicateOne) #Transpose Replicate 1 dataframe
+head(SRMDataTransposedReplicateOne) #Confirm transposition
+SRMDataTransposedReplicateTwo <- t(SRMDataTargetsReplicateTwo) #Transpose Replicate 2 dataframe
+head(SRMDataTransposedReplicateTwo) #Confirm transposition
+
 #### CREATE PLOTS FOR EACH TRANSITION ####
 
 plot(x= SRMDataTargetsOnlyPivotedCorrected$`O137-1`, y = SRMDataTargetsOnlyPivotedCorrected$`O137-2`) #x = first column of first dataframe, y = first column of second dataframe
