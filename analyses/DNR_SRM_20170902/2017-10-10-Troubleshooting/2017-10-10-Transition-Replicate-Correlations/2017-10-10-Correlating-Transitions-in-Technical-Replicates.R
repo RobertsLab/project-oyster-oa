@@ -86,7 +86,8 @@ correlationFilenames <- data.frame(filenames = colnames(SRMDataTransposedReplica
 correlationFilenames$full <- paste(correlationFilenames$filenames, correlationFilenames$modifier) #Merge the two columns together in a third column. This column has the full filename that will be used
 head(correlationFilenames) #Confirm changes
 
-#Change working directory so files are saved in the same directory as the R script
+setwd(dir = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/") #Change working directory so files are saved in the same directory as the R script
+getwd() #Confirm changes
 
 nTransitions <- nrow(SRMDataTargetsReplicateOne) #Number of transitions used
 for(i in 1:nTransitions) { #For all transitions
