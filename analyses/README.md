@@ -27,7 +27,9 @@ The following pipelines are represented in this subdirectory:
 **Selected Reaction Monitoring**:
 
 - [Transition Selection](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_TransitionSelection_20170707): Identification of protein targets for Selected Reaction Monitoring Assay based on MSStats output
-- [Target analysis](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902): Multivariate analyses to determine targets differentially expressed based on sites and eelgrass habitat
+- [Target analysis](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902): Multivariate analyses to determine targets differentially expressed based on sites and eelgrass habitat. Also includes data visualization instructions and data troubleshooting.
+  - [Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-09-12-Protein-Area-Boxplots): Visualized protein area at different sites and eelgrass habitats
+  - [Transition Replicate Correlations](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations): Regressed technical replicates against eachother to identify transitions with poor technical replication
 
 **Irrelevant Analyses**: Outputs that were not used further in the pipeline (i.e. failed attempts and dead ends)
 
