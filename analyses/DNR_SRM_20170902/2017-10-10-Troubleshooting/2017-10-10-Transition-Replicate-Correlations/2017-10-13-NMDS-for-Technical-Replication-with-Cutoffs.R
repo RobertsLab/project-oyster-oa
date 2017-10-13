@@ -1,46 +1,29 @@
-#In this script, I'll use an NMDS plot to see if my technical replicates are similar.
+#In this script, I'll use two different adjusted R-squared cutoffs to screen transition data and reassess my technical replication. I'll try these cutoffs both with and without normalizing my data.
 
-#### IMPORT DATA ####
+#### CUTOFF = 0.6, NONNORMALIZED DATA ####
 
-SRMAreas <- read.csv("2017-09-12-Gigas-SRM-ReplicatesOnly-PostDilutionCurve-NoPivot-RevisedSettings-Report.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
-head(SRMAreas) #Confirm import
-tail(SRMAreas) #Confirm import
+#Import data
+SRMDataNMDSNonNormalizedPivoted <- read.csv("2017-09-07-SRM-Data-NMDS-Pivoted.csv", header = TRUE) #Import pivoted data from first technical replication script
+head(SRMDataNMDSNonNormalizedPivoted) #Confirm import
+rownames(SRMDataNMDSNonNormalizedPivoted) <- SRMDataNMDSNonNormalizedPivoted$RowNames #Assign rownames
+SRMDataNMDSNonNormalizedPivoted <- SRMDataNMDSNonNormalizedPivoted[,-1] #Remove extraneous column
+SRMDataNMDSNonNormalizedPivoted <- SRMDataNMDSNonNormalizedPivoted[,-93] #Remove RowNames column
+head(SRMDataNMDSNonNormalizedPivoted) #Confirm changes
 
-#### CREATE A MASTER DATAFRAME ####
+#Remove transitions with R-squared values below 0.6 cutoff. Based on analyses in 2017-10-10-Correlating-Transitions-in-Technical-Replicates.R, the following rows (individual transitions) should be removed: 1, 2, 3, 18, 21, 22, 28, 43, 55, 76, 85, 86, 87, 88, 89, 90, 91, 92, 93, 103, 106, 109, 111
 
-#I want to merge my Skyline data with sample names, sites, and eelgrass condition to create a master dataframe will all possible information
+SRMDataNMDSNonNormalizedPivotedCutoff1 <- SRMDataNMDSNonNormalizedPivoted #Duplicate dataframe
+SRMDataNMDSNonNormalizedPivotedCutoff1 <- SRMDataNMDSNonNormalizedPivotedCutoff1[-c(1, 2, 3, 18, 21, 22, 28, 43, 55, 76, 85, 86, 87, 88, 89, 90, 91, 92, 93, 103, 106, 109, 111),] #Remove rows that don't make the cutoff
+View(SRMDataNMDSNonNormalizedPivotedCutoff1) #See if any peptide has less than 2 transitions, and if any protein has less than 2 peptides remaining
 
-sequenceFile <- read.csv("2017-07-28-SRM-Samples-Sequence-File.csv", na.strings = "N/A") # Import sequence file
-head(sequenceFile) #Confirm import
-sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
-names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
-head(sequenceFile) #Confirm change
-masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names to use for analysis.
-head(masterSRMData) #Confirm merge
-tail(masterSRMData) #Confirm merge
+#I found 
 
-biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
-head(biologicalReplicates) #Confirm import
-tail(biologicalReplicates) #Confirm import
-masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
-head(masterSRMDataBiologicalReplicates) #Confirm change
-#write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
+  
+#### CUTOFF = 0.6, NORMALIZED DATA ####
 
-#### SUBSET DATA FOR NMDS PLOT ####
+#### CUTOFF = 0.8, NONNORMALIZED DATA ####
 
-#For the NMDS, I want only the protein/peptide/transition information and peak area
-
-SRMDataNMDS <- masterSRMDataBiologicalReplicates #Duplicate master list into a new dataframe
-head(SRMDataNMDS) #Confirm copy
-tail(SRMDataNMDS) #Confirm copy
-SRMDataNMDS <- SRMDataNMDS[,-c(2, 5, 7, 10, 11)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
-head(SRMDataNMDS) #Confirm column removal
-SRMDataNMDS <- SRMDataNMDS[! SRMDataNMDS$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data
-head(SRMDataNMDS) #Confirm removal
-transform(SRMDataNMDS, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
-is.numeric(SRMDataNMDS$Area) #Confirm change
-transform(SRMDataNMDS, TIC = as.numeric(TIC)) #Make sure TIC is recognized as a numeric variable
-is.numeric(SRMDataNMDS$TIC) #Confirm change
+#### CUTOFF = 0.8, NORMALIZED DATA ####
 
 #### MAKE NMDS WITHOUT NORMALIZING ####
 
