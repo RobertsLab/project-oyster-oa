@@ -164,7 +164,6 @@ tail(technicalReplicateDistancesNormalizedCuttof1) #Confirm dataframe creation
 plot(x = technicalReplicateDistancesNormalizedCuttof1$Sample, y = technicalReplicateDistancesNormalizedCuttof1$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
 #dev.off()
 
-
 #### CUTOFF = 0.7, NONNORMALIZED DATA ####
 
 #Remove transitions with R-squared values below 0.7 cutoff. Based on analyses in 2017-10-10-Correlating-Transitions-in-Technical-Replicates.R, the following rows (individual transitions) should be removed: 1, 2, 3, 4, 5, 6, 18, 19, 21, 22, 26, 28, 30, 43, 47, 55, 67, 68, 69, 70, 76, 77, 79, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 96, 97, 98, 99, 103, 106, 107, 108, 109, 110, 111
@@ -251,6 +250,42 @@ head(area.t4) #Confirm transposition
 area.tra4 <- (area.t4+1) #Add 1 to all values before transforming
 area.tra4 <- data.trans(area.tra4, method = 'log', plot = FALSE) #log(x+1) transformation
 
+#Rerun NMDS
+proc.nmds.norm.cutoff2.euclidean <- metaMDS(area.t4, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+stressplot(proc.nmds.norm.cutoff2.euclidean) #Make Shepard plot
+#ordiplot(proc.nmds.norm.cutoff2.euclidean) #Plot basic NMDS
+#vec.proc.nmds.norm.cutoff2.euclidean <- envfit(proc.nmds.norm.cutoff2.euclidean$points, area.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.norm.cutoff2.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#plot(vec.proc.nmds.norm.cutoff1.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#Save plot
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-13-NMDS-TechnicalReplication-Normalized-Cutoff2.jpeg", width = 1000, height = 1000)
+#ordiplot(proc.nmds.norm.cutoff2.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#dev.off()
+
+#Calculate distance between ordinations
+NMDSCoordinatesNormalizedCutoff2 <- proc.nmds.norm.cutoff2.euclidean$points #Save NMDS coordinates of each point in a new dataframe
+head(NMDSCoordinatesNormalizedCutoff2) #Confirm dataframe creation
+nSamples <- length(NMDSCoordinatesNormalizedCutoff2)/2 #Calculate the number of samples
+sampleDistancesNormalizedCutoff2 <- vector(length = nSamples) #Create an empty vector to store distance values
+
+for(i in 1:nSamples) { #For rows in NMDSCoordinatesNormalizedCutoff2
+  sampleDistancesNormalizedCutoff2[i] <- sqrt((NMDSCoordinatesNormalizedCutoff2[i,1]-NMDSCoordinatesNormalizedCutoff2[i,2])^2 + (NMDSCoordinatesNormalizedCutoff2[i+1,1]-NMDSCoordinatesNormalizedCutoff2[i+1,2])^2) #Calculate distance between ordinations
+  print(sampleDistancesNormalizedCutoff2[i]) #Print the distance value
+}
+
+sampleDistancesNormalizedCutoff2 #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
+technicalReplicatesNormalizedCuttof2 <- rownames(NMDSCoordinatesNormalizedCutoff2) #Save rownames as a new vector
+technicalReplicatesNormalizedCuttof2 #Confirm vector creation
+technicalReplicateDistancesNormalizedCuttof2 <- data.frame(Sample = technicalReplicatesNormalizedCuttof2[seq(from = 1, to = nSamples, by = 2)], 
+                                                           Distance = sampleDistancesNormalizedCutoff2[seq(from = 1, to = nSamples, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
+head(technicalReplicateDistancesNormalizedCuttof2) #Confirm dataframe creation
+tail(technicalReplicateDistancesNormalizedCuttof2) #Confirm dataframe creation
+
+#Plot distance between technical replicate ordinations and save
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-13-NMDS-TechnicalReplication-Ordination-Distances-Normalized-Cutoff2.jpeg", width = 1000, height = 1000)
+plot(x = technicalReplicateDistancesNormalizedCuttof2$Sample, y = technicalReplicateDistancesNormalizedCuttof2$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
+#dev.off()
 
 #### CUTOFF = 0.8, NONNORMALIZED DATA ####
 #Since my past two attempts showed that normalized data is cleaner than nonnormalized data, I will not be writing code for this section.
@@ -258,3 +293,56 @@ area.tra4 <- data.trans(area.tra4, method = 'log', plot = FALSE) #log(x+1) trans
 #### CUTOFF = 0.8, NORMALIZED DATA ####
 
 #Remove transitions with R-squared values below 0.8 cutoff. Based on analyses in 2017-10-10-Correlating-Transitions-in-Technical-Replicates.R, the following rows (individual transitions) should be removed: 1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 34, 35, 43, 44, 45, 46, 47, 48, 50, 52, 55, 56, 57, 64, 67, 68, 69, 70, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 103, 104, 106, 107, 108, 109, 110, 111
+
+SRMDataNMDSNormalizedPivotedCutoff3 <- SRMDataNMDSNormalizedPivoted #Duplicate dataframe
+SRMDataNMDSNormalizedPivotedCutoff3 <- SRMDataNMDSNormalizedPivotedCutoff3[-c(1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 34, 35, 43, 44, 45, 46, 47, 48, 50, 52, 55, 56, 57, 64, 67, 68, 69, 70, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 103, 104, 106, 107, 108, 109, 110, 111),] #Remove rows that don't make the cutoff
+rownames(SRMDataNMDSNormalizedPivotedCutoff3) #See if any peptide has less than 2 transitions, and if any protein has less than 2 peptides remaining
+SRMDataNMDSNormalizedPivotedCutoff3 <- SRMDataNMDSNormalizedPivotedCutoff3[-c(1:3, 7, 16:17, 24:31),] #Remove peptides and proteins that don't fit the above criteria. There are maybe two proteins left
+rownames(SRMDataNMDSNormalizedPivotedCutoff3) #Confirm changes
+
+#Format data for NMDS
+SRMDataNMDSNormalizedPivotedCorrectedCutoff3 <- SRMDataNMDSNormalizedPivotedCutoff3 #Duplicate dataframe
+SRMDataNMDSNormalizedPivotedCorrectedCutoff3[is.na(SRMDataNMDSNormalizedPivotedCorrectedCutoff3)] <- 0 #Replace NAs with 0s
+head(SRMDataNMDSNormalizedPivotedCorrectedCutoff3) #Confirm there are no NAs
+
+area.t5 <- t(SRMDataNMDSNormalizedPivotedCorrectedCutoff3) #Transpose the file so that rows and columns are switched
+head(area.t5) #Confirm transposition
+area.tra5 <- (area.t5+1) #Add 1 to all values before transforming
+area.tra5 <- data.trans(area.tra5, method = 'log', plot = FALSE) #log(x+1) transformation
+
+#Rerun NMDS
+proc.nmds.norm.cutoff3.euclidean <- metaMDS(area.t5, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+stressplot(proc.nmds.norm.cutoff3.euclidean) #Make Shepard plot
+#ordiplot(proc.nmds.norm.cutoff3.euclidean) #Plot basic NMDS
+#vec.proc.nmds.norm.cutoff3.euclidean <- envfit(proc.nmds.norm.cutoff3.euclidean$points, area.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.norm.cutoff3.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#plot(vec.proc.nmds.norm.cutoff3.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#Save plot
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-13-NMDS-TechnicalReplication-Normalized-Cutoff3.jpeg", width = 1000, height = 1000)
+#ordiplot(proc.nmds.norm.cutoff3.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#dev.off()
+
+#Calculate distance between ordinations
+NMDSCoordinatesNormalizedCutoff3 <- proc.nmds.norm.cutoff3.euclidean$points #Save NMDS coordinates of each point in a new dataframe
+head(NMDSCoordinatesNormalizedCutoff3) #Confirm dataframe creation
+nSamples <- length(NMDSCoordinatesNormalizedCutoff3)/2 #Calculate the number of samples
+sampleDistancesNormalizedCutoff3 <- vector(length = nSamples) #Create an empty vector to store distance values
+
+for(i in 1:nSamples) { #For rows in NMDSCoordinatesNormalizedCutoff2
+  sampleDistancesNormalizedCutoff3[i] <- sqrt((NMDSCoordinatesNormalizedCutoff3[i,1]-NMDSCoordinatesNormalizedCutoff3[i,2])^2 + (NMDSCoordinatesNormalizedCutoff3[i+1,1]-NMDSCoordinatesNormalizedCutoff3[i+1,2])^2) #Calculate distance between ordinations
+  print(sampleDistancesNormalizedCutoff3[i]) #Print the distance value
+}
+
+sampleDistancesNormalizedCutoff3 #Confirm vector creation. This vector has all consecutive pairs, including those that are not paris of technical replicates. I need to retain just the odd numbered rows.
+technicalReplicatesNormalizedCuttof3 <- rownames(NMDSCoordinatesNormalizedCutoff3) #Save rownames as a new vector
+technicalReplicatesNormalizedCuttof3 #Confirm vector creation
+technicalReplicateDistancesNormalizedCuttof3 <- data.frame(Sample = technicalReplicatesNormalizedCuttof3[seq(from = 1, to = nSamples, by = 2)], 
+                                                           Distance = sampleDistancesNormalizedCutoff3[seq(from = 1, to = nSamples, by = 2)]) #Create a new dataframe with just odd numbered row distances (technical replicate pairs)
+head(technicalReplicateDistancesNormalizedCuttof3) #Confirm dataframe creation
+tail(technicalReplicateDistancesNormalizedCuttof3) #Confirm dataframe creation
+
+#Plot distance between technical replicate ordinations and save
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-13-NMDS-TechnicalReplication-Ordination-Distances-Normalized-Cutoff3.jpeg", width = 1000, height = 1000)
+plot(x = technicalReplicateDistancesNormalizedCuttof3$Sample, y = technicalReplicateDistancesNormalizedCuttof3$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
+#dev.off()
