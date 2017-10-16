@@ -19,7 +19,7 @@ masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #M
 head(masterSRMData) #Confirm merge
 tail(masterSRMData) #Confirm merge
 
-biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
+biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A", fileEncoding="UTF-8-BOM") #Import site and eelgrass condition information (i.e. biological replicate information), using specific file encoding information
 head(biologicalReplicates) #Confirm import
 tail(biologicalReplicates) #Confirm import
 masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
