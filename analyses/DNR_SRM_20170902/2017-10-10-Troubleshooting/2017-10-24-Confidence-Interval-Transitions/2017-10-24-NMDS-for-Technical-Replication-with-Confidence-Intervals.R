@@ -121,7 +121,17 @@ for(i in 1:nTransitions) { #For all transitions
   text(x = SRMDataTransposedReplicateOne[,i], y = SRMDataTransposedReplicateTwo[,i], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
   abline(transitionModel, col = "red") #Plot regression
   legend("topleft", bty = "n", legend = paste("R2 =", format(summary(transitionModel)$adj.r.squared, digits=4))) #Plot R-squared value
-  abline(a = 0, b  = 1, col = "blue")
-  legend("bottomright", bty = "n", legend = paste("fitted line =", format(summary(transitionModel)$coeff[1], digits = 4), "+", format(summary(transitionModel)$coeff[2], digits = 4), "*x"))
+  abline(a = 0, b  = 1, col = "black", lty = 3)
+  legend("bottomright", bty = "n", legend = paste("regression line =", format(summary(transitionModel)$coeff[1], digits = 4), "+", format(summary(transitionModel)$coeff[2], digits = 4), "*x"))
+  x.slope <- seq(min(SRMDataTransposedReplicateOne[,i]), max(SRMDataTransposedReplicateOne[,i]), by = 1) #Create a sequence of x values
+  y.slope <- summary(transitionModel)$coeff[1] + 1*x.slope #Formula for prediction line, taking the intercept from the regression line and setting the slope to 1
+  lines(lowess(x.slope, y.slope), col = "blue")
   dev.off() #Turn off plotting mechanism
 }
+
+transitionModel <- lm(SRMDataTransposedReplicateTwo[,1] ~ SRMDataTransposedReplicateOne[,1]) #Predict Replicate 2 from Replicate 1
+plot(x= SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[1], type = "n") #Create plot, but do not plot points
+text(x = SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
+x.slope <- seq(min(SRMDataTransposedReplicateOne[,1]), max(SRMDataTransposedReplicateOne[,1]), by = 1)
+y.slope <- summary(transitionModel)$coeff[1] + 1*x.slope #Formula for prediction line, taking the intercept from the regression line and setting the slope to 1
+lines(lowess(x.slope, y.slope), col = "blue")
