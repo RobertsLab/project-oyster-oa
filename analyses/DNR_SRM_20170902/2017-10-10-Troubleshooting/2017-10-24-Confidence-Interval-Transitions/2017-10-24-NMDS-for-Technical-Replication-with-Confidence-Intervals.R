@@ -84,13 +84,13 @@ head(SRMDataTransposedReplicateTwo) #Confirm transposition
 
 #### CREATE PLOTS FOR EACH TRANSITION ####
 
+setwd(dir = "2017-10-10-Troubleshooting/2017-10-24-Confidence-Interval-Transitions/") #Change working directory so files are saved in the same directory as the R script
+getwd() #Confirm changes
+
 correlationFilenames <- data.frame(filenames = colnames(SRMDataTransposedReplicateOne),
                                    modifier = rep("confint.jpeg", 111)) #Make a dataframe of filenames
 correlationFilenames$full <- paste(correlationFilenames$filenames, correlationFilenames$modifier) #Merge the two columns together in a third column. This column has the full filename that will be used
 head(correlationFilenames) #Confirm changes
-
-setwd(dir = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/") #Change working directory so files are saved in the same directory as the R script
-getwd() #Confirm changes
 
 nTransitions <- nrow(SRMDataTargetsReplicateOne) #Number of transitions used
 for(i in 1:nTransitions) { #For all transitions
@@ -100,6 +100,15 @@ for(i in 1:nTransitions) { #For all transitions
   plot(x= SRMDataTransposedReplicateOne[,i], y = SRMDataTransposedReplicateTwo[,i], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[i], type = "n") #Create plot, but do not plot points
   text(x = SRMDataTransposedReplicateOne[,i], y = SRMDataTransposedReplicateTwo[,i], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
   abline(transitionModel, col = "red") #Plot regression
+  abline(a = 0, b = 1) #Plot x = y line
   legend("topleft", bty = "n", legend = paste("R2 =", format(summary(transitionModel)$adj.r.squared, digits=4))) #Plot R-squared value
   dev.off() #Turn off plotting mechanism
 }
+
+
+transitionModel <- lm(SRMDataTransposedReplicateTwo[,1] ~ SRMDataTransposedReplicateOne[,1]) #Predict Replicate 2 from Replicate 1
+plot(x= SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[1], type = "n") #Create plot, but do not plot points
+text(x = SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
+abline(transitionModel, col = "red") #Plot regression
+abline(a = 0, b = 1, col = "blue") #Plot x = y line
+legend("topleft", bty = "n", legend = paste("R2 =", format(summary(transitionModel)$adj.r.squared, digits=4))) #Plot R-squared value
