@@ -1,4 +1,4 @@
-#In this script, I'll regress my technical replicate batches against eachother, then plot an x = y line. If more than 95% of my points fall outside of a 95% CI, I will remove that transition from analysis. Finally, I'll remake my NMDS plot to see if anything improves.
+#In this script, I'll use the slope of my regression line to identify transitions that should be eliminated from analyses.
 
 #### SET WORKING DIRECTORY ####
 setwd(dir = "../..") #Set the working directory to the folder with all SRM analysis files (project-oyster-oa/analyses/DNR_SRM_20170902)
@@ -6,70 +6,12 @@ getwd()
 
 #### IMPORT DATA ####
 
-SRMAreas <- read.csv("2017-09-12-Gigas-SRM-ReplicatesOnly-PostDilutionCurve-NoPivot-RevisedSettings-Report.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
-head(SRMAreas) #Confirm import
-tail(SRMAreas) #Confirm import
-
-#### CREATE A MASTER DATAFRAME ####
-
-#I want to merge my Skyline data with sample names, sites, and eelgrass condition to create a master dataframe will all possible information
-
-sequenceFile <- read.csv("2017-07-28-SRM-Samples-Sequence-File.csv", na.strings = "N/A") # Import sequence file
-head(sequenceFile) #Confirm import
-sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
-names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
-head(sequenceFile) #Confirm change
-masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #Merge the sample names and replicate names to use for analysis.
-head(masterSRMData) #Confirm merge
-tail(masterSRMData) #Confirm merge
-
-biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
-head(biologicalReplicates) #Confirm import
-tail(biologicalReplicates) #Confirm import
-masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
-head(masterSRMDataBiologicalReplicates) #Confirm change
-#write.csv(x = masterSRMDataBiologicalReplicates, file = "2017-09-07-Master-SRM-Data-BiologicalReplicates-NoBlanks-NoPivot.csv") #Write out master dataframe
-
-#### SUBSET TARGET PROTEIN DATA ####
-
-#I want only the protein/peptide/transition information and peak area
-
-SRMDataTargetsOnly <- masterSRMDataBiologicalReplicates #Duplicate master list into a new dataframe
-head(SRMDataTargetsOnly) #Confirm copy
-tail(SRMDataTargetsOnly) #Confirm copy
-SRMDataTargetsOnly <- SRMDataTargetsOnly[,-c(2, 5, 7, 10, 11)] #Remove extraneous columns: Replicate.Name, Transition, Peptide.Retention.Time, Site, Eelgrass
-head(SRMDataTargetsOnly) #Confirm column removal
-SRMDataTargetsOnly <- SRMDataTargetsOnly[! SRMDataTargetsOnly$Protein.Name %in% "PRTC peptides", ] #Remove PRTC peptide data from target protein dataframe
-head(SRMDataTargetsOnly) #Confirm removal
-transform(SRMDataTargetsOnly, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
-is.numeric(SRMDataTargetsOnly$Area) #Confirm change
-transform(SRMDataTargetsOnly, TIC = as.numeric(TIC)) #Make sure TIC is recognized as a numeric variable
-is.numeric(SRMDataTargetsOnly$TIC) #Confirm change
-
-#### REFORMAT TARGET ONLY DATAFRAME ####
-
-#First I will make a new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
-
-SRMDataTargetsOnly <- SRMDataTargetsOnly[,-6] #Remove TIC column
-head(SRMDataTargetsOnly) #Confirm creation
-
-#My first step is to change my dataframe from long to wide (i.e. cast it)
-library(reshape2) #Instal package to pivot table
-SRMDataTargetsOnlyPivoted <- dcast(SRMDataTargetsOnly, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Normalized.Area used as value column by default.
-head(SRMDataTargetsOnlyPivoted) #Confirm cast.
-SRMDataTargetsOnlyPivoted$RowNames <- paste(SRMDataTargetsOnlyPivoted$Protein.Name, SRMDataTargetsOnlyPivoted$Peptide.Sequence, SRMDataTargetsOnlyPivoted$Fragment.Ion) #Merge Protein, Peptide and Transition information into one column
-head(SRMDataTargetsOnlyPivoted) #Confirm column merge
-SRMDataTargetsOnlyPivoted <- SRMDataTargetsOnlyPivoted[,-c(1:3)] #Remove unmerged columns
-head(SRMDataTargetsOnlyPivoted) #Confirm column removal
-
-SRMDataTargetsOnlyPivotedCorrected <- SRMDataTargetsOnlyPivoted #Duplicate dataframe
-SRMDataTargetsOnlyPivotedCorrected[is.na(SRMDataTargetsOnlyPivotedCorrected)] <- 0 #Replace NAs with 0s
-head(SRMDataTargetsOnlyPivotedCorrected) #Confirm there are no NAs
-rownames(SRMDataTargetsOnlyPivotedCorrected) <- SRMDataTargetsOnlyPivotedCorrected$RowNames #Set RowNames column as dataframe rownames
-SRMDataTargetsOnlyPivotedCorrected <- subset(SRMDataTargetsOnlyPivotedCorrected, select = -c(RowNames)) #Remove RowNames column
+SRMDataTargetsOnlyPivotedCorrected <-  read.csv("2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-24-Targets-Replicates-Adjacent-Columns.csv", header = TRUE) #Import dataframe
+rownames(SRMDataTargetsOnlyPivotedCorrected) <- SRMDataTargetsOnlyPivotedCorrected$X #Set rownames as first column
+SRMDataTargetsOnlyPivotedCorrected <- SRMDataTargetsOnlyPivotedCorrected[,-1] #Remove column X
 head(SRMDataTargetsOnlyPivotedCorrected) #Confirm changes
-#write.csv(x = SRMDataTargetsOnlyPivotedCorrected, file = "2017-10-24-Targets-Replicates-Adjacent-Columns.csv") #Write out dataframe for future use
 
+#### REFORMAT DATA ####
 #Now I'll take my dataframe and split it into two: one for each batch of technical replicates.
 
 SRMDataTargetsReplicateOne <- SRMDataTargetsOnlyPivotedCorrected[, c(seq(from = 1, to = (length(SRMDataTargetsOnlyPivotedCorrected) - 1), by = 2))] #Subset all odd columns (first replicate)
@@ -128,10 +70,3 @@ for(i in 1:nTransitions) { #For all transitions
   lines(lowess(x.slope, y.slope), col = "blue")
   dev.off() #Turn off plotting mechanism
 }
-
-transitionModel <- lm(SRMDataTransposedReplicateTwo[,1] ~ SRMDataTransposedReplicateOne[,1]) #Predict Replicate 2 from Replicate 1
-plot(x= SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], xlab = "Replicate 1 Area", ylab = "Replicate 2 Area", main = correlationFilenames$filename[1], type = "n") #Create plot, but do not plot points
-text(x = SRMDataTransposedReplicateOne[,1], y = SRMDataTransposedReplicateTwo[,1], labels = rownames(SRMDataTransposedReplicateOne), cex = 0.7) #Plot sample ID instead of points
-x.slope <- seq(min(SRMDataTransposedReplicateOne[,1]), max(SRMDataTransposedReplicateOne[,1]), by = 1)
-y.slope <- summary(transitionModel)$coeff[1] + 1*x.slope #Formula for prediction line, taking the intercept from the regression line and setting the slope to 1
-lines(lowess(x.slope, y.slope), col = "blue")
