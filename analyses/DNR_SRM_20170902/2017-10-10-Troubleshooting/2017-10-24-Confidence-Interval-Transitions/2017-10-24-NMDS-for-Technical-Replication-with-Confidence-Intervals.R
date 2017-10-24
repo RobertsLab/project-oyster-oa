@@ -68,6 +68,7 @@ head(SRMDataTargetsOnlyPivotedCorrected) #Confirm there are no NAs
 rownames(SRMDataTargetsOnlyPivotedCorrected) <- SRMDataTargetsOnlyPivotedCorrected$RowNames #Set RowNames column as dataframe rownames
 SRMDataTargetsOnlyPivotedCorrected <- subset(SRMDataTargetsOnlyPivotedCorrected, select = -c(RowNames)) #Remove RowNames column
 head(SRMDataTargetsOnlyPivotedCorrected) #Confirm changes
+#write.csv(x = SRMDataTargetsOnlyPivotedCorrected, file = "2017-10-24-Targets-Replicates-Adjacent-Columns.csv") #Write out dataframe for future use
 
 #Now I'll take my dataframe and split it into two: one for each batch of technical replicates.
 
