@@ -172,7 +172,7 @@ ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", dis
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-NMDSCoordinates <- proc.nmds.euclidean$points #Save NMDS coordinates of each point in a new dataframe
+NMDSCoordinates <- proc.nmds.euclidean.log$points #Save NMDS coordinates of each point in a new dataframe for the log transformed NMDS
 head(NMDSCoordinates) #Confirm dataframe creation
 nSamples <- length(NMDSCoordinates)/2 #Calculate the number of samples
 sampleDistances <- vector(length = nSamples) #Create an empty vector to store distance values
@@ -190,6 +190,6 @@ tail(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-PRTC-NMDS/2017-10-24-NMDS-TechnicalReplication-Ordination-Distances-Normalized-LogTransformed.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
 #dev.off()
