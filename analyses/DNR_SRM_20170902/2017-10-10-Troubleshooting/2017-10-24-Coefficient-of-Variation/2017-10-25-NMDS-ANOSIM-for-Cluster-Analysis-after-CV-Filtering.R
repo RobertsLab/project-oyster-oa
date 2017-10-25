@@ -102,7 +102,7 @@ head(NMDSColorShapeCustomization) #Confirm change
 
 #### NMDS REFINEMENT ####
 
-jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged", width = 1000, height = 1000)
 fig.nmds <- ordiplot(proc.nmds.norm.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab= "Axis 1", ylab= "Axis 2", cex = 0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
@@ -117,3 +117,26 @@ fig.nmds <- ordiplot(proc.nmds.norm.averaged.euclidean, choices = c(1,2), type =
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
 legend("topright", cex = .5, pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'))
 title("Protein Expression Similarities between Sites and Habitats")
+#dev.off()
+
+#### ANOSIM ####
+
+dissimArea.t <- vegdist(area.t, "euclidean") #Calculate dissimilarity matrix
+ANOSIMReplicates <- biologicalReplicates #Duplicate dataframe
+row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
+ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
+head(ANOSIMReplicates) #Confirm changes
+
+ANOSIMReplicates$eelgrassCondition <- factor(ANOSIMReplicates$eelgrassCondition) #Make sure residual factors are no longer present
+ANOSIMReplicates$site <- factor(ANOSIMReplicates$site) #Make sure residual factors are no longer present
+str(ANOSIMReplicates) #Confirm new factors
+
+siteNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site presence
+summary(siteNormANOSIM)
+plot(siteNormANOSIM)
+#simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$site) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
+
+eelgrassNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassNormANOSIM)
+plot(eelgrassNormANOSIM)
+#simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$eelgrassCondition) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
