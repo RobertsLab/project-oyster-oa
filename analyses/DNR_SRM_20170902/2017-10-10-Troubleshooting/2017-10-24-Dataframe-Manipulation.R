@@ -9,7 +9,7 @@ nonnormalizedData <- nonnormalizedData[,-1] #Remove irrelevant first column
 head(nonnormalizedData) #Confirm changes
 
 #### CREATE SAMPLE ID VECTOR ####
-sampleIDs <- c("O01", "O04", "O06", "O08", "010", "O100", "O101", "O102", "O103", "O106", "O118", "O121", "O122", "O124", "O128", "O131", "O137", "O14", "O140", "O145", "O147", "O17", "O21", "O22", "O24", "O26", "O30", "O31", "O32", "O35", "O40", "O43", "O46", "O49", "O51", "O52", "O56", "O60", "O64", "O66", "O71", "O78", "O90", "O91", "O96", "O99")
+sampleIDs <- c("O01", "O04", "O06", "O08", "O10", "O100", "O101", "O102", "O103", "O106", "O118", "O121", "O122", "O124", "O128", "O131", "O137", "O14", "O140", "O145", "O147", "O17", "O21", "O22", "O24", "O26", "O30", "O31", "O32", "O35", "O40", "O43", "O46", "O49", "O51", "O52", "O56", "O60", "O64", "O66", "O71", "O78", "O90", "O91", "O96", "O99")
 
 #### REFORMAT DATAFRAME ####
 technicalReplicatesSampleIDsNonNormalized <- data.frame("Protein.Name" = rep(x = 0, times = 10), "Sample" = rep(x = 0, times = 10), "Replicate1" = rep(x = 0, times = 10), "Replicate2" = rep(x = 0, times = 10))
