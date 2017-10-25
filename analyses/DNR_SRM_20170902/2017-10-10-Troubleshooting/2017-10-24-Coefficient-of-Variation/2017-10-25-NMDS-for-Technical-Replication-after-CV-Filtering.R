@@ -77,64 +77,9 @@ ordiplot(proc.nmds.norm.euclidean.log, choices = c(1,2), type = "text", display 
 
 #My technical replication looks SO MUCH BETTER! It's still not fantastic, but my samples are clearly lining up. I saved both the nontransformed and log transformed plots. Next, I'm going to use the nontransformed NMDS ordinations to calculate distances between my technical replicates.
 
-#### REFORMAT DATAFRAME FOR NMDS ####
-
-#The goal is to have the row names of my new dataframe be Protein/Peptides/Transitions, with the column names as the sample number
-
-#My first step is to change my dataframe from long to wide (i.e. cast it)
-library(reshape2) #Instal package to pivot table
-SRMDataNMDSPivoted <- dcast(SRMNormalizedDataNMDS, Protein.Name + Peptide.Sequence + Fragment.Ion ~ Sample.Number) #Cast table! Protein/Peptides/Transitions remain as columns with Sample Number as column headers. Normalized.Area used as value column by default.
-head(SRMDataNMDSPivoted) #Confirm cast.
-SRMDataNMDSPivoted$RowNames <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNMDSPivoted$Peptide.Sequence, SRMDataNMDSPivoted$Fragment.Ion) #Merge Protein, Peptide and Transition information into one column
-head(SRMDataNMDSPivoted) #Confirm column merge
-SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:3)] #Remove unmerged columns
-head(SRMDataNMDSPivoted) #Confirm column removal
-#write.csv(SRMDataNMDSPivoted, file = "2017-09-11-SRM-Data-Normalized-NMDS-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
-
-#### NMDS PLOT ####
-
-#Load the source file for the biostats package
-source("biostats.R") #Either load the source R script or copy paste.
-install.packages("vegan") #Install vegan package
-library(vegan)
-
-SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivoted #Duplicate dataframe
-SRMDataNMDSPivotedCorrected[is.na(SRMDataNMDSPivotedCorrected)] <- 0 #Replace NAs with 0s
-head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
-
-area.protID2 <- SRMDataNMDSPivotedCorrected[-93] #Save all area data as a new dataframe
-rownames(area.protID2) <- SRMDataNMDSPivotedCorrected[,93] #Make sure last column of protein names is recognized as row names instead of values
-head(area.protID2) #Confirm changes
-
-area2.t <- t(area.protID2) #Transpose the file so that rows and columns are switched
-head(area2.t) #Confirm transposition
-area2.tra <- (area2.t+1) #Add 1 to all values before transforming
-area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
-
-proc.nmds.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
-stressplot(proc.nmds.euclidean) #Make Shepard plot
-ordiplot(proc.nmds.euclidean) #Plot basic NMDS
-vec.proc.nmds.euclidean <- envfit(proc.nmds.euclidean$points, area2.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-plot(vec.proc.nmds.euclidean, p.max=.01, col='blue') #Plot eigenvectors
-
-proc.nmds.euclidean.log <- metaMDS(area2.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
-#stressplot(proc.nmds.euclidean.log) #Make Shepard plot
-#ordiplot(proc.nmds.euclidean.log) #Plot basic NMDS
-ordiplot(proc.nmds.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-
-proc.nmds.euclidean.autotransform <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = TRUE) #Make MDS dissimilarity matrix using euclidean distance and autotransformation
-#stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
-#ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
-ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-
-#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 1000)
-#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-#dev.off()
-
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-NMDSCoordinates <- proc.nmds.euclidean$points #Save NMDS coordinates of each point in a new dataframe
+NMDSCoordinates <- proc.nmds.norm.euclidean$points #Save NMDS coordinates of each point in a new dataframe
 head(NMDSCoordinates) #Confirm dataframe creation
 nSamples <- length(NMDSCoordinates)/2 #Calculate the number of samples
 sampleDistances <- vector(length = nSamples) #Create an empty vector to store distance values
@@ -152,6 +97,14 @@ tail(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-#jpeg(filename = "2017-09-08-NMDS-TechnicalReplication-Ordination-Distances.jpeg", width = 1000, height = 1000)
+jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Ordination-Distances-after-CV-Filtering.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
-#dev.off()
+dev.off()
+
+#### IDENTIFY SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
+#To identify samples with ordination distances that are outliers, I'm going to define an upper fence and remove samples above it.
+
+histogram(technicalReplicateDistances$Distance) #Make a histogram of how many distance fall in bins. Looks like a conservative upper fence would be 0.2, which would allow me to remove samples with the highest ordination distances.
+removeThese <- technicalReplicateDistances$Sample[technicalReplicateDistances$Distance >= 0.2] #Identify samples that need to be removed.
+
+#### REMOVE SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
