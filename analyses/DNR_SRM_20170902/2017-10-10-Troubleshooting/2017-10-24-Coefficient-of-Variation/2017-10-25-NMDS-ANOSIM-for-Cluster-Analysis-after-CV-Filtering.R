@@ -102,7 +102,7 @@ head(NMDSColorShapeCustomization) #Confirm change
 
 #### NMDS REFINEMENT ####
 
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged.jpeg", width = 1000, height = 1000)
 fig.nmds <- ordiplot(proc.nmds.norm.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab= "Axis 1", ylab= "Axis 2", cex = 0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
