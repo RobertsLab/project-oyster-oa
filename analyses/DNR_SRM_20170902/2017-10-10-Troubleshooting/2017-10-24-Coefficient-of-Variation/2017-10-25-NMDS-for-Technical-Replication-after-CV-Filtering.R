@@ -106,5 +106,68 @@ dev.off()
 
 histogram(technicalReplicateDistances$Distance) #Make a histogram of how many distance fall in bins. Looks like a conservative upper fence would be 0.2, which would allow me to remove samples with the highest ordination distances.
 removeThese <- technicalReplicateDistances$Sample[technicalReplicateDistances$Distance >= 0.2] #Identify samples that need to be removed.
+removeThese <- gsub(" -1", "", removeThese) #Remove " -1" from the end of each sample ID
+removeThese #Confirm changes
 
 #### REMOVE SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
+
+SRMModifiedAreasAdjusted <- SRMModifiedAreas[! SRMModifiedAreas$Sample %in% removeThese, ] #Duplicate original dataframe, but remove samples with large ordination distances saved in the vector removeThese
+
+#### REMAKE NMDS FOR TECHNICAL REPLICATION ####
+
+#Reformat data
+SRMModifiedAreasAdjustedReplicate1 <- SRMModifiedAreasAdjusted[, 1:3] #Duplicate dataframe, keeping only Replicate 1 information
+SRMModifiedAreasAdjustedReplicate1$Sample.Number <- paste(SRMModifiedAreasAdjustedReplicate1$Sample, "-1") #Create a new column with sample and replicate number
+SRMModifiedAreasAdjustedReplicate1 <- SRMModifiedAreasAdjustedReplicate1[, -2] #Remove Sample column
+colnames(SRMModifiedAreasAdjustedReplicate1) <- c("Protein.Name", "Area", "Sample") #Change column names
+head(SRMModifiedAreasAdjustedReplicate1) #Confirm changes
+
+SRMModifiedAreasAdjustedReplicate2 <- SRMModifiedAreasAdjusted[, c(1, 2, 4)] #Duplicate dataframe, keeping only Replicate 2 information
+SRMModifiedAreasAdjustedReplicate2$Sample.Number <- paste(SRMModifiedAreasAdjustedReplicate2$Sample, "-2") #Create a new column with sample and replicate number
+SRMModifiedAreasAdjustedReplicate2 <- SRMModifiedAreasAdjustedReplicate2[, -2] #Remove Sample column
+colnames(SRMModifiedAreasAdjustedReplicate2) <- c("Protein.Name", "Area", "Sample") #Change column names
+head(SRMModifiedAreasAdjustedReplicate2) #Confirm changes
+
+SRMModifiedAreasAdjustedLong <- rbind(SRMModifiedAreasAdjustedReplicate1, SRMModifiedAreasAdjustedReplicate2) #Paste dataframes together
+head(SRMModifiedAreasAdjustedLong) #Confirm changes
+tail(SRMModifiedAreasAdjustedLong) #Confirm changes
+transform(SRMModifiedAreasAdjustedLong, Area = as.numeric(Area)) #Make sure Area is recognized as a numeric variable
+is.numeric(SRMModifiedAreasAdjustedLong$Area) #Confirm change
+
+SRMModifiedAreasAdjustedPivoted <- dcast(SRMModifiedAreasAdjustedLong, Protein.Name ~ Sample, value.var = "Area") #Cast table! Protein.Name remains as a column with Sample Number as column headers. Area column defined as values.
+head(SRMModifiedAreasAdjustedPivoted) #Confirm cast
+rownames(SRMModifiedAreasAdjustedPivoted) <- SRMModifiedAreasAdjustedPivoted[, 1] #Save Protein.Name column as rownames
+SRMModifiedAreasAdjustedPivoted <- SRMModifiedAreasAdjustedPivoted[, -1] #Remove Protein.Name column
+head(SRMModifiedAreasAdjustedPivoted) #Confirm changes
+
+SRMModifiedAreasAdjustedPivotedCorrected <- SRMModifiedAreasAdjustedPivoted #Duplicate dataframe
+SRMModifiedAreasAdjustedPivotedCorrected[is.na(SRMModifiedAreasAdjustedPivotedCorrected)] <- 0 #Replace NAs with 0s
+head(SRMModifiedAreasAdjustedPivotedCorrected) #Confirm there are no NAs
+
+#Make NMDS plot
+
+area.prot2ID <- SRMModifiedAreasAdjustedPivotedCorrected #Save all area data as a new dataframe
+head(area.prot2ID) #Confirm changes
+
+area2.t <- t(area.prot2ID) #Transpose the file so that rows and columns are switched
+head(area2.t) #Confirm transposition
+area2.tra <- (area2.t+1) #Add 1 to all values before transforming
+area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+
+proc.nmds.norm.adj.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
+stressplot(proc.nmds.norm.adj.euclidean) #Make Shepard plot
+#ordiplot(proc.nmds.norm.adj.euclidean) #Plot basic NMDS
+#vec.proc.nmds.norm.adj.euclidean <- envfit(proc.nmds.norm.adj.euclidean$points, area.t, perm = 1000) #Calculate loadings
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Normalized-after-CV-Filtering.jpeg", width = 1000, height = 1000) #Save plot
+ordiplot(proc.nmds.norm.adj.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+#plot(vec.proc.nmds.norm.adj.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+#dev.off() #Turn off plotting mechanism
+
+#### REMAKE NMDS FOR ANALYSES ####
+
+#Average technical replicates
+SRMAveragedAreas <- SRMModifiedAreasAdjusted #Dupliate dataframe
+SRMAveragedAreas$Average.Area <- ((SRMAveragedAreas$Replicate1 + SRMAveragedAreas$Replicate2)/2) #Average peak areas and save as a new column
+SRMAveragedAreas <- SRMAveragedAreas[, -c(3:4)] #Remove replicate area columns
+head(SRMAveragedAreas) #Confirm changes
+
