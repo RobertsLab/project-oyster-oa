@@ -1,4 +1,4 @@
-#In this script, I'll use an NMDS plot to see how my technical replication fared after Steven filtered out transitions with a coefficient of variation greater than 20.
+#In this script, I'll use an NMDS plot to see how my technical replication fared after Steven filtered out transitions with a coefficient of variation greater than 15.
 
 #### SET WORKING DIRECTORY ####
 
@@ -8,8 +8,10 @@ getwd() #Confirm changes
 #### IMPORT DATA ####
 
 SRMModifiedAreas <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-24-Norm-modSR.csv", header = TRUE) #Import Steven's modified dataset
-head(SRMModifiedAreas) #Confirm import. There are six columns. The first column is null, and the last column, coefficient of variation, is not needed.
-SRMModifiedAreas <- SRMModifiedAreas[,-c(1, 6)] #Remove unnecessary columns
+head(SRMModifiedAreas) #Confirm import
+SRMModifiedAreas <- subset(SRMModifiedAreas, subset = SRMModifiedAreas$CoV <= 15) #Only keep rows with coefficient of variation ≤ 15
+max(SRMModifiedAreas$CoV) <= 15 #Statement should be TRUE if maximum does not exceed 15
+SRMModifiedAreas <- SRMModifiedAreas[,-c(1, 6)] #Remove unnecessary columns (first column and CoV column)
 head(SRMModifiedAreas) #Confirm changes. Now I only have Protein.Name, Sample, Replicate1 and Replicate2 (peak areas from Skyline, which are a proxy for protein abundance)
 
 #### REMFORMAT DATA ####
@@ -64,10 +66,10 @@ proc.nmds.norm.euclidean <- metaMDS(area.t, distance = 'euclidean', k = 2, tryma
 stressplot(proc.nmds.norm.euclidean) #Make Shepard plot
 #ordiplot(proc.nmds.norm.euclidean) #Plot basic NMDS
 #vec.proc.nmds.norm.euclidean <- envfit(proc.nmds.nonnorm.euclidean$points, area.t, perm = 1000) #Calculate loadings
-jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-TechnicalReplication-Normalized-after-CV15-Filtering.jpeg", width = 1000, height = 1000) #Save plot
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-TechnicalReplication-Normalized-after-CV15-Filtering.jpeg", width = 1000, height = 1000) #Save plot
 ordiplot(proc.nmds.norm.euclidean, choices = c(1,2), type = "text", display = "sites", cex = .8) #Plot refined NMDS displaying only samples with their names
 #plot(vec.proc.nmds.norm.euclidean, p.max=.01, col='blue') #Plot eigenvectors
-dev.off() #Turn off plotting mechanism
+#dev.off() #Turn off plotting mechanism
 
 #proc.nmds.norm.euclidean.log <- metaMDS(area.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
 #stressplot(proc.nmds.norm.euclidean.log) #Make Shepard plot
