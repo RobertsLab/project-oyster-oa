@@ -1,15 +1,17 @@
-#Steven went through my normalized data set of technical replicates and calculated a coefficient of variation for each transition. He removed any transitions that had CVs greater than 20. Using this dataset, I'll average my technical replicates and proceed with an NMDS and ANOSIM.
+#Steven went through my normalized data set of technical replicates and calculated a coefficient of variation for each transition. He removed any transitions that had CVs greater than 20. Using this dataset, filter down further to CV ≤ 15, and then average my technical replicates and proceed with an NMDS and ANOSIM.
 
 #### SET WORKING DIRECTORY ####
 
-setwd("../..") #Change working directory to the master SRM folder, and not the folder where this script is hosted.
+setwd("../../..") #Change working directory to the master SRM folder, and not the folder where this script is hosted.
 getwd() #Confirm changes
 
 #### IMPORT DATA ####
 
 SRMModifiedAreas <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-24-Norm-modSR.csv", header = TRUE) #Import Steven's modified dataset
-head(SRMModifiedAreas) #Confirm import. There are six columns. The first column is null, and the last column, coefficient of variation, is not needed.
-SRMModifiedAreas <- SRMModifiedAreas[,-c(1, 6)] #Remove unnecessary columns
+head(SRMModifiedAreas) #Confirm import
+SRMModifiedAreas <- subset(SRMModifiedAreas, subset = SRMModifiedAreas$CoV <= 15) #Only keep rows with coefficient of variation ≤ 15
+max(SRMModifiedAreas$CoV) <= 15 #Statement should be TRUE if maximum does not exceed 15
+SRMModifiedAreas <- SRMModifiedAreas[,-c(1, 6)] #Remove unnecessary columns (first column and CoV column)
 head(SRMModifiedAreas) #Confirm changes. Now I only have Protein.Name, Sample, Replicate1 and Replicate2 (peak areas from Skyline, which are a proxy for protein abundance)
 
 #### AVERAGE TECHNICAL REPLICATES ####
@@ -93,16 +95,12 @@ NMDS.Shapes <- c(rep(x = 16, times = sum(NMDSColorShapeCustomization$eelgrassCon
                  rep(x = 17, times = sum(NMDSColorShapeCustomization$eelgrassCondition == "Eelgrass"))) #Make a shape vector
 NMDSColorShapeCustomization[,5] <- NMDS.Shapes #Add the shape vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
-#attach(NMDSColorShapeCustomization)
-#NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(sampleIDs),] #Resort by sample number
-#head(NMDSColorShapeCustomization) #Confirm sorting
-#detach(NMDSColorShapeCustomization)
 colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Color", "Shape") #Change column names
 head(NMDSColorShapeCustomization) #Confirm change
 
 #### NMDS REFINEMENT ####
 
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-Norm-Analysis-Averaged-CV15-Filtered.jpeg", width = 1000, height = 1000)
 fig.nmds <- ordiplot(proc.nmds.norm.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab= "Axis 1", ylab= "Axis 2", cex = 0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
@@ -134,9 +132,9 @@ str(ANOSIMReplicates) #Confirm new factors
 siteNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site presence
 summary(siteNormANOSIM)
 plot(siteNormANOSIM)
-#simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$site) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
+simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$site) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
 
 eelgrassNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassNormANOSIM)
 plot(eelgrassNormANOSIM)
-#simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$eelgrassCondition) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
+simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$eelgrassCondition) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
