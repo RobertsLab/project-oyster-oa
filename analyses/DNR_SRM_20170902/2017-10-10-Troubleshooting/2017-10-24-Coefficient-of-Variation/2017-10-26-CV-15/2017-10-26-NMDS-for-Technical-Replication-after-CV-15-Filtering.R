@@ -93,9 +93,9 @@ tail(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Ordination-Distances-after-CV-Filtering.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-TechnicalReplication-Ordination-Distances-after-CV15-Filtering.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
-dev.off()
+#dev.off()
 
 #### IDENTIFY SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
 #To identify samples with ordination distances that are outliers, I'm going to define an upper fence and remove samples above it.
@@ -154,7 +154,7 @@ proc.nmds.norm.adj.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, 
 stressplot(proc.nmds.norm.adj.euclidean) #Make Shepard plot
 #ordiplot(proc.nmds.norm.adj.euclidean) #Plot basic NMDS
 #vec.proc.nmds.norm.adj.euclidean <- envfit(proc.nmds.norm.adj.euclidean$points, area.t, perm = 1000) #Calculate loadings
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Normalized-after-CV-Filtering.jpeg", width = 1000, height = 1000) #Save plot
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-TechnicalReplication-Normalized-after-CV15-and-Distance-Filtering.jpeg", width = 1000, height = 1000) #Save plot
 ordiplot(proc.nmds.norm.adj.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 #plot(vec.proc.nmds.norm.adj.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 #dev.off() #Turn off plotting mechanism
@@ -233,15 +233,11 @@ NMDS.Shapes <- c(rep(x = 16, times = sum(NMDSColorShapeCustomization$eelgrassCon
                  rep(x = 17, times = sum(NMDSColorShapeCustomization$eelgrassCondition == "Eelgrass"))) #Make a shape vector
 NMDSColorShapeCustomization[,5] <- NMDS.Shapes #Add the shape vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
-#attach(NMDSColorShapeCustomization)
-#NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(sampleIDs),] #Resort by sample number
-#head(NMDSColorShapeCustomization) #Confirm sorting
-#detach(NMDSColorShapeCustomization)
 colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Color", "Shape") #Change column names
 head(NMDSColorShapeCustomization) #Confirm change
 
 #Refine NMDS
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-Norm-Analysis-Averaged-Adjusted.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-Norm-Analysis-Averaged-Adjusted-after-CV15-and-Distance-Filtering.jpeg", width = 1000, height = 1000)
 fig.nmds <- ordiplot(proc.nmds.norm.averaged.adjusted.euclidean, choices = c(1,2), type = "none", display = "sites", xlab= "Axis 1", ylab= "Axis 2", cex = 0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
@@ -259,7 +255,7 @@ title("Protein Expression Similarities between Sites and Habitats")
 #dev.off()
 
 #### REPEAT ANOSIM ####
-dissimArea.t <- vegdist(area.t, "euclidean") #Calculate dissimilarity matrix
+dissimArea.t <- vegdist(area3.t, "euclidean") #Calculate dissimilarity matrix
 ANOSIMReplicates <- biologicalReplicates #Duplicate dataframe
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
@@ -272,9 +268,9 @@ str(ANOSIMReplicates) #Confirm new factors
 siteNormAdjANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site presence
 summary(siteNormAdjANOSIM)
 plot(siteNormAdjANOSIM)
-#simper(proc.nmds.norm.averaged.adjusted.euclidean, ANOSIMReplicates$site) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
+simper(proc.nmds.norm.averaged.adjusted.euclidean, ANOSIMReplicates$site)
 
 eelgrassNormAdjANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassNormAdjANOSIM)
 plot(eelgrassNormAdjANOSIM)
-#simper(proc.nmds.norm.averaged.adjusted.euclidean, ANOSIMReplicates$eelgrassCondition) #Error in rowSums(comm, na.rm = TRUE): 'x' must be an array of at least two dimensions
+simper(proc.nmds.norm.averaged.adjusted.euclidean, ANOSIMReplicates$eelgrassCondition)
