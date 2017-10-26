@@ -2,7 +2,7 @@
 
 #### SET WORKING DIRECTORY ####
 
-setwd("../..") #Change working directory to the master SRM folder, and not the folder where this script is hosted.
+setwd("../../..") #Change working directory to the master SRM folder, and not the folder where this script is hosted.
 getwd() #Confirm changes
 
 #### IMPORT DATA ####
@@ -64,18 +64,14 @@ proc.nmds.norm.euclidean <- metaMDS(area.t, distance = 'euclidean', k = 2, tryma
 stressplot(proc.nmds.norm.euclidean) #Make Shepard plot
 #ordiplot(proc.nmds.norm.euclidean) #Plot basic NMDS
 #vec.proc.nmds.norm.euclidean <- envfit(proc.nmds.nonnorm.euclidean$points, area.t, perm = 1000) #Calculate loadings
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Normalized-after-CV-Filtering.jpeg", width = 1000, height = 1000) #Save plot
-ordiplot(proc.nmds.norm.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-NMDS-TechnicalReplication-Normalized-after-CV15-Filtering.jpeg", width = 1000, height = 1000) #Save plot
+ordiplot(proc.nmds.norm.euclidean, choices = c(1,2), type = "text", display = "sites", cex = .8) #Plot refined NMDS displaying only samples with their names
 #plot(vec.proc.nmds.norm.euclidean, p.max=.01, col='blue') #Plot eigenvectors
-#dev.off() #Turn off plotting mechanism
+dev.off() #Turn off plotting mechanism
 
-proc.nmds.norm.euclidean.log <- metaMDS(area.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
-stressplot(proc.nmds.norm.euclidean.log) #Make Shepard plot
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Normalized-LogTransformed-after-CV-Filtering.jpeg", width = 1000, height = 1000) #Save plot
-ordiplot(proc.nmds.norm.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
-#dev.off()
-
-#My technical replication looks SO MUCH BETTER! It's still not fantastic, but my samples are clearly lining up. I saved both the nontransformed and log transformed plots. Next, I'm going to use the nontransformed NMDS ordinations to calculate distances between my technical replicates.
+#proc.nmds.norm.euclidean.log <- metaMDS(area.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance
+#stressplot(proc.nmds.norm.euclidean.log) #Make Shepard plot
+#ordiplot(proc.nmds.norm.euclidean.log, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
