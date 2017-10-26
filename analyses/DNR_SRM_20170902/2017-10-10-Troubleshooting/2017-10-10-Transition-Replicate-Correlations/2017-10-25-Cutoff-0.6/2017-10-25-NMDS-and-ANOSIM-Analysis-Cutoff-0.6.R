@@ -38,14 +38,14 @@ SRMDataNMDSNormalizedPivotedCorrectedCutoff1[is.na(SRMDataNMDSNormalizedPivotedC
 head(SRMDataNMDSNormalizedPivotedCorrectedCutoff1) #Confirm there are no NAs
 #write.csv(SRMDataNMDSNormalizedPivotedCorrectedCutoff1, "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-25-Cutoff-0.6/2017-10-25-SRM-Data-NMDS-Normalized-Pivoted-Corrected-Cutoff0.6-Filtered.csv") #Save file for future use.
 
-area.t2 <- t(SRMDataNMDSNormalizedPivotedCorrectedCutoff1) #Transpose the file so that rows and columns are switched
-head(area.t2) #Confirm transposition
-area.tra2 <- (area.t2+1) #Add 1 to all values before transforming
-area.tra2 <- data.trans(area.tra2, method = 'log', plot = FALSE) #log(x+1) transformation
+area.t <- t(SRMDataNMDSNormalizedPivotedCorrectedCutoff1) #Transpose the file so that rows and columns are switched
+head(area.t) #Confirm transposition
+area.tra <- (area.t+1) #Add 1 to all values before transforming
+area.tra <- data.trans(area.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
 #### MADE NMDS FOR TECHNICAL REPLICATION ####
 
-proc.nmds.norm.cutoff1.euclidean <- metaMDS(area.t2, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+proc.nmds.norm.cutoff1.euclidean <- metaMDS(area.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
 stressplot(proc.nmds.norm.cutoff1.euclidean) #Make Shepard plot
 #ordiplot(proc.nmds.norm.cutoff1.euclidean) #Plot basic NMDS
 #vec.proc.nmds.norm.cutoff1.euclidean <- envfit(proc.nmds.norm.cutoff1.euclidean$points, area.t, perm = 1000) #Calculate loadings
@@ -76,24 +76,17 @@ SRMDataNMDSNormalizedAveragedCorrected <- SRMDataNMDSNormalizedAveraged #Duplica
 SRMDataNMDSNormalizedAveragedCorrected[is.na(SRMDataNMDSNormalizedAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSNormalizedAveragedCorrected) #Confirm there are no NAs
 
-#### LOAD DEPENDENCIES ####
-
-#Load the source file for the biostats package
-source("biostats.R") #Either load the source R script or copy paste. Must run this code before NMDS.
-install.packages("vegan") #Install vegan package
-library(vegan)
-
 #### NMDS FOR SITE AND EELGRASS CLUSTERING ####
 
-area.protID <- SRMDataNMDSNormalizedAveragedCorrected #Save all area data as a new dataframe
-head(area.protID) #Confirm changes
+area.prot2ID <- SRMDataNMDSNormalizedAveragedCorrected #Save all area data as a new dataframe
+head(area.prot2ID) #Confirm changes
 
-area.t <- t(area.protID) #Transpose the file so that rows and columns are switched
-head(area.t) #Confirm transposition
-area.tra <- (area.t+1) #Add 1 to all values before transforming
-area.tra <- data.trans(area.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+area2.t <- t(area.prot2ID) #Transpose the file so that rows and columns are switched
+head(area2.t) #Confirm transposition
+area2.tra <- (area2.t+1) #Add 1 to all values before transforming
+area2.tra <- data.trans(area2.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
-proc.nmds.norm.averaged.euclidean <- metaMDS(area.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
+proc.nmds.norm.averaged.euclidean <- metaMDS(area2.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
 stressplot(proc.nmds.norm.averaged.euclidean) #Make Shepard plot
 #vec.proc.nmds.norm.averaged.euclidean <- envfit(proc.nmds.norm.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings
 ordiplot(proc.nmds.norm.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
@@ -157,6 +150,28 @@ legend("topright", cex = .5, pch = c(rep(x = 16, times = 6), 17), legend=c('Case
 title("Protein Expression Similarities between Sites and Habitats")
 #dev.off()
 
+#### ANOSIM ####
+
+dissimArea.t <- vegdist(area2.t, "euclidean") #Calculate dissimilarity matrix
+ANOSIMReplicates <- biologicalReplicates #Duplicate dataframe
+row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
+ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
+head(ANOSIMReplicates) #Confirm changes
+
+ANOSIMReplicates$eelgrassCondition <- factor(ANOSIMReplicates$eelgrassCondition) #Make sure residual factors are no longer present
+ANOSIMReplicates$site <- factor(ANOSIMReplicates$site) #Make sure residual factors are no longer present
+str(ANOSIMReplicates) #Confirm new factors
+
+siteNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site presence
+summary(siteNormANOSIM)
+plot(siteNormANOSIM)
+simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$site)
+
+eelgrassNormANOSIM <- anosim(dat = dissimArea.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassNormANOSIM)
+plot(eelgrassNormANOSIM)
+simper(proc.nmds.norm.averaged.euclidean, ANOSIMReplicates$eelgrassCondition)
+
 #### CALCULATE DISTANCES BETWEEN ORDINATIONS ####
 NMDSCoordinatesNormalizedCutoff1 <- proc.nmds.norm.cutoff1.euclidean$points #Save NMDS coordinates of each point in a new dataframe
 head(NMDSCoordinatesNormalizedCutoff1) #Confirm dataframe creation
@@ -180,3 +195,17 @@ tail(technicalReplicateDistancesNormalizedCuttof1) #Confirm dataframe creation
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations/2017-10-13-NMDS-TechnicalReplication-Ordination-Distances-Normalized-Cutoff1.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistancesNormalizedCuttof1$Sample, y = technicalReplicateDistancesNormalizedCuttof1$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
 #dev.off()
+
+#### IDENTIFY SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
+#To identify samples with ordination distances that are outliers, I'm going to define an upper fence and remove samples above it.
+
+histogram(technicalReplicateDistancesNormalizedCuttof1$Distance) #Make a histogram of how many distance fall in bins. Looks like a conservative upper fence would be 0.15, which would allow me to remove samples with the highest ordination distances.
+removeThese1 <- technicalReplicateDistancesNormalizedCuttof1$Sample[technicalReplicateDistancesNormalizedCuttof1$Distance >= 0.15] #Identify samples that need to be removed.
+removeThese2 <- gsub("\\.1\\>", "\\.2\\", removeThese1) #Make list of replicates that should also be removed
+removeThese2 #Confirm duplication
+removeThese1 <- gsub("\\.2\\>", "\\.1\\", removeThese2) #Take residual levels out of list
+removeThese1 #Confirm changes
+removeThese <- c(removeThese1, removeThese2)
+removeThese #Confirm changes
+
+#Could continue to remove samples with large ordination distances, but I stopped here because Steven is not confident with the value of an R-squared cutoff. I will focus my energy on CV filtering instead.
