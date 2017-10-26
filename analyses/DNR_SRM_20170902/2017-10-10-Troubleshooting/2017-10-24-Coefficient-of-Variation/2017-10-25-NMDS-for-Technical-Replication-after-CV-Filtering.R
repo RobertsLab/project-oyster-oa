@@ -97,9 +97,9 @@ tail(technicalReplicateDistances) #Confirm dataframe creation
 
 #### PLOT DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
 
-jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Ordination-Distances-after-CV-Filtering.jpeg", width = 1000, height = 1000)
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-NMDS-TechnicalReplication-Ordination-Distances-after-CV-Filtering.jpeg", width = 1000, height = 1000)
 plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Distance, type = "line", xlab = "Sample", ylab = "Distance between Ordinations")
-dev.off()
+#dev.off()
 
 #### IDENTIFY SAMPLES WITH LARGE DISTANCES BETWEEN ORDINATIONS ####
 #To identify samples with ordination distances that are outliers, I'm going to define an upper fence and remove samples above it.
@@ -182,6 +182,7 @@ head(SRMAveragedAreasPivotedCorrected) #Confirm there are no NAs
 rownames(SRMAveragedAreasPivotedCorrected) <- SRMAveragedAreasPivotedCorrected$Protein.Name #Save protein name column as rownames
 SRMAveragedAreasPivotedCorrected <- SRMAveragedAreasPivotedCorrected[, -1] #Remove Protein.Name column
 head(SRMAveragedAreasPivotedCorrected) #Confirm changes
+#write.csv(SRMAveragedAreasPivotedCorrected, "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV20-and-Distance-Filtering.csv") #Wrote out to make subsequent analyses easier.
 
 #Make base NMDS plot
 area.prot3ID <- SRMAveragedAreasPivotedCorrected #Save all area data as a new dataframe
