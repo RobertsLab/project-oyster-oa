@@ -1,7 +1,7 @@
 #In this script, I'll depict normalized protein area across samples as bar charts after filtering transitions with a coefficient of variation > 15 and technical replicates with ordination distances > 0.20.
 
 #### SET WORKING DIRECTORY ####
-setwd("../../..") #Set working directory to the master SRM folder
+setwd("../../../..") #Set working directory to the master SRM folder
 getwd()
 
 #### IMPORT DATA ####
