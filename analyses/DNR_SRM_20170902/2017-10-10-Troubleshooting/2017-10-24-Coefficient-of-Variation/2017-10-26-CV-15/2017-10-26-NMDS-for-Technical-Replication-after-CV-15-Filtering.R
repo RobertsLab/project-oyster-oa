@@ -180,7 +180,7 @@ head(SRMAveragedAreasPivotedCorrected) #Confirm there are no NAs
 rownames(SRMAveragedAreasPivotedCorrected) <- SRMAveragedAreasPivotedCorrected$Protein.Name #Save protein name column as rownames
 SRMAveragedAreasPivotedCorrected <- SRMAveragedAreasPivotedCorrected[, -1] #Remove Protein.Name column
 head(SRMAveragedAreasPivotedCorrected) #Confirm changes
-write.csv(SRMAveragedAreasPivotedCorrected, "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV15-and-Distance-Filtering.csv") #Wrote out to make subsequent analyses easier.
+#write.csv(SRMAveragedAreasPivotedCorrected, "2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV15-and-Distance-Filtering.csv") #Wrote out to make subsequent analyses easier.
 
 #Make base NMDS plot
 area.prot3ID <- SRMAveragedAreasPivotedCorrected #Save all area data as a new dataframe
