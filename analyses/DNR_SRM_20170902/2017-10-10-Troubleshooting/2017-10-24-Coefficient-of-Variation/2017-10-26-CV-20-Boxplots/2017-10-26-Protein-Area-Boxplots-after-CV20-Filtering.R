@@ -40,6 +40,11 @@ boxplotFilenames$siteFilenames <- paste(boxplotFilenames$protein, ".jpeg") #Make
 boxplotFilenames$eelgrassFilenames <-paste(boxplotFilenames$protein, boxplotFilenames$modifier, ".jpeg") #Mae a new column for the site and eelgrass filenames
 head(boxplotFilenames) #Confirm changes
 
+#### CHANGE WORKING DIRECTORY ####
+
+setwd("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-20-Boxplots/")
+getwd()
+
 #### MAKE BOXPLOTS JUST BASED ON SITES ####
 
 nTransitions <- (length(boxplotData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
