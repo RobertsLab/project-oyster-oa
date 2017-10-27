@@ -6,7 +6,7 @@ getwd()
 
 #### IMPORT DATA ####
 
-SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV20-and-Distance-Filtering.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
+SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV15-and-Distance-Filtering.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
 rownames(SRMDataNMDSAveragedCorrected) <- SRMDataNMDSAveragedCorrected[,1]
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveragedCorrected[,-1] #Remove first column of rownames
 head(SRMDataNMDSAveragedCorrected) #Confirm import.
@@ -42,7 +42,7 @@ head(boxplotFilenames) #Confirm changes
 
 #### CHANGE WORKING DIRECTORY ####
 
-setwd("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-20-Boxplots/")
+setwd("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-CV-15/2017-10-26-CV-15-Boxplots/")
 getwd()
 
 #### MAKE BOXPLOTS JUST BASED ON SITES ####

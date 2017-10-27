@@ -103,7 +103,7 @@ plot(x = technicalReplicateDistances$Sample, y = technicalReplicateDistances$Dis
 #To identify samples with ordination distances that are outliers, I'm going to define an upper fence and remove samples above it.
 
 histogram(technicalReplicateDistances$Distance) #Make a histogram of how many distance fall in bins. Looks like a conservative upper fence would be 0.2, which would allow me to remove samples with the highest ordination distances.
-removeThese <- technicalReplicateDistances$Sample[technicalReplicateDistances$Distance >= 0.2] #Identify samples that need to be removed.
+removeThese <- technicalReplicateDistances$Sample[technicalReplicateDistances$Distance >= 0.20] #Identify samples that need to be removed.
 removeThese <- gsub(" -1", "", removeThese) #Remove " -1" from the end of each sample ID
 removeThese #Confirm changes
 
