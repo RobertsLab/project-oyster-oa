@@ -52,6 +52,7 @@ for(i in 3:nTransitions) { #For all of my columns with transition IDs
   fileName <- boxplotFilenames$siteFilenames[i] #Set the file name choices as the first column
   jpeg(filename = fileName, width = 1000, height = 1000) #Save using set file name
   boxplot(boxplotData[,i] ~ boxplotData$Site, xlab = "Sites", ylab = "Abundance") #Create the boxplot
+  title(fileName)
   dev.off() #Close file
 }
 
@@ -61,5 +62,6 @@ for(i in 3:nTransitions) { #For all of my columns with transition IDs
   fileName <- boxplotFilenames$eelgrassFilenames[i] #Set the file name choices as the third column
   jpeg(filename = fileName, width = 1000, height = 1000) #Save using set file name
   boxplot(boxplotData[,i] ~ boxplotData$Site + boxplotData$Eelgrass.Condition, xlab = "Sites", ylab = "Abundance", names = c("CI.Bare", "FB.Bare", "PG.Bare", "SK.Bare", "WB.Bare", "CI.Eelgrass", "FB.Eelgrass", "PG.Eelgrass", "SK.Eelgrass", "WB.Eelgrass")) #Create the boxplot
+  title(fileName)
   dev.off() #Close file
 }
