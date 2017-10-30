@@ -19,6 +19,18 @@ SRMAveragedAreas$Average.Area <- ((SRMAveragedAreas$Replicate1 + SRMAveragedArea
 SRMAveragedAreas <- SRMAveragedAreas[, -c(3:4)] #Remove replicate area columns
 head(SRMAveragedAreas) #Confirm changes
 
+#### REFORMAT DATAFRAME FOR BOXPLOTS ####
+
+#library(reshape2) #Install package to pivot table
+#SRMAveragedAreasPivoted <- dcast(SRMAveragedAreas, Protein.Name ~ Sample) #Cast table!
+#head(SRMAveragedAreasPivoted) #Confirm table cast!
+
+#SRMAveragedAreasPivotedBoxplots <- SRMAveragedAreasPivoted #Duplicate dataframe
+#rownames(SRMAveragedAreasPivotedBoxplots) <- SRMAveragedAreasPivotedBoxplots$Protein.Name #Save protein name column as rownames
+#SRMAveragedAreasPivotedBoxplots <- SRMAveragedAreasPivotedBoxplots[, -1] #Remove Protein.Name column
+#head(SRMAveragedAreasPivotedBoxplots) #Confirm changes
+#write.csv(SRMAveragedAreasPivotedBoxplots, "2017-10-30-Protein-Areas-for-Boxplots.csv")
+
 #### REFORMAT DATAFRAME FOR NMDS ####
 
 #The dataframe I use needs to have sample numbers as columns, protein name as rownames, and area data in the middle. This is called casting.
