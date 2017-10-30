@@ -6,7 +6,7 @@ getwd()
 
 #### IMPORT DATA ####
 
-SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-26-Averaged-Pivoted-Corrected-SRM-Data-after-CV20-and-Distance-Filtering.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
+SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-30-Protein-Areas-for-Boxplots.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
 rownames(SRMDataNMDSAveragedCorrected) <- SRMDataNMDSAveragedCorrected[,1]
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveragedCorrected[,-1] #Remove first column of rownames
 head(SRMDataNMDSAveragedCorrected) #Confirm import.
