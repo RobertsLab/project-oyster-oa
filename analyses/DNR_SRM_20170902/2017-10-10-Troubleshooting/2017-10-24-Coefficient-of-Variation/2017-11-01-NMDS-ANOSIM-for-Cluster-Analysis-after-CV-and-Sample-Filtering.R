@@ -57,6 +57,8 @@ tail(NMDSColorShapeCustomization) #Confirm merge
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[, -2] #Remove empty column
 tail(NMDSColorShapeCustomization) #Confirm removal
 NMDSColorShapeCustomization$sampleIDs #Confirm all sample IDs are there
+colnames(NMDSColorShapeCustomization) <- c("sample", "site", "eelgrassCondition") #Rename first sample column
+head(NMDSColorShapeCustomization) #Confirm changes
 
 #Create a color and shape palette
 attach(NMDSColorShapeCustomization)
@@ -65,9 +67,9 @@ head(NMDSColorShapeCustomization) #Confirm sorting
 detach(NMDSColorShapeCustomization)
 NMDS.Colors <- c(rep(x = "red", times = sum(NMDSColorShapeCustomization$site == "CI")),
                  rep(x = "blue", times = sum(NMDSColorShapeCustomization$site == "FB")),
-                 rep(x = "black", times = sum(NMDSColorShapeCustomization$site == "PG")),
+                 rep(x = "magenta", times = sum(NMDSColorShapeCustomization$site == "PG")),
                  rep(x = "green", times = sum(NMDSColorShapeCustomization$site == "SK")),
-                 rep(x = "magenta", times = sum(NMDSColorShapeCustomization$site == "WB"))) #Create a color vector
+                 rep(x = "black", times = sum(NMDSColorShapeCustomization$site == "WB"))) #Create a color vector
 NMDSColorShapeCustomization[,4] <- NMDS.Colors #Add the color vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
 attach(NMDSColorShapeCustomization)
@@ -78,10 +80,10 @@ NMDS.Shapes <- c(rep(x = 16, times = sum(NMDSColorShapeCustomization$eelgrassCon
                  rep(x = 17, times = sum(NMDSColorShapeCustomization$eelgrassCondition == "Eelgrass"))) #Make a shape vector
 NMDSColorShapeCustomization[,5] <- NMDS.Shapes #Add the shape vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
-#attach(NMDSColorShapeCustomization)
-#NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(sampleIDs),] #Resort by sample number
-#head(NMDSColorShapeCustomization) #Confirm sorting
-#detach(NMDSColorShapeCustomization)
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(sample),] #Reorder so samples are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
 colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Color", "Shape") #Change column names
 head(NMDSColorShapeCustomization) #Confirm change
 
