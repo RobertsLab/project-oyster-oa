@@ -2,8 +2,8 @@
 
 #### SET WORKING DIRECTORY ####
 
-setwd("../..") #Set working directory to the main SRM data file
-getwd()
+#setwd("../..") #Set working directory to the main SRM data file
+#getwd()
 
 #### IMPORT DATA ####
 
