@@ -112,7 +112,7 @@ stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
 ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 750)
-#ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites", cex = 0.7) #Plot refined NMDS displaying only samples with their names
 #dev.off()
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
