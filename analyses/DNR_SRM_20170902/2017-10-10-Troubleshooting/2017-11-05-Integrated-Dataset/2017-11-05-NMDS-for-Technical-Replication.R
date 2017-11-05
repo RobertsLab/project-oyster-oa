@@ -74,7 +74,7 @@ rownames(SRMDataNMDSPivoted) <- paste(SRMDataNMDSPivoted$Protein.Name, SRMDataNM
 head(SRMDataNMDSPivoted) #Confirm column merge
 SRMDataNMDSPivoted <- SRMDataNMDSPivoted[,-c(1:2)] #Remove protein and peptide name columns
 head(SRMDataNMDSPivoted) #Confirm column removal
-#write.csv(SRMDataNMDSPivoted, file = "") #Wrote out as .csv to make future analyses easier.
+#write.csv(SRMDataNMDSPivoted, file = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Technical-Replicates-Pivoted.csv") #Wrote out as .csv to make future analyses easier.
 
 #### NMDS PLOT ####
 
