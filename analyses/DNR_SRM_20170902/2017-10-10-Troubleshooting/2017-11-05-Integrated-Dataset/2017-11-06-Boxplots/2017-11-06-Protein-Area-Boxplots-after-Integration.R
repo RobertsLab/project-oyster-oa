@@ -57,3 +57,11 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   title(fileName)
   dev.off() #Close file
 }
+
+#### PERFORM TUKEY HSD POST-HOC TEST ####
+#This test can be used to understand where significant ANOVA results come from
+
+temp <- aov(boxplotData[,3] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
+summary(temp)[[1]][["Pr(>F)"]][[1]] #Plot p-value from ANOVA
+temp2 <- TukeyHSD(temp) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
+temp2$`boxplotData$Site`[,4]
