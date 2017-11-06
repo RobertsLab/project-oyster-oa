@@ -11,6 +11,11 @@ SRMAreas <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2
 head(SRMAreas) #Confirm import
 tail(SRMAreas) #Confirm import
 
+#### IMPORT METADATA ####
+
+sampleColumnNames <- c("O01", "O04", "O08", "O10", "O100", "O101", "O102", "O106", "O118", "O121", "O124", "O131", "O137", "O140", "O147", "O17", "O21", "O22", "O24", "O26", "O30", "O31", "O32", "O35", "O40", "O43", "O46", "O51", "O56", "O60", "O64", "O66", "O78", "O90", "O91", "O96", "O99") #Create a sample ID vector
+
+
 #### CREATE A MASTER DATAFRAME ####
 
 #I want to merge my Skyline data with sample names, sites, and eelgrass condition to create a master dataframe will all possible information
