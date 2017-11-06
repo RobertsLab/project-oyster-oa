@@ -46,6 +46,7 @@ library(vegan)
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
 SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
+#write.csv(SRMDataNMDSAveragedCorrected, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv") #Wrote out dataframe
 
 area.protID4 <- SRMDataNMDSAveragedCorrected #Save all area data as a new dataframe
 head(area.protID4) #Confirm changes
