@@ -76,14 +76,12 @@ siteANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(boxplotData),
 siteANOVATukeyResults <- siteANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
 head(siteANOVATukeyResults) #Confirm changes
 
-#ANOVA p-values
+#Perform Tukey HSD
 for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
   siteANOVATukeyResults[(i-2), 2] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
-} #Add all ANOVA p-values to the table
-head(siteANOVATukeyResults)
-
-temp <- aov(boxplotData[,3] ~ boxplotData$Site)
-temp2 <- TukeyHSD(temp) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
-temp2$`boxplotData$Site`[,4]
-
+  siteTukeyHSD <- TukeyHSD(siteANOVA) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
+  siteANOVATukeyResults[(i-2),3:12] <- siteTukeyHSD$`boxplotData$Site`[,4] #Paste Tukey results into table
+} #Add all ANOVA and Tukey HSD p-values to the table
+head(siteANOVATukeyResults) #Confirm that tests were completed
+write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
