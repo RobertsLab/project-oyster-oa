@@ -293,21 +293,21 @@ plot(siteEelgrassANOSIMADrug)
 
 #Make NMDS plot
 
-area.protID4 <- fattyAcidAreas #Duplicate dataframe
-head(area.protID4) #Confirm changes
-area4.t <- t(area.protID4) #Transpose the file so that rows and columns are switched
-head(area4.t) #Confirm transposition
-area4.tra <- (area4.t+1) #Add 1 to all values before transforming
-area4.tra <- data.trans(area4.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+area.protID5 <- fattyAcidAreas #Duplicate dataframe
+head(area.protID5) #Confirm changes
+area5.t <- t(area.protID5) #Transpose the file so that rows and columns are switched
+head(area5.t) #Confirm transposition
+area5.tra <- (area5.t+1) #Add 1 to all values before transforming
+area5.tra <- data.trans(area5.tra, method = 'log', plot = FALSE) #log(x+1) transformation
 
-proc.nmds.drug.averaged.euclidean <- metaMDS(area4.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
-stressplot(proc.nmds.drug.averaged.euclidean) #Make Shepard plot
-#vec.proc.nmds.drug.averaged.euclidean <- envfit(proc.nmds.heatshock.averaged.euclidean$points, area.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.drug.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
-#plot(vec.proc.nmds.drug.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+proc.nmds.fattyacid.averaged.euclidean <- metaMDS(area5.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+stressplot(proc.nmds.fattyacid.averaged.euclidean) #Make Shepard plot
+#vec.proc.nmds.fattyacid.averaged.euclidean <- envfit(proc.nmds.heatshock.averaged.euclidean$points, area.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.fattyacid.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
+#plot(vec.proc.nmds.fattyacid.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
 
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged-DrugResistance.jpeg", width = 1000, height = 750)
-fig.nmds.drug <- ordiplot(proc.nmds.drug.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged-FattyAcid.jpeg", width = 1000, height = 750)
+fig.nmds.fattyacid <- ordiplot(proc.nmds.fattyacid.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
 
 #Legend for NMDS plot:
 #Bare = circle
@@ -318,21 +318,71 @@ fig.nmds.drug <- ordiplot(proc.nmds.drug.averaged.euclidean, choices = c(1,2), t
 #Skokomish River Delta = Green
 #Port Gamble Bay = Magenta
 
-points(fig.nmds.drug, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+points(fig.nmds.fattyacid, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
 legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
 #dev.off()
 
 #ANOSIM
 
-dissimArea4.t <- vegdist(area4.t, "euclidean") #Calculate dissimilarity matrix
-siteANOSIMADrug <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
-summary(siteANOSIMADrug)
-plot(siteANOSIMADrug)
+dissimArea5.t <- vegdist(area5.t, "euclidean") #Calculate dissimilarity matrix
+siteANOSIMAFattyAcid <- anosim(dat = dissimArea5.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+summary(siteANOSIMAFattyAcid)
+plot(siteANOSIMAFattyAcid)
 
-eelgrassANOSIMDrug <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
-summary(eelgrassANOSIMDrug)
-plot(eelgrassANOSIMDrug)
+eelgrassANOSIMFattyAcid <- anosim(dat = dissimArea5.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassANOSIMFattyAcid)
+plot(eelgrassANOSIMFattyAcid)
 
-siteEelgrassANOSIMADrug <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
-summary(siteEelgrassANOSIMADrug)
-plot(siteEelgrassANOSIMADrug)
+siteEelgrassANOSIMFattyAcid <- anosim(dat = dissimArea5.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
+summary(siteEelgrassANOSIMFattyAcid)
+plot(siteEelgrassANOSIMFattyAcid)
+
+#### CARBOHYDRATE METABOLISM ####
+
+#Make NMDS plot
+
+area.protID6 <- carbohydrateAreas #Duplicate dataframe
+head(area.protID6) #Confirm changes
+area6.t <- t(area.protID6) #Transpose the file so that rows and columns are switched
+head(area6.t) #Confirm transposition
+area6.tra <- (area6.t+1) #Add 1 to all values before transforming
+area6.tra <- data.trans(area6.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+
+proc.nmds.carb.averaged.euclidean <- metaMDS(area6.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+stressplot(proc.nmds.carb.averaged.euclidean) #Make Shepard plot
+#vec.proc.nmds.carb.averaged.euclidean <- envfit(proc.nmds.heatshock.averaged.euclidean$points, area.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.carb.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
+#plot(vec.proc.nmds.carb.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged-Carbohydrate.jpeg", width = 1000, height = 750)
+fig.nmds.carb <- ordiplot(proc.nmds.carb.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Willapa Bay = Black
+#Skokomish River Delta = Green
+#Port Gamble Bay = Magenta
+
+points(fig.nmds.carb, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
+#dev.off()
+
+#ANOSIM
+
+dissimArea6.t <- vegdist(area6.t, "euclidean") #Calculate dissimilarity matrix
+siteANOSIMACarb <- anosim(dat = dissimArea6.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+summary(siteANOSIMACarb)
+plot(siteANOSIMACarb)
+
+eelgrassANOSIMCarb <- anosim(dat = dissimArea6.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassANOSIMCarb)
+plot(eelgrassANOSIMCarb)
+
+siteEelgrassANOSIMCarb <- anosim(dat = dissimArea6.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
+summary(siteEelgrassANOSIMCarb)
+plot(siteEelgrassANOSIMCarb)
+
+#### CELL GROWTH AND MAINTENANCE ####
