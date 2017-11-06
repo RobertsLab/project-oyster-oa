@@ -121,14 +121,16 @@ legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "
 #### ANOSIM ####
 
 dissimArea4.t <- vegdist(area4.t, "euclidean") #Calculate dissimilarity matrix
-ANOSIMReplicates <- biologicalReplicates[c(1:49),] #Subset sample numbers used as IDs in ANOSIM
+ANOSIMReplicates <- biologicalReplicates #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
+ANOSIMReplicates$Site.Eelgrass <- paste(ANOSIMReplicates$Site, ANOSIMReplicates$Eelgrass.Condition)
 head(ANOSIMReplicates) #Confirm changes
 
 str(ANOSIMReplicates) #Examine structure
 ANOSIMReplicates$Site <- factor(ANOSIMReplicates$Site) #Make sure only preesnt factors are recognized
 ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Condition) #Make sure only preesnt factors are recognized
+ANOSIMReplicates$Site.Eelgrass <- factor(ANOSIMReplicates$Site.Eelgrass) #Make sure only preesnt factors are recognized
 str(ANOSIMReplicates) #Confirm structure
 
 siteANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
@@ -141,4 +143,7 @@ summary(eelgrassANOSIM)
 plot(eelgrassANOSIM)
 simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Eelgrass.Condition)
 
-#Two-way ANOSIM by Site and Eelgrass presence
+siteEelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
+summary(siteEelgrassANOSIM)
+plot(siteEelgrassANOSIM)
+simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Site.Eelgrass)
