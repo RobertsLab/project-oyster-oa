@@ -386,3 +386,49 @@ summary(siteEelgrassANOSIMCarb)
 plot(siteEelgrassANOSIMCarb)
 
 #### CELL GROWTH AND MAINTENANCE ####
+
+#Make NMDS plot
+
+area.protID7 <- growthMaintenanceAreas #Duplicate dataframe
+head(area.protID7) #Confirm changes
+area7.t <- t(area.protID7) #Transpose the file so that rows and columns are switched
+head(area7.t) #Confirm transposition
+area7.tra <- (area7.t+1) #Add 1 to all values before transforming
+area7.tra <- data.trans(area7.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+
+proc.nmds.growth.averaged.euclidean <- metaMDS(area7.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance.
+stressplot(proc.nmds.growth.averaged.euclidean) #Make Shepard plot
+#vec.proc.nmds.growth.averaged.euclidean <- envfit(proc.nmds.heatshock.averaged.euclidean$points, area.t, perm = 1000) #Calculate loadings
+ordiplot(proc.nmds.growth.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
+#plot(vec.proc.nmds.growth.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged-GrowthandMaintenance.jpeg", width = 1000, height = 750)
+fig.nmds.growth <- ordiplot(proc.nmds.growth.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Willapa Bay = Black
+#Skokomish River Delta = Green
+#Port Gamble Bay = Magenta
+
+points(fig.nmds.growth, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
+#dev.off()
+
+#ANOSIM
+
+dissimArea7.t <- vegdist(area7.t, "euclidean") #Calculate dissimilarity matrix
+siteANOSIMGrowth <- anosim(dat = dissimArea7.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+summary(siteANOSIMGrowth)
+plot(siteANOSIMGrowth)
+
+eelgrassANOSIMGrowth <- anosim(dat = dissimArea7.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+summary(eelgrassANOSIMGrowth)
+plot(eelgrassANOSIMGrowth)
+
+siteEelgrassANOSIMGrowth <- anosim(dat = dissimArea7.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
+summary(siteEelgrassANOSIMGrowth)
+plot(siteEelgrassANOSIMGrowth)
