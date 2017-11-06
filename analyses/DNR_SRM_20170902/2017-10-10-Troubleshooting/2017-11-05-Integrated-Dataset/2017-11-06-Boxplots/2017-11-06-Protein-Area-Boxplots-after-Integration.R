@@ -61,7 +61,29 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
 #### PERFORM TUKEY HSD POST-HOC TEST ####
 #This test can be used to understand where significant ANOVA results come from
 
-temp <- aov(boxplotData[,3] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
-summary(temp)[[1]][["Pr(>F)"]][[1]] #Plot p-value from ANOVA
+siteANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(boxplotData),
+                                    "ANOVA.pvalue" = rep(x = 0, times = length(boxplotData)),
+                                    "FB-CI" = rep(x = 0, times = length(boxplotData)),
+                                    "PG-CI" = rep(x = 0, times = length(boxplotData)),
+                                    "SK-CI" = rep(x = 0, times = length(boxplotData)),
+                                    "WB-CI" = rep(x = 0, times = length(boxplotData)),
+                                    "PG-FB" = rep(x = 0, times = length(boxplotData)),
+                                    "SK-FB" = rep(x = 0, times = length(boxplotData)),
+                                    "WB-FB" = rep(x = 0, times = length(boxplotData)),
+                                    "SK-PG" = rep(x = 0, times = length(boxplotData)),
+                                    "WB-PG" = rep(x = 0, times = length(boxplotData)),
+                                    "WB-SK" = rep(x = 0, times = length(boxplotData))) #Create a dataframe to hold all results
+siteANOVATukeyResults <- siteANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(siteANOVATukeyResults) #Confirm changes
+
+#ANOVA p-values
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
+  siteANOVATukeyResults[(i-2), 2] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add all ANOVA p-values to the table
+head(siteANOVATukeyResults)
+
+temp <- aov(boxplotData[,3] ~ boxplotData$Site)
 temp2 <- TukeyHSD(temp) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
 temp2$`boxplotData$Site`[,4]
+
