@@ -49,12 +49,13 @@ getwd()
 nPeptides <- (length(boxplotData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
 for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   fileName <- boxplotFilenames$siteFilenames[i] #Set the file name choices as the first column
-  jpeg(filename = fileName, width = 1000, height = 1000) #Save using set file name
-  boxplot(boxplotData[,i] ~ boxplotData$Site, xlab = "Sites", ylab = "Abundance") #Create the boxplot
+  jpeg(filename = fileName, width = 1000, height = 750) #Save using set file name
+  boxplot(boxplotData[,i] ~ boxplotData$Site, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
+  title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
   stripchart(boxplotData[,i] ~ boxplotData$Site, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
   siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
   legend("topleft", bty = "n", legend = paste("ANOVA p-value =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits=4))) #Plot p-value from ANOVA
-  title(fileName)
+  title(boxplotFilenames$protein[i])
   dev.off() #Close file
 }
 
