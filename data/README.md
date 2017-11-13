@@ -197,3 +197,14 @@ Concentration of algae in buckets prior to feeding
 #### **[2017-08-17-Live-Larvae-Counts.jpg](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/Manchester/2017-07-30-Pacific-Oyster-Larvae/2017-08-17-Live-Larvae-Counts.jpg)**:
  
 Number of live larvae remaining based on parental life history over the duration of the experiment (August 2017)
+
+## Miscellaneous
+
+**[OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx)**:
+
+These are gonad tissue samples from Kathleen Lotterhos at Northeastern University. Adult *Crassostrea virginica* oysters were reared at two separate pCO2 levels to see if this drove differential methylation in gonad tissue. 
+
+- Sample ID: Used to identify *C. virginica*
+- Date: Date gonad tissue was sampled
+- Temp: Temperature at which oysters were reared
+- pCO2: Two treatments (ambient: 400, high: 2800)
