@@ -85,4 +85,15 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   siteANOVATukeyResults[(i-2),3:12] <- siteTukeyHSD$`boxplotData$Site`[,4] #Paste Tukey results into table
 } #Add all ANOVA and Tukey HSD p-values to the table
 head(siteANOVATukeyResults) #Confirm that tests were completed
-write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
+#write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
+
+#### POWER ANALYSIS ####
+
+#Install dependencies
+install.packages("pwr") #Install the power calculation package
+library(pwr) #Load package
+
+#Determine what kind of power I have for a small, medium or large effect sizes. I have k = 5 groups, roughly n = 7 observations per group, and a significance level of 0.05. A small effect size is denoted by f = 0.1, medium is f = 0.25, and large is f = 0.4. These values are suggested by the creator of the package.
+pwr.anova.test(k = 5, n = 7, f = 0.1, sig.level = 0.05, power = NULL)[5] #Power = 0.06537487
+pwr.anova.test(k = 5, n = 7, f = 0.25, sig.level = 0.05, power = NULL)[5] #Power = 0.163053
+pwr.anova.test(k = 5, n = 7, f = 0.4, sig.level = 0.05, power = NULL)[5] #Power = 0.381159
