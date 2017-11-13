@@ -97,3 +97,10 @@ library(pwr) #Load package
 pwr.anova.test(k = 5, n = 7, f = 0.1, sig.level = 0.05, power = NULL)[5] #Power = 0.06537487
 pwr.anova.test(k = 5, n = 7, f = 0.25, sig.level = 0.05, power = NULL)[5] #Power = 0.163053
 pwr.anova.test(k = 5, n = 7, f = 0.4, sig.level = 0.05, power = NULL)[5] #Power = 0.381159
+
+#Determine what kind of effect size I can detect for my experimental design at different power levels. A small effect size is denoted by f = 0.1, medium is f = 0.25, and large is f = 0.4. These values are suggested by the creator of the package.
+pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 1)[3] #f = 1e+07
+pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.95)[3] #f = 0.7887625
+pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.90)[3] #f = 0.7180425
+pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.85)[3] #f = 0.6699974
+pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.80)[3] #f = 0.6316528
