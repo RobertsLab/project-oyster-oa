@@ -28,8 +28,9 @@ The following pipelines are represented in this subdirectory:
 
 - [Transition Selection](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_TransitionSelection_20170707): Identification of protein targets for Selected Reaction Monitoring Assay based on MSStats output
 - [Target analysis](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902): Multivariate analyses to determine targets differentially expressed based on sites and eelgrass habitat. Also includes data visualization instructions and data troubleshooting.
-  - [Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-09-12-Protein-Area-Boxplots): Visualized protein area at different sites and eelgrass habitats
-  - [Transition Replicate Correlations](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations): Regressed technical replicates against eachother to identify transitions with poor technical replication
+  - [Coefficient of Variation filtering](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation): Used a CV benchmark to remove technical replicate data. Found that a threshold of CV > 20 provides results consistent with geoduck data
+  - [Integrated Dataset](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset): Used CV filtering information to remove samples with a coefficient of variation greater than 20 for more than half of the transitions used in SRM. Integrated data at the peptide level and proceeded with NMDS, ANOSIM, boxplots, ANOVA, and Tukey Honest Significant Difference Tests
+    - [Peptide-level Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-06-Boxplots): Boxplots for each peptide across site only. ANOVA p-value on boxplots, Tukey HSD p-values written out in separate dataframe in this subdirectory
 
 **Irrelevant Analyses**: Outputs that were not used further in the pipeline (i.e. failed attempts and dead ends)
 
@@ -44,6 +45,12 @@ The following pipelines are represented in this subdirectory:
 - Skyline
   - [Data Normalization](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_Skyline_20170511): Conducted using inefficient version of `brecan`
   - [MSStats and Error Checking](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_Skyline_20170512): Conducted using inefficient version of `brecan`
+  
+- [SRM Data Troubleshooting](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting)
+  - [Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-09-12-Protein-Area-Boxplots): Visualized protein area at different sites and eelgrass habitats
+  - [Transition Replicate Correlations](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-10-Transition-Replicate-Correlations): Regressed technical replicates against eachother to identify transitions with poor technical replication
+  - [Confidence Interval filtering](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-Confidence-Interval-Transitions): Tried creating a confidence interval around a regression line to weed out bad samples
+  - [PRTC](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-PRTC-NMDS): Made technical replicate NMDS plots with PRTC data, found that each run was most consistent with those that used the same batch of PRTC
 
 
 ## Manchester
