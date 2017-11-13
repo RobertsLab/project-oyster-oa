@@ -10,6 +10,7 @@ Analysis of all proteins characterized by mass spectrometer
 
 - [2017-04-12-Demultiplex-Raw-Files.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-04-12-Demultiplex-Raw-Files.ipynb): Separated overlapping m/z windows from mass spectrometry data using MSConvert
 - [2017-06-13-Full-Skyline-Preliminary-Analysis.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-13-Full-Skyline-Preliminary-Analysis.ipynb): Used revised `.blib`to generate usable Skyline data
+- [2017-10-11-DIA-Skyline-Data-Pipeline.ipynb](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-10-11-DIA-Skyline-Data-Pipeline.ipynb): Instructions for taking RAW data and processing it with `pecanpie`, followed by Skyline
 
 ### Selected Reaction Monitoring
 
