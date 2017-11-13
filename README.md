@@ -38,6 +38,7 @@ Output for multiple analyses. Project IDs are detailed in the folder names thems
 - [MSStats Analysis](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_Skyline_20170524)
 - [SRM Transition Selection](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_TransitionSelection_20170707)
 - [SRM Analyses](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902)
+  - Several subdirectories are also housed here relating to troubleshooting SRM data
 
 **Manchester**
 
@@ -58,6 +59,10 @@ Raw data used for project analyses.
 - [Adult *C. gigas* Tissue Sampling Key](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-07-30-Pacific-Oyster-Larvae)
 - [Pacific Oyster Larvae Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-Adult-Gigas-Tissue-Sampling)
 - [Water Chemistry Information](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/Water-Chemistry-Data) 
+
+**Miscellaneous**:
+
+- [Sample information for *Crassostrea virginica* gonad samples from Kathleen Lotterhos](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx)
 
 ### [images](https://github.com/RobertsLab/project-oyster-oa/tree/master/images)
 
@@ -95,6 +100,7 @@ Jupyter notebook that detail reproducible methods for data analysis
 - [Preliminary Proteomic Analyses](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-03-21-Preliminary-Proteomic-Data-Analyses.ipynb)
 - [Demultiplexing Proteomic Data](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-04-12-Demultiplex-Raw-Files.ipynb)
 - [Shotgun Proteomic Analyses](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-13-Full-Skyline-Preliminary-Analysis.ipynb)
+- [DIA Analysis Pipeline](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-10-11-DIA-Skyline-Data-Pipeline.ipynb)
 - [SRM Target Selection in MSStats](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-06-22-Selecting-SRM-Targets-with-MSstats-Part-2.ipynb)
 - [Protein Annotations](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-05-Examining-Protein-Annotations.ipynb)
 - [SRM Target ID in Skyline](https://github.com/RobertsLab/project-oyster-oa/blob/master/notebooks/DNR/2017-07-07-SRM-Target-Identification-in-Skyline.ipynb)
@@ -112,6 +118,7 @@ Final slides for various conferences
 
 - [UW SAFS Graduate Student Symposium 2016](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/DNR/GSS2016_Venkataraman.pdf)
 - [Pacific Coast Shellfish Growers Association 2017](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/DNR/PCSGA2017_Venkataraman.pptx)
+- [UW SAFS Graduate Student Symposium 2017](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/DNR/PCSGA2017_Venkataraman.pptx)
 
 **Manchester**
 
