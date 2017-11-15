@@ -22,8 +22,7 @@ head(temperatureData)
 
 #### VISUALIZE DIURNAL FLUCTUATIONS ####
 
-#par(mfrow = c(5, 2))
-plot(x = temperatureData$DateTime, y = temperatureData$FBB, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "blue") #Fidalgo Bay, Bare
+plot(x = temperatureData$DateTime, y = temperatureData$FBB, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "o", col = "blue") #Fidalgo Bay, Bare
 plot(x = temperatureData$DateTime, y = temperatureData$FBE, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "blue") #Fidgalo Bay, Eelgrass
 plot(x = temperatureData$DateTime, y = temperatureData$PGB, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "magenta") #Port Gamble Bay, Bare
 plot(x = temperatureData$DateTime, y = temperatureData$PGE, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "magenta") #Port Gamble Bay, Eelgrass
@@ -33,10 +32,6 @@ plot(x = temperatureData$DateTime, y = temperatureData$CIB, xlab = "Date and Tim
 plot(x = temperatureData$DateTime, y = temperatureData$CIE, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "red") #Case Inlet, Eelgrass
 plot(x = temperatureData$DateTime, y = temperatureData$WBB, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "black") #Willapa Bay, Bare
 plot(x = temperatureData$DateTime, y = temperatureData$WBE, xlab = "Date and Time", ylab = "Temperature (ºC)", type = "l", col = "black") #Willapa Bay, Eelgrass
-
-
-#Skokomish River Delta = Green
-#Port Gamble Bay = Magenta
 
 #### ASSIGN FILENAMES ####
 
