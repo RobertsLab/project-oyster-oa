@@ -26,7 +26,7 @@ tempRange <- range(temperatureData$WBE, temperatureData$WBB, temperatureData$SKE
 tempRange[1] <- 10 #Change minimum value to a round number
 tempRange #Confirm changes
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(15, 15, 1, 1)) #Remove redundant white space
 
@@ -56,19 +56,82 @@ mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify
 
 #Can fix x-axis labels with las = 3 for vertical, but need to figure out proper sequence of times.
 
+#dev.off()
+
+#### REFORMAT DATA FOR BOXPLOT ####
+
+temperatureBoxplotCIB <- data.frame(Date.Time = temperatureData$DateTime,
+                                 Site = rep(x = "CI", times = length(temperatureData$DateTime)),
+                                 Habitat = rep(x = "Bare", times = length(temperatureData$DateTime)),
+                                 Temperature = temperatureData$CIB) #Create a dataframe for CIB data
+temperatureBoxplotCIB <- temperatureBoxplotCIB[-c(7489:7490),] #Remove last two rows
+temperatureBoxplotCIE <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "CI", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Eelgrass", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$CIE) #Create a dataframe for CIE data
+temperatureBoxplotCIE <- temperatureBoxplotCIE[-c(7489:7490),] #Remove last two rows
+
+temperatureBoxplotFBB <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "FB", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Bare", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$FBB) #Create a dataframe for FBB data
+temperatureBoxplotFBB <- temperatureBoxplotFBB[-c(7489:7490),] #Remove last two rows
+temperatureBoxplotFBE <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "FB", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Eelgrass", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$FBE) #Create a dataframe for FBE data
+temperatureBoxplotFBE <- temperatureBoxplotFBE[-c(7489:7490),] #Remove last two rows
+
+temperatureBoxplotPGB <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "PG", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Bare", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$PGB) #Create a dataframe for PGB data
+temperatureBoxplotPGB <- temperatureBoxplotPGB[-c(7489:7490),] #Remove last two rows
+temperatureBoxplotPGE <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "PG", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Eelgrass", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$PGE) #Create a dataframe for PGE data
+temperatureBoxplotPGE <- temperatureBoxplotPGE[-c(7489:7490),] #Remove last two rows
+
+temperatureBoxplotSKB <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "SK", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Bare", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$SKB) #Create a dataframe for SKB data
+temperatureBoxplotSKB <- temperatureBoxplotSKB[-c(7489:7490),] #Remove last two rows
+temperatureBoxplotSKE <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "SK", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Eelgrass", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$SKE) #Create a dataframe for SKE data
+temperatureBoxplotSKE <- temperatureBoxplotSKE[-c(7489:7490),] #Remove last two rows
+
+temperatureBoxplotWBB <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "WB", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Bare", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$WBB) #Create a dataframe for WBB data
+temperatureBoxplotWBB <- temperatureBoxplotWBB[-c(7489:7490),] #Remove last two rows
+temperatureBoxplotWBE <- data.frame(Date.Time = temperatureData$DateTime,
+                                    Site = rep(x = "WB", times = length(temperatureData$DateTime)),
+                                    Habitat = rep(x = "Eelgrass", times = length(temperatureData$DateTime)),
+                                    Temperature = temperatureData$WBE) #Create a dataframe for WBE data
+temperatureBoxplotWBE <- temperatureBoxplotWBE[-c(7489:7490),] #Remove last two rows
+
+temperatureBoxplot <- rbind(temperatureBoxplotCIB, temperatureBoxplotCIE, temperatureBoxplotFBB, temperatureBoxplotFBE, temperatureBoxplotPGB, temperatureBoxplotPGE, temperatureBoxplotSKB, temperatureBoxplotSKE, temperatureBoxplotWBB, temperatureBoxplotWBE)
+
+#### MAKE BOXPLOTS BASED ON SITES AND HABITAT ####
+
+jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Habitat.jpeg", height = 1000, width = 2000)
+boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site + temperatureBoxplot$Habitat, ylim = tempRange, names = c("CI.Bare", "FB.Bare", "PG.Bare", "SK.Bare", "WB.Bare", "CI.Eelgrass", "FB.Eelgrass", "PG.Eelgrass", "SK.Eelgrass", "WB.Eelgrass"), col = rep(c("red", "blue", "magenta", "green", "white"), times = 2), main = "Temperature at Site and Habitats", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
+title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
+title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 dev.off()
 
-#### ASSIGN FILENAMES ####
+#### MAKE BOXPLOT JUST BASED ON SITES ####
 
-boxplotFilenames <- data.frame(protein = colnames(boxplotData),
-                               modifier = rep(".jpeg", length(boxplotData))) #Make filename sheet
-boxplotFilenames$siteFilenames <- paste(boxplotFilenames$protein, boxplotFilenames$modifier) #Make a new column for the site only filenames
-head(boxplotFilenames) #Confirm changes
-
-#### CHANGE WORKING DIRECTORY ####
-
-setwd("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-06-Boxplots/")
-getwd()
+jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
+boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site, ylim = tempRange, col = rep(c("red", "blue", "magenta", "green", "white"), times = 2), main = "Temperature at Sites", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
+title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
+title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
+dev.off()
 
 #### MAKE BOXPLOTS JUST BASED ON SITES ####
 
