@@ -32,7 +32,7 @@ par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 plot(x = temperatureData$DateTime, y = temperatureData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "o", col = "blue", main = "Fidalgo Bay Bare") #Set up plot with no x axis labels, but with y-axis that encompasses maximum and minimum values
 title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
 
-plot(x = temperatureData$DateTime, y = temperatureData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", ex.main = 5.5, type = "o", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
+plot(x = temperatureData$DateTime, y = temperatureData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 5.5, type = "o", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
 
 plot(x = temperatureData$DateTime, y = temperatureData$PGB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "o", col = "magenta", main = "Port Gamble Bay Bare") #Port Gamble Bay, Bare
 title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
