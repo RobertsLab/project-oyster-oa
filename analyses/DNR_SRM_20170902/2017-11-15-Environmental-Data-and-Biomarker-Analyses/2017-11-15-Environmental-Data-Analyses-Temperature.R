@@ -48,10 +48,10 @@ plot(temperatureData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, ya
 
 plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "black", main = "Willapa Bay Bare") #Willapa Bay, Bare
 mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5) #Make x-axis
+axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 3) #Make x-axis
 
 plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "black", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5) #Make x-axis
+axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 3) #Make x-axis
 mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify x-axis labels
 
 dev.off()
