@@ -26,39 +26,33 @@ tempRange <- range(temperatureData$WBE, temperatureData$WBB, temperatureData$SKE
 tempRange[1] <- 10 #Change minimum value to a round number
 tempRange #Confirm changes
 
-#PLOTTING AN X AXIS WITH A FACTOR WILL NOT ACCEPT "TYPE"
-
 jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
+par(mar = c(0, 0, 10, 0), oma = c(15, 15, 1, 1)) #Remove redundant white space
 
-plot(temperatureData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "l", col = "blue", main = "Fidalgo Bay Bare") #Set up plot with no x axis labels, but with y-axis that encompasses maximum and minimum values
-title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
+plot(temperatureData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Bare") #FBB. Set up plot with no x axis labels, but with y-axis that encompasses maximum and minimum values
 
-plot(temperatureData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 5.5, type = "l", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
+plot(temperatureData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
 
-plot(temperatureData$PGB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "l", col = "magenta", main = "Port Gamble Bay Bare") #Port Gamble Bay, Bare
-title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
+plot(temperatureData$PGB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Bare") #Port Gamble Bay, Bare
 
-plot(temperatureData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 5.5, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
+plot(temperatureData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
 
-plot(temperatureData$SKB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "l", col = "green", main = "Skokomish River Delta Bare") #Skokomish River Delta, Bare
-title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
+plot(temperatureData$SKB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Bare") #Skokomish River Delta, Bare
 
-plot(temperatureData$SKE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 5.5, type = "l", col = "green", main = "Skokomish River Delta Eelgrass") #Skokomish River Delta, Eelgrass
+plot(temperatureData$SKE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Eelgrass") #Skokomish River Delta, Eelgrass
 
-plot(temperatureData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.main = 5.5, type = "l", col = "red", main = "Case Inlet Bare") #Case Inlet, Bare
-title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
+plot(temperatureData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "red", main = "Case Inlet Bare") #Case Inlet, Bare
 
-plot(temperatureData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", type = "l", cex.main = 5.5, col = "red", main = "Case Inlet Eelgrass") #Case Inlet, Eelgrass
+plot(temperatureData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", type = "l", cex.main = 10, col = "red", main = "Case Inlet Eelgrass") #Case Inlet, Eelgrass
 
-plot(temperatureData$WBB, xlab = "", ylab = "", ylim = tempRange, cex.main = 5.5, type = "l", col = "black", main = "Willapa Bay Bare") #Willapa Bay, Bare
-title(ylab = "Temperature (ºC)", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify y-axis labels
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime) #Make x-axis
-title(xlab = "Date and Time", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify x-axis labels
+plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "black", main = "Willapa Bay Bare") #Willapa Bay, Bare
+mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
+axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5) #Make x-axis
 
-plot(temperatureData$WBE, xlab = "", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 5.5, type = "l", col = "black", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime) #Make x-axis
-title(xlab = "Date and Time", line = 2.3, cex.lab = 2.5, cex.axis = 1.5) #Modify x-axis labels
+plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "black", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
+axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5) #Make x-axis
+mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify x-axis labels
 
 dev.off()
 
