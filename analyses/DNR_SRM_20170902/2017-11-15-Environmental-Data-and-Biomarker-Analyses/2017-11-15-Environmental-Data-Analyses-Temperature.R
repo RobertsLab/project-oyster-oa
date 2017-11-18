@@ -26,37 +26,57 @@ tempRange <- range(temperatureData$WBE, temperatureData$WBB, temperatureData$SKE
 tempRange[1] <- 10 #Change minimum value to a round number
 tempRange #Confirm changes
 
-#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
+jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(15, 15, 1, 1)) #Remove redundant white space
 
 plot(temperatureData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Bare") #FBB. Set up plot with no x axis labels, but with y-axis that encompasses maximum and minimum values
+abline(h = median(temperatureData$FBB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$FBB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
+abline(h = median(temperatureData$FBE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$FBE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$PGB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Bare") #Port Gamble Bay, Bare
+abline(h = median(temperatureData$PGB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$PGB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
+abline(h = median(temperatureData$PGE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$PGE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$SKB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Bare") #Skokomish River Delta, Bare
+abline(h = median(temperatureData$SKB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$SKB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$SKE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Eelgrass") #Skokomish River Delta, Eelgrass
+abline(h = median(temperatureData$SKE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$SKE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "red", main = "Case Inlet Bare") #Case Inlet, Bare
+abline(h = median(temperatureData$CIB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$CIB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
 plot(temperatureData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", type = "l", cex.main = 10, col = "red", main = "Case Inlet Eelgrass") #Case Inlet, Eelgrass
+abline(h = median(temperatureData$CIE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$CIE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 
-plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "black", main = "Willapa Bay Bare") #Willapa Bay, Bare
+plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
+abline(h = median(temperatureData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$WBB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
 axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 2) #Make x-axis
 
-plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "black", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
+plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
+abline(h = median(temperatureData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 2) #Make x-axis
 mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify x-axis labels
 
 #Can fix x-axis labels with las = 3 for vertical, but need to figure out proper sequence of times.
 
-#dev.off()
+dev.off()
 
 #### REFORMAT DATA FOR BOXPLOT ####
 
@@ -134,3 +154,5 @@ legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]
 title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 #dev.off()
+
+TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for temperature differences between sites. All pairwise differences are significant at 0.05 level.
