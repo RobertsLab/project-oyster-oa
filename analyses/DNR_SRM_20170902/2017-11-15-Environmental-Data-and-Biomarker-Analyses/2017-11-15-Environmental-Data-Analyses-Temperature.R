@@ -119,16 +119,16 @@ temperatureBoxplot <- rbind(temperatureBoxplotCIB, temperatureBoxplotCIE, temper
 
 #### MAKE BOXPLOTS BASED ON SITES AND HABITAT ####
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Habitat.jpeg", height = 1000, width = 2000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Habitat.jpeg", height = 1000, width = 2000)
 boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site + temperatureBoxplot$Habitat, ylim = tempRange, names = c("CI.Bare", "FB.Bare", "PG.Bare", "SK.Bare", "WB.Bare", "CI.Eelgrass", "FB.Eelgrass", "PG.Eelgrass", "SK.Eelgrass", "WB.Eelgrass"), col = rep(c("red", "blue", "magenta", "green", "white"), times = 2), main = "Temperature at Site and Habitats", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
 title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
-dev.off()
+#dev.off()
 
 #### MAKE BOXPLOT JUST BASED ON SITES ####
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
-boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site, ylim = tempRange, col = rep(c("red", "blue", "magenta", "green", "white"), times = 2), main = "Temperature at Sites", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Temperature-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
+boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site, ylim = tempRange, main = "Temperature at Sites", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
 title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 dev.off()
