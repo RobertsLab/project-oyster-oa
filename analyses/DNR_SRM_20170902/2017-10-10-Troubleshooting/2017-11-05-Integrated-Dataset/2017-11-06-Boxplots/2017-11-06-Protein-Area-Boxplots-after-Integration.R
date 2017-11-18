@@ -54,7 +54,7 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
   stripchart(boxplotData[,i] ~ boxplotData$Site, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
   siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
-  legend("topleft", bty = "n", legend = paste("ANOVA p-value =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits=4))) #Plot p-value from ANOVA
+  legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
   title(boxplotFilenames$protein[i])
   dev.off() #Close file
 }
