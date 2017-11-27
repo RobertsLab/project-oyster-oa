@@ -27,6 +27,7 @@ tempRange[1] <- 10 #Change minimum value to a round number
 tempRange #Confirm changes
 
 jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
+
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(15, 15, 1, 1)) #Remove redundant white space
 
@@ -66,15 +67,13 @@ plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, ce
 abline(h = median(temperatureData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
 abline(h = mean(temperatureData$WBB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 2) #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$DateTime), by = 144*5), lab = temperatureData$DateTime[seq(from = 1, to = length(temperatureData$DateTime), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 
 plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
 abline(h = median(temperatureData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
 abline(h = mean(temperatureData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
-axis(side = 1, at = 1:length(temperatureData$DateTime), lab = temperatureData$DateTime, cex.axis = 5, line = 2) #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$DateTime), by = 144*5), lab = temperatureData$DateTime[seq(from = 1, to = length(temperatureData$DateTime), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify x-axis labels
-
-#Can fix x-axis labels with las = 3 for vertical, but need to figure out proper sequence of times.
 
 dev.off()
 
