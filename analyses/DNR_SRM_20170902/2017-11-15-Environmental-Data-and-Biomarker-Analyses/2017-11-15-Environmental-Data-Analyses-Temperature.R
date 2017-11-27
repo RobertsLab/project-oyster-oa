@@ -8,28 +8,28 @@ getwd()
 
 environmentalData <- read.csv("../../data/DNR/2017-11-14-Environmental-Data-from-Micah.csv", header = TRUE, na.strings = "NA")
 head(environmentalData)
-environmentalData <- environmentalData[,-c(40:51)] #Get rid of empty columns at end of the dataset
-head(environmentalData)
 
 #### SUBSET DATA ####
 #I only want the temperature data from the dissolved oxygen loggers.
 
 colnames(environmentalData)
-temperatureData <- environmentalData[,c(1,30:39)] #Save temperature data as a new dataframe
+temperatureData <- environmentalData[,c(1:3,32:41)] #Save temperature data as a new dataframe
 head(temperatureData)
-colnames(temperatureData) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB") #Rename columns
+colnames(temperatureData) <- c("DateTime", "Date", "Time", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB") #Rename columns
 head(temperatureData)
 
-#### VISUALIZE DIURNAL FLUCTUATIONS ####
+#### CALCULATE RANGE OF TEMPERATURES ####
 
 tempRange <- range(temperatureData$WBE, temperatureData$WBB, temperatureData$SKE, temperatureData$SKB, temperatureData$PGE, temperatureData$PGB, temperatureData$CIE, temperatureData$CIB, temperatureData$FBE, temperatureData$FBB, na.rm = TRUE) #Calculate range of temperature values
 tempRange[1] <- 10 #Change minimum value to a round number
 tempRange #Confirm changes
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 5000, width = 4000)
+#### VISUALIZE DIURNAL FLUCTUATIONS ####
+
+jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 6000, width = 4000)
 
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
-par(mar = c(0, 0, 10, 0), oma = c(15, 15, 1, 1)) #Remove redundant white space
+par(mar = c(0, 0, 10, 0), oma = c(30, 15, 1, 1)) #Remove redundant white space and change outer margins
 
 plot(temperatureData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 5, cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Bare") #FBB. Set up plot with no x axis labels, but with y-axis that encompasses maximum and minimum values
 abline(h = median(temperatureData$FBB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
@@ -67,13 +67,13 @@ plot(temperatureData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, ce
 abline(h = median(temperatureData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
 abline(h = mean(temperatureData$WBB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$DateTime), by = 144*5), lab = temperatureData$DateTime[seq(from = 1, to = length(temperatureData$DateTime), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 
 plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
 abline(h = median(temperatureData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
 abline(h = mean(temperatureData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$DateTime), by = 144*5), lab = temperatureData$DateTime[seq(from = 1, to = length(temperatureData$DateTime), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
-mtext(side = 1, text = "Date and Time", line = 7, cex = 5, outer = TRUE) #Modify x-axis labels
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
+mtext(side = 1, text = "Date", line = 25, cex = 5, outer = TRUE) #Modify x-axis labels
 
 dev.off()
 
