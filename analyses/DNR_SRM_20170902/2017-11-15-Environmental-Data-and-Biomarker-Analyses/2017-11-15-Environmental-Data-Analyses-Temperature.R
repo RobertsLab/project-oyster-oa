@@ -151,7 +151,7 @@ title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 boxplot(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site, ylim = tempRange, main = "Temperature at Sites", cex.main = 3, cex.axis = 1.5) #Make boxplot based on sites and habitat
 siteANOVA <- aov(temperatureBoxplot$Temperature ~ temperatureBoxplot$Site) #Perform an ANOVA to test for significant differences in temperatures between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
-title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
+title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 #dev.off()
 
