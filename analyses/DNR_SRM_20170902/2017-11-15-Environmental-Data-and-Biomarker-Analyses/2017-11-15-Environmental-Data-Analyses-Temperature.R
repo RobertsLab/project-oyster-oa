@@ -26,7 +26,7 @@ tempRange #Confirm changes
 
 #### VISUALIZE DIURNAL FLUCTUATIONS ####
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 6000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-Diurnal-Temperature-Fluctuations.jpeg", height = 6000, width = 4000)
 
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(30, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -70,12 +70,14 @@ mtext(side = 2, text = "Temperature (ºC)", line = 7, cex = 5, outer = TRUE) #Mo
 axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 
 plot(temperatureData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
-abline(h = median(temperatureData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = median(temperatureData$WBE, na.rm = TRUE), lty = 1, text = "median") #Add line depicting median temperature
 abline(h = mean(temperatureData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
 axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 mtext(side = 1, text = "Date", line = 25, cex = 5, outer = TRUE) #Modify x-axis labels
 
-dev.off()
+#dev.off()
+
+#Be sure to clear all plot history to reset par.
 
 #### REFORMAT DATA FOR BOXPLOT ####
 
@@ -155,3 +157,24 @@ title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
 #dev.off()
 
 TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for temperature differences between sites. All pairwise differences are significant at 0.05 level.
+
+#### BOXPLOT AND DIURNAL FLUCTUATION MULTIPANEL PLOT ####
+#I think a plot like this would be really useful to understand both the spread of the data, as well as frequency of extremes.
+
+#Case Inlet, Bare
+jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-27-Case-Inlet-Bare-Temperature-Multipanel.jpeg", height = 500, width = 1000)
+
+par(mfrow = c(1, 2)) #Create new multipanel plot
+par(mar = c(0, 0, 0, 0), oma = c(1, 10, 10, 1)) #Remove redundant white space and change outer margins
+
+plot(temperatureData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = tempRange, cex.axis = 2, type = "l", col = "red") #Case Inlet, Bare
+abline(h = median(temperatureData$CIB, na.rm = TRUE), lty = 1) #Add line depicting median temperature
+abline(h = mean(temperatureData$CIB, na.rm = TRUE), lty = 2) #Add line depicting mean temperature
+#axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, cex.axis = 1.5, line = 0.5) #Make x-axis
+#mtext(side = 1, text = "Date", line = 7, cex = 2, outer = FALSE) #Add x-axis label
+
+boxplot(temperatureBoxplotCIB$Temperature, ylim = tempRange, yaxt = "n") #Make boxplot based on sites and habitat
+
+mtext(side = 2, text = "Temperature (ºC)", line = 5, cex = 3, outer = TRUE) #Add y-axis label
+mtext(side = 3, text = "Case Inlet: Bare", line = 5, cex = 5, outer = TRUE) #Add main title
+dev.off()
