@@ -170,11 +170,13 @@ summary(regionSim) #Show similarity percentages
 #cumsum = Ordered cumulative contribution
 
 #### NMDS REFINEMENT BY REGION ####
+#I'm going to take my averaged normalized data and plot it by region (Puget Sound vs. Willapa Bay).
 
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-28-NMDS-Analysis-Averaged-by-Region.jpeg", width = 1000, height = 750)
 fig.nmds.2 <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
-
-points(fig.nmds.2, "sites", pch = NMDSColorShapeCustomization$Region.Shape)
+points(fig.nmds.2, "sites", pch = NMDSColorShapeCustomization$Region.Shape) #Add points
 legend("topleft", bty = "n", legend = paste("R = 0.2368", "Significance = 0.031"), cex = 0.8) #Add R and p-value from ANOSIM
 legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex = 0.8)
+vec.proc.nmds.averaged.euclidean <- envfit(ord = proc.nmds.averaged.euclidean$points, env = area4.t, perm = 1000, na.rm = TRUE) #Calculate loadings
+plot(vec.proc.nmds.averaged.euclidean, p.max = .001, col= "blue", cex = 0.3, lty = 2) #Plot eigenvectors
 #dev.off()
