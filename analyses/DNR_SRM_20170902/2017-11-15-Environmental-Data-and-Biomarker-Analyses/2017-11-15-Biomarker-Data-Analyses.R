@@ -1,8 +1,8 @@
 #In this script, I'll visualize biomarker data from Alex to see if there are any site differences
 
 #### SET WORKING DIRECTORY ####
-#setwd("../../..") #Set working directory to the master SRM folder
-#getwd()
+setwd("..") #Set working directory to the master SRM folder
+getwd()
 
 #### IMPORT DATA ####
 
@@ -68,10 +68,10 @@ head(siteANOVATukeyResults) #Confirm changes
 #Perform Tukey HSD
 for(i in 4:nBiomarkers) { #For all of my columns with biomarker data
   siteANOVA <- aov(biomarkerData[,i] ~ biomarkerData$Site.x) #Perform an ANOVA to test for significant differences between sites
-  siteANOVATukeyResults[(i-2), 2] <- summary(siteANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
-  siteANOVATukeyResults[(i-2), 3] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+  siteANOVATukeyResults[(i-3), 2] <- summary(siteANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  siteANOVATukeyResults[(i-3), 3] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
   siteTukeyHSD <- TukeyHSD(siteANOVA) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
-  siteANOVATukeyResults[(i-2),4:13] <- siteTukeyHSD$`biomarkerData$Site.x`[,4] #Paste Tukey results into table
+  siteANOVATukeyResults[(i-3),4:13] <- siteTukeyHSD$`biomarkerData$Site.x`[,4] #Paste Tukey results into table
 } #Add all ANOVA and Tukey HSD p-values to the table
 head(siteANOVATukeyResults) #Confirm that tests were completed
-write.csv(siteANOVATukeyResults, "2017-11-27-Biomarkers-YaaminiSamplesOnly-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
+#write.csv(siteANOVATukeyResults, "2017-11-27-Biomarkers-YaaminiSamplesOnly-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
