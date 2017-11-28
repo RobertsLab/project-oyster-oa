@@ -74,6 +74,16 @@ tail(NMDSColorShapeCustomization) #Confirm merge
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[,-2] #Remove empty column
 head(NMDSColorShapeCustomization) #Confirm removal
 
+#Add region information (Puget Sound vs. Willapa Bay)
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization$Region <- c(rep("PS", times = (length(NMDSColorShapeCustomization$Site)-6)), rep("WB", times = 6)) #Add regional information
+NMDSColorShapeCustomization$NMDS.Region.Shapes <- c(rep(20, times = (length(NMDSColorShapeCustomization$Site)-6)), rep(8, times = 6))
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
+
 #Create a color and shape palette
 attach(NMDSColorShapeCustomization)
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
@@ -84,7 +94,7 @@ NMDS.Colors <- c(rep(x = "red", times = sum(NMDSColorShapeCustomization$Site == 
             rep(x = "magenta", times = sum(NMDSColorShapeCustomization$Site == "PG")),
             rep(x = "green", times = sum(NMDSColorShapeCustomization$Site == "SK")),
             rep(x = "black", times = sum(NMDSColorShapeCustomization$Site == "WB"))) #Create a color vector
-NMDSColorShapeCustomization[,4] <- NMDS.Colors #Add the color vector to the dataframe
+NMDSColorShapeCustomization[,6] <- NMDS.Colors #Add the color vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
 attach(NMDSColorShapeCustomization)
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Eelgrass.Condition),] #Reorder so eelgrass condition is sorted alphabetically
@@ -92,14 +102,15 @@ head(NMDSColorShapeCustomization) #Confirm sorting
 detach(NMDSColorShapeCustomization)
 NMDS.Shapes <- c(rep(x = 16, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Bare")),
                  rep(x = 17, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Eelgrass"))) #Make a shape vector
-NMDSColorShapeCustomization[,5] <- NMDS.Shapes #Add the shape vector to the dataframe
+NMDSColorShapeCustomization[,7] <- NMDS.Shapes #Add the shape vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
 attach(NMDSColorShapeCustomization)
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Sample.Number),] #Resort by sample number
 head(NMDSColorShapeCustomization) #Confirm sorting
 detach(NMDSColorShapeCustomization)
-colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Color", "Shape") #Change column names
-head(NMDSColorShapeCustomization) #Confirm change
+colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Region", "Region.Shape", "Color", "Shape") #Change column names
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
 
 #### NMDS REFINEMENT ####
 
@@ -117,6 +128,15 @@ fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none"
 
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
 legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
+#dev.off()
+
+#### NMDS REFINEMENT BY REGION ####
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-28-NMDS-Analysis-Averaged-by-Region.jpeg", width = 1000, height = 750)
+fig.nmds.2 <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+points(fig.nmds.2, "sites", pch = NMDSColorShapeCustomization$Region.Shape)
+legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex = 0.8)
 #dev.off()
 
 #### ANOSIM ####
