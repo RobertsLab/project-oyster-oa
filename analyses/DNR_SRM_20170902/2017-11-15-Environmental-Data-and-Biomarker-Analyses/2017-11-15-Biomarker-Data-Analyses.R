@@ -1,4 +1,4 @@
-#In this script, I'll visualize biomarker data from Alex that corresponds to my samples.
+#In this script, I'll visualize biomarker data from Alex to see if there are any site differences
 
 #### SET WORKING DIRECTORY ####
 #setwd("../../..") #Set working directory to the master SRM folder
@@ -45,3 +45,33 @@ for(i in 4:nBiomarkers) { #For all columns with biomarker data
   title(boxplotFilenames$biomarker[i], cex.main = 3)
   dev.off() #Close file
 }
+
+#### PERFORM TUKEY HSD POST-HOC TEST ####
+#This test can be used to understand where significant ANOVA results come from
+
+siteANOVATukeyResults <- data.frame("Biomarker" = colnames(biomarkerData),
+                                    "ANOVA.Fstatistic" = rep(x = 0, times = length(biomarkerData)),
+                                    "ANOVA.pvalue" = rep(x = 0, times = length(biomarkerData)),
+                                    "FB-CI" = rep(x = 0, times = length(biomarkerData)),
+                                    "PG-CI" = rep(x = 0, times = length(biomarkerData)),
+                                    "SK-CI" = rep(x = 0, times = length(biomarkerData)),
+                                    "WB-CI" = rep(x = 0, times = length(biomarkerData)),
+                                    "PG-FB" = rep(x = 0, times = length(biomarkerData)),
+                                    "SK-FB" = rep(x = 0, times = length(biomarkerData)),
+                                    "WB-FB" = rep(x = 0, times = length(biomarkerData)),
+                                    "SK-PG" = rep(x = 0, times = length(biomarkerData)),
+                                    "WB-PG" = rep(x = 0, times = length(biomarkerData)),
+                                    "WB-SK" = rep(x = 0, times = length(biomarkerData))) #Create a dataframe to hold all results
+siteANOVATukeyResults <- siteANOVATukeyResults[-c(1:3),] #Remove the first three rows, since they are not peptides
+head(siteANOVATukeyResults) #Confirm changes
+
+#Perform Tukey HSD
+for(i in 4:nBiomarkers) { #For all of my columns with biomarker data
+  siteANOVA <- aov(biomarkerData[,i] ~ biomarkerData$Site.x) #Perform an ANOVA to test for significant differences between sites
+  siteANOVATukeyResults[(i-2), 2] <- summary(siteANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  siteANOVATukeyResults[(i-2), 3] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+  siteTukeyHSD <- TukeyHSD(siteANOVA) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
+  siteANOVATukeyResults[(i-2),4:13] <- siteTukeyHSD$`biomarkerData$Site.x`[,4] #Paste Tukey results into table
+} #Add all ANOVA and Tukey HSD p-values to the table
+head(siteANOVATukeyResults) #Confirm that tests were completed
+write.csv(siteANOVATukeyResults, "2017-11-27-Biomarkers-YaaminiSamplesOnly-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
