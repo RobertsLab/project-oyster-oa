@@ -157,14 +157,23 @@ str(ANOSIMReplicates) #Confirm structure
 siteANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
 summary(siteANOSIM)
 plot(siteANOSIM)
-simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Site)
 
 eelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassANOSIM)
 plot(eelgrassANOSIM)
-simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Eelgrass.Condition)
 
 siteEelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
 summary(siteEelgrassANOSIM)
 plot(siteEelgrassANOSIM)
-simper(proc.nmds.averaged.euclidean, ANOSIMReplicates$Site.Eelgrass)
+
+regionANOSIM <- anosim(dat = dissimArea4.t, grouping = NMDSColorShapeCustomization[,4]) #One-way ANOSIM by Region (Puget Sound vs. Willapa Bay)
+summary(regionANOSIM)
+plot(regionANOSIM)
+regionSim <- simper(comm = area4.t, group = NMDSColorShapeCustomization$Region) #Calculate similarity percentages
+summary(regionSim) #Show similarity percentages
+
+#average = Average contribution to overall dissimilarity
+#sd = Standard deviation of contribution
+#ratio = Average to SD ratio
+#ava, avb = Average abundances per group
+#cumsum = Ordered cumulative contribution
