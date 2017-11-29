@@ -87,12 +87,12 @@ siteANOVA <- aov(pHBoxplot$pH ~ pHBoxplot$Site) #Perform an ANOVA to test for si
 legend("topright", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "pH", cex.lab = 2.5, line = 2.5) #Add y-axis label
-#dev.off()
+dev.off()
 
 TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for pH differences between sites. All pairwise differences are significant at 0.05 level.
 
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
-#Because I don't have PGB data, I'm going to make a 5x2 multipanel plot and put the site boxplot where PGB would have gone.
+#Because I don't have PGE data, I'm going to make a 5x2 multipanel plot and put the site boxplot where PGB would have gone.
 
 jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-pH-Fluctuations-and-Boxplot.jpeg", height = 6000, width = 4000)
 
@@ -132,15 +132,15 @@ plot(pHData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = pHRange,  yaxt = "n", 
 abline(h = median(pHData$CIB, na.rm = TRUE), lty = 1) #Add line depicting median pH
 abline(h = mean(pHData$CIB, na.rm = TRUE), lty = 2) #Add line depicting mean pH
 
-plot(pHData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = pHRange, cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
-abline(h = median(pHData$PGE, na.rm = TRUE), lty = 1) #Add line depicting median pH
-abline(h = mean(pHData$PGE, na.rm = TRUE), lty = 2) #Add line depicting mean pH
+plot(pHData$PGB, xlab = "", xaxt = "n", ylab = "", ylim = pHRange, cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Bare") #Port Gamble Bay, Bare
+abline(h = median(pHData$PGB, na.rm = TRUE), lty = 1) #Add line depicting median pH
+abline(h = mean(pHData$PGB, na.rm = TRUE), lty = 2) #Add line depicting mean pH
 axis(side = 1, at = seq(from = 1, to = length(pHData$Date), by = 144*5), lab = pHData$Date[seq(from = 1, to = length(pHData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 mtext(side = 1, text = "Date", line = 35, cex = 7) #Modify x-axis labels
 
 boxplot(pHBoxplot$pH ~ pHBoxplot$Site, xaxt = "n", ylim = pHRange, yaxt = "n", main = "pH at Sites", cex.main = 10, cex.axis = 5, line.axis = 2, col = c("red", "blue", "magenta", "green", "dark gray")) #Make boxplot based on sites and habitat
 siteANOVA <- aov(pHBoxplot$pH ~ pHBoxplot$Site) #Perform an ANOVA to test for significant differences in pH between sites
-legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
+legend("topright", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
 mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
