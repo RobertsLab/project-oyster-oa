@@ -162,7 +162,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for temperature differences between
 #I think a plot like this would be really useful to understand both the spread of the data, as well as frequency of extremes.
 
 #Case Inlet, Bare
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-27-Case-Inlet-Bare-Temperature-Multipanel.jpeg", height = 500, width = 1000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-27-Case-Inlet-Bare-Temperature-Multipanel.jpeg", height = 500, width = 1000)
 
 par(mfrow = c(1, 2)) #Create new multipanel plot
 par(mar = c(0, 0, 0, 0), oma = c(1, 10, 10, 1)) #Remove redundant white space and change outer margins
@@ -177,4 +177,4 @@ boxplot(temperatureBoxplotCIB$Temperature, ylim = tempRange, yaxt = "n") #Make b
 
 mtext(side = 2, text = "Temperature (ºC)", line = 5, cex = 3, outer = TRUE) #Add y-axis label
 mtext(side = 3, text = "Case Inlet: Bare", line = 5, cex = 5, outer = TRUE) #Add main title
-dev.off()
+#dev.off()
