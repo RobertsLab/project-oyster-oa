@@ -90,7 +90,7 @@ boxplot(salinityBoxplot$salinity ~ salinityBoxplot$Site, ylim = salinityRange, m
 siteANOVA <- aov(salinityBoxplot$salinity ~ salinityBoxplot$Site) #Perform an ANOVA to test for significant differences in salinitys between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
-title(ylab = "Salinity (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
+title(ylab = "Salinity", cex.lab = 2.5, line = 2.2) #Add y-axis label
 #dev.off()
 
 TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for salinity differences between sites. All pairwise differences are significant at 0.05 level.
@@ -99,7 +99,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for salinity differences between si
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 #Because I don't have PGB data, I'm going to make a 5x2 multipanel plot and put the site boxplot where PGB would have gone.
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-Salinity-Fluctuations-and-Boxplot.jpeg", height = 6000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-Salinity-Fluctuations-and-Boxplot.jpeg", height = 6000, width = 4000)
 
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -107,7 +107,7 @@ par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space a
 plot(salinityData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
 abline(h = median(salinityData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
-mtext(side = 2, text = "Salinity (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
+mtext(side = 2, text = "Salinity", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
 
 plot(salinityData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
 abline(h = median(salinityData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median salinity
@@ -149,6 +149,6 @@ legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
 mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
-dev.off()
+#dev.off()
 
 #Be sure to clear all plot history to reset par.
