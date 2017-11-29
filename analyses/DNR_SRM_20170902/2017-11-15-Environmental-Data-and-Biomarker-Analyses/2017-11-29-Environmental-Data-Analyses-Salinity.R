@@ -141,13 +141,13 @@ plot(salinityData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, c
 abline(h = median(salinityData$PGE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$PGE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 axis(side = 1, at = seq(from = 1, to = length(salinityData$Date), by = 144*5), lab = salinityData$Date[seq(from = 1, to = length(salinityData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
-mtext(side = 1, text = "Date", line = 35, cex = 3) #Modify x-axis labels
+mtext(side = 1, text = "Date", line = 35, cex = 7) #Modify x-axis labels
 
 boxplot(salinityBoxplot$salinity ~ salinityBoxplot$Site, xaxt = "n", ylim = salinityRange, yaxt = "n", main = "Salinity at Sites", cex.main = 10, cex.axis = 5, line.axis = 2, col = c("red", "blue", "magenta", "green", "dark gray")) #Make boxplot based on sites and habitat
 siteANOVA <- aov(salinityBoxplot$salinity ~ salinityBoxplot$Site) #Perform an ANOVA to test for significant differences in salinity between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
-mtext(side = 1, text = "Site", line = 35, cex = 3) #Modify x-axis label
+mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
 dev.off()
 
