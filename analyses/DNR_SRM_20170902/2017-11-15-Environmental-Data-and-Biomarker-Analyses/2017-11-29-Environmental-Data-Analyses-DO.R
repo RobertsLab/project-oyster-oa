@@ -27,7 +27,7 @@ DORange #Confirm changes
 
 #### VISUALIZE DIURNAL FLUCTUATIONS ####
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-DO-Fluctuations.jpeg", height = 6000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-DO-Fluctuations.jpeg", height = 6000, width = 4000)
 
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(30, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -67,7 +67,7 @@ abline(h = mean(DOData$CIE, na.rm = TRUE), lty = 2) #Add line depicting mean DO
 plot(DOData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = DORange, cex.axis = 5, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
 abline(h = median(DOData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median DO
 abline(h = mean(DOData$WBB, na.rm = TRUE), lty = 2) #Add line depicting mean DO
-mtext(side = 2, text = "DO (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
+mtext(side = 2, text = "Dissolved Oxygen Content", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
 axis(side = 1, at = seq(from = 1, to = length(DOData$Date), by = 144*5), lab = DOData$Date[seq(from = 1, to = length(DOData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 
 plot(DOData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = DORange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
@@ -76,7 +76,7 @@ abline(h = mean(DOData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean DO
 axis(side = 1, at = seq(from = 1, to = length(DOData$Date), by = 144*5), lab = DOData$Date[seq(from = 1, to = length(DOData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
 mtext(side = 1, text = "Date", line = 25, cex = 5, outer = TRUE) #Modify x-axis labels
 
-dev.off()
+#dev.off()
 
 #Be sure to clear all plot history to reset par.
 
@@ -139,14 +139,6 @@ DOBoxplotWBE <- DOBoxplotWBE[-c(7489:7490),] #Remove last two rows
 
 DOBoxplot <- rbind(DOBoxplotCIB, DOBoxplotCIE, DOBoxplotFBB, DOBoxplotFBE, DOBoxplotPGB, DOBoxplotPGE, DOBoxplotSKB, DOBoxplotSKE, DOBoxplotWBB, DOBoxplotWBE)
 
-#### MAKE BOXPLOTS BASED ON SITES AND HABITAT ####
-
-#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-DO-Boxplot-Site-Habitat.jpeg", height = 1000, width = 2000)
-boxplot(DOBoxplot$DO ~ DOBoxplot$Site + DOBoxplot$Habitat, ylim = DORange, names = c("CI.Bare", "FB.Bare", "PG.Bare", "SK.Bare", "WB.Bare", "CI.Eelgrass", "FB.Eelgrass", "PG.Eelgrass", "SK.Eelgrass", "WB.Eelgrass"), col = rep(c("red", "blue", "magenta", "green", "white"), times = 2), main = "DO at Site and Habitats", cex.main = 5, cex.axis = 1.5) #Make boxplot based on sites and habitat
-title(xlab = "Site and Habitat", cex.lab = 2.5, line = 3.5) #Add x-axis label
-title(ylab = "DO (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
-#dev.off()
-
 #### MAKE BOXPLOT JUST BASED ON SITES ####
 
 #jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-DO-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
@@ -154,7 +146,7 @@ boxplot(DOBoxplot$DO ~ DOBoxplot$Site, ylim = DORange, main = "DO at Sites", cex
 siteANOVA <- aov(DOBoxplot$DO ~ DOBoxplot$Site) #Perform an ANOVA to test for significant differences in DOs between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
-title(ylab = "DO (ºC)", cex.lab = 2.5, line = 2.2) #Add y-axis label
+title(ylab = "Dissolved Oxygen Content", cex.lab = 2.5, line = 2.2) #Add y-axis label
 #dev.off()
 
 TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for DO differences between sites. All pairwise differences are significant at 0.05 level.
