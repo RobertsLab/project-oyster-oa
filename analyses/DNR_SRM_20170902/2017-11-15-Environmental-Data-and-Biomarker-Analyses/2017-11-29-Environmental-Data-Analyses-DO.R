@@ -141,12 +141,12 @@ DOBoxplot <- rbind(DOBoxplotCIB, DOBoxplotCIE, DOBoxplotFBB, DOBoxplotFBE, DOBox
 
 #### MAKE BOXPLOT JUST BASED ON SITES ####
 
-#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-15-DO-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-DO-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
 boxplot(DOBoxplot$DO ~ DOBoxplot$Site, ylim = DORange, main = "DO at Sites", cex.main = 3, cex.axis = 1.5) #Make boxplot based on sites and habitat
 siteANOVA <- aov(DOBoxplot$DO ~ DOBoxplot$Site) #Perform an ANOVA to test for significant differences in DOs between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
 title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
-title(ylab = "Dissolved Oxygen Content", cex.lab = 2.5, line = 2.2) #Add y-axis label
+title(ylab = "Dissolved Oxygen Content", cex.lab = 2.5, line = 2.5) #Add y-axis label
 #dev.off()
 
-TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for DO differences between sites. All pairwise differences are significant at 0.05 level.
+TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for DO differences between sites. Significant differences are between Fidalgo Bay and Port Gamble Bay (0.0004023), Skokomish River Delta (0.0028254), and Willapa Bay (p = 0.0002764)
