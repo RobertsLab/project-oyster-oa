@@ -94,7 +94,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for pH differences between sites. A
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 #Because I don't have PGE data, I'm going to make a 5x2 multipanel plot and put the site boxplot where PGB would have gone.
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-pH-Fluctuations-and-Boxplot.jpeg", height = 6000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Diurnal-pH-Fluctuations-and-Boxplot.jpeg", height = 6000, width = 4000)
 
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -102,7 +102,7 @@ par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space a
 plot(pHData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = pHRange, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
 abline(h = median(pHData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median pH
 abline(h = mean(pHData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean pH
-mtext(side = 2, text = "pH (ºC)", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
+mtext(side = 2, text = "pH", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
 
 plot(pHData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = pHRange, yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
 abline(h = median(pHData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median pH
@@ -144,6 +144,6 @@ legend("topright", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
 mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
-dev.off()
+#dev.off()
 
 #Be sure to clear all plot history to reset par.
