@@ -61,10 +61,17 @@ for(i in 2:nPeptides) { #For all peptides
     peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit)
     fileName <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j], ".jpeg")
     jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
-    plot(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], xlab = "Final Shell Height", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]), cex.main = 1.75) #Create plot, but do not plot points
-    text(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], labels = peptideBiomarkerData$Sample.Number, cex = 0.8, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
+    plot(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], xlab = colnames(peptideBiomarkerData)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], labels = peptideBiomarkerData$Sample.Number, cex = 2, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
     abline(peptideBiomarkerModel) #Plot regression
     legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
     dev.off() #Turn off plotting device
   }
 }
+
+
+peptideBiomarkerModel <- lm(peptideBiomarkerData[,2] ~ peptideBiomarkerData[,41], na.action = na.omit)
+plot(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,2], xlab = colnames(peptideBiomarkerData)[41], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[2], "vs.", colnames(peptideBiomarkerData)[41]), cex.main = 1.75) #Create plot, but do not plot points
+text(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,2], labels = peptideBiomarkerData$Sample.Number, cex = 2, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
+abline(peptideBiomarkerModel) #Plot regression
+legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
