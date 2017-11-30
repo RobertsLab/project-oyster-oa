@@ -54,14 +54,17 @@ getwd() #Confirm changes
 
 #### MAKE SCATTERPLOTS ####
 
-nPeptides <- 38 #Columns 2-38 are peptide names
+nPeptides <- 38 #Columns 2-38 are peptides
+nBiomarkers <- 50 #Columns 41-50 are biomarkers
 for(i in 2:nPeptides) { #For all peptides
-  peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,41], na.action = na.omit)
-  fileName <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[41], ".jpeg")
-  jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
-  plot(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,i], xlab = "Final Shell Height", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[41]), cex.main = 2) #Create plot, but do not plot points
-  text(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,i], labels = peptideBiomarkerData$Sample.Number, cex = 0.8, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
-  abline(peptideBiomarkerModel) #Plot regression
-  legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
-  dev.off() #Turn off plotting device
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], xlab = "Final Shell Height", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerData[,j], y = peptideBiomarkerData[,i], labels = peptideBiomarkerData$Sample.Number, cex = 0.8, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
+    abline(peptideBiomarkerModel) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
+  }
 }
