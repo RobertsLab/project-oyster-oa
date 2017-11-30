@@ -104,40 +104,40 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for salinity differences between si
 par(mfrow = c(5,2)) #Create multipanel plot with 5 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
 
-plot(salinityData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
+plot(salinityData$WBE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, cex.axis = 5, type = "l", col = "dark grey", main = "Willapa Bay Eelgrass") #Willapa Bay, Eelgrass
 abline(h = median(salinityData$WBE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$WBE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 mtext(side = 2, text = "Salinity", line = 7, cex = 5, outer = TRUE) #Modify y-axis labels
 
-plot(salinityData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
+plot(salinityData$WBB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.main = 10, type = "l", col = "dark grey", main = "Willapa Bay Bare") #Willapa Bay, Bare
 abline(h = median(salinityData$WBB, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$WBB, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
+plot(salinityData$FBE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, cex.axis = 5, type = "l", col = "blue", main = "Fidalgo Bay Eelgrass") #Fidgalo Bay, Eelgrass
 abline(h = median(salinityData$FBE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$FBE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Bare") #FBB
+plot(salinityData$FBB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.main = 10, type = "l", col = "blue", main = "Fidalgo Bay Bare") #FBB
 abline(h = median(salinityData$FBB, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$FBB, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$SKE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Eelgrass") #Skokomish River Delta, Eelgrass
+plot(salinityData$SKE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, cex.axis = 5, type = "l", col = "green", main = "Skokomish River Delta Eelgrass") #Skokomish River Delta, Eelgrass
 abline(h = median(salinityData$SKE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$SKE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$SKB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Bare") #Skokomish River Delta, Bare
+plot(salinityData$SKB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, yaxt = "n",  cex.main = 10, type = "l", col = "green", main = "Skokomish River Delta Bare") #Skokomish River Delta, Bare
 abline(h = median(salinityData$SKB, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$SKB, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, type = "l", cex.main = 10, col = "red", main = "Case Inlet Eelgrass") #Case Inlet, Eelgrass
+plot(salinityData$CIE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, type = "l", cex.main = 10, cex.axis = 5, col = "red", main = "Case Inlet Eelgrass") #Case Inlet, Eelgrass
 abline(h = median(salinityData$CIE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$CIE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange,  yaxt = "n", cex.axis = 5, cex.main = 10, type = "l", col = "red", main = "Case Inlet Bare") #Case Inlet, Bare
+plot(salinityData$CIB, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange,  yaxt = "n", cex.main = 10, type = "l", col = "red", main = "Case Inlet Bare") #Case Inlet, Bare
 abline(h = median(salinityData$CIB, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$CIB, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 
-plot(salinityData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
+plot(salinityData$PGE, xlab = "", xaxt = "n", ylab = "", ylim = salinityRange, cex.main = 10, cex.axis = 5, type = "l", col = "magenta", main = "Port Gamble Bay Eelgrass") #Port Gamble Bay, Eelgrass
 abline(h = median(salinityData$PGE, na.rm = TRUE), lty = 1) #Add line depicting median salinity
 abline(h = mean(salinityData$PGE, na.rm = TRUE), lty = 2) #Add line depicting mean salinity
 axis(side = 1, at = seq(from = 1, to = length(salinityData$Date), by = 144*5), lab = salinityData$Date[seq(from = 1, to = length(salinityData$Date), by = 144*5)], las = 3, cex.axis = 5, line = 2) #Make x-axis
