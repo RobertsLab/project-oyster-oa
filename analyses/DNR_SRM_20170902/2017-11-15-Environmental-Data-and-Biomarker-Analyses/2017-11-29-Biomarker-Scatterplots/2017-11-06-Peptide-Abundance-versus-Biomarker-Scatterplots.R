@@ -180,21 +180,21 @@ for(i in 2:nPeptides) { #For all peptides
 
 #Willapa Bay
 
-peptideBiomarkerSkokomishRiver <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "WB") #Create Willapa Bay subset
-head(peptideBiomarkerSkokomishRiver) #Confirm subset
+peptideBiomarkerWillapaBay <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "WB") #Create Willapa Bay subset
+head(peptideBiomarkerWillapaBay) #Confirm subset
 
-setwd("../2017-12-01-Skokomish-River-Scatterplots/") #Change working directory
+setwd("../2017-12-01-Willapa-Bay-Scatterplots/") #Change working directory
 getwd() #Confirm changes
 
 for(i in 2:nPeptides) { #For all peptides
   for (j in 41:nBiomarkers) { #For all biomarkers
-    peptideBiomarkerModel <- lm(peptideBiomarkerSkokomishRiver[,i] ~ peptideBiomarkerSkokomishRiver[,j], na.action = na.omit)
-    fileName <- paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j], ".jpeg")
+    peptideBiomarkerModel <- lm(peptideBiomarkerWillapaBay[,i] ~ peptideBiomarkerWillapaBay[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerWillapaBay)[i], "vs.", colnames(peptideBiomarkerWillapaBay)[j], ".jpeg")
     jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
-    plot(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], xlab = colnames(peptideBiomarkerSkokomishRiver)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j]), cex.main = 1.75) #Create plot, but do not plot points
-    text(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], labels = peptideBiomarkerSkokomishRiver$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
-    abline(peptideBiomarkerModel) #Plot regression
+    plot(x = peptideBiomarkerWillapaBay[,j], y = peptideBiomarkerWillapaBay[,i], xlab = colnames(peptideBiomarkerWillapaBay)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerWillapaBay)[i], "vs.", colnames(peptideBiomarkerWillapaBay)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerWillapaBay[,j], y = peptideBiomarkerWillapaBay[,i], labels = peptideBiomarkerWillapaBay$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    #abline(peptideBiomarkerModel) #Plot regression
     legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
     dev.off() #Turn off plotting device
   }
-}
+} #Couldn't plot regression line, problem with a and b being finite
