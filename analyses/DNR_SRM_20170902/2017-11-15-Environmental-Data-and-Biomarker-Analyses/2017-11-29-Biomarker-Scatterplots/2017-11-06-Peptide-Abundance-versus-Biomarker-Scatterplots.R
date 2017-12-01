@@ -117,7 +117,7 @@ for(i in 2:nPeptides) { #For all peptides
 
 #Fidalgo Bay
 
-peptideBiomarkerFidalgoBay <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "FB") #Create Case Inlet subset
+peptideBiomarkerFidalgoBay <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "FB") #Create Fidalgo Bay subset
 head(peptideBiomarkerFidalgoBay) #Confirm subset
 
 setwd("../2017-12-01-Fidalgo-Bay-Scatterplots/") #Change working directory
@@ -138,7 +138,7 @@ for(i in 2:nPeptides) { #For all peptides
 
 #Port Gamble Bay
 
-peptideBiomarkerPortGamble <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "PG") #Create Case Inlet subset
+peptideBiomarkerPortGamble <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "PG") #Create Port Gamble subset
 head(peptideBiomarkerPortGamble) #Confirm subset
 
 setwd("../2017-12-01-Port-Gamble-Scatterplots/") #Change working directory
@@ -159,4 +159,42 @@ for(i in 2:nPeptides) { #For all peptides
 
 #Skokomish River Delta
 
+peptideBiomarkerSkokomishRiver <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "SK") #Create Skokomish River subset
+head(peptideBiomarkerSkokomishRiver) #Confirm subset
+
+setwd("../2017-12-01-Skokomish-River-Scatterplots/") #Change working directory
+getwd() #Confirm changes
+
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerSkokomishRiver[,i] ~ peptideBiomarkerSkokomishRiver[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], xlab = colnames(peptideBiomarkerSkokomishRiver)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], labels = peptideBiomarkerSkokomishRiver$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    abline(peptideBiomarkerModel) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
+  }
+}
+
 #Willapa Bay
+
+peptideBiomarkerSkokomishRiver <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "WB") #Create Willapa Bay subset
+head(peptideBiomarkerSkokomishRiver) #Confirm subset
+
+setwd("../2017-12-01-Skokomish-River-Scatterplots/") #Change working directory
+getwd() #Confirm changes
+
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerSkokomishRiver[,i] ~ peptideBiomarkerSkokomishRiver[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], xlab = colnames(peptideBiomarkerSkokomishRiver)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerSkokomishRiver)[i], "vs.", colnames(peptideBiomarkerSkokomishRiver)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerSkokomishRiver[,j], y = peptideBiomarkerSkokomishRiver[,i], labels = peptideBiomarkerSkokomishRiver$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    abline(peptideBiomarkerModel) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
+  }
+}
