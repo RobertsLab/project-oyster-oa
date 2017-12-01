@@ -138,6 +138,25 @@ for(i in 2:nPeptides) { #For all peptides
 
 #Port Gamble Bay
 
+peptideBiomarkerPortGamble <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "PG") #Create Case Inlet subset
+head(peptideBiomarkerPortGamble) #Confirm subset
+
+setwd("../2017-12-01-Port-Gamble-Scatterplots/") #Change working directory
+getwd() #Confirm changes
+
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerPortGamble[,i] ~ peptideBiomarkerPortGamble[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerPortGamble)[i], "vs.", colnames(peptideBiomarkerPortGamble)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerPortGamble[,j], y = peptideBiomarkerPortGamble[,i], xlab = colnames(peptideBiomarkerPortGamble)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerPortGamble)[i], "vs.", colnames(peptideBiomarkerPortGamble)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerPortGamble[,j], y = peptideBiomarkerPortGamble[,i], labels = peptideBiomarkerPortGamble$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    abline(peptideBiomarkerModel) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
+  }
+}
+
 #Skokomish River Delta
 
 #Willapa Bay
