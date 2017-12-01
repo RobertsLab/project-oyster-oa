@@ -69,9 +69,34 @@ for(i in 2:nPeptides) { #For all peptides
   }
 }
 
+#### PUT IMPORTANT INFORMATION INTO NEW DATAFRAME ####
 
-peptideBiomarkerModel <- lm(peptideBiomarkerData[,2] ~ peptideBiomarkerData[,41], na.action = na.omit)
-plot(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,2], xlab = colnames(peptideBiomarkerData)[41], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerData)[2], "vs.", colnames(peptideBiomarkerData)[41]), cex.main = 1.75) #Create plot, but do not plot points
-text(x = peptideBiomarkerData[,41], y = peptideBiomarkerData[,2], labels = peptideBiomarkerData$Sample.Number, cex = 2, col = peptideBiomarkerData$Colors, font = 2) #Plot sample ID instead of points
-abline(peptideBiomarkerModel) #Plot regression
-legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+comparisonStatistics <- data.frame("ComparisonName" = rep(x = 0, times = 370),
+                                   "Peptide" = rep(x = 0, times = 370),
+                                   "Biomarker" = rep(x = 0, times = 370),
+                                   "R.Squared" = rep(x = 0, times = 370),
+                                   "Slope" = rep(x = 0, times = 370)) #Create empty dataframe to hold all results
+head(comparisonStatistics) #Confirm changes
+
+nComparisons <- length(comparisonStatistics$ComparisonName) #Calculate number of comparisons
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit)
+    comparisonStatistics$R.Squared[k] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
+    comparisonStatistics$Slope[k] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
+  }
+}
+
+
+for(k in 2:nPeptides) { #For all peptides
+  for(j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerData[,k] ~ peptideBiomarkerData[,j], na.action = na.omit) #Make model
+    for(i in 1:nComparisons) { #For each comparison
+      #comparisonStatistics$ComparisonName[k] <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]) #Assign comparison name
+      #comparisonStatistics$Peptide[k] <-  peptideName #Specify peptide
+      #comparisonStatistics$Biomarker[k] <- biomarkerName #Specify biomarker
+      
+    }
+  }
+} #Create dataset
+head(comparisonStatistics) #Confirm changes
