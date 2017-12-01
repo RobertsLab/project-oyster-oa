@@ -81,22 +81,37 @@ head(comparisonStatistics) #Confirm changes
 nComparisons <- length(comparisonStatistics$ComparisonName) #Calculate number of comparisons
 for(i in 2:nPeptides) { #For all peptides
   for (j in 41:nBiomarkers) { #For all biomarkers
-    peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit)
-    comparisonStatistics$R.Squared[k] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
-    comparisonStatistics$Slope[k] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
+    testName <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]) #Assign comparison name
+    print(testName)
   }
 }
 
+peptideBiomarkerModel <- lm(peptideBiomarkerData[,2] ~ peptideBiomarkerData[,41], na.action = na.omit) #Make model
+comparisonStatistics$ComparisonName[1] <- paste(colnames(peptideBiomarkerData)[2], "vs.", colnames(peptideBiomarkerData)[41]) #Assign comparison name
+comparisonStatistics$Peptide[1] <-  colnames(peptideBiomarkerData)[2] #Specify peptide
+comparisonStatistics$Biomarker[1] <- colnames(peptideBiomarkerData)[41] #Specify biomarker
+comparisonStatistics$R.Squared[1] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
+comparisonStatistics$Slope[1] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
 
-for(k in 2:nPeptides) { #For all peptides
-  for(j in 41:nBiomarkers) { #For all biomarkers
-    peptideBiomarkerModel <- lm(peptideBiomarkerData[,k] ~ peptideBiomarkerData[,j], na.action = na.omit) #Make model
-    for(i in 1:nComparisons) { #For each comparison
-      #comparisonStatistics$ComparisonName[k] <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]) #Assign comparison name
-      #comparisonStatistics$Peptide[k] <-  peptideName #Specify peptide
-      #comparisonStatistics$Biomarker[k] <- biomarkerName #Specify biomarker
-      
-    }
+#### MAKE SITE SPECIFIC SCATTERPLOTS ####
+
+#Case Inlet
+peptideBiomarkerCaseInlet <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "CI") #Create Case Inlet subset
+head(peptideBiomarkerCaseInlet) #Confirm subset
+
+setwd("2017-12-01-Case-Inlet-Scatterplots") #Change working directory
+getwd() #Confirm changes
+
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerCaseInlet[,i] ~ peptideBiomarkerCaseInlet[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerCaseInlet)[i], "vs.", colnames(peptideBiomarkerCaseInlet)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerCaseInlet[,j], y = peptideBiomarkerCaseInlet[,i], xlab = colnames(peptideBiomarkerCaseInlet)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerCaseInlet)[i], "vs.", colnames(peptideBiomarkerCaseInlet)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerCaseInlet[,j], y = peptideBiomarkerCaseInlet[,i], labels = peptideBiomarkerCaseInlet$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    abline(peptideBiomarkerCaseInlet) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
   }
-} #Create dataset
-head(comparisonStatistics) #Confirm changes
+}
+
