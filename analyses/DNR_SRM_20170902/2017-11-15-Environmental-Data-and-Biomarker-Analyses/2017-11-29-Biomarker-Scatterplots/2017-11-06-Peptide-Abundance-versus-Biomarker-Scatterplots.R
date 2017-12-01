@@ -109,9 +109,35 @@ for(i in 2:nPeptides) { #For all peptides
     jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
     plot(x = peptideBiomarkerCaseInlet[,j], y = peptideBiomarkerCaseInlet[,i], xlab = colnames(peptideBiomarkerCaseInlet)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerCaseInlet)[i], "vs.", colnames(peptideBiomarkerCaseInlet)[j]), cex.main = 1.75) #Create plot, but do not plot points
     text(x = peptideBiomarkerCaseInlet[,j], y = peptideBiomarkerCaseInlet[,i], labels = peptideBiomarkerCaseInlet$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
-    abline(peptideBiomarkerCaseInlet) #Plot regression
+    abline(peptideBiomarkerModel) #Plot regression
     legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
     dev.off() #Turn off plotting device
   }
 }
 
+#Fidalgo Bay
+
+peptideBiomarkerFidalgoBay <- subset(peptideBiomarkerData, subset = peptideBiomarkerData$Site == "FB") #Create Case Inlet subset
+head(peptideBiomarkerFidalgoBay) #Confirm subset
+
+setwd("../2017-12-01-Fidalgo-Bay-Scatterplots/") #Change working directory
+getwd() #Confirm changes
+
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerFidalgoBay[,i] ~ peptideBiomarkerFidalgoBay[,j], na.action = na.omit)
+    fileName <- paste(colnames(peptideBiomarkerFidalgoBay)[i], "vs.", colnames(peptideBiomarkerFidalgoBay)[j], ".jpeg")
+    jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+    plot(x = peptideBiomarkerFidalgoBay[,j], y = peptideBiomarkerFidalgoBay[,i], xlab = colnames(peptideBiomarkerFidalgoBay)[j], ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideBiomarkerFidalgoBay)[i], "vs.", colnames(peptideBiomarkerFidalgoBay)[j]), cex.main = 1.75) #Create plot, but do not plot points
+    text(x = peptideBiomarkerFidalgoBay[,j], y = peptideBiomarkerFidalgoBay[,i], labels = peptideBiomarkerFidalgoBay$Sample.Number, cex = 2, font = 2) #Plot sample ID instead of points
+    #abline(peptideBiomarkerModel) #Plot regression
+    legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideBiomarkerModel)$adj.r.squared, digits=4))) #Plot R-squared value
+    dev.off() #Turn off plotting device
+  }
+} #Couldn't plot regression on all graphs, might have been an issue with a and b being finite for model
+
+#Port Gamble Bay
+
+#Skokomish River Delta
+
+#Willapa Bay
