@@ -128,6 +128,15 @@ for(i in 0:nPeptideNames) { #For all peptides
 } #Transfer R-squared values from tempSlopeStorage to comparisonStatistics
 head(comparisonStatistics) #Confirm addition
 
+#Set R-Squared and Slope values as numerical entries
+comparisonStatistics$R.Squared <- as.numeric(comparisonStatistics$R.Squared) #Convert to numeric values
+is.numeric(comparisonStatistics$R.Squared) #Confirm changes
+comparisonStatistics$Slope <- as.numeric(comparisonStatistics$Slope) #Convert to numeric values
+is.numeric(comparisonStatistics$Slope) #Confirm changes
+
+#Save table
+write.csv(comparisonStatistics, "2017-12-13-Peptide-Biomarker-Regression-Statistics.csv") #Write out table as .csv
+
 #### MAKE SITE SPECIFIC SCATTERPLOTS ####
 
 #Case Inlet
