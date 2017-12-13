@@ -86,12 +86,47 @@ for(i in 0:nPeptideNames) { #For all peptides
 #Assign biomarker names
 comparisonStatistics$Biomarker <- rep(x = colnames(peptideBiomarkerData)[41:50], times = 37) #Repeat the entire sequence of 10 biomarkers 37 times to meet column limit
 
-peptideBiomarkerModel <- lm(peptideBiomarkerData[,2] ~ peptideBiomarkerData[,41], na.action = na.omit) #Make model
-comparisonStatistics$ComparisonName[1] <- paste(colnames(peptideBiomarkerData)[2], "vs.", colnames(peptideBiomarkerData)[41]) #Assign comparison name
-comparisonStatistics$Peptide[1] <-  colnames(peptideBiomarkerData)[2] #Specify peptide
-comparisonStatistics$Biomarker[1] <- colnames(peptideBiomarkerData)[41] #Specify biomarker
-comparisonStatistics$R.Squared[1] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
-comparisonStatistics$Slope[1] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
+#Create a temporary dataframe for R-squared value storage
+tempRSquaredStorage <- data.frame("temp" = rep(0, nPeptides)) #Create a temporary dataframe for R-squared value storage with the same number of rows as nPeptides
+for(i in 1:nBiomarkers) {
+  tempRSquaredStorage[,i] <- data.frame("temp" = rep(0, nPeptides))
+} #Add more columns so the final dataframe has the same number of columns as nBiomarkers
+
+#Pull out R-squared values
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+  peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit) #Make model
+  tempRSquaredStorage[i,j] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
+  }
+}
+head(tempRSquaredStorage) #Confirm changes
+tempRSquaredStorage <- tempRSquaredStorage[2:nPeptides,41:nBiomarkers] #Remove empty columns and rows
+head(tempRSquaredStorage) #Confirm changes
+for(i in 0:nPeptideNames) { #For all peptides
+  comparisonStatistics$R.Squared[((10*i) + 1):(10*(i + 1))] <- tempRSquaredStorage[(i + 1),]
+} #Transfer R-squared values from tempRSquaredStorage to comparisonStatistics
+head(comparisonStatistics) #Confirm addition
+
+#Create a temporary dataframe for slope value storage
+tempSlopeStorage <- data.frame("temp" = rep(0, nPeptides)) #Create a temporary dataframe for R-squared value storage with the same number of rows as nPeptides
+for(i in 1:nBiomarkers) {
+  tempSlopeStorage[,i] <- data.frame("temp" = rep(0, nPeptides))
+} #Add more columns so the final dataframe has the same number of columns as nBiomarkers
+
+#Pull out slope values
+for(i in 2:nPeptides) { #For all peptides
+  for (j in 41:nBiomarkers) { #For all biomarkers
+    peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit) #Make model
+    tempSlopeStorage[i,j] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
+  }
+}
+head(tempSlopeStorage) #Confirm changes
+tempSlopeStorage <- tempSlopeStorage[2:nPeptides,41:nBiomarkers] #Remove empty columns and rows
+head(tempSlopeStorage) #Confirm changes
+for(i in 0:nPeptideNames) { #For all peptides
+  comparisonStatistics$Slope[((10*i) + 1):(10*(i + 1))] <- tempSlopeStorage[(i + 1),]
+} #Transfer R-squared values from tempSlopeStorage to comparisonStatistics
+head(comparisonStatistics) #Confirm addition
 
 #### MAKE SITE SPECIFIC SCATTERPLOTS ####
 
