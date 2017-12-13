@@ -78,11 +78,20 @@ comparisonStatistics <- data.frame("ComparisonName" = rep(x = 0, times = 370),
                                    "Slope" = rep(x = 0, times = 370)) #Create empty dataframe to hold all results
 head(comparisonStatistics) #Confirm changes
 
-nComparisons <- length(comparisonStatistics$ComparisonName) #Calculate number of comparisons
-for(i in 2:nPeptides) { #For all peptides
-  for (j in 41:nBiomarkers) { #For all biomarkers
-    testName <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]) #Assign comparison name
-    print(testName)
+testPeptides <- 3
+testBiomarkers <- 42
+testComparisonName <- 2
+
+for(i in 2:testPeptides) { #For all peptides
+  for (j in 41:testBiomarkers) { #For all biomarkers
+    for(k in 1:testComparisonName) { #For all comparisons
+    peptideBiomarkerModel <- lm(peptideBiomarkerData[,i] ~ peptideBiomarkerData[,j], na.action = na.omit)
+    comparisonStatistics$ComparisonName[k] <- paste(colnames(peptideBiomarkerData)[i], "vs.", colnames(peptideBiomarkerData)[j]) #Assign comparison name
+    comparisonStatistics$Peptide[k] <-  colnames(peptideBiomarkerData)[i] #Specify peptide
+    comparisonStatistics$Biomarker[k] <- colnames(peptideBiomarkerData)[j] #Specify biomarker
+    comparisonStatistics$R.Squared[k] <- format(summary(peptideBiomarkerModel)$adj.r.squared, digits = 4) #Adjusted R-squared
+    comparisonStatistics$Slope[k] <- format(summary(peptideBiomarkerModel)$coeff[2], digits = 4) #Regression's slope
+    }
   }
 }
 
