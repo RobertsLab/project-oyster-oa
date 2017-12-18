@@ -1,27 +1,39 @@
-#In this script, I'll visualize salinity data from Micah between sites. I'll examine diurnal fluctuations as well as an overall boxplot to see variation between sites and habitats over the course of the outplant. 
+#In this script, I'll quality control the environmental data. Using tidal data, I can replace any readings from when the probe was out of water with N/As.
 
 #### SET WORKING DIRECTORY ####
-setwd("..") #Set working directory to the master SRM folder
+setwd("../..") #Set working directory to the master SRM folder
 getwd()
 
-#### IMPORT DATA ####
+#### IMPORT AND FORMAT DATA ####
 
-environmentalData <- read.csv("../../data/DNR/2017-11-25-Calculated-Salinity-Output-from-Micah.csv", header = TRUE, na.strings = "NA")
-head(environmentalData)
+tideData <- read.csv("../../data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE) #Import the tide data
+head(tideData)
+tideData <- tideData[1:(length(tideData) - 2)] #Remove last two blank columns
+tideData$DateTime <- paste(tideData$Date, tideData$Time) #Create new DateTime column to easily merge tide and environmental data
+head(tideData) #Confirm changes
 
-#### SUBSET DATA ####
-#I only want the salinity data.
+pHDOData <- read.csv("../../data/DNR/2017-11-14-Environmental-Data-from-Micah.csv", header = TRUE, na.strings = "NA") #Import file with pH and DO data
+head(pHDOData) #Confirm import
+colnames(pHDOData) #View column names
 
-colnames(environmentalData)
-salinityData <- environmentalData[,c(1:2, seq(from = 3, to = 20, by = 2))] #Save salinity data as a new dataframe
-head(salinityData)
+pHData <- pHDOData[,c(1:3, 5, 7, 8, 10, 12)] #Subset only the bare site pH data
+head(pHData) #Confirm subset
+colnames(pHData) <- c("DateTime", "Date", "Time", "WBB-pH", "SKB-pH", "PGB-pH", "CIB-pH", "FBB-pH") #Rename columns
+head(pHData) #Confirm changes
+
+DOData <- pHDOData[,c(1:3, 23, 25, 27, 29, 31)] #Subset only the bare site DO data
+head(DOData) #Confirm subset
+colnames(DOData) <- c("DateTime", "Date", "Time", "WBB-DO", "SKB-DO", "PGB-DO", "CIB-DO", "FBB-DO") #Rename columns
+head(DOData) #Confirm changes
+
+salinityData <- read.csv("../../data/DNR/2017-11-25-Calculated-Salinity-Output-from-Micah.csv", header = TRUE, na.strings = "NA") #Import salinity data
+head(salinityData) #Confirm import
+colnames(salinityData) #Get column names
+salinityData <- salinityData[,c(1:2, seq(from = 3, to = 20, by = 2))] #Subset only the salinity information
+head(salinityData) #Confirm subset
 colnames(salinityData) <- c("Date", "Time", "CIB", "CIE", "FBB", "FBE", "PGE", "SKE", "SKB", "WBB", "WBE") #Rename columns
+salinityData$DateTime <- paste(salinityData$Date, salinityData$Time) #Create new DateTime column to easily merge tide and environmental data
 head(salinityData)
-
-#### REFORMAT DATA ####
-
-salinityData$Date.Time <- paste(salinityData$Date, salinityData$Time) #Create a Date.Time column
-head(salinityData) #Confirm changes
 
 #### CALCULATE RANGE OF SALINITY ####
 
