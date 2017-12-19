@@ -9,7 +9,7 @@ getwd()
 tideData <- read.csv("../../data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE) #Import the tide data
 head(tideData) #Confirm import
 tideData$Date <- as.Date(tideData$Date, format = "%m/%d/%y") #Convert entries to dates
-tideData$DateTime <- paste(tideData$Date, "", tideData$Time) #Create new DateTime column to easily merge tide and environmental data
+tideData$DateTime <- paste(tideData$Date, tideData$Time) #Create new DateTime column to easily merge tide and environmental data
 colnames(tideData) <- c("Date", "Time", "CI-Tide", "FB-Tide", "PG-Tide", "SK-Tide", "WB-Tide", "DateTime")
 head(tideData) #Confirm changes
 
@@ -57,4 +57,53 @@ DOTideData <- DOTideData[, -c(9:10)] #Remove redundant date and time columns
 colnames(DOTideData) <- c("DateTime", "Date", "Time", "WBB-DO", "SKB-DO", "PGB-DO", "CIB-DO", "FBB-DO", "CI-Tide", "FB-Tide", "PG-Tide", "SK-Tide", "WB-Tide") #Change column names
 head(DOTideData) #Confirm changes
 
-salinityTideData <- merge(x = salinityData, y = tideData, by = "DateTime")
+salinityTideData <- merge(x = salinityData, y = tideData, by = "DateTime") #Merge salinity and tide data
+head(salinityTideData) #Confirm merge
+colnames(salinityTideData) #Get column names
+salinityTideData <- salinityTideData[, -c(9:10)] #Remove redundant date and time columns
+colnames(salinityTideData) <- c("DateTime", "Date", "Time", "CIB-Salinity", "FBB-Salinity", "PGE-Salinity", "SKB-Salinity", "WBB-Salinity", "CI-Tide", "FB-Tide", "PG-Tide", "SK-Tide", "WB-Tide") #Change column names
+head(salinityTideData) #Confirm changes
+
+#### REMOVE EXPOSURE TIMES ####
+
+#pH Data
+pHTideData$`CIB-pH`[pHTideData$`CI-Tide` <= 1] <- "NA" #Replace CIB-pH values with "NA" when tide is less than 1
+pHTideData$`FBB-pH`[pHTideData$`FB-Tide` <= 1] <- "NA" #Replace FBB-pH values with "NA" when tide is less than 1
+pHTideData$`PGB-pH`[pHTideData$`PG-Tide` <= 1] <- "NA" #Replace PGB-pH values with "NA" when tide is less than 1
+pHTideData$`SKB-pH`[pHTideData$`SK-Tide` <= 1] <- "NA" #Replace SKB-pH values with "NA" when tide is less than 1
+pHTideData$`WBB-pH`[pHTideData$`WB-Tide` <= 1] <- "NA" #Replace WBB-pH values with "NA" when tide is less than 1
+
+#Convert to numeric values
+pHTideData$`CIB-pH` <- as.numeric(pHTideData$`CIB-pH`)
+pHTideData$`FBB-pH` <- as.numeric(pHTideData$`FBB-pH`)
+pHTideData$`PGB-pH` <- as.numeric(pHTideData$`PGB-pH`)
+pHTideData$`SKB-pH` <- as.numeric(pHTideData$`SKB-pH`)
+pHTideData$`WBB-pH` <- as.numeric(pHTideData$`WBB-pH`)
+
+#DO Data
+DOTideData$`CIB-DO`[DOTideData$`CI-Tide` <= 1] <- "NA" #Replace CIB-DO values with "NA" when tide is less than 1
+DOTideData$`FBB-DO`[DOTideData$`FB-Tide` <= 1] <- "NA" #Replace FBB-DO values with "NA" when tide is less than 1
+DOTideData$`PGB-DO`[DOTideData$`PG-Tide` <= 1] <- "NA" #Replace PGB-DO values with "NA" when tide is less than 1
+DOTideData$`SKB-DO`[DOTideData$`SK-Tide` <= 1] <- "NA" #Replace SKB-DO values with "NA" when tide is less than 1
+DOTideData$`WBB-DO`[DOTideData$`WB-Tide` <= 1] <- "NA" #Replace WBB-DO values with "NA" when tide is less than 1
+
+#Convert to numeric values
+DOTideData$`CIB-DO` <- as.numeric(DOTideData$`CIB-DO`)
+DOTideData$`FBB-DO` <- as.numeric(DOTideData$`FBB-DO`)
+DOTideData$`PGB-DO` <- as.numeric(DOTideData$`PGB-DO`)
+DOTideData$`SKB-DO` <- as.numeric(DOTideData$`SKB-DO`)
+DOTideData$`WBB-DO` <- as.numeric(DOTideData$`WBB-DO`)
+
+#Salinity Data
+salinityTideData$`CIB-Salinity`[salinityTideData$`CIB-Salinity` <= 1] <- "NA" #Replace CIB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`FBB-Salinity`[salinityTideData$`FB-Salinity` <= 1] <- "NA" #Replace FBB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`PGE-Salinity`[salinityTideData$`PG-Salinity` <= 1] <- "NA" #Replace PGE-Salinity values with "NA" when tide is less than 1
+salinityTideData$`SKB-Salinity`[salinityTideData$`SK-Salinity` <= 1] <- "NA" #Replace SKB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`WBB-Salinity`[salinityTideData$`WB-Salinity` <= 1] <- "NA" #Replace WBB-Salinity values with "NA" when tide is less than 1
+
+#Convert to numeric values
+salinityTideData$`CIB-Salinity` <- as.numeric(salinityTideData$`CIB-Salinity`)
+salinityTideData$`FBB-Salinity` <- as.numeric(salinityTideData$`FBB-Salinity`)
+salinityTideData$`PGE-Salinity` <- as.numeric(salinityTideData$`PGE-Salinity`)
+salinityTideData$`SKB-Salinity` <- as.numeric(salinityTideData$`SKB-Salinity`)
+salinityTideData$`WBB-Salinity` <- as.numeric(salinityTideData$`WBB-Salinity`)
