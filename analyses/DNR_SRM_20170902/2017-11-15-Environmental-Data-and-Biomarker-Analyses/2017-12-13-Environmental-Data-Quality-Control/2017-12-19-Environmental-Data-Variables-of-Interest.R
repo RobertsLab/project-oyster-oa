@@ -15,6 +15,15 @@ head(temperatureData) #Confirm subset
 colnames(temperatureData) <- c("Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
 temperatureData$Date <- as.Date(temperatureData$Date, format = "%m/%d/%y") #Convert entries to dates
 temperatureData$DateTime <- paste(temperatureData$Date, temperatureData$Time) #Create new DateTime column to easily merge tide and environmental data
+temperatureData <- data.frame(temperatureData$DateTime,
+                              temperatureData$Date,
+                              temperatureData$Time,
+                              temperatureData$CIB,
+                              temperatureData$FBB,
+                              temperatureData$PGB,
+                              temperatureData$SKB,
+                              temperatureData$WBB) #Reorganize columns
+colnames(temperatureData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
 head(temperatureData) #Confirm changes
 
 #pH
@@ -23,6 +32,15 @@ head(pHData) #Confirm import
 colnames(pHData) #Get column names
 pHData <- pHData[,-c(1, 10:14)] #Save only pH data as a new dataframe
 colnames(pHData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
+pHData <- data.frame(pHData$DateTime,
+                     pHData$Date,
+                     pHData$Time,
+                     pHData$CIB,
+                     pHData$FBB,
+                     pHData$PGB,
+                     pHData$SKB,
+                     pHData$WBB) #Reorganize columns
+colnames(pHData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
 head(pHData) #Confirm changes
 
 #DO
@@ -31,6 +49,15 @@ head(DOData) #Confirm import
 colnames(DOData) #Get column names
 DOData <- DOData[,-c(1, 10:14)] #Save DO data as a new dataframe
 colnames(DOData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
+DOData <- data.frame(DOData$DateTime,
+                     DOData$Date,
+                     DOData$Time,
+                     DOData$CIB,
+                     DOData$FBB,
+                     DOData$PGB,
+                     DOData$SKB,
+                     DOData$WBB) #Reorganize columns
+colnames(DOData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
 head(DOData) #Confirm changes
 
 #Salinity
@@ -44,6 +71,17 @@ head(salinityData) #Confirm changes
 #### CALCULATE IMPORTANT VARIABLES ####
 
 #Temperature
+temperatureVariablesofInterest <- data.frame("blank1" = rep(0, times = 11),
+                                             "blank2" = rep(0, times = 11),
+                                             "blank3" = rep(0, times = 11),
+                                             "CI" = rep(0, times = 11),
+                                             "FB" = rep(0, times = 11),
+                                             "PG" = rep(0, times = 11),
+                                             "SK" = rep(0, times = 11),
+                                             "WB" = rep(0, times = 11)) #Create an empty dataframe. Columns 4-8 are for sites, following the pattern of all environmental variable datasets.
+rownames(temperatureVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "StandardDeviation", "Percent±2SD", "FirstQuartile", "Median", "ThirdQuartile", "IQR", "Percent±1.5IQR")
+head(temperatureVariablesofInterest) #Confirm dataframe creation
+
 max(temperatureData$WBB, na.rm = TRUE) #Calculate maximum
 min(temperatureData$WBB, na.rm = TRUE) #Calculate minimum
 mean(temperatureData$WBB, na.rm = TRUE) #Calculate mean
