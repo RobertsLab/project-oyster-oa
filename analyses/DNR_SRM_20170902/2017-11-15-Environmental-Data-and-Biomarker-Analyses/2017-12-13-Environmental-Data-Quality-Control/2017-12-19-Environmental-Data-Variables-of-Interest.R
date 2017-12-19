@@ -158,3 +158,31 @@ head(DOVariablesofInterest) #Confirm data table is properly filled
 DOVariablesofInterest <- DOVariablesofInterest[, -c(1:3)] #Remove blank columns
 head(DOVariablesofInterest) #Confirm changes
 
+#Salinity
+salinityVariablesofInterest <- data.frame("blank1" = rep(0, times = 11),
+                                    "blank2" = rep(0, times = 11),
+                                    "blank3" = rep(0, times = 11),
+                                    "CI" = rep(0, times = 11),
+                                    "FB" = rep(0, times = 11),
+                                    "PG" = rep(0, times = 11),
+                                    "SK" = rep(0, times = 11),
+                                    "WB" = rep(0, times = 11)) #Create an empty dataframe. Columns 4-8 are for sites, following the pattern of all environmental variable datasets.
+rownames(salinityVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "StandardDeviation", "Percent±2SD", "FirstQuartile", "Median", "ThirdQuartile", "IQR", "Percent±1.5IQR")
+head(salinityVariablesofInterest) #Confirm dataframe creation
+
+for(i in 4:nSites) { #For each site
+  salinityVariablesofInterest[1, i] <- max(salinityData[, i], na.rm = TRUE) #Calculate maximum
+  salinityVariablesofInterest[2, i] <- min(salinityData[, i], na.rm = TRUE) #Calculate minimum
+  salinityVariablesofInterest[3, i] <- mean(salinityData[, i], na.rm = TRUE) #Calculate mean
+  salinityVariablesofInterest[4, i] <- var(salinityData[, i], na.rm = TRUE) #Calculate variance
+  salinityVariablesofInterest[5, i] <- sqrt(var(salinityData[, i], na.rm = TRUE)) #Calculate SD
+  salinityVariablesofInterest[6, i] <- ((sum((salinityData[, i] > (mean(salinityData[, i], na.rm = TRUE) + (2*sqrt(var(salinityData[, i], na.rm = TRUE))))), (salinityData[, i] < (mean(salinityData[, i], na.rm = TRUE) - (2*sqrt(var(salinityData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(salinityData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
+  salinityVariablesofInterest[7, i] <- as.numeric(quantile(salinityData[, i], na.rm = TRUE)[2]) #Calculate first quartile
+  salinityVariablesofInterest[8, i] <- as.numeric(quantile(salinityData[, i], na.rm = TRUE)[3]) #Calculate median
+  salinityVariablesofInterest[9, i] <- as.numeric(quantile(salinityData[, i], na.rm = TRUE)[4]) #Calculate third quartile
+  salinityVariablesofInterest[10, i] <- as.numeric(quantile(salinityData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(salinityData[, i], na.rm = TRUE)[2]) #Calculate IQR
+  salinityVariablesofInterest[11, i] <- ((sum((salinityData[, i] > as.numeric(quantile(salinityData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(salinityData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(salinityData[, i], na.rm = TRUE)[2]))), (salinityData[, i] < as.numeric(quantile(salinityData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(salinityData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(salinityData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(salinityData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+} #Calculate variables of interest at each site for salinity data
+head(salinityVariablesofInterest) #Confirm data table is properly filled
+salinityVariablesofInterest <- salinityVariablesofInterest[, -c(1:3)] #Remove blank columns
+head(salinityVariablesofInterest) #Confirm changes
