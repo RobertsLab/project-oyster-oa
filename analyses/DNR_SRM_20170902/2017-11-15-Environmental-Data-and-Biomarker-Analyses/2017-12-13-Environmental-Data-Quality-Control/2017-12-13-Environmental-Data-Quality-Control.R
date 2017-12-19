@@ -67,11 +67,11 @@ head(salinityTideData) #Confirm changes
 #### REMOVE EXPOSURE TIMES ####
 
 #pH Data
-pHTideData$`CIB-pH`[pHTideData$`CI-Tide` <= 1] <- "NA" #Replace CIB-pH values with "NA" when tide is less than 1
-pHTideData$`FBB-pH`[pHTideData$`FB-Tide` <= 1] <- "NA" #Replace FBB-pH values with "NA" when tide is less than 1
-pHTideData$`PGB-pH`[pHTideData$`PG-Tide` <= 1] <- "NA" #Replace PGB-pH values with "NA" when tide is less than 1
-pHTideData$`SKB-pH`[pHTideData$`SK-Tide` <= 1] <- "NA" #Replace SKB-pH values with "NA" when tide is less than 1
-pHTideData$`WBB-pH`[pHTideData$`WB-Tide` <= 1] <- "NA" #Replace WBB-pH values with "NA" when tide is less than 1
+pHTideData$`CIB-pH`[pHTideData$`CI-Tide` <= 1] <- NA #Replace CIB-pH values with "NA" when tide is less than 1
+pHTideData$`FBB-pH`[pHTideData$`FB-Tide` <= 1] <- NA #Replace FBB-pH values with "NA" when tide is less than 1
+pHTideData$`PGB-pH`[pHTideData$`PG-Tide` <= 1] <- NA #Replace PGB-pH values with "NA" when tide is less than 1
+pHTideData$`SKB-pH`[pHTideData$`SK-Tide` <= 1] <- NA #Replace SKB-pH values with "NA" when tide is less than 1
+pHTideData$`WBB-pH`[pHTideData$`WB-Tide` <= 1] <- NA #Replace WBB-pH values with "NA" when tide is less than 1
 
 #Convert to numeric values
 pHTideData$`CIB-pH` <- as.numeric(pHTideData$`CIB-pH`)
@@ -81,11 +81,11 @@ pHTideData$`SKB-pH` <- as.numeric(pHTideData$`SKB-pH`)
 pHTideData$`WBB-pH` <- as.numeric(pHTideData$`WBB-pH`)
 
 #DO Data
-DOTideData$`CIB-DO`[DOTideData$`CI-Tide` <= 1] <- "NA" #Replace CIB-DO values with "NA" when tide is less than 1
-DOTideData$`FBB-DO`[DOTideData$`FB-Tide` <= 1] <- "NA" #Replace FBB-DO values with "NA" when tide is less than 1
-DOTideData$`PGB-DO`[DOTideData$`PG-Tide` <= 1] <- "NA" #Replace PGB-DO values with "NA" when tide is less than 1
-DOTideData$`SKB-DO`[DOTideData$`SK-Tide` <= 1] <- "NA" #Replace SKB-DO values with "NA" when tide is less than 1
-DOTideData$`WBB-DO`[DOTideData$`WB-Tide` <= 1] <- "NA" #Replace WBB-DO values with "NA" when tide is less than 1
+DOTideData$`CIB-DO`[DOTideData$`CI-Tide` <= 1] <- NA #Replace CIB-DO values with "NA" when tide is less than 1
+DOTideData$`FBB-DO`[DOTideData$`FB-Tide` <= 1] <- NA #Replace FBB-DO values with "NA" when tide is less than 1
+DOTideData$`PGB-DO`[DOTideData$`PG-Tide` <= 1] <- NA #Replace PGB-DO values with "NA" when tide is less than 1
+DOTideData$`SKB-DO`[DOTideData$`SK-Tide` <= 1] <- NA #Replace SKB-DO values with "NA" when tide is less than 1
+DOTideData$`WBB-DO`[DOTideData$`WB-Tide` <= 1] <- NA #Replace WBB-DO values with "NA" when tide is less than 1
 
 #Convert to numeric values
 DOTideData$`CIB-DO` <- as.numeric(DOTideData$`CIB-DO`)
@@ -95,11 +95,11 @@ DOTideData$`SKB-DO` <- as.numeric(DOTideData$`SKB-DO`)
 DOTideData$`WBB-DO` <- as.numeric(DOTideData$`WBB-DO`)
 
 #Salinity Data
-salinityTideData$`CIB-Salinity`[salinityTideData$`CIB-Salinity` <= 1] <- "NA" #Replace CIB-Salinity values with "NA" when tide is less than 1
-salinityTideData$`FBB-Salinity`[salinityTideData$`FB-Salinity` <= 1] <- "NA" #Replace FBB-Salinity values with "NA" when tide is less than 1
-salinityTideData$`PGE-Salinity`[salinityTideData$`PG-Salinity` <= 1] <- "NA" #Replace PGE-Salinity values with "NA" when tide is less than 1
-salinityTideData$`SKB-Salinity`[salinityTideData$`SK-Salinity` <= 1] <- "NA" #Replace SKB-Salinity values with "NA" when tide is less than 1
-salinityTideData$`WBB-Salinity`[salinityTideData$`WB-Salinity` <= 1] <- "NA" #Replace WBB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`CIB-Salinity`[salinityTideData$`CIB-Salinity` <= 1] <- NA #Replace CIB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`FBB-Salinity`[salinityTideData$`FB-Salinity` <= 1] <- NA #Replace FBB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`PGE-Salinity`[salinityTideData$`PG-Salinity` <= 1] <- NA #Replace PGE-Salinity values with "NA" when tide is less than 1
+salinityTideData$`SKB-Salinity`[salinityTideData$`SK-Salinity` <= 1] <- NA #Replace SKB-Salinity values with "NA" when tide is less than 1
+salinityTideData$`WBB-Salinity`[salinityTideData$`WB-Salinity` <= 1] <- NA #Replace WBB-Salinity values with "NA" when tide is less than 1
 
 #Convert to numeric values
 salinityTideData$`CIB-Salinity` <- as.numeric(salinityTideData$`CIB-Salinity`)
@@ -107,3 +107,36 @@ salinityTideData$`FBB-Salinity` <- as.numeric(salinityTideData$`FBB-Salinity`)
 salinityTideData$`PGE-Salinity` <- as.numeric(salinityTideData$`PGE-Salinity`)
 salinityTideData$`SKB-Salinity` <- as.numeric(salinityTideData$`SKB-Salinity`)
 salinityTideData$`WBB-Salinity` <- as.numeric(salinityTideData$`WBB-Salinity`)
+
+#### REMOVE OUTLIERS ####
+
+#pH Data
+nSites <- 8 #Sites are from columns 4 to 8
+for(i in 4:nSites) { #For individual site data
+  upperBound <- as.numeric((quantile(pHTideData[, i], na.rm = TRUE)[4]) + (1.5*(quantile(pHTideData[, i], na.rm = TRUE)[4] - quantile(pHTideData[, i], na.rm = TRUE)[2]))) #Calculate upper bound
+  lowerBound <- as.numeric((quantile(pHTideData[, i], na.rm = TRUE)[2]) - (1.5*(quantile(pHTideData[, i], na.rm = TRUE)[4] - quantile(pHTideData[, i], na.rm = TRUE)[2]))) #Calculate lower bound
+  pHTideData[, i][pHTideData[, i] > upperBound] <- NA #Replace any values higher than upper bound with NA
+  pHTideData[, i][pHTideData[, i] < lowerBound] <- NA #Replace any values lower than upper bound with NA
+} #Replace outliers with NA values
+
+#DO Data
+for(i in 4:nSites) { #For individual site data
+  upperBound <- as.numeric((quantile(DOTideData[, i], na.rm = TRUE)[4]) + (1.5*(quantile(DOTideData[, i], na.rm = TRUE)[4] - quantile(DOTideData[, i], na.rm = TRUE)[2]))) #Calculate upper bound
+  lowerBound <- 0 #Dissolved oxygen content cannot be less than zero
+  DOTideData[, i][DOTideData[, i] > upperBound] <- NA #Replace any values higher than upper bound with NA
+  DOTideData[, i][DOTideData[, i] < lowerBound] <- NA #Replace any values lower than upper bound with NA
+} #Replace outliers with NA values
+
+#Salinity Data
+for(i in 4:nSites) { #For individual site data
+  upperBound <- as.numeric((quantile(salinityTideData[, i], na.rm = TRUE)[4]) + (1.5*(quantile(salinityTideData[, i], na.rm = TRUE)[4] - quantile(salinityTideData[, i], na.rm = TRUE)[2]))) #Calculate upper bound
+  lowerBound <- as.numeric((quantile(salinityTideData[, i], na.rm = TRUE)[2]) - (1.5*(quantile(salinityTideData[, i], na.rm = TRUE)[4] - quantile(salinityTideData[, i], na.rm = TRUE)[2]))) #Calculate lower bound
+  salinityTideData[, i][salinityTideData[, i] > upperBound] <- NA #Replace any values higher than upper bound with NA
+  salinityTideData[, i][salinityTideData[, i] < lowerBound] <- NA #Replace any values lower than upper bound with NA
+} #Replace outliers with NA values
+
+#### WRITE OUT AS NEW DATAFRAMES ####
+
+#write.csv(pHTideData, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality3-Control/2017-12-18-pH-Data-QC-with-Tide-Data.csv") #pH
+#write.csv(DOTideData, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-DO-Data-QC-with-Tide-Data.csv") #DO
+#write.csv(salinityTideData, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-Salinity-Data-QC-with-Tide-Data.csv") #Salinity
