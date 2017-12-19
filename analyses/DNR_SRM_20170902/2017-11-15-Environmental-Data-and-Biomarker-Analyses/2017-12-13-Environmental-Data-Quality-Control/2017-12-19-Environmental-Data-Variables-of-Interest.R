@@ -128,3 +128,33 @@ for(i in 4:nSites) { #For each site
 head(pHVariablesofInterest) #Confirm data table is properly filled
 pHVariablesofInterest <- pHVariablesofInterest[, -c(1:3)] #Remove blank columns
 head(pHVariablesofInterest) #Confirm changes
+
+#DO
+DOVariablesofInterest <- data.frame("blank1" = rep(0, times = 11),
+                                    "blank2" = rep(0, times = 11),
+                                    "blank3" = rep(0, times = 11),
+                                    "CI" = rep(0, times = 11),
+                                    "FB" = rep(0, times = 11),
+                                    "PG" = rep(0, times = 11),
+                                    "SK" = rep(0, times = 11),
+                                    "WB" = rep(0, times = 11)) #Create an empty dataframe. Columns 4-8 are for sites, following the pattern of all environmental variable datasets.
+rownames(DOVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "StandardDeviation", "Percent±2SD", "FirstQuartile", "Median", "ThirdQuartile", "IQR", "Percent±1.5IQR")
+head(DOVariablesofInterest) #Confirm dataframe creation
+
+for(i in 4:nSites) { #For each site
+  DOVariablesofInterest[1, i] <- max(DOData[, i], na.rm = TRUE) #Calculate maximum
+  DOVariablesofInterest[2, i] <- min(DOData[, i], na.rm = TRUE) #Calculate minimum
+  DOVariablesofInterest[3, i] <- mean(DOData[, i], na.rm = TRUE) #Calculate mean
+  DOVariablesofInterest[4, i] <- var(DOData[, i], na.rm = TRUE) #Calculate variance
+  DOVariablesofInterest[5, i] <- sqrt(var(DOData[, i], na.rm = TRUE)) #Calculate SD
+  DOVariablesofInterest[6, i] <- ((sum((DOData[, i] > (mean(DOData[, i], na.rm = TRUE) + (2*sqrt(var(DOData[, i], na.rm = TRUE))))), (DOData[, i] < (mean(DOData[, i], na.rm = TRUE) - (2*sqrt(var(DOData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(DOData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
+  DOVariablesofInterest[7, i] <- as.numeric(quantile(DOData[, i], na.rm = TRUE)[2]) #Calculate first quartile
+  DOVariablesofInterest[8, i] <- as.numeric(quantile(DOData[, i], na.rm = TRUE)[3]) #Calculate median
+  DOVariablesofInterest[9, i] <- as.numeric(quantile(DOData[, i], na.rm = TRUE)[4]) #Calculate third quartile
+  DOVariablesofInterest[10, i] <- as.numeric(quantile(DOData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(DOData[, i], na.rm = TRUE)[2]) #Calculate IQR
+  DOVariablesofInterest[11, i] <- ((sum((DOData[, i] > as.numeric(quantile(DOData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(DOData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(DOData[, i], na.rm = TRUE)[2]))), (DOData[, i] < as.numeric(quantile(DOData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(DOData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(DOData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(DOData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+} #Calculate variables of interest at each site for DO data
+head(DOVariablesofInterest) #Confirm data table is properly filled
+DOVariablesofInterest <- DOVariablesofInterest[, -c(1:3)] #Remove blank columns
+head(DOVariablesofInterest) #Confirm changes
+
