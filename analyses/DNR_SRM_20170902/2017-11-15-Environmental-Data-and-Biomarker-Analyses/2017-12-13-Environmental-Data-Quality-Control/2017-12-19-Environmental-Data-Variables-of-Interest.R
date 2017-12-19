@@ -113,18 +113,18 @@ rownames(pHVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "
 head(pHVariablesofInterest) #Confirm dataframe creation
 
 for(i in 4:nSites) { #For each site
-  temperatureVariablesofInterest[1, i] <- max(temperatureData[, i], na.rm = TRUE) #Calculate maximum
-  temperatureVariablesofInterest[2, i] <- min(temperatureData[, i], na.rm = TRUE) #Calculate minimum
-  temperatureVariablesofInterest[3, i] <- mean(temperatureData[, i], na.rm = TRUE) #Calculate mean
-  temperatureVariablesofInterest[4, i] <- var(temperatureData[, i], na.rm = TRUE) #Calculate variance
-  temperatureVariablesofInterest[5, i] <- sqrt(var(temperatureData[, i], na.rm = TRUE)) #Calculate SD
-  temperatureVariablesofInterest[6, i] <- ((sum((temperatureData[, i] > (mean(temperatureData[, i], na.rm = TRUE) + (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), (temperatureData[, i] < (mean(temperatureData[, i], na.rm = TRUE) - (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
-  temperatureVariablesofInterest[7, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate first quartile
-  temperatureVariablesofInterest[8, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[3]) #Calculate median
-  temperatureVariablesofInterest[9, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) #Calculate third quartile
-  temperatureVariablesofInterest[10, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate IQR
-  temperatureVariablesofInterest[11, i] <- ((sum((temperatureData[, i] > as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), (temperatureData[, i] < as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
-} #Calculate variables of interest at each site for temperature data
-head(temperatureVariablesofInterest) #Confirm data table is properly filled
-temperatureVariablesofInterest <- temperatureVariablesofInterest[, -c(1:3)] #Remove blank columns
-head(temperatureVariablesofInterest) #Confirm changes
+  pHVariablesofInterest[1, i] <- max(pHData[, i], na.rm = TRUE) #Calculate maximum
+  pHVariablesofInterest[2, i] <- min(pHData[, i], na.rm = TRUE) #Calculate minimum
+  pHVariablesofInterest[3, i] <- mean(pHData[, i], na.rm = TRUE) #Calculate mean
+  pHVariablesofInterest[4, i] <- var(pHData[, i], na.rm = TRUE) #Calculate variance
+  pHVariablesofInterest[5, i] <- sqrt(var(pHData[, i], na.rm = TRUE)) #Calculate SD
+  pHVariablesofInterest[6, i] <- ((sum((pHData[, i] > (mean(pHData[, i], na.rm = TRUE) + (2*sqrt(var(pHData[, i], na.rm = TRUE))))), (pHData[, i] < (mean(pHData[, i], na.rm = TRUE) - (2*sqrt(var(pHData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(pHData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
+  pHVariablesofInterest[7, i] <- as.numeric(quantile(pHData[, i], na.rm = TRUE)[2]) #Calculate first quartile
+  pHVariablesofInterest[8, i] <- as.numeric(quantile(pHData[, i], na.rm = TRUE)[3]) #Calculate median
+  pHVariablesofInterest[9, i] <- as.numeric(quantile(pHData[, i], na.rm = TRUE)[4]) #Calculate third quartile
+  pHVariablesofInterest[10, i] <- as.numeric(quantile(pHData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(pHData[, i], na.rm = TRUE)[2]) #Calculate IQR
+  pHVariablesofInterest[11, i] <- ((sum((pHData[, i] > as.numeric(quantile(pHData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(pHData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(pHData[, i], na.rm = TRUE)[2]))), (pHData[, i] < as.numeric(quantile(pHData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(pHData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(pHData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(pHData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+} #Calculate variables of interest at each site for pH data
+head(pHVariablesofInterest) #Confirm data table is properly filled
+pHVariablesofInterest <- pHVariablesofInterest[, -c(1:3)] #Remove blank columns
+head(pHVariablesofInterest) #Confirm changes
