@@ -69,7 +69,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for pH differences between sites. A
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 #I'm going to make a 3x2 multipanel plot and put the site boxplot in the bottom right corner.
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-pH-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-pH-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
 
 par(mfrow = c(3,2)) #Create multipanel plot with 3 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -103,6 +103,6 @@ legend("topright", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
 mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
-dev.off()
+#dev.off()
 
 #Be sure to clear all plot history to reset par.
