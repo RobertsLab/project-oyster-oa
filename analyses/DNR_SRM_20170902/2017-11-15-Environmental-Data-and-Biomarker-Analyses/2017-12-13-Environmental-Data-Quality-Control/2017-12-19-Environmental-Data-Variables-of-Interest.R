@@ -82,14 +82,49 @@ temperatureVariablesofInterest <- data.frame("blank1" = rep(0, times = 11),
 rownames(temperatureVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "StandardDeviation", "Percent±2SD", "FirstQuartile", "Median", "ThirdQuartile", "IQR", "Percent±1.5IQR")
 head(temperatureVariablesofInterest) #Confirm dataframe creation
 
-max(temperatureData$WBB, na.rm = TRUE) #Calculate maximum
-min(temperatureData$WBB, na.rm = TRUE) #Calculate minimum
-mean(temperatureData$WBB, na.rm = TRUE) #Calculate mean
-var(temperatureData$WBB, na.rm = TRUE) #Calculate variance
-sqrt(var(temperatureData$WBB, na.rm = TRUE)) #Calculate SD
-((sum((temperatureData$WBB > (mean(temperatureData$WBB, na.rm = TRUE) + (2*sqrt(var(temperatureData$WBB, na.rm = TRUE))))), (temperatureData$WBB < (mean(temperatureData$WBB, na.rm = TRUE) - (2*sqrt(var(temperatureData$WBB, na.rm = TRUE))))), na.rm = TRUE))/(length(temperatureData$WBB)))*100 #Calculate percentage of data more than 2 SDs away from mean
-as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[2]) #Calculate first quartile
-as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[3]) #Calculate median
-as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[4]) #Calculate third quartile
-as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[2]) #Calculate IQR
-((sum((temperatureData$WBB > as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[2]))), (temperatureData$WBB < as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData$WBB, na.rm = TRUE)[2]))), na.rm = TRUE))/(length(temperatureData$WBB)))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+nSites <- 8 #Sites are in columns 4-8
+for(i in 4:nSites) { #For each site
+  temperatureVariablesofInterest[1, i] <- max(temperatureData[, i], na.rm = TRUE) #Calculate maximum
+  temperatureVariablesofInterest[2, i] <- min(temperatureData[, i], na.rm = TRUE) #Calculate minimum
+  temperatureVariablesofInterest[3, i] <- mean(temperatureData[, i], na.rm = TRUE) #Calculate mean
+  temperatureVariablesofInterest[4, i] <- var(temperatureData[, i], na.rm = TRUE) #Calculate variance
+  temperatureVariablesofInterest[5, i] <- sqrt(var(temperatureData[, i], na.rm = TRUE)) #Calculate SD
+  temperatureVariablesofInterest[6, i] <- ((sum((temperatureData[, i] > (mean(temperatureData[, i], na.rm = TRUE) + (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), (temperatureData[, i] < (mean(temperatureData[, i], na.rm = TRUE) - (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
+  temperatureVariablesofInterest[7, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate first quartile
+  temperatureVariablesofInterest[8, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[3]) #Calculate median
+  temperatureVariablesofInterest[9, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) #Calculate third quartile
+  temperatureVariablesofInterest[10, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate IQR
+  temperatureVariablesofInterest[11, i] <- ((sum((temperatureData[, i] > as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), (temperatureData[, i] < as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+} #Calculate variables of interest at each site for temperature data
+head(temperatureVariablesofInterest) #Confirm data table is properly filled
+temperatureVariablesofInterest <- temperatureVariablesofInterest[, -c(1:3)] #Remove blank columns
+head(temperatureVariablesofInterest) #Confirm changes
+
+#pH
+pHVariablesofInterest <- data.frame("blank1" = rep(0, times = 11),
+                                             "blank2" = rep(0, times = 11),
+                                             "blank3" = rep(0, times = 11),
+                                             "CI" = rep(0, times = 11),
+                                             "FB" = rep(0, times = 11),
+                                             "PG" = rep(0, times = 11),
+                                             "SK" = rep(0, times = 11),
+                                             "WB" = rep(0, times = 11)) #Create an empty dataframe. Columns 4-8 are for sites, following the pattern of all environmental variable datasets.
+rownames(pHVariablesofInterest) <- c("Maximum", "Minimum", "Mean", "Variance", "StandardDeviation", "Percent±2SD", "FirstQuartile", "Median", "ThirdQuartile", "IQR", "Percent±1.5IQR")
+head(pHVariablesofInterest) #Confirm dataframe creation
+
+for(i in 4:nSites) { #For each site
+  temperatureVariablesofInterest[1, i] <- max(temperatureData[, i], na.rm = TRUE) #Calculate maximum
+  temperatureVariablesofInterest[2, i] <- min(temperatureData[, i], na.rm = TRUE) #Calculate minimum
+  temperatureVariablesofInterest[3, i] <- mean(temperatureData[, i], na.rm = TRUE) #Calculate mean
+  temperatureVariablesofInterest[4, i] <- var(temperatureData[, i], na.rm = TRUE) #Calculate variance
+  temperatureVariablesofInterest[5, i] <- sqrt(var(temperatureData[, i], na.rm = TRUE)) #Calculate SD
+  temperatureVariablesofInterest[6, i] <- ((sum((temperatureData[, i] > (mean(temperatureData[, i], na.rm = TRUE) + (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), (temperatureData[, i] < (mean(temperatureData[, i], na.rm = TRUE) - (2*sqrt(var(temperatureData[, i], na.rm = TRUE))))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 2 SDs away from mean
+  temperatureVariablesofInterest[7, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate first quartile
+  temperatureVariablesofInterest[8, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[3]) #Calculate median
+  temperatureVariablesofInterest[9, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) #Calculate third quartile
+  temperatureVariablesofInterest[10, i] <- as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) #Calculate IQR
+  temperatureVariablesofInterest[11, i] <- ((sum((temperatureData[, i] > as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) + 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), (temperatureData[, i] < as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]) - 1.5*(as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[4]) - as.numeric(quantile(temperatureData[, i], na.rm = TRUE)[2]))), na.rm = TRUE))/(length(temperatureData[, i])))*100 #Calculate percentage of data more than 1.5*IQR away from the upper or lower quartiles
+} #Calculate variables of interest at each site for temperature data
+head(temperatureVariablesofInterest) #Confirm data table is properly filled
+temperatureVariablesofInterest <- temperatureVariablesofInterest[, -c(1:3)] #Remove blank columns
+head(temperatureVariablesofInterest) #Confirm changes
