@@ -51,3 +51,53 @@ legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]
 #dev.off()
 
 TukeyHSD(siteANOVA) #Significant pairwise differences: FB-CI (0.0313908) and SK-FB (0.0102010).
+
+#### IMPORT AND FORMAT PEPTIDE ABUNDANCE DATA ####
+
+SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
+rownames(SRMDataNMDSAveragedCorrected) <- SRMDataNMDSAveragedCorrected[,1]
+SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveragedCorrected[,-1] #Remove first column of rownames
+head(SRMDataNMDSAveragedCorrected) #Confirm import.
+
+SRMDataNMDSAveragedCorrectedTransposed <- data.frame(t(SRMDataNMDSAveragedCorrected)) #Transpose the data
+SRMDataNMDSAveragedCorrectedTransposed$PRVial <- rownames(SRMDataNMDSAveragedCorrectedTransposed) #Save rownames as a new column
+head(SRMDataNMDSAveragedCorrectedTransposed) #Confirm changes
+
+#### MERGE DATASETS ####
+
+peptideGrowthData <- merge(x = SRMDataNMDSAveragedCorrectedTransposed, y = growthSamplesOnly, by = "PRVial") #Merge dataframes by PRVial
+head(peptideGrowthData) #Confirm changes. Peptides are columns 2-38, percentGrowth is 43.
+
+#### ASSIGN COLORS BY SITE ####
+
+attach(peptideGrowthData) #Attach dataframe
+peptideGrowthData <- peptideGrowthData[order(Site),] #Reorder so sites are sorted alphabetically
+head(peptideGrowthData) #Confirm sorting
+tail(peptideGrowthData) #Confirm sorting
+detach(peptideGrowthData)
+peptideGrowthData$Colors <- c(rep(x = "red", times = sum(peptideGrowthData$Site == "CI")),
+                                 rep(x = "blue", times = sum(peptideGrowthData$Site == "FB")),
+                                 rep(x = "magenta", times = sum(peptideGrowthData$Site == "PG")),
+                                 rep(x = "green", times = sum(peptideGrowthData$Site == "SK")),
+                                 rep(x = "black", times = sum(peptideGrowthData$Site == "WB"))) #Create a color vector
+head(peptideGrowthData) #Confirm addition
+tail(peptideGrowthData) #Confirm addition
+
+#### CHANGE WORKING DIRECTORY ####
+
+setwd("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-19-Growth-Data-Analyses/2017-12-19-Peptide-Growth-Scatterplots/") #Change working directory
+getwd() #Confirm changes
+
+#### CREATE SCATTERPLOTS ####
+
+nPeptides <- 38 #Columns 2-38 are peptides
+for(i in 2:nPeptides) { #For all peptides
+  peptideGrowthModel <- lm(peptideGrowthData[,i] ~ peptideGrowthData$percentGrowth, na.action = na.omit)
+  fileName <- paste(colnames(peptideGrowthData)[i], "vs.", "Percent Growth", ".jpeg")
+  jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
+  plot(x = peptideGrowthData$percentGrowth, y = peptideGrowthData[,i], xlab = "Percent Growth", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideGrowthData)[i], "vs.", "Percent Growth", cex.main = 1.75)) #Create plot, but do not plot points
+  text(x = peptideGrowthData$percentGrowth, y = peptideGrowthData[,i], labels = peptideGrowthData$PRVial, cex = 2, col = peptideGrowthData$Colors, font = 2) #Plot sample ID instead of points
+  abline(peptideGrowthModel) #Plot regression
+  legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideGrowthModel)$adj.r.squared, digits=4))) #Plot R-squared value
+  dev.off() #Turn off plotting device
+}
