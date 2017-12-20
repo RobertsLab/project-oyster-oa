@@ -101,3 +101,5 @@ for(i in 2:nPeptides) { #For all peptides
   legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideGrowthModel)$adj.r.squared, digits=4))) #Plot R-squared value
   dev.off() #Turn off plotting device
 }
+
+#Because none of the R-squared values were much different from zero, I will not be saving any of the information in a separate table.
