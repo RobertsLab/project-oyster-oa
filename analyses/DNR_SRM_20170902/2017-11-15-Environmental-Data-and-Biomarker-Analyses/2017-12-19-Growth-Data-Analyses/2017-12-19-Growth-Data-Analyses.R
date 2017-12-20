@@ -95,7 +95,7 @@ for(i in 2:nPeptides) { #For all peptides
   peptideGrowthModel <- lm(peptideGrowthData[,i] ~ peptideGrowthData$percentGrowth, na.action = na.omit)
   fileName <- paste(colnames(peptideGrowthData)[i], "vs.", "Percent Growth", ".jpeg")
   jpeg(filename = fileName, width = 1000, height = 1000) #Save .jpeg using set filename
-  plot(x = peptideGrowthData$percentGrowth, y = peptideGrowthData[,i], xlab = "Percent Growth", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideGrowthData)[i], "vs.", "Percent Growth", cex.main = 1.75)) #Create plot, but do not plot points
+  plot(x = peptideGrowthData$percentGrowth, y = peptideGrowthData[,i], xlab = "Percent Growth", ylab = "Abundance", type = "n", cex.lab = 1.5, cex.axis = 1.5, main = paste(colnames(peptideGrowthData)[i], "vs.", "Percent Growth"), cex.main = 1.75) #Create plot, but do not plot points
   text(x = peptideGrowthData$percentGrowth, y = peptideGrowthData[,i], labels = peptideGrowthData$PRVial, cex = 2, col = peptideGrowthData$Colors, font = 2) #Plot sample ID instead of points
   abline(peptideGrowthModel) #Plot regression
   legend("topleft", bty = "n", legend = paste("R2 =", format(summary(peptideGrowthModel)$adj.r.squared, digits=4))) #Plot R-squared value
