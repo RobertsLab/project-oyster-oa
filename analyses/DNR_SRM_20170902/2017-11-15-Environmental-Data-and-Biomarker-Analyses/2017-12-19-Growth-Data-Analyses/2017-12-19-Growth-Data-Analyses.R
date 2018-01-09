@@ -11,6 +11,10 @@ head(growthData) #Confirm import
 growthData <- growthData[, -c(1, 3, 4, 5, 8:12)] #Remove extra columns: Round, Habitat, Exclosure, Rep, Ishell1-5
 head(growthData) #Confirm column deletion
 
+#### CALCUALTE MEAN SIZE AT BEGINNING OF OUTPLANT ####
+
+mean(growthData$AvgIshell, na.rm = TRUE) #Mean = 27.19098
+
 #### CALCULATE PERCENT GROWTH ####
 
 growthData$diffLength <- growthData$Fshell - growthData$AvgIshell #Find the difference in shell length
