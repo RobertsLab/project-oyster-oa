@@ -11,6 +11,11 @@ The following pipelines are represented in this subdirectory:
 **Environmental Data**:
 
 - [Summary Information and Visualizations](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_Environmental_Data_Analysis_20161115)
+- [Environmental Data and Biomarker Analyses](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses)
+  - [Quality-Controlled Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control): Visualized environmental data after corrections for tidal data
+  - [Biomarker Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-27-Biomarker-Boxplots): Comparing biomarkers across sites
+  - [Biomarker Scatterplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Biomarker-Scatterplots): Comparing biomarker and environmental data
+  - [Growth Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-19-Growth-Data-Analyses): 
 
 **Protein Extraction**:
 
@@ -55,4 +60,10 @@ The following pipelines are represented in this subdirectory:
 
 ## Manchester
 
-No analyses as of 2017-09-27.
+**Histology**:
+
+- [Pie Charts](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Gonad_Histology): Visualized maturation state and sex ratio before pH exposure and after pH expsoure (low pH and ambient pH groups)
+
+## Virginica
+
+No analyses as of 2018-01-22.
