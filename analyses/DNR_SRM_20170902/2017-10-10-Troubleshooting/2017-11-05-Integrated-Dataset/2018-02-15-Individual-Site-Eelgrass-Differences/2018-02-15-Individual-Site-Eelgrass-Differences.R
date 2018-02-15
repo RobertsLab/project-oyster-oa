@@ -144,37 +144,53 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   dev.off() #Close file
 }
 
-#### PERFORM TUKEY HSD POST-HOC TEST ####
-#This test can be used to understand where significant ANOVA results come from
+#### CREATE NEW DATA TABLE ####
 
-siteANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(boxplotData),
-                                    "ANOVA.Fstatistic" = rep(x = 0, times = length(boxplotData)),
-                                    "ANOVA.pvalue" = rep(x = 0, times = length(boxplotData)),
-                                    "FB-CI" = rep(x = 0, times = length(boxplotData)),
-                                    "PG-CI" = rep(x = 0, times = length(boxplotData)),
-                                    "SK-CI" = rep(x = 0, times = length(boxplotData)),
-                                    "WB-CI" = rep(x = 0, times = length(boxplotData)),
-                                    "PG-FB" = rep(x = 0, times = length(boxplotData)),
-                                    "SK-FB" = rep(x = 0, times = length(boxplotData)),
-                                    "WB-FB" = rep(x = 0, times = length(boxplotData)),
-                                    "SK-PG" = rep(x = 0, times = length(boxplotData)),
-                                    "WB-PG" = rep(x = 0, times = length(boxplotData)),
-                                    "WB-SK" = rep(x = 0, times = length(boxplotData))) #Create a dataframe to hold all results
-siteANOVATukeyResults <- siteANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
-head(siteANOVATukeyResults) #Confirm changes
+#Case Inlet
+caseInletANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(caseInletData),
+                                    "ANOVA.Fstatistic" = rep(x = 0, times = length(caseInletData)),
+                                    "ANOVA.pvalue" = rep(x = 0, times = length(caseInletData))) #Create a dataframe to hold all results
+caseInletANOVATukeyResults <- caseInletANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(caseInletANOVATukeyResults) #Confirm changes
 
-#Perform Tukey HSD
+#Fidalgo Bay
+fidalgoBayANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(fidalgoBayData),
+                                         "ANOVA.Fstatistic" = rep(x = 0, times = length(fidalgoBayData)),
+                                         "ANOVA.pvalue" = rep(x = 0, times = length(fidalgoBayData))) #Create a dataframe to hold all results
+fidalgoBayANOVATukeyResults <- fidalgoBayANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(fidalgoBayANOVATukeyResults) #Confirm changes
+
+#Port Gamble
+portGambleANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(portGambleData),
+                                         "ANOVA.Fstatistic" = rep(x = 0, times = length(portGambleData)),
+                                         "ANOVA.pvalue" = rep(x = 0, times = length(portGambleData))) #Create a dataframe to hold all results
+portGambleANOVATukeyResults <- portGambleANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(portGambleANOVATukeyResults) #Confirm changes
+
+#Skokomish River Delta
+skokomishRiverANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(skokomishRiverData),
+                                         "ANOVA.Fstatistic" = rep(x = 0, times = length(skokomishRiverData)),
+                                         "ANOVA.pvalue" = rep(x = 0, times = length(skokomishRiverData))) #Create a dataframe to hold all results
+skokomishRiverANOVATukeyResults <- skokomishRiverANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(skokomishRiverANOVATukeyResults) #Confirm changes
+
+#Willapa Bay
+willapaBayANOVATukeyResults <- data.frame("Protein.Peptide" = colnames(willapaBayData),
+                                         "ANOVA.Fstatistic" = rep(x = 0, times = length(willapaBayData)),
+                                         "ANOVA.pvalue" = rep(x = 0, times = length(willapaBayData))) #Create a dataframe to hold all results
+willapaBayANOVATukeyResults <- willapaBayANOVATukeyResults[-c(1:2),] #Remove the first two rows, since they are not peptides
+head(willapaBayANOVATukeyResults) #Confirm changes
+
+#### ADJUST P-VALUES FOR MULTIPLE COMPARISONS ####
+#FDR = 0.10
+
+#Case Inlet
 for(i in 3:nPeptides) { #For all of my columns with peptide IDs
-  siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
-  siteANOVATukeyResults[(i-2), 2] <- summary(siteANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
-  siteANOVATukeyResults[(i-2), 3] <- summary(siteANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
-  siteTukeyHSD <- TukeyHSD(siteANOVA) #Perform Tukey Honest Significant Difference post-hoc test to determine where ANOVA significance is coming from
-  siteANOVATukeyResults[(i-2),4:13] <- siteTukeyHSD$`boxplotData$Site`[,4] #Paste Tukey results into table
-} #Add all ANOVA and Tukey HSD p-values to the table
-head(siteANOVATukeyResults) #Confirm that tests were completed
-
-#Adjust p-values for multiple comparisons (2-15-2018). After talking to Brent, he mentioned that I should use the Benjamini correction for multiple comparisons by controlling the FDR. I will use a FDR of 10% (0.1).
-
-siteANOVATukeyResults$ANOVA.adjusted.pvalue <- p.adjust(p = siteANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values and add a column to the table. I can then compare these p-values to my FDR of 0.1.
-head(siteANOVATukeyResults) #Confirm addition
-#write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
+  caseInletANOVA <- aov(caseInletData[,i] ~ caseInletData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between eelgrass conditions
+  caseInletANOVATukeyResults[(i-2), 2] <- summary(caseInletANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  caseInletANOVATukeyResults[(i-2), 3] <- summary(caseInletANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add ANOVA F statistics and p-values to the table
+head(caseInletANOVATukeyResults) #Confirm that tests were completed
+caseInletANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = caseInletANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(caseInletANOVATukeyResults) #Confirm addition
+#write.csv(caseInletANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-CaseInlet-pValues.csv") #Wrote out table for future analyses
