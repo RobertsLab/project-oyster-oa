@@ -5,7 +5,7 @@
 getwd()
 setwd("Documents/project-oyster-oa/") #Set working directory as repository
 
-#### EGG PRODUCTION ####
+##### EGG PRODUCTION #####
 
 #### IMPORT DATA ####
 
@@ -56,5 +56,18 @@ correctedEggProduction$AverageEggCount <- c(lowAverage, ambAverage, hsAverage) #
 correctedEggProduction$StandardDeviation <- c(lowSD, ambSD, hsSD) #Add standard deviations
 head(correctedEggProduction) #Confirm changes
 
-#### CONDUCT ANOVA ####
+#### ANOVA ####
 
+correctedEggProduction <- data.frame(t(correctedEggProduction)) #Transpose dataframe and maintain dataframe structure
+head(correctedEggProduction) #Confirm change
+
+eggProductionANOVAData <- data.frame("Treatment" = c(rep("Low", times = 3), rep("Ambient", times = 3), rep("HeatShock", times =3)),
+                                     "EggCount" = c(correctedEggProduction$Low[1:3], correctedEggProduction$Ambient[1:3], correctedEggProduction$HeatShock[1:3])) #Create new dataframe with only treatment and egg count columns
+head(eggProductionANOVAData) #Confirm dataframe creation
+
+treatmentANOVA <- aov(EggCount ~ Treatment, data = eggProductionANOVAData) #One-way ANOVA by female treatment
+summary(treatmentANOVA)[[1]][["F value"]][[1]] #F = 25.87017
+summary(treatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.00112206
+TukeyHSD(treatmentANOVA) #Significant differences are between Heat Shock and pH treatments (HS-A = 0.0022743; HS-L = 0.0016528)
+
+##### LARVAL HATCH RATE #####
