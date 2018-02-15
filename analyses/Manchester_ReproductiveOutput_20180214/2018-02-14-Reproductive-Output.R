@@ -57,14 +57,18 @@ correctedEggProduction$AverageEggCount <- c(lowAverage, ambAverage, hsAverage) #
 correctedEggProduction$StandardDeviation <- c(lowSD, ambSD, hsSD) #Add standard deviations
 head(correctedEggProduction) #Confirm changes
 
-#### ANOVA ####
+#### VISUALIZE DATA ####
 
 correctedEggProduction <- data.frame(t(correctedEggProduction)) #Transpose dataframe and maintain dataframe structure
 head(correctedEggProduction) #Confirm change
-
 eggProductionANOVAData <- data.frame("Treatment" = c(rep("Low", times = 3), rep("Ambient", times = 3), rep("HeatShock", times =3)),
                                      "EggCount" = c(correctedEggProduction$Low[1:3], correctedEggProduction$Ambient[1:3], correctedEggProduction$HeatShock[1:3])) #Create new dataframe with only treatment and egg count columns
 head(eggProductionANOVAData) #Confirm dataframe creation
+
+jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1000, height = 1000)
+plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 5, cex.axis = 1.5, cex.lab = 3) #Preliminary plot
+
+#### ANOVA ####
 
 treatmentANOVA <- aov(EggCount ~ Treatment, data = eggProductionANOVAData) #One-way ANOVA by female treatment
 summary(treatmentANOVA)[[1]][["F value"]][[1]] #F = 25.87017
