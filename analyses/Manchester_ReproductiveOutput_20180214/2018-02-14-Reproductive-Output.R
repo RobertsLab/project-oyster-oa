@@ -65,7 +65,7 @@ eggProductionANOVAData <- data.frame("Treatment" = c(rep("Low", times = 3), rep(
                                      "EggCount" = c(correctedEggProduction$Low[1:3], correctedEggProduction$Ambient[1:3], correctedEggProduction$HeatShock[1:3])) #Create new dataframe with only treatment and egg count columns
 head(eggProductionANOVAData) #Confirm dataframe creation
 
-#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1200, height = 1000)
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1500, height = 1000)
 plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
 #dev.off()
 
@@ -74,7 +74,7 @@ plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, 
 treatmentANOVA <- aov(EggCount ~ Treatment, data = eggProductionANOVAData) #One-way ANOVA by female treatment
 summary(treatmentANOVA)[[1]][["F value"]][[1]] #F = 25.87017
 summary(treatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.00112206
-TukeyHSD(treatmentANOVA) #Significant differences are between Heat Shock and pH treatments (HS-A = 0.0022743; HS-L = 0.0016528)
+TukeyHSD(treatmentANOVA) #Significant differences are between Heat Shock and pH treatments (HS-A = 0.0022743; L-HS = 0.0016528)
 
 ##### LARVAL HATCH RATE #####
 #Hatch rate is my proxy for the number of larvae produced.
@@ -85,6 +85,20 @@ hatchRate <- read.csv("data/Manchester/2017-07-30-Pacific-Oyster-Larvae/2018-02-
 head(hatchRate) #Confirm import
 #hatchRatepHOnly <- hatchRate[-c(25:26),] #Remove heat shock data
 #tail(hatchRatepHOnly) #Confirm removal
+
+#### VISUALIZE DATA ####
+
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Hatch-Rate-by-Treatment.jpeg", width = 1500, height = 1000)
+plot(x = hatchRate$Parental.Treatment, y = hatchRate$Average.Hatch.Rate, xlab = "Treatment", ylab = "Hatch Rate", main = "Hatch Rate by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+#dev.off()
+
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Hatch-Rate-by-Female-Treatment.jpeg", width = 1500, height = 1000)
+plot(x = hatchRate$Female.Treatment, y = hatchRate$Average.Hatch.Rate, xlab = "Treatment", ylab = "Hatch Rate", main = "Hatch Rate by Female Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+#dev.off()
+
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Hatch-Rate-by-Male-Treatment.jpeg", width = 1500, height = 1000)
+plot(x = hatchRate$Male.Treatment, y = hatchRate$Average.Hatch.Rate, xlab = "Treatment", ylab = "Hatch Rate", main = "Hatch Rate by Male Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+#dev.off()
 
 #### ANOVA ####
 
