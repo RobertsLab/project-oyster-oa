@@ -1,7 +1,7 @@
-#In this script, I'll depict normalized protein area across samples as bar charts after integrating my transitions. These boxplots will be at the peptide level and only differentiated by sites. This is because my NMDS analyses did not show any significant differences in clustering based on habitat type.
+#In this script, I'll test for bare vs. eelgrass protein expression differences at the individual site level. Brent and Emma suggested I do this to double check that there is no eelgrass effect, since I did not see a global eelgrass effect.
 
 #### SET WORKING DIRECTORY ####
-setwd("../../..") #Set working directory to the master SRM folder
+setwd("../..") #Set working directory to the master SRM folder
 getwd()
 
 #### IMPORT DATA ####
@@ -32,30 +32,59 @@ rownames(boxplotData) <- boxplotData$Sample.Number #Set sample number as row nam
 boxplotData <- boxplotData[-1] #Remove Sample.Number column
 head(boxplotData) #Confirm changes
 
+#### BREAKUP INDIVIDUAL DATASETS ####
+
+caseInletData <- subset(x = boxplotData, subset = boxplotData$Site == "CI") #Subset Case Inlet data
+fidalgoBayData <- subset(x = boxplotData, subset = boxplotData$Site == "FB") #Subset Fidalgo Bay data
+portGambleData <- subset(x = boxplotData, subset = boxplotData$Site == "PG") #Subset Port Gamble Bay data
+skokomishRiverData <- subset(x = boxplotData, subset = boxplotData$Site == "SK") #Subset Skokomish River Delta data
+willapaBayData <- subset(x = boxplotData, subset = boxplotData$Site == "WB") #Subset Willapa Bay data
+
 #### ASSIGN FILENAMES ####
 
-boxplotFilenames <- data.frame(protein = colnames(boxplotData),
-                               modifier = rep(".jpeg", length(boxplotData))) #Make filename sheet
-boxplotFilenames$siteFilenames <- paste(boxplotFilenames$protein, boxplotFilenames$modifier) #Make a new column for the site only filenames
-head(boxplotFilenames) #Confirm changes
+caseInletFilenames <- data.frame(protein = colnames(caseInletData),
+                               modifier = rep("BvECaseInlet.jpeg", length(caseInletData))) #Make filename sheet
+caseInletFilenames$siteFilenames <- paste(caseInletFilenames$protein, caseInletFilenames$modifier) #Make a new column for the actual filenames
+head(caseInletFilenames) #Confirm changes
+
+fidalgoBayFilenames <- data.frame(protein = colnames(fidalgoBayData),
+                                 modifier = rep("BvEFidalgoBay.jpeg", length(fidalgoBayData))) #Make filename sheet
+fidalgoBayFilenames$siteFilenames <- paste(fidalgoBayFilenames$protein, fidalgoBayFilenames$modifier) #Make a new column for the actual filenames
+head(fidalgoBayFilenames) #Confirm changes
+
+portGambleFilenames <- data.frame(protein = colnames(portGambleData),
+                                 modifier = rep("BvEPortGamble.jpeg", length(portGambleData))) #Make filename sheet
+portGambleFilenames$siteFilenames <- paste(portGambleFilenames$protein, portGambleFilenames$modifier) #Make a new column for the actual filenames
+head(portGambleFilenames) #Confirm changes
+
+skokomishRiverFilenames <- data.frame(protein = colnames(skokomishRiverData),
+                                 modifier = rep("BvESkokomishRiver.jpeg", length(skokomishRiverData))) #Make filename sheet
+skokomishRiverFilenames$siteFilenames <- paste(skokomishRiverFilenames$protein, skokomishRiverFilenames$modifier) #Make a new column for the actual filenames
+head(skokomishRiverFilenames) #Confirm changes
+
+willapaBayFilenames <- data.frame(protein = colnames(willapaBayData),
+                                 modifier = rep("BvEWillapaBay.jpeg", length(willapaBayData))) #Make filename sheet
+willapaBayFilenames$siteFilenames <- paste(willapaBayFilenames$protein, willapaBayFilenames$modifier) #Make a new column for the actual filenames
+head(willapaBayFilenames) #Confirm changes
 
 #### CHANGE WORKING DIRECTORY ####
 
-setwd("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-06-Boxplots/")
+setwd("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-Individual-Site-Eelgrass-Differences/")
 getwd()
 
-#### MAKE BOXPLOTS JUST BASED ON SITES ####
+#### BOXPLOTS ####
 
-nPeptides <- (length(boxplotData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
+#Case Inlet
+nPeptides <- (length(caseInletData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
 for(i in 3:nPeptides) { #For all of my columns with peptide IDs
-  fileName <- boxplotFilenames$siteFilenames[i] #Set the file name choices as the first column
+  fileName <- caseInletFilenames$siteFilenames[i] #Set the file name choices as the first column
   jpeg(filename = fileName, width = 1000, height = 750) #Save using set file name
-  boxplot(boxplotData[,i] ~ boxplotData$Site, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
+  boxplot(caseInletData[,i] ~ caseInletData$Eelgrass.Condition, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
   title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
-  stripchart(boxplotData[,i] ~ boxplotData$Site, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
-  siteANOVA <- aov(boxplotData[,i] ~ boxplotData$Site) #Perform an ANOVA to test for significant differences between sites
+  stripchart(caseInletData[,i] ~ caseInletData$Eelgrass.Condition, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
+  siteANOVA <- aov(caseInletData[,i] ~ caseInletData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between sites
   legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
-  title(boxplotFilenames$protein[i])
+  title(caseInletFilenames$protein[i])
   dev.off() #Close file
 }
 
@@ -93,21 +122,3 @@ head(siteANOVATukeyResults) #Confirm that tests were completed
 siteANOVATukeyResults$ANOVA.adjusted.pvalue <- p.adjust(p = siteANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values and add a column to the table. I can then compare these p-values to my FDR of 0.1.
 head(siteANOVATukeyResults) #Confirm addition
 #write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
-
-#### POWER ANALYSIS ####
-
-#Install dependencies
-install.packages("pwr") #Install the power calculation package
-library(pwr) #Load package
-
-#Determine what kind of power I have for a small, medium or large effect sizes. I have k = 5 groups, roughly n = 7 observations per group, and a significance level of 0.05. A small effect size is denoted by f = 0.1, medium is f = 0.25, and large is f = 0.4. These values are suggested by the creator of the package.
-pwr.anova.test(k = 5, n = 7, f = 0.1, sig.level = 0.05, power = NULL)[5] #Power = 0.06537487
-pwr.anova.test(k = 5, n = 7, f = 0.25, sig.level = 0.05, power = NULL)[5] #Power = 0.163053
-pwr.anova.test(k = 5, n = 7, f = 0.4, sig.level = 0.05, power = NULL)[5] #Power = 0.381159
-
-#Determine what kind of effect size I can detect for my experimental design at different power levels. A small effect size is denoted by f = 0.1, medium is f = 0.25, and large is f = 0.4. These values are suggested by the creator of the package.
-pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 1)[3] #f = 1e+07
-pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.95)[3] #f = 0.7887625
-pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.90)[3] #f = 0.7180425
-pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.85)[3] #f = 0.6699974
-pwr.anova.test(k = 5, n = 7, f = NULL, sig.level = 0.05, power = 0.80)[3] #f = 0.6316528
