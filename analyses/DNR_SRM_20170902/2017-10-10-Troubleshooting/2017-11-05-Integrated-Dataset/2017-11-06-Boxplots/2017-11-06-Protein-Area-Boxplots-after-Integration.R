@@ -87,6 +87,11 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   siteANOVATukeyResults[(i-2),4:13] <- siteTukeyHSD$`boxplotData$Site`[,4] #Paste Tukey results into table
 } #Add all ANOVA and Tukey HSD p-values to the table
 head(siteANOVATukeyResults) #Confirm that tests were completed
+
+#Adjust p-values for multiple comparisons (2-15-2018). After talking to Brent, he mentioned that I should use the Benjamini correction for multiple comparisons by controlling the FDR. I will use a FDR of 10% (0.1).
+
+siteANOVATukeyResults$ANOVA.adjusted.pvalue <- p.adjust(p = siteANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(siteANOVATukeyResults) #Confirm addition
 #write.csv(siteANOVATukeyResults, "2017-11-06-OneWayANOVA-TukeyHSD-by-Site-pValues.csv") #Wrote out table for future analyses
 
 #### POWER ANALYSIS ####
