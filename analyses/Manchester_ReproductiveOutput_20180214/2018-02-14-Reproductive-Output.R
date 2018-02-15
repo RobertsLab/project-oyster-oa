@@ -1,4 +1,4 @@
-#In this script, I'll identify any significant differences in reproductive output between oysters exposed to low and ambient pH treatments. Specifically, I'll look at the number of eggs produced the larval hatch rate, and the total number of larvae produced.
+#In this script, I'll identify any significant differences in reproductive output between oysters exposed to low and ambient pH treatments. Specifically, I'll look at the number of eggs produced and the larval hatch rate.
 
 #### SET WORKING DIRECTORY ####
 
@@ -6,6 +6,7 @@ getwd()
 setwd("Documents/project-oyster-oa/") #Set working directory as repository
 
 ##### EGG PRODUCTION #####
+#If there were differences in gonad maturation between females exposed to stressors and those kept at ambient temperatures, then a different amount of eggs would be produced.
 
 #### IMPORT DATA ####
 
@@ -71,14 +72,26 @@ summary(treatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.00112206
 TukeyHSD(treatmentANOVA) #Significant differences are between Heat Shock and pH treatments (HS-A = 0.0022743; HS-L = 0.0016528)
 
 ##### LARVAL HATCH RATE #####
+#Hatch rate is my proxy for the number of larvae produced.
 
 #### IMPORT DATA ####
 
 hatchRate <- read.csv("data/Manchester/2017-07-30-Pacific-Oyster-Larvae/2018-02-14-Hatch-Rate-Data.csv", header = TRUE) #Import hatch rate data
 head(hatchRate) #Confirm import
+#hatchRatepHOnly <- hatchRate[-c(25:26),] #Remove heat shock data
+#tail(hatchRatepHOnly) #Confirm removal
 
 #### ANOVA ####
 
 hatchRateANOVA <- aov(Average.Hatch.Rate ~ Parental.Treatment, data = hatchRate) #One-way ANOVA by parental treatment
+summary(hatchRateANOVA)[[1]][["F value"]][[1]] #F = 2.559579
+summary(hatchRateANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.06864339
 
-##### TOTAL NUMBER OF LARVAE #####
+hatchRateFemaleANOVA <- aov(Average.Hatch.Rate ~ Female.Treatment, data = hatchRate) #One-way ANOVA by female treatment
+summary(hatchRateFemaleANOVA)[[1]][["F value"]][[1]] #F = 5.606537
+summary(hatchRateFemaleANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.01039109
+TukeyHSD(hatchRateFemaleANOVA, method = "BH") #Significant difference between low and ambient pH hatch rates, with low pH hatch rates less than ambient pH hatch rates (L-A = 0.0111872)
+
+hatchRateMaleANOVA <- aov(Average.Hatch.Rate ~ Male.Treatment, data = hatchRate) #One-way ANOVA by male treatment
+summary(hatchRateMaleANOVA)[[1]][["F value"]][[1]] #F = 0.3819449
+summary(hatchRateMaleANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.6867814
