@@ -102,6 +102,20 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   dev.off() #Close file
 }
 
+#Port Gamble Bay
+nPeptides <- (length(portGambleData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  fileName <- portGambleFilenames$siteFilenames[i] #Set the file name choices as the first column
+  jpeg(filename = fileName, width = 1000, height = 750) #Save using set file name
+  boxplot(portGambleData[,i] ~ portGambleData$Eelgrass.Condition, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
+  title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
+  stripchart(portGambleData[,i] ~ portGambleData$Eelgrass.Condition, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
+  siteANOVA <- aov(portGambleData[,i] ~ portGambleData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between sites
+  legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
+  title(portGambleFilenames$protein[i])
+  dev.off() #Close file
+}
+
 #### PERFORM TUKEY HSD POST-HOC TEST ####
 #This test can be used to understand where significant ANOVA results come from
 
