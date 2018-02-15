@@ -12,15 +12,49 @@ setwd("Documents/project-oyster-oa/") #Set working directory as repository
 eggProduction <- read.csv("data/Manchester/2017-07-30-Pacific-Oyster-Larvae/2018-02-14-Egg-Production-Data.csv", header = TRUE) #Import egg production data
 head(eggProduction) #Confirm import
 colnames(eggProduction) #Get column names. I don't need anything after Female.Egg.Count
-eggProduction <- eggProduction[,c(1:7)] #Retain necessary columns.
+eggProduction <- eggProduction[,c(1:9)] #Retain necessary columns.
 colnames(eggProduction) #Confirm change
 
 #### CORRECT FOR NUMBER OF FEMALES THAT CONTRIBUTED ####
 #22 females contributed to the low pool, 26 to the ambient, and 6 to the heat shock
 
-correctedLowContribution <- (eggProduction$Female.Egg.Count..eggs.[1])/22 #1190909 eggs per female
-correctedAmbientContribution <- (eggProduction$Female.Egg.Count..eggs.[25])/26 #1256410 eggs per female
-correctedHeatShockContribution <- (eggProduction$Female.Egg.Count..eggs.[49])/6 #2300000 eggs per female
+correctedEggProduction <- data.frame("FemalePool" = c("Low", "Ambient", "HeatShock"),
+                                     "EggCount1" = c(((eggProduction$Sample.Egg.Count.1[1])/22), ((eggProduction$Sample.Egg.Count.1[25])/26), ((eggProduction$Sample.Egg.Count.1[49])/6)),
+                                     "EggCount2" = c(((eggProduction$Sample.Egg.Count.2[1])/22), ((eggProduction$Sample.Egg.Count.2[25])/26), ((eggProduction$Sample.Egg.Count.2[49])/6)),
+                                     "EggCount3" = c(((eggProduction$Sample.Egg.Count.3[1])/22), ((eggProduction$Sample.Egg.Count.3[25])/26), ((eggProduction$Sample.Egg.Count.3[49])/6))) #Create a new dataframe with corrected data
+head(correctedEggProduction) #Confirm creation
 
-max(correctedAmbientContribution, correctedHeatShockContribution, correctedLowContribution) #Heat shock females produced more eggs on average
-min(correctedAmbientContribution, correctedHeatShockContribution, correctedLowContribution) #Low pH  females produced less eggs on average
+rownames(correctedEggProduction) <- correctedEggProduction$FemalePool #Set pool as row names
+correctedEggProduction <- correctedEggProduction[, -1] #Remove Female Pool column
+head(correctedEggProduction) #Confirm change
+
+correctedEggProduction <- data.frame(t(correctedEggProduction)) #Transpose dataframe and maintain dataframe structure
+head(correctedEggProduction) #Confirm change
+
+#### CALCULATE EGG COUNT STANDARD DEVIATION ####
+
+lowSD <- sqrt(var(correctedEggProduction$Low)) #SD = 278276.9
+ambSD <- sqrt(var(correctedEggProduction$Ambient)) #SD = 114210.1
+hsSD <- sqrt(var(correctedEggProduction$HeatShock)) #SD = 210323.8
+
+#These standard deviations are large...
+
+#### CALCULATE AVERAGE EGG COUNTS ####
+
+lowAverage <- mean(correctedEggProduction$Low) #1190909
+ambAverage <- mean(correctedEggProduction$Ambient) #1256410
+hsAverage <- mean(correctedEggProduction$HeatShock) #2300000
+
+#Heat shock animals produced most eggs on average, low pH the least
+
+#### ADD TO TABLE ####
+
+correctedEggProduction <- data.frame(t(correctedEggProduction)) #Transpose dataframe and maintain dataframe structure
+head(correctedEggProduction) #Confirm change
+
+correctedEggProduction$AverageEggCount <- c(lowAverage, ambAverage, hsAverage) #Add average counts
+correctedEggProduction$StandardDeviation <- c(lowSD, ambSD, hsSD) #Add standard deviations
+head(correctedEggProduction) #Confirm changes
+
+#### CONDUCT ANOVA ####
+
