@@ -1,4 +1,4 @@
-#In this script, I'll identify any significant differences in reproductive output between oysters exposed to low and ambient pH treatments. Specifically, I'll look at the number of eggs produced and the larval hatch rate.
+#In this script, I'll identify any significant differences in reproductive output between oysters exposed to low and ambient pH treatments. Specifically, I'll look at the number of eggs produced the larval hatch rate, and the total number of larvae produced.
 
 #### SET WORKING DIRECTORY ####
 
@@ -71,3 +71,14 @@ summary(treatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.00112206
 TukeyHSD(treatmentANOVA) #Significant differences are between Heat Shock and pH treatments (HS-A = 0.0022743; HS-L = 0.0016528)
 
 ##### LARVAL HATCH RATE #####
+
+#### IMPORT DATA ####
+
+hatchRate <- read.csv("data/Manchester/2017-07-30-Pacific-Oyster-Larvae/2018-02-14-Hatch-Rate-Data.csv", header = TRUE) #Import hatch rate data
+head(hatchRate) #Confirm import
+
+#### ANOVA ####
+
+hatchRateANOVA <- aov(Average.Hatch.Rate ~ Parental.Treatment, data = hatchRate) #One-way ANOVA by parental treatment
+
+##### TOTAL NUMBER OF LARVAE #####
