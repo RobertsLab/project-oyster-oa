@@ -65,8 +65,9 @@ eggProductionANOVAData <- data.frame("Treatment" = c(rep("Low", times = 3), rep(
                                      "EggCount" = c(correctedEggProduction$Low[1:3], correctedEggProduction$Ambient[1:3], correctedEggProduction$HeatShock[1:3])) #Create new dataframe with only treatment and egg count columns
 head(eggProductionANOVAData) #Confirm dataframe creation
 
-jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1000, height = 1000)
-plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 5, cex.axis = 1.5, cex.lab = 3) #Preliminary plot
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1200, height = 1000)
+plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+#dev.off()
 
 #### ANOVA ####
 
