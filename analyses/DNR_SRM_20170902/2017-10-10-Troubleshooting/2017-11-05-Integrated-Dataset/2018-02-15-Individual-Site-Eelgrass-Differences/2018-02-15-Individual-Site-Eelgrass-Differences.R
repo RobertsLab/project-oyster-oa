@@ -116,6 +116,34 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
   dev.off() #Close file
 }
 
+#Skokomish River Delta
+nPeptides <- (length(skokomishRiverData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  fileName <- skokomishRiverFilenames$siteFilenames[i] #Set the file name choices as the first column
+  jpeg(filename = fileName, width = 1000, height = 750) #Save using set file name
+  boxplot(skokomishRiverData[,i] ~ skokomishRiverData$Eelgrass.Condition, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
+  title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
+  stripchart(skokomishRiverData[,i] ~ skokomishRiverData$Eelgrass.Condition, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
+  siteANOVA <- aov(skokomishRiverData[,i] ~ skokomishRiverData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between sites
+  legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
+  title(skokomishRiverFilenames$protein[i])
+  dev.off() #Close file
+}
+
+#Willapa Bay
+nPeptides <- (length(willapaBayData)) #The number of columns in the dataframe. The first 2 columns are Site and Eelgrass.Condition
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  fileName <- willapaBayFilenames$siteFilenames[i] #Set the file name choices as the first column
+  jpeg(filename = fileName, width = 1000, height = 750) #Save using set file name
+  boxplot(willapaBayData[,i] ~ willapaBayData$Eelgrass.Condition, xlab = "Sites", ylab = "", cex.lab = 2, cex.axis = 1.5) #Create the boxplot
+  title(ylab = "Abundance", line = 2.3, cex.lab = 2) #Add the y-axis label
+  stripchart(willapaBayData[,i] ~ willapaBayData$Eelgrass.Condition, vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue') #Add each data point
+  siteANOVA <- aov(willapaBayData[,i] ~ willapaBayData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between sites
+  legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
+  title(willapaBayFilenames$protein[i])
+  dev.off() #Close file
+}
+
 #### PERFORM TUKEY HSD POST-HOC TEST ####
 #This test can be used to understand where significant ANOVA results come from
 
