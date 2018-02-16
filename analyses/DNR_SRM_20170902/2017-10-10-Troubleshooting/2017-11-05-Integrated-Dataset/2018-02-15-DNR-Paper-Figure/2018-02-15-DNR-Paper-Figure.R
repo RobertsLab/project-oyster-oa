@@ -110,3 +110,4 @@ willapaBayAverages <- data.frame("peptide" = peptideNames,
                                 "site" = rep("WB", times = length(peptideNames)),
                                 "averageNormalizedAbundance" = willapaBayAverages) #Create a new dataframe with peptide names, site, and average normalized protein abundances
 head(willapaBayAverages) #Confirm dataframe creation
+
