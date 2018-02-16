@@ -215,4 +215,26 @@ for(i in 3:nPeptides) { #For all of my columns with peptide IDs
 head(portGambleANOVATukeyResults) #Confirm that tests were completed
 portGambleANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = portGambleANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
 head(portGambleANOVATukeyResults) #Confirm addition
-write.csv(portGambleANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-PortGamble-pValues.csv") #Wrote out table for future analyses
+#write.csv(portGambleANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-PortGamble-pValues.csv") #Wrote out table for future analyses
+
+#Skokomish River Delta
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  skokomishRiverANOVA <- aov(skokomishRiverData[,i] ~ skokomishRiverData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between eelgrass conditions
+  skokomishRiverANOVATukeyResults[(i-2), 2] <- summary(skokomishRiverANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  skokomishRiverANOVATukeyResults[(i-2), 3] <- summary(skokomishRiverANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add ANOVA F statistics and p-values to the table
+head(skokomishRiverANOVATukeyResults) #Confirm that tests were completed
+skokomishRiverANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = skokomishRiverANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(skokomishRiverANOVATukeyResults) #Confirm addition
+#write.csv(skokomishRiverANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-SkokomishRiver-pValues.csv") #Wrote out table for future analyses
+
+#Willapa Bay
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  willapaBayANOVA <- aov(willapaBayData[,i] ~ willapaBayData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between eelgrass conditions
+  willapaBayANOVATukeyResults[(i-2), 2] <- summary(willapaBayANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  willapaBayANOVATukeyResults[(i-2), 3] <- summary(willapaBayANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add ANOVA F statistics and p-values to the table
+head(willapaBayANOVATukeyResults) #Confirm that tests were completed
+willapaBayANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = willapaBayANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(willapaBayANOVATukeyResults) #Confirm addition
+#write.csv(willapaBayANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-WillapaBay-pValues.csv") #Wrote out table for future analyses
