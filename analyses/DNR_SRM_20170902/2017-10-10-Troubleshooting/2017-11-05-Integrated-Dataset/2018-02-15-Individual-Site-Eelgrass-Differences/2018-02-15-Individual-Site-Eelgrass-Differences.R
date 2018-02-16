@@ -194,3 +194,25 @@ head(caseInletANOVATukeyResults) #Confirm that tests were completed
 caseInletANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = caseInletANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
 head(caseInletANOVATukeyResults) #Confirm addition
 #write.csv(caseInletANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-CaseInlet-pValues.csv") #Wrote out table for future analyses
+
+#Fidalgo Bay
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  fidalgoBayANOVA <- aov(fidalgoBayData[,i] ~ fidalgoBayData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between eelgrass conditions
+  fidalgoBayANOVATukeyResults[(i-2), 2] <- summary(fidalgoBayANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  fidalgoBayANOVATukeyResults[(i-2), 3] <- summary(fidalgoBayANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add ANOVA F statistics and p-values to the table
+head(fidalgoBayANOVATukeyResults) #Confirm that tests were completed
+fidalgoBayANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = fidalgoBayANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(fidalgoBayANOVATukeyResults) #Confirm addition
+#write.csv(fidalgoBayANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-FidalgoBay-pValues.csv") #Wrote out table for future analyses
+
+#Port Gamble Bay
+for(i in 3:nPeptides) { #For all of my columns with peptide IDs
+  portGambleANOVA <- aov(portGambleData[,i] ~ portGambleData$Eelgrass.Condition) #Perform an ANOVA to test for significant differences between eelgrass conditions
+  portGambleANOVATukeyResults[(i-2), 2] <- summary(portGambleANOVA)[[1]][["F value"]][[1]] #Paste ANOVA F-statistic in table
+  portGambleANOVATukeyResults[(i-2), 3] <- summary(portGambleANOVA)[[1]][["Pr(>F)"]][[1]] #Paste ANOVA p-value in table
+} #Add ANOVA F statistics and p-values to the table
+head(portGambleANOVATukeyResults) #Confirm that tests were completed
+portGambleANOVATukeyResults$ANOVA.adjusted.BH.pvalue <- p.adjust(p = portGambleANOVATukeyResults$ANOVA.pvalue, method = "BH") #Adjust p-values using B-H method and add a column to the table. I can then compare these p-values to my FDR of 0.1.
+head(portGambleANOVATukeyResults) #Confirm addition
+write.csv(portGambleANOVATukeyResults, "2018-02-15-OneWayANOVA-TukeyHSD-by-Habitat-PortGamble-pValues.csv") #Wrote out table for future analyses
