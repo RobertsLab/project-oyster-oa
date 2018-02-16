@@ -113,3 +113,11 @@ head(willapaBayAverages) #Confirm dataframe creation
 
 averagePeptideData <- rbind(caseInletAverages, fidalgoBayAverages, portGambleAverages, skokomishRiverAverages, willapaBayAverages) #Merge all averaged peptide data into a single dataframe
 #write.csv(averagePeptideData, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv") #Wrote out table for future analyses
+
+#### SPECIFY COLORS AND SHAPES ####
+#I want each protein to have the same color, with the corresponding peptides as different shapes. I also think that proteins with similar functions should have similar colors.
+peptideNames
+
+#### CREATE PLOT ####
+
+dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site)
