@@ -111,3 +111,5 @@ willapaBayAverages <- data.frame("peptide" = peptideNames,
                                 "averageNormalizedAbundance" = willapaBayAverages) #Create a new dataframe with peptide names, site, and average normalized protein abundances
 head(willapaBayAverages) #Confirm dataframe creation
 
+averagePeptideData <- rbind(caseInletAverages, fidalgoBayAverages, portGambleAverages, skokomishRiverAverages, willapaBayAverages) #Merge all averaged peptide data into a single dataframe
+#write.csv(averagePeptideData, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv") #Wrote out table for future analyses
