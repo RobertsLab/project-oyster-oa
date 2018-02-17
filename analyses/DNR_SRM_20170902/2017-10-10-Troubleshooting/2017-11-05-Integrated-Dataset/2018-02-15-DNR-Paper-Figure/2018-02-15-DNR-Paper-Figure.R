@@ -116,8 +116,12 @@ averagePeptideData <- rbind(caseInletAverages, fidalgoBayAverages, portGambleAve
 
 #### SPECIFY COLORS AND SHAPES ####
 #I want each protein to have the same color, with the corresponding peptides as different shapes. I also think that proteins with similar functions should have similar colors.
-peptideNames
+averagePeptideData$shapes <- c(16, 17, 15, 16, 17, 16, 17, 15, 16, 17, 16, 17, 15, 16, 17, 15, 16, 16, 17, 16, 17, 16, 17, 16, 17, 15, 16, 17, 16, 17, 15, 16, 17, 15, 16, 17, 15) #Specify shapes. 16 = circle, 17 = triangle, 15 = square
+head(averagePeptideData) #Confirm addition
+averagePeptideData$colors <- c(rep("goldenrod1", times = 3), rep("turquoise1", times = 2), rep("deepskyblue1", times = 3), rep("seagreen1", times = 2), rep("purple1", times = 3), rep("dodgerblue1", times = 3), rep("dodgerblue3", times = 1), rep("sandybrown", times = 2), rep("orangered", times = 2), rep("palegreen3", times = 2), rep("chocolate4", times = 3), rep("violet", times = 2), rep("olivedrab2", times = 3), rep("lawngreen", times = 3), rep("springgreen4", times = 3))
 
 #### CREATE PLOT ####
 
-dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site)
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/All-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
+dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, lcolor = "white", main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
+#dev.off() #Turn off plotting device
