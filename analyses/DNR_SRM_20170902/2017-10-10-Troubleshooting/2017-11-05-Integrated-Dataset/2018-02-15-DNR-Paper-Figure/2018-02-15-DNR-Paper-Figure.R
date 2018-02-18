@@ -125,3 +125,13 @@ averagePeptideData$colors <- c(rep("goldenrod1", times = 3), rep("turquoise1", t
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/All-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
 dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, lcolor = "white", main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
 #dev.off() #Turn off plotting device
+
+#### ISOLATE ONLY DIFFERENTIALLY EXPRESSED PEPTIDES ####
+
+diffExpPeptides <- peptideNames[c(4, 6:10, 14:15, 18:19, 22, 24, 26)] #Copy differentially expressed peptides into a new vector
+diffExpPeptides <- data.frame("peptide" = diffExpPeptides,
+                              "temp" = rep(0, times = length(diffExpPeptides))) #Add a temporary column and make diffExpPepties a dataframe
+head(diffExpPeptides) #Confirm column addition
+diffExpPeptides <- merge(x = diffExpPeptides, y = averagePeptideData, by = "peptide") #Merge by peptide name
+diffExpPeptides <- diffExpPeptides[,-2] #Remove "temp" column
+head(diffExpPeptides) #Confirm merge and column removal
