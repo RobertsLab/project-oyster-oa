@@ -135,3 +135,8 @@ head(diffExpPeptides) #Confirm column addition
 diffExpPeptides <- merge(x = diffExpPeptides, y = averagePeptideData, by = "peptide") #Merge by peptide name
 diffExpPeptides <- diffExpPeptides[,-2] #Remove "temp" column
 head(diffExpPeptides) #Confirm merge and column removal
+
+#### CREATE SECOND PLOT ####
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-18-DNR-Paper-Figure/Differentially-Expressed-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
+#dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
+#dev.off() #Turn off plotting device
