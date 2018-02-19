@@ -120,11 +120,11 @@ averagePeptideData$shapes <- c(16, 17, 15, 16, 17, 16, 17, 15, 16, 17, 16, 17, 1
 head(averagePeptideData) #Confirm addition
 averagePeptideData$colors <- c(rep("goldenrod1", times = 3), rep("turquoise1", times = 2), rep("deepskyblue1", times = 3), rep("seagreen1", times = 2), rep("purple1", times = 3), rep("dodgerblue1", times = 3), rep("dodgerblue3", times = 1), rep("sandybrown", times = 2), rep("orangered", times = 2), rep("palegreen3", times = 2), rep("chocolate4", times = 3), rep("violet", times = 2), rep("olivedrab2", times = 3), rep("lawngreen", times = 3), rep("springgreen4", times = 3))
 
-#### CREATE PLOT ####
+#### CREATE PLOT WITH ALL DATA ####
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/All-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
-dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, lcolor = "white", main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
-#dev.off() #Turn off plotting device
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-All-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
+dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
+dev.off() #Turn off plotting device
 
 #### ISOLATE ONLY DIFFERENTIALLY EXPRESSED PEPTIDES ####
 
@@ -136,7 +136,12 @@ diffExpPeptides <- merge(x = diffExpPeptides, y = averagePeptideData, by = "pept
 diffExpPeptides <- diffExpPeptides[,-2] #Remove "temp" column
 head(diffExpPeptides) #Confirm merge and column removal
 
-#### CREATE SECOND PLOT ####
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-18-DNR-Paper-Figure/Differentially-Expressed-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
-#dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
+attach(diffExpPeptides)
+diffExpPeptides <- diffExpPeptides[order(site),] #Reorder so sites are sorted alphabetically
+detach(diffExpPeptides)
+head(diffExpPeptides) #Confirm sort
+
+#### CREATE PLOT WITH DIFFERENTIALLY EXPRESSED PEPTIDES ####
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-18-Differentially-Expressed-Peptides-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
+dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
 #dev.off() #Turn off plotting device
