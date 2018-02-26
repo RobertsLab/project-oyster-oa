@@ -151,3 +151,32 @@ head(diffExpPeptides) #Confirm sort
 dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, pt.cex = 2.5, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
 #dev.off() #Turn off plotting device
 
+#### HEATMAP ####
+#I have code to make heatmaps, so I might as well try it.
+
+install.packages("pheatmap") #Install package
+library(pheatmap) #Load package
+library(reshape2) #Load package
+
+diffExpPeptides$logTransformedAbundance <- (log(diffExpPeptides$averageNormalizedAbundance) + 1) #Log(x+1) transform dataset
+heatmapData <- data.frame("peptide" = diffExpPeptides$peptide,
+                          "logTransformedAbundance" = diffExpPeptides$logTransformedAbundance,
+                          "site" = diffExpPeptides$site) #Subset data needed for heatmap
+head(heatmapData) #Confirm subset
+
+heatmapDataPivoted <- dcast(data = heatmapData, peptide ~ site, value.var = "logTransformedAbundance") #Cast table (transform from long to wide)
+head(heatmapDataPivoted) #Confirm cast
+rownames(heatmapDataPivoted) <- heatmapDataPivoted$peptide #Assign peptide as rowname
+heatmapDataPivoted <- heatmapDataPivoted[,-1] #Remove peptide column
+head(heatmapDataPivoted) #Confirm changes
+
+#Create heatmap of differentially expressed peptides
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Average-Differentially-Expressed-Peptides-Heatmap.jpeg") #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
+#dev.off() #Turn off plotting device
+
+averagePeptideData$logTransformedAbundance <- 
+
+#### BUBBLE PLOTS ####
+#Emma suggested I try making bubble plots as a better way to demonstrate the difference in peptide abundance at Willapa Bay.
+
