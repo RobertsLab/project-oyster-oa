@@ -171,7 +171,7 @@ heatmapDataPivoted <- heatmapDataPivoted[,-1] #Remove peptide column
 head(heatmapDataPivoted) #Confirm changes
 
 #Create heatmap of differentially expressed peptides
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Average-Differentially-Expressed-Peptides-Heatmap.jpeg") #Create file
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Average-Differentially-Expressed-Peptides-Heatmap.jpeg", width = 1000, height = 1000) #Create file
 pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
 #dev.off() #Turn off plotting device
 
@@ -188,7 +188,7 @@ allheatmapDataPivoted <- allheatmapDataPivoted[,-1] #Remove peptide column
 head(allheatmapDataPivoted) #Confirm changes
 
 #Create heatmap of all peptides
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap.jpeg") #Create file
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap.jpeg", width = 1000, height = 1000) #Create file
 pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
 #dev.off() #Turn off plotting device
 
@@ -199,10 +199,19 @@ pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clust
 library(ggplot2)
 library(ggthemes)
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yAbundance.jpeg") #Create file
-ggplot(diffExpPeptides) + geom_point(aes(x = site, y = averageNormalizedAbundance, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Average Normalized Abundance") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 1
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yAbundance.jpeg", width = 1000, height = 1000) #Create file
+ggplot(diffExpPeptides) + geom_point(aes(x = site, y = averageNormalizedAbundance, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Average Normalized Abundance") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 1. Could try and scale by smallest observation OR connect same peptide by a line...?
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yPeptide.jpeg") #Create file
-ggplot(diffExpPeptides) + geom_point(aes(x = site, y = peptide, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Peptide") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 2
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yPeptide.jpeg", width = 1000, height = 1000) #Create file
+ggplot(diffExpPeptides) + geom_point(aes(x = site, y = peptide, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Peptide") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 2. Could try and scale by smallest observation...?
+#dev.off() #Turn off plotting device
+
+#### BEESWARM PLOTS ####
+
+install.packages("ggbeeswarm") #Install package
+library(ggbeeswarm) #Load package
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Beeswarm-Plot-xSite-yAbundance.jpeg", width = 1000, height = 1000) #Create file
+ggplot(diffExpPeptides, aes(x = site, y = averageNormalizedAbundance, colour = factor(peptide), size = 2, show.legend = FALSE)) + geom_quasirandom(show.legend = FALSE) + labs(x = "Site", y = "Average Normalized Abundance") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal()
 #dev.off() #Turn off plotting device
