@@ -195,3 +195,14 @@ pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clust
 #### BUBBLE PLOTS ####
 #Emma suggested I try making bubble plots as a better way to demonstrate the difference in peptide abundance at Willapa Bay.
 
+#Load ggplot packages
+library(ggplot2)
+library(ggthemes)
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yAbundance.jpeg") #Create file
+ggplot(diffExpPeptides) + geom_point(aes(x = site, y = averageNormalizedAbundance, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Average Normalized Abundance") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 1
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Bubble-Plot-xSite-yPeptide.jpeg") #Create file
+ggplot(diffExpPeptides) + geom_point(aes(x = site, y = peptide, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Peptide") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 2
+#dev.off() #Turn off plotting device
