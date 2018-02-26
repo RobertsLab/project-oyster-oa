@@ -128,8 +128,8 @@ averagePeptideData$colors <- c(rep("goldenrod1", times = 3), rep("turquoise1", t
 #### CREATE PLOT WITH ALL DATA ####
 
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-All-Peptide-Abundances-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
-dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
-dev.off() #Turn off plotting device
+dotchart(x = averagePeptideData$averageNormalizedAbundance, groups = averagePeptideData$site, pch = averagePeptideData$shapes, color = averagePeptideData$colors, pt.cex = 2.5, main = "Peptide Abundances Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with all peptide abundance data
+#dev.off() #Turn off plotting device
 
 #### ISOLATE ONLY DIFFERENTIALLY EXPRESSED PEPTIDES ####
 
@@ -148,5 +148,6 @@ head(diffExpPeptides) #Confirm sort
 
 #### CREATE PLOT WITH DIFFERENTIALLY EXPRESSED PEPTIDES ####
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-18-Differentially-Expressed-Peptides-Across-Sites.jpeg", height = 1000, width = 1000) #Save file
-dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
+dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptides$site, pch = diffExpPeptides$shapes, color = diffExpPeptides$colors, pt.cex = 2.5, main = "Differentially Expressed Peptides Across Sites", xlab = "Normalized Peptide Abundance", ylab = "Sites", cex.main = 3, cex.lab = 1.5) #Create plot with differentially expressed peptide abundance data
 #dev.off() #Turn off plotting device
+
