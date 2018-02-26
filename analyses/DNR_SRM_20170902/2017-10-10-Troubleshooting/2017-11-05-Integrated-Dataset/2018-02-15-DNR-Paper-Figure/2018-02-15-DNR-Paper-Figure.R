@@ -172,10 +172,25 @@ head(heatmapDataPivoted) #Confirm changes
 
 #Create heatmap of differentially expressed peptides
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Average-Differentially-Expressed-Peptides-Heatmap.jpeg") #Create file
-pheatmap(heatmapDataPivoted, cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
 #dev.off() #Turn off plotting device
 
-averagePeptideData$logTransformedAbundance <- 
+averagePeptideData$logTransformedAbundance <- (log(averagePeptideData$averageNormalizedAbundance) + 1) #Log(x+1) transform dataset
+allheatmapData <- data.frame("peptide" = averagePeptideData$peptide,
+                             "logTransformedAbundance" = averagePeptideData$logTransformedAbundance,
+                             "site" = averagePeptideData$site) #Subset data needed for heatmap of all peptides
+head(allheatmapData) #Confirm subset
+
+allheatmapDataPivoted <- dcast(data = allheatmapData, peptide ~ site, value.var = "logTransformedAbundance") #Cast table (transform from long to wide)
+head(allheatmapDataPivoted) #Confirm cast
+rownames(allheatmapDataPivoted) <- allheatmapDataPivoted$peptide #Assign peptide as rowname
+allheatmapDataPivoted <- allheatmapDataPivoted[,-1] #Remove peptide column
+head(allheatmapDataPivoted) #Confirm changes
+
+#Create heatmap of all peptides
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap.jpeg") #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
+#dev.off() #Turn off plotting device
 
 #### BUBBLE PLOTS ####
 #Emma suggested I try making bubble plots as a better way to demonstrate the difference in peptide abundance at Willapa Bay.
