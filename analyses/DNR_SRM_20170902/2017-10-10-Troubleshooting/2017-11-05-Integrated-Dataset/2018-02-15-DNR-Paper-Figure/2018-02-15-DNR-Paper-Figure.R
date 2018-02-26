@@ -1,4 +1,4 @@
-#In this script, I'll depict normalized protein area across samples as bar charts after integrating my transitions. These boxplots will be at the peptide level and only differentiated by sites. This is because my NMDS analyses did not show any significant differences in clustering based on habitat type.
+#In this script, I'll make figure options for the DNR paper.
 
 #### SET WORKING DIRECTORY ####
 setwd("../../..") #Set working directory to the master SRM folder
@@ -113,6 +113,11 @@ head(willapaBayAverages) #Confirm dataframe creation
 
 averagePeptideData <- rbind(caseInletAverages, fidalgoBayAverages, portGambleAverages, skokomishRiverAverages, willapaBayAverages) #Merge all averaged peptide data into a single dataframe
 #write.csv(averagePeptideData, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv") #Wrote out table for future analyses
+
+averagePeptideData <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv", header = TRUE) #Import average peptide dataset
+head(averagePeptideData) #Confirm import
+averagePeptideData <- averagePeptideData[,-1] #Remove first column
+head(averagePeptideData) #Confirm column deletion
 
 #### SPECIFY COLORS AND SHAPES ####
 #I want each protein to have the same color, with the corresponding peptides as different shapes. I also think that proteins with similar functions should have similar colors.
