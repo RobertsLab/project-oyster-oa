@@ -207,7 +207,7 @@ ggplot(diffExpPeptides) + geom_point(aes(x = site, y = averageNormalizedAbundanc
 ggplot(diffExpPeptides) + geom_point(aes(x = site, y = peptide, size = averageNormalizedAbundance, colour = factor(peptide)), alpha = 0.65, show.legend = FALSE) + labs(x = "Site", y = "Peptide") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal() #Make bubble plot option 2. Could try and scale by smallest observation...?
 #dev.off() #Turn off plotting device
 
-#### BEESWARM PLOTS ####
+#### BEESWARM PLOT ####
 
 install.packages("ggbeeswarm") #Install package
 library(ggbeeswarm) #Load package
