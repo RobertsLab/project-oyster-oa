@@ -224,6 +224,30 @@ head(allheatmapDataPivoted) #Confirm changes
 pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
 #dev.off() #Turn off plotting device
 
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Options2.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE) #Option 2: row clustering
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option3.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapBlue) #Option 3: no row clustering, blue color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option4.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPurple) #Option 4: no row clustering, purple color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option5.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPuBu) #Option 5: no row clustering, purple-blue color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option6.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: no row clustering, purple-blue color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option7.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #Option 6: no row clustering, purple-blue color scheme
+#dev.off() #Turn off plotting device
+
 #### BUBBLE PLOTS ####
 #Emma suggested I try making bubble plots as a better way to demonstrate the difference in peptide abundance at Willapa Bay.
 
