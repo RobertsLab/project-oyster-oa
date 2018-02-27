@@ -157,6 +157,7 @@ dotchart(x = diffExpPeptides$averageNormalizedAbundance, groups = diffExpPeptide
 install.packages("pheatmap") #Install package
 library(pheatmap) #Load package
 library(reshape2) #Load package
+library(RColorBrewer) #Load package
 
 diffExpPeptides$logTransformedAbundance <- (log(diffExpPeptides$averageNormalizedAbundance) + 1) #Log(x+1) transform dataset
 heatmapData <- data.frame("peptide" = diffExpPeptides$peptide,
@@ -172,7 +173,38 @@ head(heatmapDataPivoted) #Confirm changes
 
 #Create heatmap of differentially expressed peptides
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Average-Differentially-Expressed-Peptides-Heatmap.jpeg", width = 1000, height = 1000) #Create file
-pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE)
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE) #Option 1: no row clustering, column clustering, standard color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option2.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE) #Option 2: row clustering, column clustering, standard color scheme
+#dev.off() #Turn off plotting device
+
+RColorBrewer::display.brewer.all() #Look at RColorBrewer palettes. I'm looking for something that will still make sense for someone with red-green confusion.
+heatmapBlue <- RColorBrewer::brewer.pal(9, "Blues") #Save blue color palette
+heatmapPurple <- RColorBrewer::brewer.pal(9, "Purples") #Save purple color palette
+heatmapPuBu <- RColorBrewer::brewer.pal(9, "PuBu") #Save purple-blue color palette
+heatmapGreys <- RColorBrewer::brewer.pal(9, "Greys") #Save grey color palette
+heatmapPRGn <- RColorBrewer::brewer.pal(11, "PRGn") #Save purple-green color palette
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option3.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapBlue) #Option 3: row clustering, column clustering, blue color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option4.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPurple) #Option 4: row clustering, column clustering, purple color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option5.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPuBu) #Option 5: row clustering, column clustering, purple-blue color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option6.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: row clustering, column clustering, grey color scheme
+#dev.off() #Turn off plotting device
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option7.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #Option 7: row clustering, column clustering, purple-green color scheme
 #dev.off() #Turn off plotting device
 
 averagePeptideData$logTransformedAbundance <- (log(averagePeptideData$averageNormalizedAbundance) + 1) #Log(x+1) transform dataset
