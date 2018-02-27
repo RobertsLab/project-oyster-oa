@@ -1,44 +1,41 @@
-Pre-OA slide images folder link:,,https://drive.google.com/drive/folders/0B_Kednl1tNImX0MyY0tTdlBrRjg?usp=sharing,,,
-Post-OA slide images folder link:,,https://drive.google.com/drive/folders/0B_Kednl1tNImT3ZlVnNlb2JfNVE?usp=sharing,,,
-,,,,,
-Pre-or-Post-OA,Slide-label,Sex,Stage,Notes,based on descriptions developed by combining Kennedy and Battle (1964) and Mann (1979) from the Enriquez-Diaz 2009 paper
-Pre,Gigas_01,female,4,1/16 - Y ? Red = residual oocytes? Could also be a Stage 1 male,
-Pre,Gigas_02,female,4,1/16 - Y ?,
-Pre,Gigas_03,female,2,1/16 - Y ?,
-Pre,Gigas_04,N/A,0,"G thought male, Y thinks Stage 0 (1/16)",
-Pre,Gigas_05,N/A,0,"G thought female, Y thinks Stage 0 (1/16)",
-Pre,Gigas_06,female,1,1/16 - Y,
-Pre,Gigas_07,N/A,0,"G thought female, Y thinks Stage 0 (1/16)",
-Pre,Gigas_08,N/A,0,,
-Pre,Gigas_09,female,1,1/16 - Y,
-Pre,Gigas_10,male,4,"1/16 - Y ? Not ""numerous"" so went with Stage 4 over Stage 1.",
-Pre,Gigas_11,female,1,1/16 - Y,
-Pre,Gigas_12,male,1,? - G,
-Pre,Gigas_13,male,2,,
-Pre,Gigas_14,male,1,1/16 - Y,
-Pre,Gigas_15,N/A,0,,
-Pre,Gigas_16,female,2,1/16 - Y,
-Pre,Gigas_17,male,1,1/16 - Y,
-Pre,Gigas_18,N/A,0,,
-Pre,Gigas_19,female,1,1/16 - Y,
-Pre,Gigas_20,N/A,0,"G thought male, Y thinks Stage 0 (1/16)",
-Post,1-T3,male,4,1/16 - Y ?,
-Post,2-T1,female,3,,
-Post,2-T2,female,2,1/16 - Y,
-Post,3-T1,female,3,1/16 - Y,
-Post,4-T3,female,4,,
-Post,5-T3,female,4,,
-Post,6-T1,female,1,,
-Post,8-T2,female,1,,
-Post,9-T2,male,1,,
-Post,10-T3,female,4,,
-Post,11-T4,N/A,0,,
-Post,12-T6,male,4,1/16 - Y ?,
-Post,Uk-01,N/A,0,,
-Post,Uk-02,female,2,,
-Post,Uk-03,male,2,,
-Post,Uk-04,female,3,,
-Post,Uk-05,male,4,1/16 - Y ?,
-Post,Uk-06,female,3,very large oocytes,
-Post,Uk-07,female,3,very large oocytes,
-Post,Uk-08,female,2,,
+Pre-or-Post-OA,Slide-label,Sex,Stage,Notes
+Pre,Gigas_01,female,4,1/16 - Y ? Red = residual oocytes? Could also be a Stage 1 male
+Pre,Gigas_02,female,4,1/16 - Y ?
+Pre,Gigas_03,female,2,1/16 - Y ?
+Pre,Gigas_04,N/A,0,"G thought male, Y thinks Stage 0 (1/16)"
+Pre,Gigas_05,N/A,0,"G thought female, Y thinks Stage 0 (1/16)"
+Pre,Gigas_06,female,1,1/16 - Y
+Pre,Gigas_07,N/A,0,"G thought female, Y thinks Stage 0 (1/16)"
+Pre,Gigas_08,N/A,0,
+Pre,Gigas_09,female,1,1/16 - Y
+Pre,Gigas_10,male,4,"1/16 - Y ? Not ""numerous"" so went with Stage 4 over Stage 1."
+Pre,Gigas_11,female,1,1/16 - Y
+Pre,Gigas_12,male,1,? - G
+Pre,Gigas_13,male,2,
+Pre,Gigas_14,male,1,1/16 - Y
+Pre,Gigas_15,N/A,0,
+Pre,Gigas_16,female,2,1/16 - Y
+Pre,Gigas_17,male,1,1/16 - Y
+Pre,Gigas_18,N/A,0,
+Pre,Gigas_19,female,1,1/16 - Y
+Pre,Gigas_20,N/A,0,"G thought male, Y thinks Stage 0 (1/16)"
+Post,1-T3,male,4,1/16 - Y ?
+Post,2-T1,female,3,
+Post,2-T2,female,2,1/16 - Y
+Post,3-T1,female,3,1/16 - Y
+Post,4-T3,female,4,
+Post,5-T3,female,4,
+Post,6-T1,female,1,
+Post,8-T2,female,1,
+Post,9-T2,male,1,
+Post,10-T3,female,4,
+Post,11-T4,N/A,0,
+Post,12-T6,male,4,1/16 - Y ?
+Post,Uk-01,N/A,0,
+Post,Uk-02,female,2,
+Post,Uk-03,male,2,
+Post,Uk-04,female,3,
+Post,Uk-05,male,4,1/16 - Y ?
+Post,Uk-06,female,3,very large oocytes
+Post,Uk-07,female,3,very large oocytes
+Post,Uk-08,female,2,
