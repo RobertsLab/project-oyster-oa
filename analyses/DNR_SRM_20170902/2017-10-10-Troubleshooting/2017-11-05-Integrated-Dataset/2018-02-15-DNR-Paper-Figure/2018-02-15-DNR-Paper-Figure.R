@@ -200,7 +200,7 @@ pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clusteri
 #dev.off() #Turn off plotting device
 
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option6.jpeg", width = 1000, height = 1000) #Create file
-pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: row clustering, column clustering, grey color scheme
+pheatmap(heatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: row clustering, column clustering, greyscale color scheme
 #dev.off() #Turn off plotting device
 
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Differentially-Expressed-Peptides-Heatmap-Option7.jpeg", width = 1000, height = 1000) #Create file
@@ -228,24 +228,24 @@ pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clust
 pheatmap(allheatmapDataPivoted, cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE) #Option 2: row clustering
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option3.jpeg", width = 1000, height = 1000) #Create file
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Option3.jpeg", width = 1000, height = 1000) #Create file
 pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapBlue) #Option 3: no row clustering, blue color scheme
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option4.jpeg", width = 1000, height = 1000) #Create file
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Option4.jpeg", width = 1000, height = 1000) #Create file
 pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPurple) #Option 4: no row clustering, purple color scheme
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option5.jpeg", width = 1000, height = 1000) #Create file
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Option5.jpeg", width = 1000, height = 1000) #Create file
 pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPuBu) #Option 5: no row clustering, purple-blue color scheme
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option6.jpeg", width = 1000, height = 1000) #Create file
-pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: no row clustering, purple-blue color scheme
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Option6.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapGreys) #Option 6: no row clustering, greyscale color scheme
 #dev.off() #Turn off plotting device
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-All-Average-Peptide-Abundance-Heatmap-Option7.jpeg", width = 1000, height = 1000) #Create file
-pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #Option 6: no row clustering, purple-blue color scheme
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-All-Average-Peptide-Abundance-Heatmap-Option7.jpeg", width = 1000, height = 1000) #Create file
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #Option 6: no row clustering, purple-green color scheme
 #dev.off() #Turn off plotting device
 
 #### BUBBLE PLOTS ####
@@ -270,4 +270,35 @@ library(ggbeeswarm) #Load package
 
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-26-Beeswarm-Plot-xSite-yAbundance.jpeg", width = 1000, height = 1000) #Create file
 ggplot(diffExpPeptides, aes(x = site, y = averageNormalizedAbundance, colour = factor(peptide), size = 2, show.legend = FALSE)) + geom_quasirandom(show.legend = FALSE) + labs(x = "Site", y = "Average Normalized Abundance") + ggtitle("Differentially Expressed Peptides Across Sites") + theme_minimal()
+#dev.off() #Turn off plotting device
+
+#### FINAL PAPER FIGURE ####
+#We decided that a purple green heatmap is the best option! I will make the figure without transformations, just to confirm that the log transformation was the best route. Then I will modify the figure.
+
+#Subset data without any transformation
+allheatmapDataNoTrans <- data.frame("peptide" = averagePeptideData$peptide,
+                             "averageNormalizedAbundance" = averagePeptideData$averageNormalizedAbundance,
+                             "site" = averagePeptideData$site) #Subset data needed for heatmap of all peptides
+head(allheatmapDataNoTrans) #Confirm subset
+
+allheatmapDataNoTransPivot <- dcast(data = allheatmapDataNoTrans, peptide ~ site, value.var = "averageNormalizedAbundance") #Cast table (transform from long to wide)
+head(allheatmapDataNoTransPivot) #Confirm cast
+rownames(allheatmapDataNoTransPivot) <- allheatmapDataNoTransPivot$peptide #Assign peptide as rowname
+allheatmapDataNoTransPivot <- allheatmapDataNoTransPivot[,-1] #Remove peptide column
+head(allheatmapDataNoTransPivot) #Confirm changes
+
+#Make heatmap without any data transformation
+pheatmap(allheatmapDataNoTransPivot, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #This does not look good. Transformation is the best route.
+
+peptideCommonNames <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Protein-Peptide-CommonName.csv", header = TRUE) #Import information with peptide common names
+head(peptideCommonNames) #Confirm import
+peptideCommonNames <- peptideCommonNames[,1:4] #Only retain columns with information
+peptideCommonNames$namePeptide <- paste(peptideCommonNames$CommonName, peptideCommonNames$Peptide) #Combine columns
+head(peptideCommonNames) #Confirm change
+
+rownames(allheatmapDataPivoted) <- peptideCommonNames$namePeptide #Assign the name and peptide information as rownames for heatmap data
+head(allheatmapDataPivoted) #Confirm changes
+
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1000, height = 1000)
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, treeheight_col = 10, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn, fontsize_col = 12, fontsize_row = 12, main = "Average Peptide Abundance Across Sites")
 #dev.off() #Turn off plotting device
