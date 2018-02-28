@@ -292,7 +292,6 @@ pheatmap(allheatmapDataNoTransPivot, cluster_rows = FALSE, cluster_cols = TRUE, 
 
 peptideCommonNames <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Protein-Peptide-CommonName.csv", header = TRUE) #Import information with peptide common names
 head(peptideCommonNames) #Confirm import
-peptideCommonNames <- peptideCommonNames[,1:4] #Only retain columns with information
 peptideCommonNames$namePeptide <- paste(peptideCommonNames$CommonName, peptideCommonNames$Peptide) #Combine columns
 head(peptideCommonNames) #Confirm change
 
