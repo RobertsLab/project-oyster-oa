@@ -22,3 +22,5 @@ mature.glm <- glm(Mature ~ Treatment + Pre.or.Post.OA, data = histologyData, fam
 summary(mature.glm)
 
 #### SEX RATIO ####
+
+#contingency table...? try both with pre and without pre data
