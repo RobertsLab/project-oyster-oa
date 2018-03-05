@@ -31,23 +31,43 @@ head(histologyData) #Confirm changes
 #### STEPWISE ADDITION MODEL BUILDING ####
 
 #Find first significant variable using a binomial GLM and cannonical logit link
-glm1 <- glm(Mature ~ factor(Treatment), family = binomial(link = "logit"), data = histologyData) #Ambient vs. low pH
-anova(glm1)
+mature.glm1 <- glm(Mature ~ factor(Treatment), family = binomial(link = "logit"), data = histologyData) #Ambient vs. low pH
+anova(mature.glm1)
 1-pf(1.7886/(48.658/38), 1, 38) #0.244599 (Use Deviance/(ResDev/ResDF) to find F-value)
-glm2 <- glm(Mature ~ factor(modifiedSex), family = binomial(link = "logit"), data = histologyData) #Female vs. male vs. unripe
-anova(glm2)
+mature.glm2 <- glm(Mature ~ factor(modifiedSex), family = binomial(link = "logit"), data = histologyData) #Female vs. male vs. unripe
+anova(mature.glm2)
 1-pf(13.9/(36.547/37), 2, 37) #2.85091e-05. modifiedSex is the most significant, so this is the base model
-glm3 <- glm(Mature ~ Ferrous.inclusion.presence, family = binomial(link = "logit"), data = histologyData) #Ferrous inclusion vs. no ferrous inclusions
-anova(glm3)
+mature.glm3 <- glm(Mature ~ Ferrous.inclusion.presence, family = binomial(link = "logit"), data = histologyData) #Ferrous inclusion vs. no ferrous inclusions
+anova(mature.glm3)
 1-pf(1.3318/(49.115/38), 1, 38) #0.3164832
 
 #Use add1 to find next significant variable
-add1(glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F", data = histologyData) #Neither variable is significant, so none will be included. modifiedSex is the only significant predictor
+add1(mature.glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F", data = histologyData) #Neither variable is significant, so none will be included. modifiedSex is the only significant predictor
 
-#See where differences are in glm2
+#See where differences are in mature.glm2
 
-summary(glm2) #Males are more mature than females
+summary(mature.glm2) #Males are more mature than females
 
-#### SEX RATIO ####
+##### SEX RATIO #####
+#Chi-squared test of homogeneity using only post-treatment sex classifications
 
-#contingency table...? try both with pre and without pre data
+#### CALCULATE CONTINGENCY TABLE VALUES ####
+maleLow <- length(which(histologyData$Treatment == "Low" & histologyData$modifiedSex == "male")) #Count the number of oysters that are male and were exposed to low pH
+femaleLow <- length(which(histologyData$Treatment == "Low" & histologyData$modifiedSex == "female"))
+unripeLow <- length(which(histologyData$Treatment == "Low" & histologyData$modifiedSex == "unripe"))
+maleAmb <- length(which(histologyData$Treatment == "Ambient" & histologyData$modifiedSex == "male" & histologyData$Pre.or.Post.OA == "Post")) #Include specification for post-treamtent samples only
+femaleAmb <- length(which(histologyData$Treatment == "Ambient" & histologyData$modifiedSex == "female" & histologyData$Pre.or.Post.OA == "Post")) #Include specification for post-treamtent samples only
+unripeAmb <- length(which(histologyData$Treatment == "Ambient" & histologyData$modifiedSex == "unripe" & histologyData$Pre.or.Post.OA == "Post")) #Include specification for post-treamtent samples only
+
+#### CREATE CONTINGENCY TABLE ####
+sexRatioContingencyTable <- data.frame("count" = c(maleLow, femaleLow, unripeLow, maleAmb, femaleAmb, unripeAmb),
+                                       "row" = c(rep(1, times = 3), rep(2, times = 3)),
+                                       "column" = c(1, 2, 3, 1, 2, 3)) #Make contingency table where rows specify pH treatment and columns specify sex classification
+head(sexRatioContingencyTable) #Confirm table creation
+r <- as.factor(sexRatioContingencyTable$row) #Recognize as factor
+c <- as.factor(sexRatioContingencyTable$column) #Recognize as factor
+
+#### TEST INDEPENDENT VARIABLES ####
+ratio.glm1 <- glm(count ~ r + c, family = poisson(link = "log"), data = sexRatioContingencyTable) #Create a poisson GLM with a log link
+anova(ratio.glm1)
+1-pchisq(3.2779, 2) #0.1941838, Insignificant, so model fits. Testing interaction will leave df = 0. Sex ratios are homogenous between low and ambient pH treatments.
