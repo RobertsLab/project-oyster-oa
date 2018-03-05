@@ -1,4 +1,4 @@
-#In this script I will analyze my histology data.
+#In this script I will analyze my gonad histology data. I will first see if treatment affected maturation state. Then, I will see if the sex ratios between treatments are homogenous.
 
 ##### SET WORKING DIRECTORY #####
 
