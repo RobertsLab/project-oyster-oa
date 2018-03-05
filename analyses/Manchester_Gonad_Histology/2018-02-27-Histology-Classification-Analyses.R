@@ -13,6 +13,7 @@ histologyData <- histologyData[, -6] #Remove Notes column
 ##### MATURATION STAGE #####
 
 #### REFORMAT DATA ####
+
 mature.stage <- 3 #Set the maturation stage to be anything that is ripe and spawning
 histologyData$Mature <- rep(0, nrow(histologyData)) #Create a new column for Yes/No information on maturity. 0 is immature, 1 is mature
 histologyData$Mature[which(histologyData$Stage >= mature.stage)] <- rep(1, length(which(histologyData$Stage >= mature.stage))) #For anything where the stage is greater than or equal to the mature.stage, replace it with a 1
@@ -32,7 +33,7 @@ head(histologyData) #Confirm changes
 #Find first significant variable using a binomial GLM and cannonical logit link
 glm1 <- glm(Mature ~ factor(Treatment), family = binomial(link = "logit"), data = histologyData) #Ambient vs. low pH
 anova(glm1)
-1-pf(1.7886/(48.658/38), 1, 38) #0.244599
+1-pf(1.7886/(48.658/38), 1, 38) #0.244599 (Use Deviance/(ResDev/ResDF) to find F-value)
 glm2 <- glm(Mature ~ factor(modifiedSex), family = binomial(link = "logit"), data = histologyData) #Female vs. male vs. unripe
 anova(glm2)
 1-pf(13.9/(36.547/37), 2, 37) #2.85091e-05. modifiedSex is the most significant, so this is the base model
@@ -40,8 +41,12 @@ glm3 <- glm(Mature ~ Ferrous.inclusion.presence, family = binomial(link = "logit
 anova(glm3)
 1-pf(1.3318/(49.115/38), 1, 38) #0.3164832
 
-#Use add1
+#Use add1 to find next significant variable
+add1(glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F", data = histologyData) #Neither variable is significant, so none will be included. modifiedSex is the only significant predictor
 
+#See where differences are in glm2
+
+summary(glm2) #Males are more mature than females
 
 #### SEX RATIO ####
 
