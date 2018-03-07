@@ -48,6 +48,21 @@ add1(mature.glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F
 
 summary(mature.glm2) #Males are more mature than females
 
+#### VISUALIZE MATURITY DATA ####
+immatureLow <- length(which(histologyData$Treatment == "Low" & histologyData$Mature == 0)) #Count the number of oysters that are immature and were exposed to low pH
+matureLow <- length(which(histologyData$Treatment == "Low" & histologyData$Mature == 1)) #Count the number of oysters that are mature and were exposed to low pH
+immatureAmb <- length(which(histologyData$Treatment == "Ambient" & histologyData$Mature == 0 & histologyData$Pre.or.Post.OA == "Post")) #Count the number of oysters post-sampling that are immature and were exposed to ambient pH
+matureAmb <- length(which(histologyData$Treatment == "Ambient" & histologyData$Mature == 1 & histologyData$Pre.or.Post.OA == "Post")) #Count the number of oysters post-sampling that are immature and were exposed to ambient pH
+
+maturityFrequency <- data.frame("treatment" = c("Low", "Low", "Ambient", "Ambient"),
+           "maturity" = c("Immature", "Mature", "Immature", "Mature"),
+           "count" = c(immatureLow, matureLow, immatureAmb, matureAmb)) #Create a new dataframe
+is.numeric(maturityFrequency$count)
+
+#jpeg("2018-03-07-Maturity-by-Treatment-Barchart.jpeg", height = 1000, width = 1000)
+barplot(height = maturityFrequency$count, xlab = "Treatment", ylab = "Number of Individuals", main = "Maturity by Treatment", col = "white") #Preliminary bar chart
+#dev.off()
+
 ##### SEX RATIO #####
 #Chi-squared test of homogeneity using only post-treatment sex classifications
 
