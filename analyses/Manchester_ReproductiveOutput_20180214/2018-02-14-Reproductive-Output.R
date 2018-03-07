@@ -3,7 +3,7 @@
 #### SET WORKING DIRECTORY ####
 
 getwd()
-setwd("Documents/project-oyster-oa/") #Set working directory as repository
+setwd("../../") #Set working directory as repository
 
 ##### EGG PRODUCTION #####
 #If there were differences in gonad maturation between females exposed to stressors and those kept at ambient temperatures, then a different amount of eggs would be produced.
@@ -67,6 +67,22 @@ head(eggProductionANOVAData) #Confirm dataframe creation
 
 #jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Egg-Production-by-Treatment.jpeg", width = 1500, height = 1000)
 plot(x = eggProductionANOVAData$Treatment, y = eggProductionANOVAData$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+#dev.off()
+
+#### VISUALIZE JUST THE PH TREATMENT DATA ####
+
+tail(eggProductionANOVAData) #Need to remove heat shock data, or rows 7-9
+eggProductionpHOnly <- eggProductionANOVAData[-c(7:9),] #Remove rows 7-9
+tail(eggProductionpHOnly) #Confirm removal
+eggProductionpHOnly$Treatment <- factor(eggProductionpHOnly$Treatment) #Make sure residual factors are no longer present
+
+pHTreatmentANOVA <- aov(EggCount ~ Treatment, data = eggProductionpHOnly) #One-way ANOVA by female treatment
+sqrt(summary(pHTreatmentANOVA)[[1]][["F value"]][[1]]) #t = 0.3771626
+summary(pHTreatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.7252096
+
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-03-07-Egg-Production-by-pH-Treatment.jpeg", width = 1500, height = 1000)
+plot(x = eggProductionpHOnly$Treatment, y = eggProductionpHOnly$EggCount, xlab = "Treatment", ylab = "Egg Count", main = "Egg Production by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
+legend("topleft", bty = "n", legend = paste("t =", format(sqrt(summary(pHTreatmentANOVA)[[1]][["F value"]][[1]]), digits = 4), "p =", format(summary(pHTreatmentANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add t and p-value
 #dev.off()
 
 #### ANOVA ####
