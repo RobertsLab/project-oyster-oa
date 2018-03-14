@@ -33,13 +33,13 @@ head(histologyData) #Confirm changes
 #Find first significant variable using a binomial GLM and cannonical logit link
 mature.glm1 <- glm(Mature ~ factor(Treatment), family = binomial(link = "logit"), data = histologyData) #Ambient vs. low pH
 anova(mature.glm1)
-1-pf(1.7886/(48.658/38), 1, 38) #0.244599 (Use Deviance/(ResDev/ResDF) to find F-value)
+1-pf(3.7926/(30.024/38), 1, 38) #0.03466119 (Use Deviance/(ResDev/ResDF) to find F-value)
 mature.glm2 <- glm(Mature ~ factor(modifiedSex), family = binomial(link = "logit"), data = histologyData) #Female vs. male vs. unripe
 anova(mature.glm2)
-1-pf(13.9/(36.547/37), 2, 37) #2.85091e-05. modifiedSex is the most significant, so this is the base model
+1-pf(13.175/(20.641/37), 2, 37) #2.456105e-07. modifiedSex is the most significant, so this is the base model
 mature.glm3 <- glm(Mature ~ Ferrous.inclusion.presence, family = binomial(link = "logit"), data = histologyData) #Ferrous inclusion vs. no ferrous inclusions
 anova(mature.glm3)
-1-pf(1.3318/(49.115/38), 1, 38) #0.3164832
+1-pf(0.24821/(33.569/38), 1, 38) #0.5991481
 
 #Use add1 to find next significant variable
 add1(mature.glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F", data = histologyData) #Neither variable is significant, so none will be included. modifiedSex is the only significant predictor
