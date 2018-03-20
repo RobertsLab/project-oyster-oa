@@ -40,6 +40,9 @@ anova(mature.glm2)
 mature.glm3 <- glm(Mature ~ Ferrous.inclusion.presence, family = binomial(link = "logit"), data = histologyData) #Ferrous inclusion vs. no ferrous inclusions
 anova(mature.glm3)
 1-pf(0.24821/(33.569/38), 1, 38) #0.5991481
+mature.glm4 <- glm(Mature ~ Pre.or.Post.OA, family = binomial(link = "logit"), data = histologyData) #Pre vs. post sampling
+anova(mature.glm4)
+1-pf(0.79731/(33.019/38), 1, 38) #0.3441647
 
 #Use add1 to find next significant variable
 add1(mature.glm2, ~. + factor(Treatment) + Ferrous.inclusion.presence, test = "F", data = histologyData) #Neither variable is significant, so none will be included. modifiedSex is the only significant predictor
