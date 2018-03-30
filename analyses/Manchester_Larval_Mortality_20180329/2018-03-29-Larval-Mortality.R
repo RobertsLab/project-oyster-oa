@@ -14,49 +14,51 @@ bucketNumbers <- larvalCounts$Bucket #Save bucket numbers as a new vector
 larvalCounts <- larvalCounts[,-1] #Remove bucket number column. The bucket number is the same as the row number, so I don't need to add it back in.
 head(larvalCounts) #Confirm changes
 
-headerDates <- as.Date(c("2017-07-30", "2017-08-01", "2017-08-03", "2017-08-05", "2017-08-07", "2017-08-09", "2017-08-11", "2017-08-13", "2017-08-15", "2017-08-17")) #Create string of dates for column names
+headerDates <- as.Date(c("07-30-2017", "08-01-2017", "08-03-2017", "08-05-2017", "08-07-2017", "08-09-2017", "08-11-2017", "08-13-2017", "08-15-2017", "08-17-2017"), format = "%m-%d-%Y") #Create string of dates for column names
 colnames(larvalCounts) <- headerDates #Rename columns
 head(larvalCounts) #Confirm changes.
 
 larvalCounts.trans <- data.frame(t(larvalCounts)) #Transpose dataframe and save it as a new dataframe
-colnames(larvalCounts.trans) <- bucketNumbers #Use bucket numbers as column names
+bucketNames <- paste("Bucket", bucketNumbers, sep = "") #Create a new vector of bucket names
+colnames(larvalCounts.trans) <- bucketNames #Use bucket numbers as column names
 larvalCounts.trans$Date <- rownames(larvalCounts.trans) #Save rownames as a new column
 head(larvalCounts.trans) #Confirm changes
 
-bucketNames <- paste("Bucket", bucketNumbers, sep = "") #Create a new vector of bucket names
-nBuckets <- length(larvalCounts.trans) - 1 #Save number of buckets as a new value
-
-larvalCountsBuckets <- NULL #Create an empty dataframe to store information
-
-for(i in 1:nBuckets){
-  tempData <- data.frame("Date" = larvalCounts.trans$Date,
-                               "Count" = larvalCounts.trans[,i],
-                               "Bucket" = rep(bucketNames[i], times = length(larvalCounts.trans$Date))) #Create an individual data frame for counts from a specific bucket
-  larvalCountsBuckets <- rbind(larvalCountsBuckets, tempData) #Save that in the new combined dataframe
-} #Create and populate a new dataframe
-head(larvalCountsBuckets) #Confirm changes
-
-attach(larvalCountsBuckets)
-larvalCountsBuckets <- larvalCountsBuckets[order(Bucket),] #Reorder so buckets are sorted alphabetically
-head(larvalCountsBuckets) #Confirm sorting
-tail(larvalCountsBuckets) #Confirm sorting
-detach(larvalCountsBuckets)
-
-larvalCountsBuckets$Colors <- c(rep("red", times = 50),
-                                rep("pink", times = 50),
-                                rep("green", times = 50),
-                                rep("blue", times = 50),
-                                rep("orange", times = 40)) #Create a column to assign colors
-#Buckets 1-5 are FLxML: red
-#Buckets 6-10 are FLxMA: pink
-#Buckets 11-15 are FAxML: green
-#Buckets 16-20 are FAxMA: blue
-#Buckets 21-24 are HSxHS: orange
-head(larvalCountsBuckets) #Confirm column addition
-
 #### PLOT DATA ####
 
-plot(x = larvalCountsBuckets$Date, y = larvalCountsBuckets$Count, type = "l")
+#Buckets 1-5 are FLxML: deeppink
+#Buckets 6-10 are FLxMA: purple
+#Buckets 11-15 are FAxML: green2
+#Buckets 16-20 are FAxMA: royalblue
+#Buckets 21-24 are HSxHS: not plotting
 
+countRange <- c(0, 80000) #Define range of plot
 
-?plot
+jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+plot(larvalCounts.trans$Bucket1, ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, col = "deeppink", type = "p") #Plot just bucket 1 counts
+axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
+lines(larvalCounts.trans$Bucket2, type = "p", col = "deeppink") #Add Bucket 2
+lines(larvalCounts.trans$Bucket3, type = "p", col = "deeppink") #Add Bucket 3
+lines(larvalCounts.trans$Bucket4, type = "p", col = "deeppink") #Add Bucket 4
+lines(larvalCounts.trans$Bucket5, type = "p", col = "deeppink") #Add Bucket 5
+
+lines(larvalCounts.trans$Bucket6, type = "p", col = "purple") #Add Bucket 6
+lines(larvalCounts.trans$Bucket7, type = "p", col = "purple") #Add Bucket 7
+lines(larvalCounts.trans$Bucket8, type = "p", col = "purple") #Add Bucket 8
+lines(larvalCounts.trans$Bucket9, type = "p", col = "purple") #Add Bucket 9
+lines(larvalCounts.trans$Bucket10, type = "p", col = "purple") #Add Bucket 10
+
+lines(larvalCounts.trans$Bucket11, type = "p", col = "green2") #Add Bucket 11
+lines(larvalCounts.trans$Bucket12, type = "p", col = "green2") #Add Bucket 12
+lines(larvalCounts.trans$Bucket13, type = "p", col = "green2") #Add Bucket 13
+lines(larvalCounts.trans$Bucket14, type = "p", col = "green2") #Add Bucket 14
+lines(larvalCounts.trans$Bucket15, type = "p", col = "green2") #Add Bucket 15
+
+lines(larvalCounts.trans$Bucket16, type = "p", col = "royalblue") #Add Bucket 16
+lines(larvalCounts.trans$Bucket17, type = "p", col = "royalblue") #Add Bucket 17
+lines(larvalCounts.trans$Bucket18, type = "p", col = "royalblue") #Add Bucket 18
+lines(larvalCounts.trans$Bucket19, type = "p", col = "royalblue") #Add Bucket 19
+lines(larvalCounts.trans$Bucket20, type = "p", col = "royalblue") #Add Bucket 20
+
+legend("topright", cex = 1, pch = rep(1, times = 4), legend = c("FL x ML", "FL x MA", "FA x ML", "FA x MA"), col = c("deeppink", "purple", "green2", "royalblue")) #Add legend
+dev.off() #Turn off plotting device
