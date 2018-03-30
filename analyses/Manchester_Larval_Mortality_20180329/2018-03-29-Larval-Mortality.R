@@ -49,12 +49,6 @@ lines(larvalCounts.trans$Bucket8, type = "p", col = "purple") #Add Bucket 8
 lines(larvalCounts.trans$Bucket9, type = "p", col = "purple") #Add Bucket 9
 lines(larvalCounts.trans$Bucket10, type = "p", col = "purple") #Add Bucket 10
 
-lines(larvalCounts.trans$Bucket11, type = "p", col = "green2") #Add Bucket 11
-lines(larvalCounts.trans$Bucket12, type = "p", col = "green2") #Add Bucket 12
-lines(larvalCounts.trans$Bucket13, type = "p", col = "green2") #Add Bucket 13
-lines(larvalCounts.trans$Bucket14, type = "p", col = "green2") #Add Bucket 14
-lines(larvalCounts.trans$Bucket15, type = "p", col = "green2") #Add Bucket 15
-
 lines(larvalCounts.trans$Bucket16, type = "p", col = "royalblue") #Add Bucket 16
 lines(larvalCounts.trans$Bucket17, type = "p", col = "royalblue") #Add Bucket 17
 lines(larvalCounts.trans$Bucket18, type = "p", col = "royalblue") #Add Bucket 18
@@ -87,10 +81,25 @@ lines(larvalCounts.trans$Bucket9, type = "b", col = "purple") #Add Bucket 9
 lines(larvalCounts.trans$Bucket10, type = "b", col = "purple") #Add Bucket 10
 #dev.off()
 
-
 #FA x ML
+#jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-FA-ML-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+plot(larvalCounts.trans$Bucket11, col = "green2", type = "b", ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, main = "Ambient pH Female x Low pH Male Larvae", cex.main = 5) #Plot just bucket 11 counts
+axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
+lines(larvalCounts.trans$Bucket12, type = "b", col = "green2") #Add Bucket 12
+lines(larvalCounts.trans$Bucket13, type = "b", col = "green2") #Add Bucket 13
+lines(larvalCounts.trans$Bucket14, type = "b", col = "green2") #Add Bucket 14
+lines(larvalCounts.trans$Bucket15, type = "b", col = "green2") #Add Bucket 15
+#dev.off()
 
 #FA x MA
+jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-FA-MA-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+plot(larvalCounts.trans$Bucket16, col = "royalblue", type = "b", ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, main = "Ambient pH Female x Ambient pH Male Larvae", cex.main = 5) #Plot just bucket 16 counts
+axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
+lines(larvalCounts.trans$Bucket17, type = "b", col = "royalblue") #Add Bucket 17
+lines(larvalCounts.trans$Bucket18, type = "b", col = "royalblue") #Add Bucket 18
+lines(larvalCounts.trans$Bucket19, type = "b", col = "royalblue") #Add Bucket 19
+lines(larvalCounts.trans$Bucket20, type = "b", col = "royalblue") #Add Bucket 20
+#dev.off()
 
 #HS x HS
 
