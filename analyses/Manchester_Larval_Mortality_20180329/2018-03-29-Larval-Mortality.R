@@ -69,6 +69,16 @@ legend("topright", cex = 1, pch = rep(1, times = 4), legend = c("FL x ML", "FL x
 
 #FL x ML
 #jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-FL-ML-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+plot(larvalCounts.trans$Bucket6, col = "purple", type = "b", ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, main = "Low pH Female x Ambient pH Male Larvae", cex.main = 5) #Plot just bucket 6 counts
+axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
+lines(larvalCounts.trans$Bucket7, type = "b", col = "purple") #Add Bucket 7
+lines(larvalCounts.trans$Bucket8, type = "b", col = "purple") #Add Bucket 8
+lines(larvalCounts.trans$Bucket9, type = "b", col = "purple") #Add Bucket 9
+lines(larvalCounts.trans$Bucket10, type = "b", col = "purple") #Add Bucket 10
+#dev.off()
+
+#FL x MA
+#jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-FL-MA-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
 plot(larvalCounts.trans$Bucket1, col = "deeppink", type = "b", ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, main = "Low pH Female x Low pH Male Larvae", cex.main = 5) #Plot just bucket 1 counts
 axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
 lines(larvalCounts.trans$Bucket2, type = "b", col = "deeppink") #Add Bucket 2
@@ -76,8 +86,6 @@ lines(larvalCounts.trans$Bucket3, type = "b", col = "deeppink") #Add Bucket 3
 lines(larvalCounts.trans$Bucket4, type = "b", col = "deeppink") #Add Bucket 4
 lines(larvalCounts.trans$Bucket5, type = "b", col = "deeppink") #Add Bucket 5
 #dev.off()
-
-#FL x MA
 
 #FA x ML
 
