@@ -1,4 +1,4 @@
-#In this script, I'll plot my larval abundance data with error bars. Then, I'll see if analysis is worth it
+#In this script, I'll plot my larval abundance data. Then, I'll see if analysis is worth it.
 
 #### SET WORKING DIRECTORY ####
 
@@ -100,6 +100,3 @@ lines(larvalCounts.trans$Bucket18, type = "b", col = "royalblue") #Add Bucket 18
 lines(larvalCounts.trans$Bucket19, type = "b", col = "royalblue") #Add Bucket 19
 lines(larvalCounts.trans$Bucket20, type = "b", col = "royalblue") #Add Bucket 20
 #dev.off()
-
-#HS x HS
-
