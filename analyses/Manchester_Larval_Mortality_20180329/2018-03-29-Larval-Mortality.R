@@ -23,7 +23,16 @@ colnames(larvalCounts.trans) <- bucketNumbers #Use bucket numbers as column name
 larvalCounts.trans$Date <- rownames(larvalCounts.trans) #Save rownames as a new column
 head(larvalCounts.trans) #Confirm changes
 
+bucketNames <- paste("Bucket", bucketNumbers, sep = "") #Create a new vector of bucket names
+nBuckets <- length(larvalCounts.trans) - 1 #Save number of buckets as a new value
 
+larvalCountsBuckets <- NULL #Create an empty dataframe to store information
 
-#### PLOT DATA ####
+for(i in 1:nBuckets){
+  tempData <- data.frame("Date" = larvalCounts.trans$Date,
+                               "Count" = larvalCounts.trans[,i],
+                               "Bucket" = rep(bucketNames[i], times = length(larvalCounts.trans$Date))) #Create an individual data frame for counts from a specific bucket
+  larvalCountsBuckets <- rbind(larvalCountsBuckets, tempData) #Save that in the new combined dataframe
+} #Create and populate a new dataframe
+head(larvalCountsBuckets) #Confirm changes
 
