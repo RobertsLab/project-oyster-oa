@@ -25,6 +25,7 @@ larvalCounts.trans$Date <- rownames(larvalCounts.trans) #Save rownames as a new 
 head(larvalCounts.trans) #Confirm changes
 
 #### PLOT DATA ####
+#I will first plot larval count data from the four pH treatment families. I will not include error bars on these estimates since my goal is to first see how much the data overlap to begin with.
 
 #Buckets 1-5 are FLxML: deeppink
 #Buckets 6-10 are FLxMA: purple
@@ -34,7 +35,7 @@ head(larvalCounts.trans) #Confirm changes
 
 countRange <- c(0, 80000) #Define range of plot
 
-jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+#jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
 plot(larvalCounts.trans$Bucket1, ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, col = "deeppink", type = "p") #Plot just bucket 1 counts
 axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
 lines(larvalCounts.trans$Bucket2, type = "p", col = "deeppink") #Add Bucket 2
@@ -61,4 +62,26 @@ lines(larvalCounts.trans$Bucket19, type = "p", col = "royalblue") #Add Bucket 19
 lines(larvalCounts.trans$Bucket20, type = "p", col = "royalblue") #Add Bucket 20
 
 legend("topright", cex = 1, pch = rep(1, times = 4), legend = c("FL x ML", "FL x MA", "FA x ML", "FA x MA"), col = c("deeppink", "purple", "green2", "royalblue")) #Add legend
-dev.off() #Turn off plotting device
+
+#dev.off() #Turn off plotting device
+
+#Counts from each treatment overlap a bit. I don't think anything has a significantly different count. Rates could be different between certain days, but without slopes, it's hard to really tell. Now I will plot counts from each parental treatment family separately with connecting lines to understand the trends better. I will keep the same color scheme as above.
+
+#FL x ML
+#jpeg("analyses/Manchester_Larval_Mortality_20180329/2018-03-30-FL-ML-Larval-Counts-Over-Time.jpeg", height = 1000, width = 1500)
+plot(larvalCounts.trans$Bucket1, col = "deeppink", type = "b", ylab = "Number Live Larvae", ylim = countRange, xaxt = "n", xlab = "", cex.lab = 3, main = "Low pH Female x Low pH Male Larvae", cex.main = 5) #Plot just bucket 1 counts
+axis(side = 1, at = seq(from = 1, to = 10, by = 1), lab = larvalCounts.trans$Date[seq(from = 1, to = length(larvalCounts.trans$Date), by = 1)]) #Add x axis
+lines(larvalCounts.trans$Bucket2, type = "b", col = "deeppink") #Add Bucket 2
+lines(larvalCounts.trans$Bucket3, type = "b", col = "deeppink") #Add Bucket 3
+lines(larvalCounts.trans$Bucket4, type = "b", col = "deeppink") #Add Bucket 4
+lines(larvalCounts.trans$Bucket5, type = "b", col = "deeppink") #Add Bucket 5
+#dev.off()
+
+#FL x MA
+
+#FA x ML
+
+#FA x MA
+
+#HS x HS
+
