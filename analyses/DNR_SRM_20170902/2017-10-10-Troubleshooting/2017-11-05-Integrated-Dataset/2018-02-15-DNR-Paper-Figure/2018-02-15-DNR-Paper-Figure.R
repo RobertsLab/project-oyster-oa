@@ -296,5 +296,5 @@ rownames(allheatmapDataPivoted) <- peptideCommonNames$Peptide #Assign the name a
 head(allheatmapDataPivoted) #Confirm changes
 
 #jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1000, height = 1000)
-pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, treeheight_col = 70, legend = TRUE, color = heatmapPRGn, fontsize_col = 20, fontsize_row = 12)
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, treeheight_col = 80, legend = TRUE, color = heatmapPRGn, fontsize_col = 20, fontsize_row = 12)
 #dev.off() #Turn off plotting device
