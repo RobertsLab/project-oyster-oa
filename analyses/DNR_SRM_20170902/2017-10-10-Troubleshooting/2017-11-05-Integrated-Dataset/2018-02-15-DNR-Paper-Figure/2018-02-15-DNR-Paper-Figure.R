@@ -292,12 +292,9 @@ pheatmap(allheatmapDataNoTransPivot, cluster_rows = FALSE, cluster_cols = TRUE, 
 
 peptideCommonNames <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Protein-Peptide-CommonName.csv", header = TRUE) #Import information with peptide common names
 head(peptideCommonNames) #Confirm import
-peptideCommonNames$namePeptide <- paste(peptideCommonNames$CommonName, peptideCommonNames$Peptide) #Combine columns
-head(peptideCommonNames) #Confirm change
-
-rownames(allheatmapDataPivoted) <- peptideCommonNames$namePeptide #Assign the name and peptide information as rownames for heatmap data
+rownames(allheatmapDataPivoted) <- peptideCommonNames$Peptide #Assign the name and peptide information as rownames for heatmap data
 head(allheatmapDataPivoted) #Confirm changes
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1800, height = 1000)
-pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn, fontsize_col = 20, fontsize_row = 12)
+#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1000, height = 1000)
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, treeheight_col = 70, legend = TRUE, color = heatmapPRGn, fontsize_col = 20, fontsize_row = 12)
 #dev.off() #Turn off plotting device
