@@ -122,9 +122,12 @@ hatchRatepHOnly$Parental.Treatment <- factor(hatchRatepHOnly$Parental.Treatment)
 hatchRatepHOnly$Female.Treatment <- factor(hatchRatepHOnly$Female.Treatment) #Make sure residual factors are no longer present
 hatchRatepHOnly$Male.Treatment <- factor(hatchRatepHOnly$Male.Treatment) #Make sure residual factors are no longer present
 
+hatchRatepHOnly <- hatchRatepHOnly[-24,] #Remove outlier from Ambient-Ambient group
+tail(hatchRatepHOnly) #Confirm removal
+
 hatchRatepHTreatmentANOVA <- aov(Average.Hatch.Rate ~ Parental.Treatment, data = hatchRatepHOnly) #One-way ANOVA by parental treatment
-sqrt(summary(hatchRatepHTreatmentANOVA)[[1]][["F value"]][[1]]) #t = 1.740458
-summary(hatchRatepHTreatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.0533657
+summary(hatchRatepHTreatmentANOVA)[[1]][["F value"]][[1]] #F = 3.10953
+summary(hatchRatepHTreatmentANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.05082859
 
 #jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-03-07-Hatch-Rate-by-pH-Treatment-All-Groups.jpeg", width = 1500, height = 1000)
 plot(x = hatchRatepHOnly$Parental.Treatment, y = hatchRatepHOnly$Average.Hatch.Rate, xlab = "Treatment", ylab = "Hatch Rate", main = "Hatch Rate by Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
@@ -132,8 +135,8 @@ legend("topright", bty = "n", legend = paste("t =", format(sqrt(summary(hatchRat
 #dev.off()
 
 hatchRatepHTreatmentFemaleANOVA <- aov(Average.Hatch.Rate ~ Female.Treatment, data = hatchRatepHOnly) #One-way ANOVA by female treatment
-sqrt(summary(hatchRatepHTreatmentFemaleANOVA)[[1]][["F value"]][[1]]) #t = 3.161651
-summary(hatchRatepHTreatmentFemaleANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.004522199
+sqrt(summary(hatchRatepHTreatmentFemaleANOVA)[[1]][["F value"]][[1]]) #t = 2.99445
+summary(hatchRatepHTreatmentFemaleANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.006908886
 
 #jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-03-07-Hatch-Rate-by-pH-Treatment-Female-Groups.jpeg", width = 1500, height = 1000)
 plot(x = hatchRatepHOnly$Female.Treatment, y = hatchRatepHOnly$Average.Hatch.Rate, xlab = "Treatment", ylab = "Hatch Rate", main = "Hatch Rate by Female Treatment", cex.main = 4, cex.axis = 1, cex.lab = 1.4) #Preliminary plot
@@ -154,3 +157,8 @@ TukeyHSD(hatchRateFemaleANOVA, method = "BH") #Significant difference between lo
 hatchRateMaleANOVA <- aov(Average.Hatch.Rate ~ Male.Treatment, data = hatchRate) #One-way ANOVA by male treatment
 summary(hatchRateMaleANOVA)[[1]][["F value"]][[1]] #F = 0.3819449
 summary(hatchRateMaleANOVA)[[1]][["Pr(>F)"]][[1]] #p = 0.6867814
+
+#### MANCHESTER PAPER FIGURES ####
+#jpeg(filename = "analyses/Manchester_ReproductiveOutput_20180214/2018-04-16-Manchester-Paper-Figure.jpeg", width = 1500, height = 1000)
+plot(x = hatchRatepHOnly$Parental.Treatment, y = hatchRatepHOnly$Average.Hatch.Rate, cex.axis = 2) #Preliminary plot. Will modify in InDesign for publication
+#dev.off()
