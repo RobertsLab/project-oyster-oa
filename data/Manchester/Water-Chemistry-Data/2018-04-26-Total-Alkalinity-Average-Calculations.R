@@ -15,3 +15,13 @@ nAlkalinity <- as.numeric(length(averageAlkalinity$averageAlkalinity)) #Calculat
 for(i in 1:nAlkalinity){
   averageAlkalinity$averageAlkalinity[i] <- mean(totalAlkalinity$totalAlkalinity[((3*i)-2):(3*i)])
 } #Calculate means and add them to the table
+head(averageAlkalinity) #Confirm additions
+
+#### CALCULATE STANDARD ERROR ####
+for(i in 1:nAlkalinity){
+  averageAlkalinity$standardError[i] <- sqrt(var(totalAlkalinity$totalAlkalinity[((3*i)-2):(3*i)]))
+} #Calculate standard errors and add them to the table
+head(averageAlkalinity) #Confirm additions
+
+#### EXPORT DATA ####
+write.csv(averageAlkalinity, "2018-04-26-Average-Total-Alkalinity.csv") #Export dataframe
