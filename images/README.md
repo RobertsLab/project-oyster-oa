@@ -26,9 +26,3 @@ Images of adult gonad histology by Grace Crandall from [pre-experimental samplin
 ### [Gigas-larvae](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae)
 
 *C. gigas* larval images and videos under 10x magnification from [2017-08-02](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae/2017-08-02) and [2017-08-04](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae/2017-08-04)
-
-## Virginica
-
-### [2018-01-18-DNA-Shearing](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Virginica/2018-01-18-DNA-Shearing)
-
-Figures from TapeStation after []DNA shearing for bisulfite library preparation](https://yaaminiv.github.io/Virginica-MBDSeq/).

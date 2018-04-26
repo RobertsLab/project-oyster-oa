@@ -63,7 +63,3 @@ The following pipelines are represented in this subdirectory:
 **Histology**:
 
 - [Pie Charts](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Gonad_Histology): Visualized maturation state and sex ratio before pH exposure and after pH expsoure (low pH and ambient pH groups)
-
-## Virginica
-
-No analyses as of 2018-01-22.
