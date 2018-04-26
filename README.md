@@ -20,10 +20,6 @@ After exposure, oysters were pooled and redistributed into two 100 L tanks with 
 
 Oysters were strip spawned on July 30, 2017. Individual males were with female pools. Egg pools were determined based on life history. There were three resulting pools: low pH females, ambient pH females and heat shock females. Individual crosses were fertilized together, then distributed into two replicates. After 24 hours, hatch rate was calculated. Based on life history of both parents in a cross, d-hinge larvae were pooled together and redistributed to five replicates. Larvae that were not stocked were frozen for genetic analyses. There were five treatment pools: low pH female x low pH male, low pH female x ambient pH male, ambient pH female x low pH male, ambient pH female x ambient pH male, and heat shock female x heat shock female. Larvae stopped growing after reaching 60 microns. On August 15, 2017, 10,000 larvae from each of the five treatment groups were sampled and frozen for genetic analyses. The experiment was terminated on August 17, 2017 and all remaining larvae were collected and frozen. This trial will allow us to understand how parental life history affects larval production and differential mortality.
 
-### Eastern Oyster Ocean Acidification Experiment (ID: Virginica)
-
-This is a collaboration between the Roberts Lab and Kathleen Lotterhos at Northeastern University. Her team exposed twelve Eastern oysters, *Crassostrea virginica*, to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. [Yaamini Venkataraman](yaaminiv.github.io) prepared samples for bisulfite sequencing. This experiment will elucidate the potential for epigenetic inheritance, and provide background information for a Spring 2018 larval experiment.
-
 ## Repository Contents
 
 Each larger folder also has its own README.md file with additional information. With the exception of `analyses`, all folder contents are divided by project ID. Some files in [`.gitignore`](https://github.com/RobertsLab/project-oyster-oa/blob/master/.gitignore); highlights are outlined below.
@@ -48,10 +44,6 @@ Output for multiple analyses. Project IDs are detailed in the folder names thems
 
 - [Gonad Histology](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Gonad_Histology)
 
-**Virginica**
-
-No analyses as of 2018-01-19
-
 ### [data](https://github.com/RobertsLab/project-oyster-oa/tree/master/data)
 
 Raw data used for project analyses.
@@ -68,16 +60,11 @@ Raw data used for project analyses.
 	- [Biomarker data for Yaamini samples](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/DNR/2017-11-21-Alex-Data-Yaamini-Samples-Only.csv)
 	- [Oysters used for biomarkers by Alex Lowe](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/DNR/Biomarker_proteomeCrossRef.xlsx)
 
-
 **[Manchester](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester)**
 
 - [Adult *C. gigas* Tissue Sampling Key](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-07-30-Pacific-Oyster-Larvae)
 - [Pacific Oyster Larvae Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-Adult-Gigas-Tissue-Sampling)
 - [Water Chemistry Information](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/Water-Chemistry-Data) 
-
-**Virginica**:
-
-- [Sample information for *Crassostrea virginica* gonad samples from Kathleen Lotterhos](https://github.com/RobertsLab/project-oyster-oa/blob/master/data/OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx)
 
 ### [images](https://github.com/RobertsLab/project-oyster-oa/tree/master/images)
 
@@ -96,11 +83,6 @@ Relevant photos for downstream analysis.
   - [After OA experiment](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-gonad-histology/2017-04-08-Sampling)
 - [*C. gigas* Larval Images](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Manchester/Gigas-larvae)
 
-**Virginica**
-
-- [DNA Shearing](https://github.com/RobertsLab/project-oyster-oa/tree/master/images/Virginica/2018-01-18-DNA-Shearing)
-
-
 ### [miscellaneous](https://github.com/RobertsLab/project-oyster-oa/tree/master/miscellaneous)
 
 Meeting notes and other background information
@@ -110,10 +92,6 @@ Meeting notes and other background information
 **Manchester**
 
 No contents as of 2017-09-27
-
-**Virginica**
-
-No contents as of 2018-01-22
 
 ### [notebooks](https://github.com/RobertsLab/project-oyster-oa/tree/master/notebooks)
 
@@ -134,10 +112,6 @@ Jupyter notebook that detail reproducible methods for data analysis
 
 No contents as of 2017-09-27
 
-**Virginica**
-
-No contents as of 2018-01-22
-
 ### [presentations](https://github.com/RobertsLab/project-oyster-oa/tree/master/presentations)
 
 Final slides for various conferences
@@ -151,7 +125,3 @@ Final slides for various conferences
 **Manchester**
 
 No presentations as of 2017-09-27
-
-**Virginica**
-
-No contents as of 2018-01-22
