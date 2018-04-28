@@ -15,7 +15,7 @@ The following pipelines are represented in this subdirectory:
   - [Quality-Controlled Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control): Visualized environmental data after corrections for tidal data
   - [Biomarker Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-27-Biomarker-Boxplots): Comparing biomarkers across sites
   - [Biomarker Scatterplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-11-29-Biomarker-Scatterplots): Comparing biomarker and environmental data
-  - [Growth Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-19-Growth-Data-Analyses): 
+  - [Growth Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-19-Growth-Data-Analyses): Comparing growth patterns across sites
 
 **Protein Extraction**:
 
@@ -36,6 +36,8 @@ The following pipelines are represented in this subdirectory:
   - [Coefficient of Variation filtering](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation): Used a CV benchmark to remove technical replicate data. Found that a threshold of CV > 20 provides results consistent with geoduck data
   - [Integrated Dataset](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset): Used CV filtering information to remove samples with a coefficient of variation greater than 20 for more than half of the transitions used in SRM. Integrated data at the peptide level and proceeded with NMDS, ANOSIM, boxplots, ANOVA, and Tukey Honest Significant Difference Tests
     - [Peptide-level Boxplots](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-06-Boxplots): Boxplots for each peptide across site only. ANOVA p-value on boxplots, Tukey HSD p-values written out in separate dataframe in this subdirectory
+    - [Eelgrass-Unvegetated Differences by Site](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-Individual-Site-Eelgrass-Differences): Used to confirm that the global trend of no difference between habitat was not driven by one site
+    - [DNR Paper Figure](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure): Used to create publication-quality figure
 
 **Irrelevant Analyses**: Outputs that were not used further in the pipeline (i.e. failed attempts and dead ends)
 
@@ -63,3 +65,12 @@ The following pipelines are represented in this subdirectory:
 **Histology**:
 
 - [Pie Charts](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Gonad_Histology): Visualized maturation state and sex ratio before pH exposure and after pH expsoure (low pH and ambient pH groups)
+- [Binomial GLM Analyses](https://github.com/RobertsLab/project-oyster-oa/blob/master/analyses/Manchester_Gonad_Histology/2018-02-27-Histology-Classification-Analyses.R): Analyzed differences in maturation states between pre and post-treatment sampling and pH treatments
+
+**Reproductive Output**:
+
+- [D-Hinge Abundance](https://github.com/RobertsLab/project-oyster-oa/blob/master/analyses/Manchester_ReproductiveOutput_20180214/2018-02-14-Reproductive-Output.R): Found significant difference in D-hinge abundance between maternal treatments. Egg production component is irrelevant.
+
+**Larval Mortality**:
+
+- [Abundance by Parental Treatment](https://github.com/RobertsLab/project-oyster-oa/blob/master/analyses/Manchester_Larval_Mortality_20180329/2018-03-29-Larval-Mortality.R): Looked at larval counts over time by parental treatment
