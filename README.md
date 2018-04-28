@@ -43,6 +43,8 @@ Output for multiple analyses. Project IDs are detailed in the folder names thems
 **Manchester**
 
 - [Gonad Histology](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Gonad_Histology)
+- [Reproductive Output](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_ReproductiveOutput_20180214)
+- [Larval Mortality](https://github.com/RobertsLab/project-oyster-oa/tree/master/analyses/Manchester_Larval_Mortality_20180329)
 
 ### [data](https://github.com/RobertsLab/project-oyster-oa/tree/master/data)
 
@@ -64,7 +66,7 @@ Raw data used for project analyses.
 
 - [Adult *C. gigas* Tissue Sampling Key](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-07-30-Pacific-Oyster-Larvae)
 - [Pacific Oyster Larvae Data](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/2017-Adult-Gigas-Tissue-Sampling)
-- [Water Chemistry Information](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/Water-Chemistry-Data) 
+- [Water Chemistry Information](https://github.com/RobertsLab/project-oyster-oa/tree/master/data/Manchester/Water-Chemistry-Data)
 
 ### [images](https://github.com/RobertsLab/project-oyster-oa/tree/master/images)
 
@@ -122,6 +124,6 @@ Final slides for various conferences
 - [Pacific Coast Shellfish Growers Association 2017](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/DNR/PCSGA2017_Venkataraman.pptx)
 - [UW SAFS Graduate Student Symposium 2017](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/DNR/PCSGA2017_Venkataraman.pptx)
 
-**Manchester**
+**[Manchester](https://github.com/RobertsLab/project-oyster-oa/tree/master/presentations/Manchester)**
 
-No presentations as of 2017-09-27
+- [National Shellfisheries Association 2018](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/Manchester/Venkataraman_NSA2018.pptx)
