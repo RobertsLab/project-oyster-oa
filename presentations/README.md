@@ -8,4 +8,4 @@
 
 ## Manchester
 
-No presentations as of 2017-09-27.
+- [National Shellfisheries Association 2018](https://github.com/RobertsLab/project-oyster-oa/blob/master/presentations/Manchester/Venkataraman_NSA2018.pptx): Female low pH exposure resulted in negative carryover effect in D-hinge abundance 18 hours post-fertilization
