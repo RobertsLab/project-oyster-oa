@@ -1,7 +1,7 @@
 #I will calculate average and standard error for pH from the discrete samples.
 
 #### IMPORT TOTAL ALKALINITY VALUES ####
-pHTanks <- read.csv("2018-04-29-pH-Discrete-Samples-by-Tank.csv", header = TRUE) #Import pH values
+pHTanks <- read.csv("2018-04-30-pH-Discrete-Samples-by-Tank.csv", header = TRUE) #Import pH values
 head(pHTanks) #Confirm import
 
 #### AVERAGE VALUES ####
@@ -14,15 +14,15 @@ head(averagepH) #Confirm dataframe creation
 npH <- as.numeric(length(averagepH$averagepH)) #Calculate length
 
 for(i in 1:npH){
-  averagepH$averagepH[i] <- mean(pHTanks$pH..mV.[((3*i)-2):(3*i)])
+  averagepH$averagepH[i] <- mean(pHTanks$pH[((3*i)-2):(3*i)])
 } #Calculate means and add them to the table
 head(averagepH) #Confirm additions
 
 #### CALCULATE STANDARD ERROR ####
 for(i in 1:npH){
-  averagepH$standardError[i] <- sqrt(var(pHTanks$pH..mV.[((3*i)-2):(3*i)]))
+  averagepH$standardError[i] <- sqrt(var(pHTanks$pH[((3*i)-2):(3*i)]))
 } #Calculate standard errors and add them to the table
 head(averagepH) #Confirm additions
 
 #### EXPORT DATA ####
-write.csv(averagepH, "2018-04-29-Average-pH.csv") #Export dataframe
+write.csv(averagepH, "2018-04-30-Average-pH.csv") #Export dataframe
