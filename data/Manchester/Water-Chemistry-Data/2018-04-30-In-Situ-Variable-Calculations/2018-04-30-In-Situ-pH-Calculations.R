@@ -11,13 +11,15 @@ seacarbInputs <- read.csv("2018-04-30-Seacarb-Inputs.csv", header = TRUE)
 head(seacarbInputs) #Confirm import
 
 #### CALCULATE PARAMETERS USING SEACARB ####
-carb.output <- carb(flag = 8, var1 = seacarbInputs$pH, var2 = seacarbInputs$TotalAlkalinity/1000000, S = seacarbInputs$Salinity, T = seacarbInputs$Temperature, P = 0, Pt = 0, Sit = 0, pHscale = "T", kf = "pf", k1k2 = "1", ks = "d") #Calculate seawater chemistry paramters
-carb.ouptput$ALK <- carb.ouptput$ALK*1000000 #convert to µmol kg-1
-carb.ouptput$CO2 <- carb.ouptput$CO2*1000000 #convert to µmol kg-1
-carb.ouptput$HCO3 <- carb.ouptput$HCO3*1000000 #convert to µmol kg-1
-carb.ouptput$CO3 <- carb.ouptput$CO3*1000000 #convert to µmol kg-1
-carb.ouptput$DIC <- carb.ouptput$DIC*1000000 #convert to µmol kg-1
-carb.ouptput <- carb.ouptput[,-c(1,4,5,8,10:13,19)] #subset variables of interest
+carb.output <- carb(flag = 8, var1 = seacarbInputs$pH, var2 = seacarbInputs$TotalAlkalinity/1000000, S = seacarbInputs$Salinity, T = seacarbInputs$Temperature, P = 0, Pt = 0, Sit = 0, pHscale = "T", kf = "pf", k1k2 = "l", ks = "d") #Calculate seawater chemistry paramters
+carb.output$ALK <- carb.output$ALK*1000000 #convert to µmol kg-1
+carb.output$CO2 <- carb.output$CO2*1000000 #convert to µmol kg-1
+carb.output$HCO3 <- carb.output$HCO3*1000000 #convert to µmol kg-1
+carb.output$CO3 <- carb.output$CO3*1000000 #convert to µmol kg-1
+carb.output$DIC <- carb.output$DIC*1000000 #convert to µmol kg-1
+carb.output <- carb.output[,-c(1,4,5,8,10:13,19)] #subset variables of interest
+seacarbOutput <- cbind(seacarbInputs[,1:2], carb.output) #Join tables together
+head(seacarbOutput)
 
 #### EXPORT DATA ####
-#write.csv(carb.output, "2018-04-30-In-Situ-Carbonate-Chemistry-Parameters.csv", rownames = FALSE)
+write.csv(seacarbOutput, "2018-04-30-In-Situ-Carbonate-Chemistry-Parameters.csv", row.names = FALSE)
