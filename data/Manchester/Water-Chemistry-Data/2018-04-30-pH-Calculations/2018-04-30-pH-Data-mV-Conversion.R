@@ -8,12 +8,13 @@
 main<-setwd(getwd())
 
 #### LOAD LIBRARIES AND SET FUNCTIONALITY ####
+install.packages("seacarb") #Install seacarb package
 library(seacarb)
 rm(list=ls())
 
 #### LOAD DATA FILES (ONLY CHANGE THESE TWO LINES OF CODE) ####
-filename.calib <- "CDMNightCalibration.csv" #Calibration file
-filename.data <- "CDMNightpHData.csv" #Data file
+filename.calib <- "2018-04-30-Calibration-Measurements/2017-02-17-Calibration-Measurements.csv" #Calibration file
+filename.data <- "2018-04-30-Grab-Samples/2017-02-17-Grab-Samples.csv" #Data file
 
 #### READ IN CALIBRATION DATA ####
 z<-read.table(filename.calib, header = T, sep=",", na.string="NA") 
@@ -68,6 +69,5 @@ pH<-phTris+(mvTris/1000-mV/1000)/(R*(Data$Tin+273.15)*log(10)/Far)
 
 Data<-cbind(Data,pH)
 
-#setwd(file.path("Data/pH"))
-date<-strsplit(as.character(Sys.time()),split=" ")[[1]]
+date<-as.Date(Data$Date[1], format = "%m/%d/%y")
 write.table(Data,paste("Data",date[1],".csv"),sep=",", col.names = NA)
