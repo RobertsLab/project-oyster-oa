@@ -20,3 +20,4 @@ carb.ouptput$DIC <- carb.ouptput$DIC*1000000 #convert to µmol kg-1
 carb.ouptput <- carb.ouptput[,-c(1,4,5,8,10:13,19)] #subset variables of interest
 
 #### EXPORT DATA ####
+#write.csv(carb.output, "2018-04-30-In-Situ-Carbonate-Chemistry-Parameters.csv", rownames = FALSE)
