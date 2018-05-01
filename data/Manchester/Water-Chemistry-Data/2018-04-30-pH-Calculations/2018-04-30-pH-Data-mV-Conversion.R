@@ -13,8 +13,8 @@ library(seacarb)
 rm(list=ls())
 
 #### LOAD DATA FILES (ONLY CHANGE THESE TWO LINES OF CODE) ####
-filename.calib <- "2018-04-30-Calibration-Measurements/2017-02-17-Calibration-Measurements.csv" #Calibration file
-filename.data <- "2018-04-30-Grab-Samples/2017-02-17-Grab-Samples.csv" #Data file
+filename.calib <- "2018-04-30-Calibration-Measurements/2017-04-08-Calibration-Measurements.csv" #Calibration file
+filename.data <- "2018-04-30-Grab-Samples/2017-04-08-Grab-Samples.csv" #Data file
 
 #### READ IN CALIBRATION DATA ####
 z<-read.table(filename.calib, header = T, sep=",", na.string="NA") 
