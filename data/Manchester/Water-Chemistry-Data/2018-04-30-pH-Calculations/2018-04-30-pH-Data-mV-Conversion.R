@@ -54,7 +54,7 @@ Far<-96485.309 #Faraday constant
 #calculate the pH of the tris (Dickson A. G., Sabine C. L. and Christian J. R., SOP 6a)
 mvTris<-Tin*mVTris_t$coefficients[2]+mVTris_t$coefficients[1]
 
-STris<-34.5 #salinity of the Tris
+STris<-28 #salinity of the Tris
 
 phTris<- (11911.08-18.2499*STris-0.039336*STris^2)*(1/(Tin+273.15))-366.27059+ 0.53993607*STris+0.00016329*STris^2+(64.52243-0.084041*STris)*log(Tin+273.15)-0.11149858*(Tin+273.15)
 
@@ -62,7 +62,6 @@ phTris<- (11911.08-18.2499*STris-0.039336*STris^2)*(1/(Tin+273.15))-366.27059+ 0
 Tris<-lm(phTris~Tin) #Linear model of temperate by pH of tris
 TrisCalc<-25*Tris$coefficients[2]+Tris$coefficients[1] #calculate the pH at 25 deg C
 pHError<-((TrisCalc-8.0835)/8.0835)*100 #percent error of your probe measurement
-
 
 #calculate the pH of your samples
 pH<-phTris+(mvTris/1000-mV/1000)/(R*(Data$Tin+273.15)*log(10)/Far)
