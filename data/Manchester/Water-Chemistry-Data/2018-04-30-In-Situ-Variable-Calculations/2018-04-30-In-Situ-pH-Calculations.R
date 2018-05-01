@@ -18,7 +18,7 @@ carb.output$HCO3 <- carb.output$HCO3*1000000 #convert to µmol kg-1
 carb.output$CO3 <- carb.output$CO3*1000000 #convert to µmol kg-1
 carb.output$DIC <- carb.output$DIC*1000000 #convert to µmol kg-1
 carb.output <- carb.output[,-c(1,4,5,8,10:13,19)] #subset variables of interest
-seacarbOutput <- cbind(seacarbInputs[,1:2], carb.output) #Join tables together
+seacarbOutput <- cbind(seacarbInputs, carb.output) #Join tables together
 head(seacarbOutput)
 
 #### EXPORT DATA ####
