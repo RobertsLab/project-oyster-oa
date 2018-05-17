@@ -16,7 +16,9 @@ colnames(temperatureData)
 temperatureData <- temperatureData[,c(1:3, seq(from = 33, to = 41, by = 2))] #Save temperature data from bare outplants as a new dataframe
 head(temperatureData)
 colnames(temperatureData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
-head(temperatureData)
+temperatureData$Date <- as.Date(temperatureData$Date, format = "%m/%d/%y") #Recognize dates
+temperatureData <- temperatureData[temperatureData$Date >= "2016-06-19", ] #I only want temperature data after the outplant start date
+head(temperatureData) #Confirm changes
 
 #### CALCULATE RANGE OF TEMPERATURES ####
 
@@ -64,7 +66,7 @@ title(xlab = "Site", cex.lab = 2.5, line = 3.5) #Add x-axis label
 title(ylab = "Temperature (ºC)", cex.lab = 2.5, line = 2.5) #Add y-axis label
 #dev.off()
 
-TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for temperature differences between sites. All pairwise differences are significant at 0.05 level except for SK-PG (p = 0.9949722).
+TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for temperature differences between sites.
 
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 #I'm going to make a 3x2 multipanel plot and put the site boxplot in the bottom right corner.
