@@ -24,6 +24,7 @@ temperatureData <- data.frame(temperatureData$DateTime,
                               temperatureData$SKB,
                               temperatureData$WBB) #Reorganize columns
 colnames(temperatureData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
+temperatureData <- temperatureData[temperatureData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
 head(temperatureData) #Confirm changes
 
 #pH
