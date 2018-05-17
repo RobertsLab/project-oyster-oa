@@ -16,13 +16,15 @@ colnames(pHData)
 pHData <- pHData[,-c(1, 10:14)] #Save pH data as a new dataframe
 head(pHData)
 colnames(pHData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
-head(pHData)
+pHData$Date <- as.Date(pHData$Date) #Recognize dates
+pHData <- pHData[pHData$Date >= "2016-06-19", ] #Subset only data after outplant start date
+head(pHData) #Confirm changes
 
 #### CALCULATE RANGE OF pHS ####
 
 pHRange <- range(pHData$WBB, pHData$SKB, pHData$PGB, pHData$CIB, pHData$FBB, na.rm = TRUE) #Calculate range of pH values
-pHRange[1] <- 6.6 #Change minimum value to a round number
-pHRange[2] <- 8.2 #Change maximum value to a round number
+pHRange[1] <- 6.5 #Change minimum value to a round number
+pHRange[2] <- 8.5 #Change maximum value to a round number
 pHRange #Confirm changes
 
 #### REFORMAT DATA FOR BOXPLOT ####
