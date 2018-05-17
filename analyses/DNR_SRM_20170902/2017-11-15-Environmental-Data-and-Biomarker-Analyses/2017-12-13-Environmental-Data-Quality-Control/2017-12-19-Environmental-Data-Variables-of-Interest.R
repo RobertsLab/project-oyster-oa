@@ -54,6 +54,7 @@ head(DOData) #Confirm import
 colnames(DOData) #Get column names
 DOData <- DOData[,-c(1, 10:14)] #Save DO data as a new dataframe
 colnames(DOData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
+DOData$Date <- as.Date(DOData$Date) #Recognize Date column as dates
 DOData <- data.frame(DOData$DateTime,
                      DOData$Date,
                      DOData$Time,
@@ -63,6 +64,7 @@ DOData <- data.frame(DOData$DateTime,
                      DOData$SKB,
                      DOData$WBB) #Reorganize columns
 colnames(DOData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
+DOData <- DOData[DOData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
 head(DOData) #Confirm changes
 
 #Salinity
@@ -71,6 +73,8 @@ head(salinityData) #Confirm import
 colnames(salinityData) #Get column names
 salinityData <- salinityData[, -c(1, 10:14)] #Save salinity data as a new dataframe
 colnames(salinityData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGE", "SKB", "WBB") #Rename columns
+salinityData$Date <- as.Date(salinityData$Date) #Recognize Date column as dates
+salinityData <- salinityData[salinityData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
 head(salinityData) #Confirm changes
 
 #### CALCULATE IMPORTANT VARIABLES ####
