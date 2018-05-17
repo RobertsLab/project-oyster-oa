@@ -16,13 +16,15 @@ colnames(DOData)
 DOData <- DOData[,-c(1, 10:14)] #Save DO data as a new dataframe
 head(DOData)
 colnames(DOData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
+DOData$Date <- as.Date(DOData$Date) #Recognize dates
+DOData <- DOData[DOData$Date >= "2016-06-19", ] #Subset data from after outplant start date
 head(DOData)
 
 #### CALCULATE RANGE OF DOS ####
 
 DORange <- range(DOData[, 4:8], na.rm = TRUE) #Calculate range of DO values
 DORange[1] <- 0 #Change minimum value
-DORange[2] <- 24 #Change maximum value to a round number
+DORange[2] <- 25 #Change maximum value to a round number
 DORange #Confirm changes
 
 #### REFORMAT DATA FOR BOXPLOT ####
