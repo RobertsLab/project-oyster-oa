@@ -203,13 +203,13 @@ head(salinityVariablesofInterest) #Confirm changes
 #### SAVE TABLES ####
 
 #Temperature
-#write.csv(temperatureVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-Temperature-Data-Variables-of-Interest.csv")
+write.csv(temperatureVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-Temperature-Data-Variables-of-Interest.csv")
 
 #pH
-#write.csv(pHVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-pH-Data-Variables-of-Interest.csv")
+write.csv(pHVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-pH-Data-Variables-of-Interest.csv")
 
 #DO
-#write.csv(DOVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-DO-Data-Variables-of-Interest.csv")
+write.csv(DOVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-DO-Data-Variables-of-Interest.csv")
 
 #Salinity
-#write.csv(salinityVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-Salinity-Data-Variables-of-Interest.csv")
+write.csv(salinityVariablesofInterest, "2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-19-Salinity-Data-Variables-of-Interest.csv")
