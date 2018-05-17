@@ -16,6 +16,8 @@ colnames(salinityData)
 salinityData <- salinityData[, -c(1, 10:14)] #Save salinity data as a new dataframe
 head(salinityData)
 colnames(salinityData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGE", "SKB", "WBB") #Rename columns
+salinityData$Date <- as.Date(salinityData$Date) #Recognize dates
+salinityData <- salinityData[salinityData$Date >= "2016-06-19", ] #Subset data only for actual outplant dates
 head(salinityData)
 
 #### CALCULATE RANGE OF SALINITY ####
@@ -68,7 +70,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for salinity differences between si
 
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 
-jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-Diurnal-Salinity-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-Diurnal-Salinity-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
 
 par(mfrow = c(3,2)) #Create multipanel plot with 3 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
@@ -102,6 +104,6 @@ legend("topright", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1
 axis(side = 1, at = 1:5, lab = c("CI", "FB", "PG", "SK", "WB"), cex.axis = 5, line = 10, lwd = 0, lwd.ticks = 0) #Make x-axis
 mtext(side = 1, text = "Site", line = 35, cex = 7) #Modify x-axis label
 
-dev.off()
+#dev.off()
 
 #Be sure to clear all plot history to reset par.
