@@ -26,6 +26,8 @@ temperatureData <- data.frame(temperatureData$DateTime,
 colnames(temperatureData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
 temperatureData <- temperatureData[temperatureData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
 head(temperatureData) #Confirm changes
+temperatureData <- temperatureData[-c(4897:4898), ] #Remove blank two rows at the end of the data
+tail(temperatureData) #Confirm changes
 
 #pH
 pHData <- read.csv("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-pH-Data-QC-with-Tide-Data.csv", header = TRUE, na.strings = "NA") #Import pH data
@@ -33,6 +35,7 @@ head(pHData) #Confirm import
 colnames(pHData) #Get column names
 pHData <- pHData[,-c(1, 10:14)] #Save only pH data as a new dataframe
 colnames(pHData) <- c("DateTime", "Date", "Time", "WBB", "SKB", "PGB", "CIB", "FBB") #Rename columns
+pHData$Date <- as.Date(pHData$Date) #Recognize Date column as dates
 pHData <- data.frame(pHData$DateTime,
                      pHData$Date,
                      pHData$Time,
@@ -42,6 +45,7 @@ pHData <- data.frame(pHData$DateTime,
                      pHData$SKB,
                      pHData$WBB) #Reorganize columns
 colnames(pHData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGB", "SKB", "WBB") #Rename columns
+pHData <- pHData[pHData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
 head(pHData) #Confirm changes
 
 #DO
