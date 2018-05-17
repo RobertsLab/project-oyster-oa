@@ -75,7 +75,7 @@ salinityData <- salinityData[, -c(1, 10:14)] #Save salinity data as a new datafr
 colnames(salinityData) <- c("DateTime", "Date", "Time", "CIB", "FBB", "PGE", "SKB", "WBB") #Rename columns
 salinityData$Date <- as.Date(salinityData$Date) #Recognize Date column as dates
 salinityData <- salinityData[salinityData$Date >= "2016-06-19", ] #The outplant only started 6/19. I need to remove all data points before this time.
-head(salinityData) #Confirm changes
+head(salinityData) #Confirm changes. Note that there are less rows for the salinity data than the other three metrics.
 
 #### CALCULATE IMPORTANT VARIABLES ####
 
