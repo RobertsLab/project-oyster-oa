@@ -1,4 +1,4 @@
-#In this script, I will create a map of the five outplant locations
+#In this script, I will create a map of the five outplant locations.
 
 #### SET WORKING DIRECTORY ####
 getwd()
@@ -31,92 +31,20 @@ locationCords <- locationCords[order(locationCords$Latitude),] #Reorder location
 head(locationCords) #Confirm changes
 
 #### CREATE BASE MAP ####
+#jpeg(filename = "images/DNR/2018-05-23-Site-Map/2018-05-23-Outplant-Site-Map.jpeg", height = 1000) #Create a new file to save map
+
 data(nepacLLhigh) #Load set of polygons for the NE Pacific Ocean in high resolution from PBSmapping
-plotMap(nepacLLhigh, xlim = c(-125, -121.9), ylim = c(46, 48.9), col = "snow1", bg = "lightskyblue1", xaxt = "n", yaxt = "n", xlab = "", ylab = "", ann = FALSE, axis = FALSE) #Create a map with high resolution NE Pacific Ocean data. Remove axes since those will be manually added
+plotMap(nepacLLhigh, xlim = c(-125, -121.9), ylim = c(46, 48.9), col = "snow1", bg = "slategray1", xaxt = "n", yaxt = "n", xlab = "", ylab = "", ann = FALSE) #Create a map with high resolution NE Pacific Ocean data. Remove axes since those will be manually added
 
 #### MODIFY BASE MAP ####
+axis(side = 1, at = c(-124.5, -124, -123.5, -123, -122.5, -122), labels=c("124.5°W", "124°W", "123.5°W", "123°W", "122.5°W", "122°W"), tick = TRUE, col.axis = "grey20") #Add longitude axis
+axis(side = 2, at = c(46.5, 47, 47.5, 48, 48.5), labels=c("46.5ºN", "47°N", "47.5°N", "48°N", "48.5°N"), tick = TRUE, col.axis = "grey20") #Add latitude axis
 
+textCoordinates <- locationCords #Duplicate dataframe
+textCoordinates$Latitude[5] <- 48.4 #Move FB text down so it's easier to read
+head(textCoordinates) #Confirm changes
 
-#================================================================
+symbols(x = locationCords$Longitude, y = locationCords$Latitude, circles = c(rep(1, times = 5)), add = TRUE, inches = 0.05, bg = "grey30") #Add points to map
+text(x = textCoordinates$Longitude, y = textCoordinates$Latitude, labels = locationCords$Abbreviation, pos = c(2, 2, 2, 1, 4), col = "black", cex = 1.8) #Add site abbreviations as labels
 
-# adding axis labels
-axis(side=1, at=c(-124,-123,-122), 
-     labels=c("124°W", "123°W", "122°W") , 
-     tick=TRUE, col.axis='grey20')
-axis(side=2, at=c(47,47.5,48,48.5, 49), 
-     labels=c("47°N", "47.5°N", "48°N", "48.5°N", "49°N") , 
-     tick=TRUE, col.axis='grey20')
-# add points for each location
-# symbol colors
-sym.col <- c(rep("#00000088", 4), ##grey, most sites
-             rep("#00EE00", 1), #green, Mud
-             rep("#00000088", 4), #grey, most sites
-             rep("#00EE00", 1), #green, Fidalgo
-             rep("#00000088", 1)) # las site - lopez
-
-symbols(locationCords$long, locationCords$lat,
-        circles=c(rep(1, times=11)), add=T, inches=0.07,
-        fg="grey10", bg=sym.col )
-# add labels to points
-text(x=locationCords$long, y=locationCords$lat,
-     labels=locationCords$location,
-     pos=c(2,4,2,2,4,2,4,2,2,1,4,2), col="black",
-     cex=1.2)
-
-# label Vancouver Island
-text(x=-124.18, y=48.68, labels="Vancouver Island", col="grey60")
-
-# label Washington State
-text(x=-124, y=47.85, labels="Washington \n State", col="grey60")
-
-
-
-# -------------------------------------------
-#================================================================
-# Map for OYSTER ECOLOGY & TRACE ELEMENTAL FINGERPRINTING 
-# all populations sampled for brooding larvae
-
-windows(8,7)
-
-
-# pdf('Map_BroodLocationsSampled2.pdf', 8,7)
-
-
-#Puget Sound limits
-plotMap(nepacLLhigh, xlim=c(-124.2, -121.7), ylim=c(46.8, 48.9), 
-        border="lightskyblue2", bg='lightskyblue1', ann=FALSE, axis=FALSE,
-        xaxt="n", yaxt="n", ylab="", xlab="", 
-        col = "snow1")
-# adding axis labels
-axis(side=1, at=c(-124,-123,-122), 
-     labels=c("124°W", "123°W", "122°W") , 
-     tick=TRUE, col.axis='grey20')
-axis(side=2, at=c(47,47.5,48,48.5, 49), 
-     labels=c("47°N", "47.5°N", "48°N", "48.5°N", "49°N") , 
-     tick=TRUE, col.axis='grey20')
-
-
-
-
-
-# add points for each location
-# symbol colors
-sym.col <- c(rep("#00000088", 13)) ##grey, most sites
-
-
-symbols(locationCords$long, locationCords$lat,
-        circles=c(rep(1, times=13)), add=T, inches=0.07,
-        fg="grey10", bg=sym.col )
-# add labels to points
-text(x=locationCords$long, y=locationCords$lat,
-     labels=locationCords$location,
-     pos=c(2,4,2,2,4,2,4,2,2,1,4,2, 3), col="black",
-     cex=1.2)
-
-# label Vancouver Island
-text(x=-123.9, y=48.68, labels="Vancouver \n Island", col="grey60")
-
-# label Washington State
-text(x=-123.8, y=47.85, labels="Washington \n State", col="grey60")
-
-map.scale(relwidth = .2 ,ratio=FALSE)
+#dev.off() #Turn off plotting device
