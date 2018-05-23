@@ -130,6 +130,19 @@ points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSCol
 legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
 #dev.off()
 
+#### JUST BARE VS. EELGRASS NMDS ####
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-05-23-NMDS-Analysis-Averaged-HabitatOnly.jpeg", width = 1000, height = 750)
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+
+points(fig.nmds, "sites", col = "black", pch = NMDSColorShapeCustomization$Shape)
+legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "black"), cex = 1)
+#dev.off()
+
 #### ANOSIM ####
 
 dissimArea4.t <- vegdist(area4.t, "euclidean") #Calculate dissimilarity matrix
