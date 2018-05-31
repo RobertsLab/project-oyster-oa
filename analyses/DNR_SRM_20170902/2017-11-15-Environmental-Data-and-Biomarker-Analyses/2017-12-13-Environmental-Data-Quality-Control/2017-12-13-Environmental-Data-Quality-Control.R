@@ -31,14 +31,14 @@ DOData$Date <- as.Date(DOData$Date, format = "%m/%d/%y") #Convert entries to dat
 DOData$DateTime <- paste(DOData$Date, DOData$Time) #Create new DateTime column to easily merge tide and environmental data
 head(DOData) #Confirm changes
 
-salinityData <- read.csv("../../data/DNR/2017-11-25-Calculated-Salinity-Output-from-Micah.csv", header = TRUE, na.strings = "NA") #Import salinity data
+salinityData <- read.csv("../../data/DNR/2018-05-30-Fixed-Salinity-from-Micah.csv", header = TRUE, na.strings = "NA", strip.white = TRUE) #Import salinity data and remove white space from end of Date and Time columns
 head(salinityData) #Confirm import
 colnames(salinityData) #Get column names
-salinityData <- salinityData[,c(1:2, 3, 7, 11, 15, 18)] #Subset only the salinity information from bare outplants. Needed to use PGE instead of PGB since PGB has no salinity data.
+salinityData <- salinityData[,c(2:3, 5, 9, 13, 15, 19)] #Subset only the salinity information from bare outplants. Needed to use PGE instead of PGB since PGB has no salinity data.
 head(salinityData) #Confirm subset
 colnames(salinityData) <- c("Date", "Time", "CIB-Salinity", "FBB-Salinity", "PGE-Salinity", "SKB-Salinity", "WBB-Salinity") #Rename columns
 salinityData$Date <- as.Date(salinityData$Date, format = "%d/%m/%Y") #Convert entries to dates
-salinityData$DateTime <- paste(salinityData$Date, salinityData$Time) #Create new DateTime column to easily merge tide and environmental data
+salinityData$DateTime <- paste(salinityData$Date, salinityData$Time) #Create new DateTime column to easily merge tide and environmental data.
 head(salinityData)
 
 #### MERGE TIDAL DATA WITH ENVIRONMENTAL DATA ####
