@@ -6,7 +6,7 @@ getwd()
 
 #### IMPORT AND FORMAT DATA ####
 
-tideData <- read.csv("../../data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE) #Import the tide data
+tideData <- read.csv("../../data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE, strip.white = TRUE) #Import the tide data
 head(tideData) #Confirm import
 tideData$Date <- as.Date(tideData$Date, format = "%m/%d/%y") #Convert entries to dates
 tideData$DateTime <- paste(tideData$Date, tideData$Time) #Create new DateTime column to easily merge tide and environmental data
@@ -34,7 +34,7 @@ head(DOData) #Confirm changes
 salinityData <- read.csv("../../data/DNR/2018-05-30-Fixed-Salinity-from-Micah.csv", header = TRUE, na.strings = "NA", strip.white = TRUE) #Import salinity data and remove white space from end of Date and Time columns
 head(salinityData) #Confirm import
 colnames(salinityData) #Get column names
-salinityData <- salinityData[,c(2:3, 5, 9, 13, 15, 19)] #Subset only the salinity information from bare outplants. Needed to use PGE instead of PGB since PGB has no salinity data.
+salinityData <- salinityData[,c(1:2, 4, 10, 12, 14, 20)] #Subset only the salinity information from bare outplants. Needed to use PGE instead of PGB since PGB has no salinity data. Also use FBE and WBE due to probe burial at bare sites.
 head(salinityData) #Confirm subset
 colnames(salinityData) <- c("Date", "Time", "CIB-Salinity", "FBB-Salinity", "PGE-Salinity", "SKB-Salinity", "WBB-Salinity") #Rename columns
 salinityData$Date <- as.Date(salinityData$Date, format = "%d/%m/%Y") #Convert entries to dates

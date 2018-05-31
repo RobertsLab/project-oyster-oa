@@ -23,8 +23,8 @@ head(salinityData)
 #### CALCULATE RANGE OF SALINITY ####
 
 salinityRange <- range(salinityData[, 4:8], na.rm = TRUE) #Calculate range of salinity values
-salinityRange[1] <- 10 #Change minimum value to a smaller number to better visualize fluctuations
-salinityRange[2] <- 45 #Change maximum value to a round number
+salinityRange[1] <- 0 #Change minimum value to a smaller number to better visualize fluctuations
+salinityRange[2] <- 35 #Change maximum value to a round number
 salinityRange #Confirm changes
 
 #### REFORMAT DATA FOR BOXPLOT ####
@@ -58,7 +58,7 @@ salinityBoxplot <- rbind(salinityBoxplotCIB, salinityBoxplotFBB, salinityBoxplot
 
 #### MAKE BOXPLOT JUST BASED ON SITES ####
 
-#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-Salinity-QC-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-05-31-Salinity-QC-Boxplot-Site-Only.jpeg", height = 1000, width = 2000)
 boxplot(salinityBoxplot$salinity ~ salinityBoxplot$Site, ylim = salinityRange, main = "Salinity at Sites", cex.main = 3, cex.axis = 1.5) #Make boxplot based on sites
 siteANOVA <- aov(salinityBoxplot$salinity ~ salinityBoxplot$Site) #Perform an ANOVA to test for significant differences in salinitys between sites
 legend("topleft", bty = "n", legend = paste("F =", format(summary(siteANOVA)[[1]][["F value"]][[1]], digits = 4), "p =", format(summary(siteANOVA)[[1]][["Pr(>F)"]][[1]], digits = 4))) #Add F and p-value from ANOVA
@@ -70,7 +70,7 @@ TukeyHSD(siteANOVA) #Tukey HSD post-hoc test for salinity differences between si
 
 #### VISUALIZE DIURNAL FLUCTUATIONS AND BOXPLOT ####
 
-#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2017-12-18-Diurnal-Salinity-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
+#jpeg("2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-05-31-Diurnal-Salinity-QC-Fluctuations-and-Boxplot.jpeg", height = 5000, width = 4000)
 
 par(mfrow = c(3,2)) #Create multipanel plot with 3 rows and 2 columns
 par(mar = c(0, 0, 10, 0), oma = c(40, 15, 1, 1)) #Remove redundant white space and change outer margins
