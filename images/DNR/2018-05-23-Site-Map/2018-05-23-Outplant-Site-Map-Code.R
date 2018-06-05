@@ -1,9 +1,5 @@
 #In this script, I will create a map of the five outplant locations.
 
-#### SET WORKING DIRECTORY ####
-getwd()
-setwd("../../../") #Set directory to top level folder of repository
-
 #### LOAD PACKAGES AND DEPENDENCIES ####
 
 rm(list = ls()) #Remove list
