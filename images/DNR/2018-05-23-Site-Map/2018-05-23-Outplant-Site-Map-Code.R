@@ -4,6 +4,8 @@
 
 rm(list = ls()) #Remove list
 
+?svg
+
 #Install packages
 install.packages("maps") #Basic mapping functions and some data
 install.packages("mapdata") #Some additional HiRes data
@@ -27,7 +29,7 @@ locationCords <- locationCords[order(locationCords$Latitude),] #Reorder location
 head(locationCords) #Confirm changes
 
 #### CREATE BASE MAP ####
-#jpeg(filename = "images/DNR/2018-05-23-Site-Map/2018-05-23-Outplant-Site-Map.jpeg", height = 1000) #Create a new file to save map
+#svg(filename = "images/DNR/2018-05-23-Site-Map/2018-05-23-Outplant-Site-svg") #Create a new file to save map
 
 data(nepacLLhigh) #Load set of polygons for the NE Pacific Ocean in high resolution from PBSmapping
 plotMap(nepacLLhigh, xlim = c(-125, -121.9), ylim = c(46, 48.9), col = "snow1", bg = "slategray1", xaxt = "n", yaxt = "n", xlab = "", ylab = "", ann = FALSE) #Create a map with high resolution NE Pacific Ocean data. Remove axes since those will be manually added
