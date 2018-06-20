@@ -67,11 +67,23 @@ head(salinityTideData) #Confirm changes
 #### QUANTIFY EXPOSURE TIMES ####
 
 #Count exposure intervals, multiply by 10 to convert to minutes, and divide by 60 to convert to hours.
-((length(which(tideData$`CI-Tide` <= 1))*10)/60) #125.6667
-((length(which(tideData$`FB-Tide` <= 1))*10)/60) #188
-((length(which(tideData$`PG-Tide` <= 1))*10)/60) #146.8333
-((length(which(tideData$`SK-Tide` <= 1))*10)/60) #138.3333
-((length(which(tideData$`WB-Tide` <= 1))*10)/60) #113.6667
+CIexposed <- ((length(which(tideData$`CI-Tide` <= 1))*10)/60) #125.6667
+FBexposed <- ((length(which(tideData$`FB-Tide` <= 1))*10)/60) #188
+PGexposed <- ((length(which(tideData$`PG-Tide` <= 1))*10)/60) #146.8333
+SKexposed <- ((length(which(tideData$`SK-Tide` <= 1))*10)/60) #138.3333
+WBexposed <- ((length(which(tideData$`WB-Tide` <= 1))*10)/60) #113.6667
+
+CIsubmerged <- (((length(tideData$DateTime)*10)/60) - CIexposed)
+FBsubmerged <- (((length(tideData$DateTime)*10)/60) - FBexposed)
+PGsubmerged <- (((length(tideData$DateTime)*10)/60) - PGexposed)
+SKsubmerged <- (((length(tideData$DateTime)*10)/60) - SKexposed)
+WBsubmerged <- (((length(tideData$DateTime)*10)/60) - WBexposed)
+
+proportionTestData <- data.frame("success" = c(CIexposed, FBexposed, PGexposed, SKexposed, WBexposed),
+                                "failure" = c(CIsubmerged, FBsubmerged, PGsubmerged, SKsubmerged, WBsubmerged), 
+                                "total" = rep((((length(tideData$DateTime)*10)/60)), times = 5))
+
+prop.test(proportionTestData$failure, proportionTestData$total) #Case Inlet was out of water more, but it doesn't explain any protein abundance results
 
 #### REMOVE EXPOSURE TIMES ####
 
