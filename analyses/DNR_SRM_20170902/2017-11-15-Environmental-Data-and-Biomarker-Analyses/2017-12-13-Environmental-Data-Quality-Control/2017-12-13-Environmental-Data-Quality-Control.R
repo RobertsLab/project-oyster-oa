@@ -83,7 +83,7 @@ proportionTestData <- data.frame("success" = c(CIexposed, FBexposed, PGexposed, 
                                 "failure" = c(CIsubmerged, FBsubmerged, PGsubmerged, SKsubmerged, WBsubmerged), 
                                 "total" = rep((((length(tideData$DateTime)*10)/60)), times = 5))
 
-prop.test(proportionTestData$failure, proportionTestData$total) #Case Inlet was out of water more, but it doesn't explain any protein abundance results
+prop.test(proportionTestData$success, proportionTestData$total) #Case Inlet was out of water more, but it doesn't explain any protein abundance results
 
 #### REMOVE EXPOSURE TIMES ####
 
