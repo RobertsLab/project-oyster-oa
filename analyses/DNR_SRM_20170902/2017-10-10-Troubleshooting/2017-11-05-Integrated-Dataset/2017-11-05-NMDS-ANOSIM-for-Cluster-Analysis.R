@@ -1,13 +1,14 @@
 #In this script, I'll see if there are any clutering patterns in my data between site and eelgrass habitats.
 
-#### SET WORKING DIRECTORY ####
+#### LOAD DEPENDENCIES ####
 
-setwd("../..") #Set working directory to the main SRM data file
-getwd()
+source("analyses/DNR_SRM_20170902/biostats.R") #Load the source file for the biostats commands
+install.packages("vegan") #Install vegan package
+library(vegan)
 
 #### IMPORT DATA ####
 
-SRMDataNMDSPivotedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Technical-Replicates-Pivoted.csv")
+SRMDataNMDSPivotedCorrected <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Technical-Replicates-Pivoted.csv")
 rownames(SRMDataNMDSPivotedCorrected) <- SRMDataNMDSPivotedCorrected$X #Set row names
 SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivotedCorrected[,-1] #Remove column of row names
 head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
@@ -36,12 +37,7 @@ colnames(SRMDataNMDSAveraged) <- sampleColumnNames #Add column names
 colnames(SRMDataNMDSAveraged) #Confirm column naming
 head(SRMDataNMDSAveraged) #Confirm column naming
 
-#### NMDS FOR SITE AND EELGRASS CLUSTERING ####
-
-#Load the source file for the biostats package
-source("biostats.R") #Either load the source R script or copy paste. Must run this code before NMDS. It can be found the project-oyster-oa repo >> analyses >> DNR_Preliminary_Analyses_20170321. It is also at the bottom of this script.
-install.packages("vegan") #Install vegan package
-library(vegan)
+#### TRANSFORM DATA ####
 
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
 SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
@@ -53,14 +49,34 @@ head(area.protID4) #Confirm changes
 
 area4.t <- t(area.protID4) #Transpose the file so that rows and columns are switched
 head(area4.t) #Confirm transposition
-area4.tra <- (area4.t+1) #Add 1 to all values before transforming
-area4.tra <- data.trans(area4.tra, method = 'log', plot = FALSE) #log(x+1) transformation
+area4.tra <- data.trans(area4.t, method = 'hellinger', plot = FALSE) #Hellinger (asymmetric) transformation
+head(area4.tra) #Confirm transformation
 
-proc.nmds.averaged.euclidean <- metaMDS(area4.t, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix using euclidean distance. Julian confirmed that I should use euclidean distances, and not bray-curtis
-stressplot(proc.nmds.averaged.euclidean) #Make Shepard plot
-#vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings
-ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "points", display = "sites") #Plot basic NMDS
-#plot(vec.proc.nmds.averaged.euclidean, p.max=.01, col='blue') #Plot eigenvectors
+#### NMDS FOR SITE AND EELGRASS CLUSTERING ####
+
+nmds.scree(area4.tra, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. Using 2 axes is appropriate.
+
+proc.nmds.averaged.euclidean <- metaMDS(area4.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on hellinger transformed data using euclidean distance.
+proc.nmds.averaged.euclidean$stress #Stress of NMDS is 0.07508988
+
+nmds.monte(area4.tra, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07508988, is less than the expected stress value. P-value = 0.00990099
+stressplot(proc.nmds.averaged.euclidean) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 0.994 (redundant with observed stress value and p-value from the randomization test)
+
+vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.proc.nmds.averaged.euclidean #Look at loadings
+
+ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.proc.nmds.averaged.euclidean, p.max = 0.001, col = 'blue') #Plot loadings that are significant at the 0.001 level
+
+#### IMPORT AND FORMAT BIOLOGICAL DATA ####
+
+biologicalReplicates <- read.csv("analyses/DNR_SRM_20170902/2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A", fileEncoding="UTF-8-BOM") #Import site and eelgrass condition information (i.e. biological replicate information), using specific file encoding information
+head(biologicalReplicates) #Confirm import
+biologicalReplicates$Sample.Number <- as.character(biologicalReplicates$Sample.Number) #Convert sample number to character string
+biologicalReplicates$Sample.Number <- substr(biologicalReplicates$Sample.Number, 1, nchar(biologicalReplicates$Sample.Number)-2) #Remove -1 or -2 from end of sample number
+biologicalReplicates <- biologicalReplicates[1:50,] #Keep only the first 50 rows, since everything repeats
+head(biologicalReplicates) #Confirm changes
+tail(biologicalReplicates) #Confirm changes
 
 #### ASSIGN COLORS AND SHAPES ####
 
@@ -68,6 +84,7 @@ ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "points", displa
 temporaryData <- data.frame(Sample.Number = sampleColumnNames,
                             y = rep(x = 0, times = length(sampleColumnNames))) #Create a temporary dataframe with sample  names
 head(temporaryData) #Confirm dataframe creation
+
 NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
 head(NMDSColorShapeCustomization) #Confirm merge
 tail(NMDSColorShapeCustomization) #Confirm merge
@@ -143,9 +160,21 @@ points(fig.nmds, "sites", col = "black", pch = NMDSColorShapeCustomization$Shape
 legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "black"), cex = 1)
 #dev.off()
 
+#### NMDS REFINEMENT BY REGION ####
+#I'm going to take my averaged normalized data and plot it by region (Puget Sound vs. Willapa Bay).
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-28-NMDS-Analysis-Averaged-by-Region.jpeg", width = 1000, height = 750)
+fig.nmds.2 <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds.2, "sites", pch = NMDSColorShapeCustomization$Region.Shape) #Add points
+#legend("topleft", bty = "n", legend = paste("R = 0.2368", "Significance = 0.031"), cex = 0.8) #Add R and p-value from ANOSIM
+legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex = 0.8)
+#vec.proc.nmds.averaged.euclidean <- envfit(ord = proc.nmds.averaged.euclidean$points, env = area4.t, perm = 1000, na.rm = TRUE) #Calculate loadings
+#plot(vec.proc.nmds.averaged.euclidean, p.max = 0.001, col= "blue", cex = 0.3, lty = 2) #Plot eigenvectors
+#dev.off()
+
 #### ANOSIM ####
 
-dissimArea4.t <- vegdist(area4.t, "euclidean") #Calculate dissimilarity matrix
+dissimArea4.t <- vegdist(area4.tra, "euclidean") #Calculate dissimilarity matrix
 ANOSIMReplicates <- biologicalReplicates #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
@@ -181,15 +210,3 @@ summary(regionSim) #Show similarity percentages
 #ratio = Average to SD ratio
 #ava, avb = Average abundances per group
 #cumsum = Ordered cumulative contribution
-
-#### NMDS REFINEMENT BY REGION ####
-#I'm going to take my averaged normalized data and plot it by region (Puget Sound vs. Willapa Bay).
-
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-28-NMDS-Analysis-Averaged-by-Region.jpeg", width = 1000, height = 750)
-fig.nmds.2 <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
-points(fig.nmds.2, "sites", pch = NMDSColorShapeCustomization$Region.Shape) #Add points
-legend("topleft", bty = "n", legend = paste("R = 0.2368", "Significance = 0.031"), cex = 0.8) #Add R and p-value from ANOSIM
-legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex = 0.8)
-vec.proc.nmds.averaged.euclidean <- envfit(ord = proc.nmds.averaged.euclidean$points, env = area4.t, perm = 1000, na.rm = TRUE) #Calculate loadings
-plot(vec.proc.nmds.averaged.euclidean, p.max = .001, col= "blue", cex = 0.3, lty = 2) #Plot eigenvectors
-#dev.off()
