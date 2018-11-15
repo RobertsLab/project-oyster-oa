@@ -154,6 +154,12 @@ ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show
 
 legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('red', 'blue', 'magenta', 'green', 'black'), cex = 0.5)
 
+#### PLOT JUST THE LOADINGS ####
+
+ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Create an empty plot
+vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+plot(vec.proc.nmds.averaged.euclidean, p.max = 0.001, col = 'black') #Plot loadings that are significant at the 0.001 level
+
 #### NMDS BY SITE WITH POLYGONS ####
 
 #Legend for NMDS plot:
@@ -163,7 +169,7 @@ legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo
 #Skokomish River Delta = Green
 #Willapa Bay = Black
 
-fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Create an empty plot
 text(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color) #Add oyster sample IDs to NMDS and color-code by site distinction
 
 ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
