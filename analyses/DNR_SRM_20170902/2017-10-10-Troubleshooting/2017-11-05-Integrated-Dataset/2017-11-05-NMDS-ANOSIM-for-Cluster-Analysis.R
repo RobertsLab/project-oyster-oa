@@ -5,6 +5,8 @@
 source("analyses/DNR_SRM_20170902/biostats.R") #Load the source file for the biostats commands
 install.packages("vegan") #Install vegan package
 library(vegan)
+install.packages("pastecs")
+library(pastecs)
 
 #### IMPORT DATA ####
 
@@ -46,9 +48,12 @@ head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 
 area.protID4 <- SRMDataNMDSAveragedCorrected #Save all area data as a new dataframe
 head(area.protID4) #Confirm changes
-
 area4.t <- t(area.protID4) #Transpose the file so that rows and columns are switched
 head(area4.t) #Confirm transposition
+
+data.stand(area4.t, method = "total", margin = "row")
+data.stand(area4.t, method = "max", margin = "row")
+
 area4.tra <- data.trans(area4.t, method = 'hellinger', plot = FALSE) #Hellinger (asymmetric) transformation
 head(area4.tra) #Confirm transformation
 
@@ -129,7 +134,77 @@ colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Co
 head(NMDSColorShapeCustomization) #Confirm changes
 tail(NMDSColorShapeCustomization) #Confirm changes
 
-#### NMDS REFINEMENT ####
+#### NMDS BY SITE WITH CONFIDENCE ELLIPSE ####
+
+#Legend for NMDS plot:
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Port Gamble Bay = Magenta
+#Skokomish River Delta = Green
+#Willapa Bay = Black
+
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+text(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color) #Add oyster sample IDs to NMDS and color-code by site distinction
+
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "blue") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "magenta") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "green") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "black") #Add confidence ellipse around the oyster samples from Willapa Bay
+
+legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('red', 'blue', 'magenta', 'green', 'black'), cex = 0.5)
+
+#### NMDS BY SITE WITH POLYGONS ####
+
+#Legend for NMDS plot:
+#Case Inlet = Red
+#Fidalgo Bay = Blue
+#Port Gamble Bay = Magenta
+#Skokomish River Delta = Green
+#Willapa Bay = Black
+
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+text(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color) #Add oyster sample IDs to NMDS and color-code by site distinction
+
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "blue") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "magenta") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "green") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "black") #Add confidence ellipse around the oyster samples from Willapa Bay
+
+legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('red', 'blue', 'magenta', 'green', 'black'), cex = 0.5)
+
+#### NMDS BY HABITAT WITH CONFIDENCE ELLIPSES ####
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-05-23-NMDS-Analysis-Averaged-HabitatOnly.jpeg", width = 1000, height = 750)
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+
+points(fig.nmds, "sites", col = "black", pch = NMDSColorShapeCustomization$Shape)
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Eelgrass.Condition, show.groups = "Eelgrass", col = "green") #Add confidence ellipse around the oyster samples from eelgrass habitats
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Eelgrass.Condition, show.groups = "Bare", col = "black") #Add confidence ellipse around the oyster samples from bare habitats
+legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "green"), cex = 1)
+#dev.off()
+
+#### NMDS BY HABITAT WITH POLYGONS ####
+
+#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-05-23-NMDS-Analysis-Averaged-HabitatOnly.jpeg", width = 1000, height = 750)
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+
+#Legend for NMDS plot:
+#Bare = circle
+#Eelgrass = Triangle
+
+points(fig.nmds, "sites", col = "black", pch = NMDSColorShapeCustomization$Shape)
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Eelgrass.Condition, show.groups = "Eelgrass", col = "green") #Add confidence ellipse around the oyster samples from eelgrass habitats
+ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Eelgrass.Condition, show.groups = "Bare", col = "black") #Add confidence ellipse around the oyster samples from bare habitats
+legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "green"), cex = 1)
+#dev.off()
+
+#### NMDS BY SITE AND HABITAT ####
 
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged.jpeg", width = 1000, height = 750)
 fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
@@ -147,20 +222,7 @@ points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSCol
 legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
 #dev.off()
 
-#### JUST BARE VS. EELGRASS NMDS ####
-
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-05-23-NMDS-Analysis-Averaged-HabitatOnly.jpeg", width = 1000, height = 750)
-fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
-
-#Legend for NMDS plot:
-#Bare = circle
-#Eelgrass = Triangle
-
-points(fig.nmds, "sites", col = "black", pch = NMDSColorShapeCustomization$Shape)
-legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "black"), cex = 1)
-#dev.off()
-
-#### NMDS REFINEMENT BY REGION ####
+#### NMDS BY REGION ####
 #I'm going to take my averaged normalized data and plot it by region (Puget Sound vs. Willapa Bay).
 
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-28-NMDS-Analysis-Averaged-by-Region.jpeg", width = 1000, height = 750)
@@ -174,39 +236,45 @@ legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex =
 
 #### ANOSIM ####
 
-dissimArea4.t <- vegdist(area4.tra, "euclidean") #Calculate dissimilarity matrix
 ANOSIMReplicates <- biologicalReplicates #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
 ANOSIMReplicates <- ANOSIMReplicates[,-1] #Remove Sample.Number column
-ANOSIMReplicates$Site.Eelgrass <- paste(ANOSIMReplicates$Site, ANOSIMReplicates$Eelgrass.Condition)
 head(ANOSIMReplicates) #Confirm changes
 
-str(ANOSIMReplicates) #Examine structure
+ANOSIMReplicates <- ANOSIMReplicates[-50,] #Remove OBLNK row
+tail(ANOSIMReplicates) #Confirm changes
+
+ANOSIMReplicates$Site.Eelgrass <- paste(ANOSIMReplicates$Site, ANOSIMReplicates$Eelgrass.Condition) #Add a new column with site and eelgrass designation
+head(ANOSIMReplicates) #Confirm changes
+
+str(ANOSIMReplicates) #Examine structure of ANOSIMReplicates
 ANOSIMReplicates$Site <- factor(ANOSIMReplicates$Site) #Make sure only preesnt factors are recognized
 ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Condition) #Make sure only preesnt factors are recognized
 ANOSIMReplicates$Site.Eelgrass <- factor(ANOSIMReplicates$Site.Eelgrass) #Make sure only preesnt factors are recognized
 str(ANOSIMReplicates) #Confirm structure
 
-siteANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
-summary(siteANOSIM)
-plot(siteANOSIM)
+dissimArea4.t <- vegdist(area4.tra, "euclidean") #Calculate euclidean dissimilarity matrix
 
-eelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
+siteANOSIM <- anosim(dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
+summary(siteANOSIM)
+siteANOSIM$statistic #R = 0.0645419
+siteANOSIM$signif #p = 0.065
+plot(siteANOSIM) #Obtain boxplots and permutation test histogram
+
+eelgrassANOSIM <- anosim(dissimArea4.t, grouping = ANOSIMReplicates[,2]) #One-way ANOSIM by Eelgrass presence
 summary(eelgrassANOSIM)
+eelgrassANOSIM$statistic #R = 0.04427102. Within group and between group similarities are the same for bare and eelgrass habitats
+eelgrassANOSIM$signif #p = 0.122. This result is not significant
 plot(eelgrassANOSIM)
 
-siteEelgrassANOSIM <- anosim(dat = dissimArea4.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
+siteEelgrassANOSIM <- anosim(dissimArea4.t, grouping = ANOSIMReplicates[,3]) #Two-way ANOSIM by Site and Eelgrass
 summary(siteEelgrassANOSIM)
+siteEelgrassANOSIM$statistic #R = 0.08814604
+siteEelgrassANOSIM$signif #p = 0.073
 plot(siteEelgrassANOSIM)
 
-regionANOSIM <- anosim(dat = dissimArea4.t, grouping = NMDSColorShapeCustomization[,4]) #One-way ANOSIM by Region (Puget Sound vs. Willapa Bay)
+regionANOSIM <- anosim(dissimArea4.t, grouping = NMDSColorShapeCustomization[,4]) #One-way ANOSIM by Region (Puget Sound vs. Willapa Bay)
 summary(regionANOSIM)
+regionANOSIM$statistic #0.2265681. Mild evidence for groupings
+regionANOSIM$signif #0.053. Marginally significant
 plot(regionANOSIM)
-regionSim <- simper(comm = area4.t, group = NMDSColorShapeCustomization$Region) #Calculate similarity percentages
-summary(regionSim) #Show similarity percentages
-
-#average = Average contribution to overall dissimilarity
-#sd = Standard deviation of contribution
-#ratio = Average to SD ratio
-#ava, avb = Average abundances per group
-#cumsum = Ordered cumulative contribution
