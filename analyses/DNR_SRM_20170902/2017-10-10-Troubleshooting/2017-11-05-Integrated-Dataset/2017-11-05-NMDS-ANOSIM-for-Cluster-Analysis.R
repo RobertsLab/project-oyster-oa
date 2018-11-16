@@ -42,7 +42,7 @@ head(SRMDataNMDSAveraged) #Confirm column naming
 #### TRANSFORM DATA ####
 
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
-SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
+#SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 #write.csv(SRMDataNMDSAveragedCorrected, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv") #Wrote out dataframe
 
@@ -61,7 +61,7 @@ head(area4.tra) #Confirm transformation
 
 nmds.scree(area4.tra, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. Using 2 axes is appropriate.
 
-proc.nmds.averaged.euclidean <- metaMDS(area4.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on hellinger transformed data using euclidean distance.
+proc.nmds.averaged.euclidean <- metaMDS(area4.tra, distance = 'gower', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on hellinger transformed data using euclidean distance.
 proc.nmds.averaged.euclidean$stress #Stress of NMDS is 0.07508988
 
 nmds.monte(area4.tra, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07508988, is less than the expected stress value. P-value = 0.00990099
@@ -259,7 +259,7 @@ ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Conditio
 ANOSIMReplicates$Site.Eelgrass <- factor(ANOSIMReplicates$Site.Eelgrass) #Make sure only preesnt factors are recognized
 str(ANOSIMReplicates) #Confirm structure
 
-dissimArea4.t <- vegdist(area4.tra, "euclidean") #Calculate euclidean dissimilarity matrix
+dissimArea4.t <- vegdist(area4.tra, "gower") #Calculate euclidean dissimilarity matrix
 
 siteANOSIM <- anosim(dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
 summary(siteANOSIM)
