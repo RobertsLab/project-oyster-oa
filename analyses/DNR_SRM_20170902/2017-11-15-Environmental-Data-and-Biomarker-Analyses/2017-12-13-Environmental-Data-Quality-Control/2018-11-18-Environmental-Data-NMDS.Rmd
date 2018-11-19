@@ -326,14 +326,12 @@ I'm going to linearly interpolate missing values with at least x number of obser
 
 ```{r}
 outplantDates <- as.Date(unique(temperatureData$Date)) #Save outplant dates as a new vector
-outplantDates <- as.character(outplantDates) #Save as characters, not dates
 outplantDates #Confirm vector creation
 ```
 
 ## pH
 
 ```{r}
-pHTideData$temp <- as.character(pHTideData$Date)
 head(pHTideData)
 ```
 
@@ -353,71 +351,477 @@ pHMinimum <- data.frame("Date" = outplantDates,
 head(pHMinimum)
 ```
 
-
 ```{r}
 nDates <- length(outplantDates) #Number of dates in the outplant experiment
 for (j in 4:12) { #For each column with pH data
   for(i in 1:nDates) { #For each date
-    pHMinimum[i, j-3] <- min(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
+    pHMinimum[i, j-2] <- min(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
   }
-} #The loop will cycle through each date first in one column, then move to the next column.
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(pHMinimum) <- sapply(pHMinimum, is.infinite) #Replace all "Inf" with N/A
+head(pHMinimum) #Confirm dataframe filling. All "Inf" values are now replaced
 ```
-
-```{r}
-nDates <- length(outplantDates) #Number of dates in the outplant experiment
-for (j in 4:12) { #For each column with pH data
-  for(i in 1:nDates) { #For each date
-    print(min(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE)) #Print the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
-  }
-} #The loop will cycle through each date first in one column, then move to the next column.
-```
-
-```{r}
-nDates <- length(outplantDates) #Number of dates in the outplant experiment
-for (j in 4:12) { #For each column with pH data
-  for(i in 1:nDates) { #For each date
-    pHMinimum[i, j-3] <- min(pHTideData[pHTideData$temp == outplantDates[i], j], na.rm = TRUE) #Find the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
-  }
-} #The loop will cycle through each date first in one column, then move to the next column.
-```
-
 
 ### Mean
 
-### Median
+```{r}
+pHMean <- data.frame("Date" = outplantDates,
+                     "WBE-pH-mean" = rep(0, length(outplantDates)),
+                     "WBB-pH-mean" = rep(0, length(outplantDates)),
+                     "SKE-pH-mean" = rep(0, length(outplantDates)),
+                     "SKB-pH-mean" = rep(0, length(outplantDates)),
+                     "PGB-pH-mean" = rep(0, length(outplantDates)),
+                     "CIE-pH-mean" = rep(0, length(outplantDates)),
+                     "CIB-pH-mean" = rep(0, length(outplantDates)),
+                     "FBE-pH-mean" = rep(0, length(outplantDates)),
+                     "FBB-pH-mean"  = rep(0, length(outplantDates))) #Create an empty dataframe
+head(pHMean)
+```
+
+```{r}
+for (j in 4:12) { #For each column with pH data
+  for(i in 1:nDates) { #For each date
+    pHMean[i, j-2] <- mean(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the mean value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "NaN" in the dataframe.
+is.na(pHMean) <- sapply(pHMean, is.nan) #Replace all "NaN" with N/A
+head(pHMean) #Confirm dataframe filling. All "NaN" values are now replaced with N/A.
+```
+
+### Variance
+
+```{r}
+pHVariance <- data.frame("Date" = outplantDates,
+                        "WBE-pH-var" = rep(0, length(outplantDates)),
+                        "WBB-pH-var" = rep(0, length(outplantDates)),
+                        "SKE-pH-var" = rep(0, length(outplantDates)),
+                        "SKB-pH-var" = rep(0, length(outplantDates)),
+                        "PGB-pH-var" = rep(0, length(outplantDates)),
+                        "CIE-pH-var" = rep(0, length(outplantDates)),
+                        "CIB-pH-var" = rep(0, length(outplantDates)),
+                        "FBE-pH-var" = rep(0, length(outplantDates)),
+                        "FBB-pH-var"  = rep(0, length(outplantDates))) #Create an empty dataframe
+head(pHVariance)
+```
+
+```{r}
+for (j in 4:12) { #For each column with pH data
+  for(i in 1:nDates) { #For each date
+    pHVariance[i, j-2] <- var(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the variance  of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "N/A" in the dataframe.
+head(pHVariance) #Confirm dataframe filling.
+```
 
 ### Maximum
+
+```{r}
+pHMaximum <- data.frame("Date" = outplantDates,
+                        "WBE-pH-max" = rep(0, length(outplantDates)),
+                        "WBB-pH-max" = rep(0, length(outplantDates)),
+                        "SKE-pH-max" = rep(0, length(outplantDates)),
+                        "SKB-pH-max" = rep(0, length(outplantDates)),
+                        "PGB-pH-max" = rep(0, length(outplantDates)),
+                        "CIE-pH-max" = rep(0, length(outplantDates)),
+                        "CIB-pH-max" = rep(0, length(outplantDates)),
+                        "FBE-pH-max" = rep(0, length(outplantDates)),
+                        "FBB-pH-max" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(pHMaximum)
+```
+
+```{r}
+for (j in 4:12) { #For each column with pH data
+  for(i in 1:nDates) { #For each date
+    pHMaximum[i, j-2] <- max(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the maximum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(pHMaximum) <- sapply(pHMaximum, is.infinite) #Replace all "Inf" with N/A
+head(pHMaximum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
 
 ## Dissolved oxygen
 
+```{r}
+head(DOTideData)
+```
+
 ### Minimum
+
+```{r}
+DOMinimum <- data.frame("Date" = outplantDates,
+                        "WBE-DO-min" = rep(0, length(outplantDates)),
+                        "WBB-DO-min" = rep(0, length(outplantDates)),
+                        "SKE-DP-min" = rep(0, length(outplantDates)),
+                        "SKB-DO-min" = rep(0, length(outplantDates)),
+                        "PGE-DO-min" = rep(0, length(outplantDates)),
+                        "PGB-DO-min" = rep(0, length(outplantDates)),
+                        "CIE-DO-min" = rep(0, length(outplantDates)),
+                        "CIB-DO-min" = rep(0, length(outplantDates)),
+                        "FBE-DO-min" = rep(0, length(outplantDates)),
+                        "FBB-DO-min"  = rep(0, length(outplantDates))) #Create an empty dataframe
+head(DOMinimum)
+```
+
+```{r}
+for (j in 4:13) { #For each column with DO data
+  for(i in 1:nDates) { #For each date
+    DOMinimum[i, j-2] <- min(DOTideData[DOTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the minimum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(DOMinimum) <- sapply(DOMinimum, is.infinite) #Replace all "Inf" with N/A
+head(DOMinimum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
 
 ### Mean
 
-### Median
+```{r}
+DOMean <- data.frame("Date" = outplantDates,
+                        "WBE-DO-mean" = rep(0, length(outplantDates)),
+                        "WBB-DO-mean" = rep(0, length(outplantDates)),
+                        "SKE-DP-mean" = rep(0, length(outplantDates)),
+                        "SKB-DO-mean" = rep(0, length(outplantDates)),
+                        "PGE-DO-mean" = rep(0, length(outplantDates)),
+                        "PGB-DO-mean" = rep(0, length(outplantDates)),
+                        "CIE-DO-mean" = rep(0, length(outplantDates)),
+                        "CIB-DO-mean" = rep(0, length(outplantDates)),
+                        "FBE-DO-mean" = rep(0, length(outplantDates)),
+                        "FBB-DO-mean" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(DOMean)
+```
+
+```{r}
+for (j in 4:13) { #For each column with DO data
+  for(i in 1:nDates) { #For each date
+    DOMean[i, j-2] <- mean(DOTideData[DOTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the mean value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "NaN" in the dataframe.
+is.na(DOMean) <- sapply(DOMean, is.nan) #Replace all "NaN" with N/A
+head(DOMean) #Confirm dataframe filling. All "Inf" values are now replaced
+```
+
+### Variance
+
+```{r}
+DOVariance <- data.frame("Date" = outplantDates,
+                        "WBE-DO-var" = rep(0, length(outplantDates)),
+                        "WBB-DO-var" = rep(0, length(outplantDates)),
+                        "SKE-DP-var" = rep(0, length(outplantDates)),
+                        "SKB-DO-var" = rep(0, length(outplantDates)),
+                        "PGE-DO-var" = rep(0, length(outplantDates)),
+                        "PGB-DO-var" = rep(0, length(outplantDates)),
+                        "CIE-DO-var" = rep(0, length(outplantDates)),
+                        "CIB-DO-var" = rep(0, length(outplantDates)),
+                        "FBE-DO-var" = rep(0, length(outplantDates)),
+                        "FBB-DO-var" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(DOVariance)
+```
+
+```{r}
+for (j in 4:13) { #For each column with DO data
+  for(i in 1:nDates) { #For each date
+    DOVariance[i, j-2] <- var(DOTideData[DOTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the variance of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column.
+head(DOVariance) #Confirm dataframe filling.
+```
 
 ### Maximum
+
+```{r}
+DOMaximum <- data.frame("Date" = outplantDates,
+                        "WBE-DO-max" = rep(0, length(outplantDates)),
+                        "WBB-DO-max" = rep(0, length(outplantDates)),
+                        "SKE-DP-max" = rep(0, length(outplantDates)),
+                        "SKB-DO-max" = rep(0, length(outplantDates)),
+                        "PGE-DO-max" = rep(0, length(outplantDates)),
+                        "PGB-DO-max" = rep(0, length(outplantDates)),
+                        "CIE-DO-max" = rep(0, length(outplantDates)),
+                        "CIB-DO-max" = rep(0, length(outplantDates)),
+                        "FBE-DO-max" = rep(0, length(outplantDates)),
+                        "FBB-DO-max" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(DOMaximum)
+```
+
+```{r}
+for (j in 4:13) { #For each column with DO data
+  for(i in 1:nDates) { #For each date
+    DOMaximum[i, j-2] <- min(DOTideData[DOTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the maximum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(DOMaximum) <- sapply(DOMaximum, is.infinite) #Replace all "Inf" with N/A
+head(DOMaximum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
 
 ## Salinity
 
+```{r}
+head(salinityTideData)
+```
+
 ### Minimum
+
+```{r}
+salinityMinimum <- data.frame("Date" = outplantDates,
+                              "CIB-sal-min" = rep(0, length(outplantDates)),
+                              "CIE-sal-min" = rep(0, length(outplantDates)),
+                              "FBB-sal-min" = rep(0, length(outplantDates)),
+                              "FBE-sal-min" = rep(0, length(outplantDates)),
+                              "PGE-sal-min" = rep(0, length(outplantDates)),
+                              "SKB-sal-min" = rep(0, length(outplantDates)),
+                              "SKE-sal-min" = rep(0, length(outplantDates)),
+                              "WBB-sal-min" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(salinityMinimum)
+```
+
+```{r}
+for (j in 4:11) { #For each column with salinity data
+  for(i in 1:nDates) { #For each date
+    salinityMinimum[i, j-2] <- min(salinityTideData[salinityTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the minimum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(salinityMinimum) <- sapply(salinityMinimum, is.infinite) #Replace all "Inf" with N/A
+head(salinityMinimum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
 
 ### Mean
 
-### Median
+```{r}
+salinityMean <- data.frame("Date" = outplantDates,
+                           "CIB-sal-mean" = rep(0, length(outplantDates)),
+                           "CIE-sal-mean" = rep(0, length(outplantDates)),
+                           "FBB-sal-mean" = rep(0, length(outplantDates)),
+                           "FBE-sal-mean" = rep(0, length(outplantDates)),
+                           "PGE-sal-mean" = rep(0, length(outplantDates)),
+                           "SKB-sal-mean" = rep(0, length(outplantDates)),
+                           "SKE-sal-mean" = rep(0, length(outplantDates)),
+                           "WBB-sal-mean" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(salinityMean)
+```
+
+```{r}
+for (j in 4:11) { #For each column with salinity data
+  for(i in 1:nDates) { #For each date
+    salinityMean[i, j-2] <- mean(salinityTideData[salinityTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the mean value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "NaN" in the dataframe.
+is.na(salinityMean) <- sapply(salinityMean, is.nan) #Replace all "NaN" with N/A
+head(salinityMean) #Confirm dataframe filling. All "NaN" values are now replaced
+```
+
+### Variance
+
+```{r}
+salinityVariance <- data.frame("Date" = outplantDates,
+                              "CIB-sal-var" = rep(0, length(outplantDates)),
+                              "CIE-sal-var" = rep(0, length(outplantDates)),
+                              "FBB-sal-var" = rep(0, length(outplantDates)),
+                              "FBE-sal-var" = rep(0, length(outplantDates)),
+                              "PGE-sal-var" = rep(0, length(outplantDates)),
+                              "SKB-sal-var" = rep(0, length(outplantDates)),
+                              "SKE-sal-var" = rep(0, length(outplantDates)),
+                              "WBB-sal-var" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(salinityVariance)
+```
+
+```{r}
+for (j in 4:11) { #For each column with salinity data
+  for(i in 1:nDates) { #For each date
+    salinityVariance[i, j-2] <- var(salinityTideData[salinityTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the variance of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as N/A in the dataframe.
+head(salinityVariance) #Confirm dataframe filling.
+```
 
 ### Maximum
+
+```{r}
+salinityMaximum <- data.frame("Date" = outplantDates,
+                              "CIB-sal-max" = rep(0, length(outplantDates)),
+                              "CIE-sal-max" = rep(0, length(outplantDates)),
+                              "FBB-sal-max" = rep(0, length(outplantDates)),
+                              "FBE-sal-max" = rep(0, length(outplantDates)),
+                              "PGE-sal-max" = rep(0, length(outplantDates)),
+                              "SKB-sal-max" = rep(0, length(outplantDates)),
+                              "SKE-sal-max" = rep(0, length(outplantDates)),
+                              "WBB-sal-max" = rep(0, length(outplantDates))) #Create an empty dataframe
+head(salinityMaximum)
+```
+
+```{r}
+for (j in 4:11) { #For each column with salinity data
+  for(i in 1:nDates) { #For each date
+    salinityMaximum[i, j-2] <- max(salinityTideData[salinityTideData$Date == outplantDates[i], j], na.rm = TRUE) #Find and save the maximum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(salinityMaximum) <- sapply(salinityMaximum, is.infinite) #Replace all "Inf" with N/A
+head(salinityMaximum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
 
 ## Temperature
 
+```{r}
+head(temperatureData)
+```
+
+```{r}
+outplantDateCharacters <- as.character(outplantDates) #Convert outplant dates to characters
+temperatureData$DateCharacters <- as.character(temperatureData$Date) #Convert dates to characters
+```
+
 ### Minimum
+
+```{r}
+temperatureMinimum <- data.frame("Date" = outplantDateCharacters,
+                                 "WBE-temp-min" = rep(0, length(outplantDates)),
+                                 "WBB-temp-min" = rep(0, length(outplantDates)),
+                                 "SKE-temp-min" = rep(0, length(outplantDates)),
+                                 "SKB-temp-min" = rep(0, length(outplantDates)),
+                                 "PGE-temp-min" = rep(0, length(outplantDates)),
+                                 "PGB-temp-min" = rep(0, length(outplantDates)),
+                                 "CIE-temp-min" = rep(0, length(outplantDates)),
+                                 "CIB-temp-min" = rep(0, length(outplantDates)),
+                                 "FBE-temp-min" = rep(0, length(outplantDates)),
+                                 "FBB-temp-min" = rep(0, length(outplantDates))) #Create an empty dataframe, but be sure to use outplantDateCharacters
+head(temperatureMinimum)
+```
+
+```{r}
+for (j in 3:12) { #For each column with temperature data
+  for(i in 1:nDates) { #For each date
+    temperatureMinimum[i, j-1] <- min(temperatureData[temperatureData$DateCharacters == outplantDateCharacters[i], j], na.rm = TRUE) #Find and save the minimum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(temperatureMinimum) <- sapply(temperatureMinimum, is.infinite) #Replace all "Inf" with N/A
+head(temperatureMinimum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
+
+```{r}
+temperatureMinimum$Date <- outplantDates #Replace temperatureMinimum$Date with outplantDates so they are dates 
+temperatureMinimum$FBB.temp.min <- as.numeric(temperatureMinimum$FBB.temp.min) #Convert characters in to numeric values
+head(temperatureMinimum)
+```
 
 ### Mean
 
-### Median
+```{r}
+temperatureMean <- data.frame("Date" = outplantDateCharacters,
+                              "WBE-temp-mean" = rep(0, length(outplantDates)),
+                              "WBB-temp-mean" = rep(0, length(outplantDates)),
+                              "SKE-temp-mean" = rep(0, length(outplantDates)),
+                              "SKB-temp-mean" = rep(0, length(outplantDates)),
+                              "PGE-temp-mean" = rep(0, length(outplantDates)),
+                              "PGB-temp-mean" = rep(0, length(outplantDates)),
+                              "CIE-temp-mean" = rep(0, length(outplantDates)),
+                              "CIB-temp-mean" = rep(0, length(outplantDates)),
+                              "FBE-temp-mean" = rep(0, length(outplantDates)),
+                              "FBB-temp-mean" = rep(0, length(outplantDates))) #Create an empty dataframe, but be sure to use outplantDateCharacters
+head(temperatureMean)
+```
+
+```{r}
+for (j in 3:12) { #For each column with temperature data
+  for(i in 1:nDates) { #For each date
+    temperatureMean[i, j-1] <- mean(temperatureData[temperatureData$DateCharacters == outplantDateCharacters[i], j], na.rm = TRUE) #Find and save the mean value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(temperatureMean) <- sapply(temperatureMean, is.nan) #Replace all "NaN" with N/A
+head(temperatureMean) #Confirm dataframe filling. All "NaN" values are now replaced
+```
+
+```{r}
+temperatureMean$Date <- outplantDates #Replace temperatureMean$Date with outplantDates so they are dates 
+head(temperatureMean)
+```
+
+### Variance
+
+```{r}
+temperatureVariance <- data.frame("Date" = outplantDateCharacters,
+                                 "WBE-temp-var" = rep(0, length(outplantDates)),
+                                 "WBB-temp-var" = rep(0, length(outplantDates)),
+                                 "SKE-temp-var" = rep(0, length(outplantDates)),
+                                 "SKB-temp-var" = rep(0, length(outplantDates)),
+                                 "PGE-temp-var" = rep(0, length(outplantDates)),
+                                 "PGB-temp-var" = rep(0, length(outplantDates)),
+                                 "CIE-temp-var" = rep(0, length(outplantDates)),
+                                 "CIB-temp-var" = rep(0, length(outplantDates)),
+                                 "FBE-temp-var" = rep(0, length(outplantDates)),
+                                 "FBB-temp-var" = rep(0, length(outplantDates))) #Create an empty dataframe, but be sure to use outplantDateCharacters
+head(temperatureVariance)
+```
+
+```{r}
+for (j in 3:12) { #For each column with temperature data
+  for(i in 1:nDates) { #For each date
+    temperatureVariance[i, j-1] <- var(temperatureData[temperatureData$DateCharacters == outplantDateCharacters[i], j], na.rm = TRUE) #Find and save the variance of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+head(temperatureVariance) #Confirm dataframe filling. All "Inf" values are now replaced
+```
+
+```{r}
+temperatureVariance$Date <- outplantDates #Replace temperatureVariance$Date with outplantDates so they are dates 
+head(temperatureVariance)
+```
 
 ### Maximum
 
+```{r}
+temperatureMaximum <- data.frame("Date" = outplantDateCharacters,
+                                 "WBE-temp-max" = rep(0, length(outplantDates)),
+                                 "WBB-temp-max" = rep(0, length(outplantDates)),
+                                 "SKE-temp-max" = rep(0, length(outplantDates)),
+                                 "SKB-temp-max" = rep(0, length(outplantDates)),
+                                 "PGE-temp-max" = rep(0, length(outplantDates)),
+                                 "PGB-temp-max" = rep(0, length(outplantDates)),
+                                 "CIE-temp-max" = rep(0, length(outplantDates)),
+                                 "CIB-temp-max" = rep(0, length(outplantDates)),
+                                 "FBE-temp-max" = rep(0, length(outplantDates)),
+                                 "FBB-temp-max" = rep(0, length(outplantDates))) #Create an empty dataframe, but be sure to use outplantDateCharacters
+head(temperatureMaximum)
+```
+
+```{r}
+for (j in 3:12) { #For each column with temperature data
+  for(i in 1:nDates) { #For each date
+    temperatureMaximum[i, j-1] <- max(temperatureData[temperatureData$DateCharacters == outplantDateCharacters[i], j], na.rm = TRUE) #Find and save the minimum value of the designated column at each date.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column. Any days with no non-missing data will save as "Inf" in the dataframe.
+is.na(temperatureMaximum) <- sapply(temperatureMaximum, is.infinite) #Replace all "Inf" with N/A
+head(temperatureMaximum) #Confirm dataframe filling. All "Inf" values are now replaced
+```
+
+```{r}
+temperatureMaximum$Date <- outplantDates #Replace temperatureMaximum$Date with outplantDates so they are dates
+head(temperatureMaximum)
+```
+
+## Merge all dataframes together
+
+```{r}
+dailyEnvironmentalData <- cbind(pHMinimum, pHMean, pHVariance, pHMaximum,
+                                DOMinimum, DOMean, DOVariance, DOMaximum,
+                                salinityMinimum, salinityMean, salinityVariance, salinityMaximum,
+                                temperatureMinimum, temperatureMean, temperatureVariance, temperatureMaximum) #Use cbind to merge all of the dataframes together
+colnames(dailyEnvironmentalData) #View column names
+```
+
+```{r}
+dailyEnvironmentalData <- dailyEnvironmentalData[-c(11, 21, 31, 41, 52, 63, 74, 85, 94, 103, 112, 121, 132, 143, 154)] #Remove all redundant "Date" columns
+colnames(dailyEnvironmentalData) #Confirm column removal
+```
+
 # Environmental data NMDS
 
-Use Gower's to exclude missing data values.
+```{r}
+dailyEnvironmentalDataCorrected <- dailyEnvironmentalData #Duplicate dataframe
+rownames(dailyEnvironmentalDataCorrected) <- dailyEnvironmentalDataCorrected$Date #Save dates as rownames
+dailyEnvironmentalDataCorrected <- dailyEnvironmentalDataCorrected[, -1] #Remove date column
+#dailyEnvironmentalDataCorrected[is.na(dailyEnvironmentalDataCorrected)] <- 0 #Replace NAs with 0s
+head(dailyEnvironmentalDataCorrected) #Confirm changes
+```
+
+```{r}
+envNMDSData <- data.trans(dailyEnvironmentalDataCorrected, method = 'hellinger', plot = FALSE) #Hellinger (asymmetric) transformation
+```
+
