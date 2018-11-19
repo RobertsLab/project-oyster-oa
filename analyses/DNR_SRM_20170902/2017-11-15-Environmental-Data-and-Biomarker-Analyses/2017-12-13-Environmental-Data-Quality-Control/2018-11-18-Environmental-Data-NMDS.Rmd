@@ -326,12 +326,14 @@ I'm going to linearly interpolate missing values with at least x number of obser
 
 ```{r}
 outplantDates <- as.Date(unique(temperatureData$Date)) #Save outplant dates as a new vector
+outplantDates <- as.character(outplantDates) #Save as characters, not dates
 outplantDates #Confirm vector creation
 ```
 
 ## pH
 
 ```{r}
+pHTideData$temp <- as.character(pHTideData$Date)
 head(pHTideData)
 ```
 
@@ -360,6 +362,25 @@ for (j in 4:12) { #For each column with pH data
   }
 } #The loop will cycle through each date first in one column, then move to the next column.
 ```
+
+```{r}
+nDates <- length(outplantDates) #Number of dates in the outplant experiment
+for (j in 4:12) { #For each column with pH data
+  for(i in 1:nDates) { #For each date
+    print(min(pHTideData[pHTideData$Date == outplantDates[i], j], na.rm = TRUE)) #Print the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column.
+```
+
+```{r}
+nDates <- length(outplantDates) #Number of dates in the outplant experiment
+for (j in 4:12) { #For each column with pH data
+  for(i in 1:nDates) { #For each date
+    pHMinimum[i, j-3] <- min(pHTideData[pHTideData$temp == outplantDates[i], j], na.rm = TRUE) #Find the minimum value of the designated column at each date. The minimum value will be entered in the specified column of the dataframe pHMinimum.
+  }
+} #The loop will cycle through each date first in one column, then move to the next column.
+```
+
 
 ### Mean
 
