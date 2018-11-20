@@ -636,8 +636,7 @@ ordiplot(envData.log.gower.NMDS, choices = c(1,2), type = "text", display = "sit
 plot(vec.envData.log.gower, p.max = 0.001, col = 'blue') #Plot loadings that are significant at the 0.001 level
 ```
 
+## Customize NMDS
 
-
-
-
+## Analysis of Similarities
 
