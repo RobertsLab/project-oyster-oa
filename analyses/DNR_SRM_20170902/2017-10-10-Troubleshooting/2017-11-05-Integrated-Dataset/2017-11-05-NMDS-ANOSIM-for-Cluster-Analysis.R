@@ -3,10 +3,8 @@
 #### LOAD DEPENDENCIES ####
 
 source("analyses/DNR_SRM_20170902/biostats.R") #Load the source file for the biostats commands
-install.packages("vegan") #Install vegan package
-library(vegan)
-install.packages("pastecs")
-library(pastecs)
+#install.packages("vegan") #Install vegan package
+require(vegan)
 
 #### IMPORT DATA ####
 
@@ -16,7 +14,7 @@ SRMDataNMDSPivotedCorrected <- SRMDataNMDSPivotedCorrected[,-1] #Remove column o
 head(SRMDataNMDSPivotedCorrected) #Confirm there are no NAs
 
 sampleColumnNames <- c("O01", "O04", "O08", "O10", "O100", "O101", "O102", "O106", "O118", "O121", "O124", "O131", "O137", "O140", "O147", "O17", "O21", "O22", "O24", "O26", "O30", "O31", "O32", "O35", "O40", "O43", "O46", "O51", "O56", "O60", "O64", "O66", "O78", "O90", "O91", "O96", "O99") #Create a sample ID vector
-biologicalReplicates <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-Biological-Replicate-Information-SampleID-Only.csv", header = TRUE) #Import biological replicate information
+biologicalReplicates <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-Biological-Replicate-Information-SampleID-Only.csv", header = TRUE) #Import biological replicate information
 colnames(biologicalReplicates) <- c("Sample.Number", "Site", "Eelgrass.Condition") #Rename columns
 head(biologicalReplicates) #Confirm import
 
@@ -42,7 +40,7 @@ head(SRMDataNMDSAveraged) #Confirm column naming
 #### TRANSFORM DATA ####
 
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
-#SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
+SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 #write.csv(SRMDataNMDSAveragedCorrected, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv") #Wrote out dataframe
 
@@ -51,17 +49,14 @@ head(area.protID4) #Confirm changes
 area4.t <- t(area.protID4) #Transpose the file so that rows and columns are switched
 head(area4.t) #Confirm transposition
 
-data.stand(area4.t, method = "total", margin = "row")
-data.stand(area4.t, method = "max", margin = "row")
-
-area4.tra <- data.trans(area4.t, method = 'hellinger', plot = FALSE) #Hellinger (asymmetric) transformation
+area4.tra <- data.trans(area4.t, method = 'hellingers', plot = FALSE) #Hellinger (asymmetric) transformation
 head(area4.tra) #Confirm transformation
 
 #### NMDS FOR SITE AND EELGRASS CLUSTERING ####
 
 nmds.scree(area4.tra, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. Using 2 axes is appropriate.
 
-proc.nmds.averaged.euclidean <- metaMDS(area4.tra, distance = 'gower', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on hellinger transformed data using euclidean distance.
+proc.nmds.averaged.euclidean <- metaMDS(area4.tra, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on hellinger transformed data using euclidean distance.
 proc.nmds.averaged.euclidean$stress #Stress of NMDS is 0.07508988
 
 nmds.monte(area4.tra, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07508988, is less than the expected stress value. P-value = 0.00990099
@@ -210,7 +205,7 @@ ordihull(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Eelgrass.Cond
 legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black", "green"), cex = 1)
 #dev.off()
 
-#### NMDS BY SITE AND HABITAT ####
+#### NMDS BY SITE AND HABITAT WITH CONFIDENCE ELLIPSE ####
 
 #jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged.jpeg", width = 1000, height = 750)
 fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
@@ -225,7 +220,15 @@ fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none"
 #Port Gamble Bay = Magenta
 
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "blue") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "magenta") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "green") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "black") #Add confidence ellipse around the oyster samples from Willapa Bay
+
 legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
+
 #dev.off()
 
 #### NMDS BY REGION ####
@@ -240,7 +243,7 @@ legend("topright", pch = c(20, 8), legend=c("Puget Sound", "Willapa Bay"), cex =
 #plot(vec.proc.nmds.averaged.euclidean, p.max = 0.001, col= "blue", cex = 0.3, lty = 2) #Plot eigenvectors
 #dev.off()
 
-#### ANOSIM ####
+#### GLOBAL ANOSIM ####
 
 ANOSIMReplicates <- biologicalReplicates #Subset sample numbers used as IDs in ANOSIM
 row.names(ANOSIMReplicates) <- ANOSIMReplicates[,1] #Assign sample numbers as row names
@@ -259,7 +262,7 @@ ANOSIMReplicates$Eelgrass.Condition <- factor(ANOSIMReplicates$Eelgrass.Conditio
 ANOSIMReplicates$Site.Eelgrass <- factor(ANOSIMReplicates$Site.Eelgrass) #Make sure only preesnt factors are recognized
 str(ANOSIMReplicates) #Confirm structure
 
-dissimArea4.t <- vegdist(area4.tra, "gower") #Calculate euclidean dissimilarity matrix
+dissimArea4.t <- vegdist(area4.tra, "euclidean") #Calculate euclidean dissimilarity matrix
 
 siteANOSIM <- anosim(dissimArea4.t, grouping = ANOSIMReplicates[,1]) #One-way ANOSIM by Site
 summary(siteANOSIM)
@@ -284,3 +287,139 @@ summary(regionANOSIM)
 regionANOSIM$statistic #0.2265681. Mild evidence for groupings
 regionANOSIM$signif #0.053. Marginally significant
 plot(regionANOSIM)
+
+#### PAIRWISE ANOSIM ####
+
+ANOSIMReplicates$Sample.Number <- rownames(ANOSIMReplicates) #Extract row names
+attach(ANOSIMReplicates)
+ANOSIMReplicates <- ANOSIMReplicates[order(Sample.Number),] #Reorder by sample number
+head(ANOSIMReplicates) #Confirm reordering
+detach(ANOSIMReplicates)
+
+area4.tra$Sample.Number <- rownames(area4.tra) #Extract row names
+head(area4.tra) #Confirm changes
+
+pairwiseData <- merge(x = area4.tra, y = ANOSIMReplicates, by = "Sample.Number") #Merge dataframes
+rownames(pairwiseData) <- pairwiseData$Sample.Number #Make sample number the rownames
+pairwiseData <- pairwiseData[, -1] #Remove Sample.Number column
+head(pairwiseData) #Confirm merge
+
+#CI vs. FB
+
+dataCIFB <- pairwiseData[pairwiseData$Site == "CI" | pairwiseData$Site == "FB", ] #Subset data
+dataCIFB$Site <- factor(dataCIFB$Site) #Make sure only present factors are recognized
+head(dataCIFB) #Confirm changes
+
+siteCIFBANOSIM <- anosim(dataCIFB[,1:37], grouping = dataCIFB[,38])
+summary(siteCIFBANOSIM)
+siteCIFBANOSIM$statistic #R = 0.0196793
+siteCIFBANOSIM$signif #p = 0.331
+plot(siteCIFBANOSIM) #Obtain boxplots and permutation test histogram
+
+#CI vs. PG
+
+dataCIPG <- pairwiseData[pairwiseData$Site == "CI" | pairwiseData$Site == "PG", ] #Subset data
+dataCIPG$Site <- factor(dataCIPG$Site) #Make sure only present factors are recognized
+head(dataCIPG) #Confirm changes
+
+siteCIPGANOSIM <- anosim(dataCIPG[,1:37], grouping = dataCIPG[,38])
+summary(siteCIPGANOSIM)
+siteCIPGANOSIM$statistic #R = -0.07069971
+siteCIPGANOSIM$signif #p = 0.78
+plot(siteCIPGANOSIM) #Obtain boxplots and permutation test histogram
+
+#CI vs. SK
+
+dataCISK <- pairwiseData[pairwiseData$Site == "CI" | pairwiseData$Site == "SK", ] #Subset data
+dataCISK$Site <- factor(dataCISK$Site) #Make sure only present factors are recognized
+head(dataCISK) #Confirm changes
+
+siteCISKANOSIM <- anosim(dataCISK[,1:37], grouping = dataCISK[,38])
+summary(siteCISKANOSIM)
+siteCISKANOSIM$statistic #R = -0.05830904
+siteCISKANOSIM$signif #p = 0.733
+plot(siteCISKANOSIM) #Obtain boxplots and permutation test histogram
+
+#CI vs. WB
+
+dataCIWB <- pairwiseData[pairwiseData$Site == "CI" | pairwiseData$Site == "WB", ] #Subset data
+dataCIWB$Site <- factor(dataCIWB$Site) #Make sure only present factors are recognized
+head(dataCIWB) #Confirm changes
+
+siteCIWBANOSIM <- anosim(dataCIWB[,1:37], grouping = dataCIWB[,38])
+summary(siteCIWBANOSIM)
+siteCIWBANOSIM$statistic #R = 0.09259259
+siteCIWBANOSIM$signif #p = 0.16
+plot(siteCIWBANOSIM) #Obtain boxplots and permutation test histogram
+
+#FB vs. PG
+
+dataFBPG <- pairwiseData[pairwiseData$Site == "FB" | pairwiseData$Site == "PG", ] #Subset data
+dataFBPG$Site <- factor(dataFBPG$Site) #Make sure only present factors are recognized
+head(dataFBPG) #Confirm changes
+
+siteFBPGANOSIM <- anosim(dataFBPG[,1:37], grouping = dataFBPG[,38])
+summary(siteFBPGANOSIM)
+siteFBPGANOSIM$statistic #R = -0.03125
+siteFBPGANOSIM$signif #p = 0.599
+plot(siteFBPGANOSIM) #Obtain boxplots and permutation test histogram
+
+#FB vs. SK
+
+dataFBSK <- pairwiseData[pairwiseData$Site == "FB" | pairwiseData$Site == "SK", ] #Subset data
+dataFBSK$Site <- factor(dataFBSK$Site) #Make sure only present factors are recognized
+head(dataFBSK) #Confirm changes
+
+siteFBSKANOSIM <- anosim(dataFBSK[,1:37], grouping = dataFBSK[,38])
+summary(siteFBSKANOSIM)
+siteFBSKANOSIM$statistic #R = 0.09486607
+siteFBSKANOSIM$signif #p = 0.086
+plot(siteFBPGANOSIM) #Obtain boxplots and permutation test histogram
+
+#FB vs. WB
+
+dataFBWB <- pairwiseData[pairwiseData$Site == "FB" | pairwiseData$Site == "WB", ] #Subset data
+dataFBWB$Site <- factor(dataFBWB$Site) #Make sure only present factors are recognized
+head(dataFBWB) #Confirm changes
+
+siteFBWBANOSIM <- anosim(dataFBWB[,1:37], grouping = dataFBWB[,38])
+summary(siteFBWBANOSIM)
+siteFBWBANOSIM$statistic #R = 0.2567829
+siteFBWBANOSIM$signif #p = 0.035
+plot(siteFBWBANOSIM) #Obtain boxplots and permutation test histogram
+
+#PG vs. SK
+
+dataPGSK <- pairwiseData[pairwiseData$Site == "PG" | pairwiseData$Site == "SK", ] #Subset data
+dataPGSK$Site <- factor(dataPGSK$Site) #Make sure only present factors are recognized
+head(dataPGSK) #Confirm changes
+
+sitePGSKANOSIM <- anosim(dataPGSK[,1:37], grouping = dataPGSK[,38])
+summary(sitePGSKANOSIM)
+sitePGSKANOSIM$statistic #R = -0.006138393
+sitePGSKANOSIM$signif #p = 0.382
+plot(sitePGSKANOSIM) #Obtain boxplots and permutation test histogram
+
+#PG vs. WB
+
+dataPGWB <- pairwiseData[pairwiseData$Site == "PG" | pairwiseData$Site == "WB", ] #Subset data
+dataPGWB$Site <- factor(dataPGWB$Site) #Make sure only present factors are recognized
+head(dataPGWB) #Confirm changes
+
+sitePGWBANOSIM <- anosim(dataPGWB[,1:37], grouping = dataPGWB[,38])
+summary(sitePGWBANOSIM)
+sitePGWBANOSIM$statistic #R = 0.07267442
+sitePGWBANOSIM$signif #p = 0.192
+plot(sitePGWBANOSIM) #Obtain boxplots and permutation test histogram
+
+#SK vs. WB
+
+dataSKWB <- pairwiseData[pairwiseData$Site == "SK" | pairwiseData$Site == "WB", ] #Subset data
+dataSKWB$Site <- factor(dataSKWB$Site) #Make sure only present factors are recognized
+head(dataSKWB) #Confirm changes
+
+siteSKWBANOSIM <- anosim(dataSKWB[,1:37], grouping = dataSKWB[,38])
+summary(siteSKWBANOSIM)
+siteSKWBANOSIM$statistic #R = 0.1540698
+siteSKWBANOSIM$signif #p = 0.079
+plot(siteSKWBANOSIM) #Obtain boxplots and permutation test histogram
