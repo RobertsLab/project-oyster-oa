@@ -318,6 +318,15 @@ for(i in 4:nSites) { #For individual site data
 } #Replace outliers with NA values
 ```
 
+#Export corrected data
+
+```{r}
+#write.csv(pHTideData, "2018-11-18-pH-Tide-Data-Corrected.csv") #Export pH data
+#write.csv(DOTideData, "2018-11-18-DO-Tide-Data-Corrected.csv") #Export DO data
+#write.csv(salinityTideData, "2018-11-18-Salinity-Tide-Data-Corrected.csv") #Export salinity data
+#write.csv(temperatureData, "2018-11-18-Temperature-Corrected.csv") #Export temperature data
+```
+
 # Obtain daily values for environmental data
 
 Mean and variance values will be autocorrelated with maximum and minimum values, so I'll only calculate mean and variance.
