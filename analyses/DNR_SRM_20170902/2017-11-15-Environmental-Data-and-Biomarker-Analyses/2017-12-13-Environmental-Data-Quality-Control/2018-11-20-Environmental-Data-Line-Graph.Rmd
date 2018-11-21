@@ -1,0 +1,43 @@
+---
+title: "Environmental Data Line Graph"
+author: "Yaamini Venkataraman"
+date: "11/20/2018"
+output: html_document
+---
+
+In this script, I'll visualize environmental data for each site and habitat combination over the course of the entire outplant.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Import data
+
+```{r}
+pHData <- read.csv("2018-11-18-pH-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
+pHData <- pHData[, -1] #Remove first column of redundant values
+head(pHData)
+```
+
+```{r}
+DOData <- read.csv("2018-11-18-DO-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
+DOData <- DOData[, -1] #Remove first column of redundant values
+head(DOData)
+```
+
+```{r}
+salinityData <- read.csv("2018-11-18-Salinity-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
+salinityData <- salinityData[, -1] #Remove first column of redundant values
+head(salinityData)
+```
+
+```{r}
+temperatureData <- read.csv("2018-11-18-DO-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
+temperatureData <- temperatureData[, -1] #Remove first column of redundant values
+head(temperatureData)
+```
+
