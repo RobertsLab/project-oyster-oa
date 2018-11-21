@@ -36,8 +36,156 @@ head(salinityData)
 ```
 
 ```{r}
-temperatureData <- read.csv("2018-11-18-DO-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
+temperatureData <- read.csv("2018-11-18-Temperature-Corrected.csv", header = TRUE, na.strings = "NA")
 temperatureData <- temperatureData[, -1] #Remove first column of redundant values
 head(temperatureData)
 ```
+
+#Calculate axis information
+
+## Environmental data (y-axis)
+
+```{r}
+pHMin <- as.integer((min(pHData[, -c(1:3, 13:17)], na.rm = TRUE))) #Calculate minimum
+pHMax <- as.integer((max(pHData[, -c(1:3, 13:17)], na.rm = TRUE))+1) #Calculate maximum
+pHRange <- c(pHMin, pHMax) #Create range values
+```
+
+```{r}
+DOMin <- as.integer((min(DOData[, -c(1:3, 14:18)], na.rm = TRUE)))
+DOMax <- as.integer((max(DOData[, -c(1:3, 14:18)], na.rm = TRUE)))
+DORange <- c(DOMin, DOMax)
+```
+
+```{r}
+salinityMin <- as.integer((min(salinityData[, -c(1:3, 12:16)], na.rm = TRUE)))
+salinityMax <- as.integer((max(salinityData[, -c(1:3, 12:16)], na.rm = TRUE)))
+salinityRange <- c(salinityMin, salinityMax)
+```
+
+```{r}
+temperatureMin <- as.integer((min(temperatureData[, -c(1:2, 13)], na.rm = TRUE)))
+temperatureMax <- as.integer((max(temperatureData[, -c(1:2, 13)], na.rm = TRUE)))
+temperatureRange <- c(temperatureMin, temperatureMax)
+```
+
+## Dates (x-axis)
+
+```{r}
+dateTime <- pHData$DateTime #Isolate dates and times
+```
+
+# Plot data
+
+```{r}
+par(mfrow = c(4, 5), oma = c(10, 5, 1, 1), mar = c(0, 0, 0, 0)) #Create a 4x5 multipanel plot, filling in the rows first. Add space along the outer margins and remove inner margins
+
+#Temperature
+plot(x = dateTime, y = temperatureData$CIB, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange) #Case Inlet bare
+lines(temperatureData$CIE, lty = 3, col = "grey80") #Case Inlet eelgrass
+mtext(side = 3, line = -1, adj = 0, text = "Case Inlet", cex = 0.5) #Add species name. Use adj = 0 to left-justify the text
+box(col = "grey80")
+axis(side = 2, las = 1, at = c(15, 35), col = "grey80") #Put the axis labels at the values specified
+mtext(side = 2, line = 3, "Temperature (ºC)") #Add environmental variable indication
+
+plot(x = dateTime, y = temperatureData$FBB, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange) #Fidalgo Bay bare
+lines(temperatureData$FBE, lty = 3, col = "grey80") #Eelgrass
+mtext(side = 3, line = -1, adj = 0, text = "Fidalgo Bay", cex = 0.5) #Add species name. Use adj = 0 to left-justify the text
+box(col = "grey80")
+
+plot(x = dateTime, y = temperatureData$PGB, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange) #Port Gamble bare
+lines(temperatureData$PGE, lty = 3, col = "grey80") #Eelgrass
+mtext(side = 3, line = -1, adj = 0, text = "Port Gamble Bay", cex = 0.5) #Add species name. Use adj = 0 to left-justify the text
+box(col = "grey80")
+
+plot(x = dateTime, y = temperatureData$SKB, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange) #Skokomish River bare
+lines(temperatureData$SKE, lty = 3, col = "grey80") #Eelgrass
+mtext(side = 3, line = -1, adj = 0, text = "Skokomish River Delta", cex = 0.5) #Add species name. Use adj = 0 to left-justify the text
+box(col = "grey80")
+
+plot(x = dateTime, y = temperatureData$WBB, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange) #Willapa Bay bare
+lines(temperatureData$WBE, lty = 3, col = "grey80") #Eelgrass
+mtext(side = 3, line = -1, adj = 0, text = "Willapa Bay", cex = 0.5) #Add species name. Use adj = 0 to left-justify the text
+box(col = "grey80")
+
+#pH data
+plot(x = dateTime, y = pHData$CIB.pH, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange) #Case Inlet bare
+lines(pHData$CIE.pH, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 2, las = 1, at = c(7.5, 8.5), col = "grey80") #Put the axis labels at the values specified
+mtext(side = 2, line = 3, "pH") #Add environmental variable indication
+
+plot(x = dateTime, y = pHData$FBB.pH, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange) #Fidalgo Bay bare
+lines(pHData$FBE.pH, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+plot(x = dateTime, y = pHData$PGB.pH, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange) #Port Gamble bare
+box(col = "grey80")
+
+plot(x = dateTime, y = pHData$SKB.pH, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange) #Skokomish River bare
+lines(pHData$SKE.pH, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+plot(x = dateTime, y = pHData$WBB.pH, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange) #Willapa Bay bare
+lines(pHData$WBE.pH, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+#Salinity
+plot(x = salinityData$DateTime, y = salinityData$CIB.Salinity, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = salinityRange) #Case Inlet bare
+lines(salinityData$CIE.Salinity, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 2, las = 1, at = c(15, 25), col = "grey80") #Put the axis labels at the values specified
+mtext(side = 2, line = 3, "Salinity (PSU)") #Add environmental variable indication
+
+plot(x = salinityData$DateTime, y = salinityData$FBB.Salinity, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = salinityRange) #Fidalgo Bay bare
+lines(salinityData$FBE.Salinity, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+plot(x = salinityData$DateTime, y = salinityData$PGE.Salinity, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = salinityRange, col = "grey80") #Port Gamble Bay bare
+lines(salinityData$PGE.Salinity, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+plot(x = salinityData$DateTime, y = salinityData$SKB.Salinity, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = salinityRange) #Skokomish River bare
+lines(salinityData$SKE.Salinity, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+
+plot(x = salinityData$DateTime, y = salinityData$WBB.Salinity, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = salinityRange) #Willapa Bay bare
+box(col = "grey80")
+
+#Dissolved oxygen
+plot(x = dateTime, y = DOData$CIB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange) #Case Inlet bare
+lines(DOData$CIE.DO, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 2, las = 1, at = c(25, 45), col = "grey80") #Put the axis labels at the values specified
+mtext(side = 2, line = 3, "DO (mg/L)") #Add environmental variable indication
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+
+plot(x = dateTime, y = DOData$FBB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange) #Fidalgo Bay bare
+lines(DOData$FBE.DO, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+
+plot(x = dateTime, y = DOData$PGB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange) #Port Gamble bare
+lines(DOData$PGE.DO, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+
+plot(x = dateTime, y = DOData$SKB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange) #Skokomish River bare
+lines(DOData$SKE.DO, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+
+plot(x = dateTime, y = DOData$WBB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange) #Willapa Bay bare
+lines(DOData$WBE.DO, lty = 3, col = "grey80") #Eelgrass
+box(col = "grey80")
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+mtext(side = 1, outer = TRUE, line = 7, "Date")
+```
+
+
+
+
+
+
+
 
