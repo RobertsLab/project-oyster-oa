@@ -600,26 +600,32 @@ head(dailyEnvironmentalDataCorrected) #Confirm changes
 ```{r}
 envData.log <- log(dailyEnvironmentalDataCorrected + 1) #Log transform data before analysis
 #envData.log[is.na(envData.log)] <- 0 #Replace NAs with 0s
-head(envData.log) #View transformation
-```
-
-```{r}
 envData.log <- envData.log[-c(32:34),] #Remove last three rows since the outplant ended before then
 tail(envData.log)
 ```
 
-
 ```{r}
-nmds.scree(envData.log, distance = "gower", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+envData.log.trans <- data.frame(t(envData.log)) #Transpose dataframe so objects are environmental conditions at site-habitat combinations, and descriptors are dates. This is the data I will use for the NMDS.
+head(envData.log.trans) #View transformation
 ```
 
 ```{r}
-envData.log.gower.NMDS <- metaMDS(envData.log, distance = 'gower', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on log transformed data using Gower's.
+colnames(envData.log.trans) <- rownames(envData.log) #Rename columns so there is no "X" in front of dates
+head(envData.log.trans) #View changes
+```
+
+
+```{r}
+nmds.scree(envData.log.trans, distance = "gower", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+```
+
+```{r}
+envData.log.gower.NMDS <- metaMDS(envData.log.trans, distance = 'gower', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on log transformed data using Gower's.
 envData.log.gower.NMDS$stress
 ```
 
 ```{r}
-nmds.monte(envData.log, distance = "gower", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07650153, is less than the expected stress value. P-value = 0.00990099
+nmds.monte(envData.log.trans, distance = "gower", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07650153, is less than the expected stress value. P-value = 0.00990099
 ```
 
 ```{r}
@@ -627,7 +633,7 @@ stressplot(envData.log.gower.NMDS) #Make Shepard plot to visualize the relations
 ```
 
 ```{r}
-vec.envData.log.gower <- envfit(envData.log.gower.NMDS$points, envData.log, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.envData.log.gower <- envfit(envData.log.gower.NMDS$points, envData.log.trans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
 vec.envData.log.gower #Look at loadings
 ```
 
@@ -638,5 +644,76 @@ plot(vec.envData.log.gower, p.max = 0.001, col = 'blue') #Plot loadings that are
 
 ## Customize NMDS
 
-## Analysis of Similarities
+```{r}
+plotCustomization <- data.frame("Site" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Habitat" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Site-Habitat" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Shape" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Color" = rep(0, times = length(envData.log.trans$`2016-06-19`))) #Create a new dataframe to store plot customization information
+rownames(plotCustomization) <- rownames(envData.log.trans) #Use rownames from NMDS data as rownames for the customization information
+head(plotCustomization) #Confirm creation
+```
 
+### Site information
+
+```{r}
+plotCustomization[grep(rownames(plotCustomization), pattern = "CI"), "Site"] <- "CI" #For each rowname with "CI", add "CI" to the site column
+plotCustomization[grep(rownames(plotCustomization), pattern = "FB"), "Site"] <- "FB" #For each rowname with "FB", add "FB" to the site column
+plotCustomization[grep(rownames(plotCustomization), pattern = "PG"), "Site"] <- "PG" #For each rowname with "PG", add "PG" to the site column
+plotCustomization[grep(rownames(plotCustomization), pattern = "SK"), "Site"] <- "SK" #For each rowname with "SK", add "SK" to the site column
+plotCustomization[grep(rownames(plotCustomization), pattern = "WB"), "Site"] <- "WB" #For each rowname with "WB", add "WB" to the site column
+head(plotCustomization) #Confirm changes
+```
+
+### Habitat information
+
+```{r}
+plotCustomization[grep(rownames(plotCustomization), pattern = "CIB"), "Habitat"] <- "Bare" #For each rowname with "CIB", add "Bare" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "FBB"), "Habitat"] <- "Bare" #For each rowname with "FBB", add "Bare" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "PGB"), "Habitat"] <- "Bare" #For each rowname with "PGB", add "Bare" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "SKB"), "Habitat"] <- "Bare" #For each rowname with "SKB", add "Bare" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "WBB"), "Habitat"] <- "Bare" #For each rowname with "WBB", add "Bare" to the habitat column
+head(plotCustomization) #Confirm changes
+```
+
+
+```{r}
+plotCustomization[grep(rownames(plotCustomization), pattern = "CIE"), "Habitat"] <- "Eelgrass" #For each rowname with "CIE", add "Eelgrass" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "FBE"), "Habitat"] <- "Eelgrass" #For each rowname with "FBE", add "Eelgrass" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "PGE"), "Habitat"] <- "Eelgrass" #For each rowname with "PGE", add "Eelgrass" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "SKE"), "Habitat"] <- "Eelgrass" #For each rowname with "SKE", add "Eelgrass" to the habitat column
+plotCustomization[grep(rownames(plotCustomization), pattern = "WBE"), "Habitat"] <- "Eelgrass" #For each rowname with "WBE", add "Eelgrass" to the habitat column
+head(plotCustomization) #Confirm changes
+```
+
+### Site and habitat information
+
+```{r}
+plotCustomization$Site.Habitat <- paste(plotCustomization$Site, "", plotCustomization$Habitat) #Combine "Site" and "Habitat" columns for Site.Habitat
+head(plotCustomization) #Confirm changes
+```
+
+### Shape assignment
+
+```{r}
+plotCustomization[grep(plotCustomization$Habitat, pattern = "Eelgrass"), "Shape"] <- 3 #Add 3to the Shape column for each instance of "Eelgrass" in the Habitat column
+plotCustomization[grep(plotCustomization$Habitat, pattern = "Bare"), "Shape"] <- 4 #Add 3to the Shape column for each instance of "Bare" in the Habitat column
+head(plotCustomization) #Confirm changes
+```
+
+### Color assignment
+
+```{r}
+plotCustomization[grep(plotCustomization$Site, pattern = "CI"), "Color"] <- "red" #Add "red" to the Color column for each instance of "CI" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "FB"), "Color"] <- "blue" #Add "blue" to the Color column for each instance of "FB" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "PG"), "Color"] <- "magenta" #Add "magenta" to the Color column for each instance of "PG" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "SK"), "Color"] <- "green" #Add "green" to the Color column for each instance of "SK" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "WB"), "Color"] <- "black" #Add "black" to the Color column for each instance of "WB" in the Site column
+head(plotCustomization) #Confirm changes
+```
+
+## Analysis of Similarities (ANOSIM)
+
+### Global ANOSIM
+
+### Pairwise ANOSIM
