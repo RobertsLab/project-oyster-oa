@@ -40,6 +40,7 @@ head(SRMDataNMDSAveraged) #Confirm column naming
 #### TRANSFORM DATA ####
 
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveraged #Duplicate dataframe
+#write.csv(SRMDataNMDSAveragedCorrected, "analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-11-27-Averaged-Areas-Pivoted-NAs.csv") #Wrote out dataframe with NAs
 SRMDataNMDSAveragedCorrected[is.na(SRMDataNMDSAveragedCorrected)] <- 0 #Replace NAs with 0s
 head(SRMDataNMDSAveragedCorrected) #Confirm there are no NAs
 #write.csv(SRMDataNMDSAveragedCorrected, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv") #Wrote out dataframe
