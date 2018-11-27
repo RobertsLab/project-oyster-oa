@@ -1,0 +1,346 @@
+---
+title: "Canonical Correspondence Analysis (CCA) and Redundancy Analysis (RDA) for Protein Abundance Data"
+author: "Yaamini Venkataraman"
+date: "November 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) #Set up R Markdown File
+```
+
+In this script, I'll perform a constrained ordination to understand the protein abundance data given the environmental data.
+
+# Install dependencies
+
+```{r}
+install.packages("vegan")
+require(vegan)
+install.packages("dplyr")
+require(dplyr)
+
+source("../../biostats.R") #Biostats analysis wrapper
+```
+
+# Obtain session information
+
+```{r}
+sessionInfo() #Obtain session information
+```
+
+# Import and reformat data
+
+## Protein abundance data
+
+```{r}
+proteinAbundance <- read.csv("2018-11-27-Averaged-Areas-Pivoted-NAs.csv", header = TRUE) #Import protein abundance data
+row.names(proteinAbundance) <- proteinAbundance[,1] #Assign first column as rownames
+proteinAbundance <- proteinAbundance[,-1] #Remove first column
+proteinAbundance <- t(proteinAbundance) #Transpose dataframe
+head(proteinAbundance) #Confirm changes
+```
+
+### Transform protein data
+
+```{r}
+proteinAbundanceHT <- data.trans(proteinAbundance, method = 'hellingers', plot = FALSE) #Hellinger (asymmetric) transformation
+head(proteinAbundanceHT) #Confirm transformation
+```
+
+## Environmental data
+For the environmental data, I want my rownames to be oyster samples, and my columns to be Site, Habitat, and the mean and variance of environmental variables at the designated Site and Habitat for the entire outplant.
+
+### Calculate outplant means and variances
+
+#### pH
+
+```{r}
+pHData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-11-18-pH-Tide-Data-Corrected.csv", header = TRUE) #Import pH data
+pHData <- pHData[,-1] #Remove extra first column
+head(pHData) #Confirm import
+```
+
+```{r}
+colnames(pHData)
+```
+
+```{r}
+pHMeanVariance <- data.frame("Site-Habitat" = colnames(pHData[4:12]),
+                             "Site" = c("WB", "WB", "SK", "SK", "PG", "CI", "CI", "FB", "FB"),
+                             "Habitat" = c("Eelgrass", "Bare", "Eelgrass", "Bare", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare"),
+                             "pHMean" = rep(0, times = 9),
+                             "pHVariance" = rep(0, times = 9)) #Create an empty dataframe to store outplant-wide means and variances
+head(pHMeanVariance) #Confirm dataframe creation
+```
+
+```{r}
+nSiteHabitat <- 12 #pH data is column 4-12
+for(i in 4:nSiteHabitat) { #For each column with pH data
+  pHMeanVariance$pHMean[i-3] <- mean(pHData[,i], na.rm = TRUE) #Calculate the mean and put it in the designated row in pHMeanVariance$Mean
+}
+for(i in 4:nSiteHabitat) { #For each column with pH data
+  pHMeanVariance$pHVariance[i-3] <- var(pHData[,i], na.rm = TRUE) #Calculate the variance and put it in the designated row in pHMeanVariance$Variance
+}
+pHMeanVariance <- pHMeanVariance[,-1] #Remove Site.Habitat column
+head(pHMeanVariance) #Confirm calculations
+```
+
+#### Dissolved oxygen
+
+```{r}
+DOData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-11-18-DO-Tide-Data-Corrected.csv", header = TRUE) #Import DO data
+DOData <- DOData[,-1] #Remove extra first column
+head(DOData) #Confirm import
+```
+
+```{r}
+colnames(DOData) #Look at columns to identify where the DO data is
+```
+
+```{r}
+DOMeanVariance <- data.frame("Site-Habitat" = colnames(DOData[4:13]),
+                             "Site" = c("WB", "WB", "SK", "SK", "PG", "PG", "CI", "CI", "FB", "FB"),
+                             "Habitat" = c("Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare"),
+                             "DOMean" = rep(0, times = 10),
+                             "DOVariance" = rep(0, times = 10)) #Create an empty dataframe to store outplant-wide means and variances
+head(DOMeanVariance) #Confirm dataframe creation
+```
+
+```{r}
+nSiteHabitat <- 13 #DO data is column 4-13
+for(i in 4:nSiteHabitat) { #For each column with DO data
+  DOMeanVariance$DOMean[i-3] <- mean(DOData[,i], na.rm = TRUE) #Calculate the mean and put it in the designated row in DOMeanVariance$DOMean
+}
+for(i in 4:nSiteHabitat) { #For each column with pH data
+  DOMeanVariance$DOVariance[i-3] <- var(DOData[,i], na.rm = TRUE) #Calculate the variance and put it in the designated row in DOMeanVariance$DOVariance
+}
+DOMeanVariance <- DOMeanVariance[,-1] #Remove Site.Habitat column
+head(DOMeanVariance) #Confirm calculations
+```
+
+#### Salinity
+
+```{r}
+salinityData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-11-18-Salinity-Tide-Data-Corrected.csv", header = TRUE) #Import pH data
+salinityData <- salinityData[,-1] #Remove extra first column
+head(salinityData) #Confirm import
+```
+
+```{r}
+colnames(salinityData)
+```
+
+```{r}
+salinityMeanVariance <- data.frame("Site-Habitat" = colnames(salinityData[4:11]),
+                                   "Site" = c("CI", "CI", "FB", "FB", "PG", "SK", "SK", "WB"),
+                                   "Habitat" = c("Bare", "Eelgrass", "Bare", "Eelgrass", "Eelgrass", "Bare", "Eelgrass", "Bare"),
+                                   "salinityMean" = rep(0, times = 8),
+                                   "salinityVariance" = rep(0, times = 8)) #Create an empty dataframe to store outplant-wide means and variances
+head(salinityMeanVariance) #Confirm dataframe creation
+```
+
+```{r}
+nSiteHabitat <- 11 #pH data is column 4-11
+for(i in 4:nSiteHabitat) { #For each column with pH data
+  salinityMeanVariance$salinityMean[i-3] <- mean(salinityData[,i], na.rm = TRUE) #Calculate the mean and put it in the designated row
+}
+for(i in 4:nSiteHabitat) { #For each column with pH data
+  salinityMeanVariance$salinityVariance[i-3] <- var(salinityData[,i], na.rm = TRUE) #Calculate the variance and put it in the designated row
+}
+salinityMeanVariance <- salinityMeanVariance[,-1] #Remove Site.Habitat column
+head(salinityMeanVariance) #Confirm calculations
+```
+
+#### Temperature
+
+```{r}
+temperatureData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-11-18-Temperature-Corrected.csv", header = TRUE) #Import temperature data
+temperatureData <- temperatureData[,-1] #Remove extra first column
+head(temperatureData) #Confirm import
+```
+
+```{r}
+colnames(temperatureData) #Figure out where data is
+```
+
+```{r}
+temperatureMeanVariance <- data.frame("Site-Habitat" = colnames(temperatureData[3:12]),
+                                      "Site" = c("WB", "WB", "SK", "SK", "PG", "PG", "CI", "CI", "FB", "FB"),
+                                      "Habitat" = c("Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare", "Eelgrass", "Bare"),
+                                      "temperatureMean" = rep(0, times = 10),
+                                      "temperatureVariance" = rep(0, times = 10)) #Create an empty dataframe to store outplant-wide means and variances
+head(temperatureMeanVariance) #Confirm dataframe creation
+```
+
+```{r}
+nSiteHabitat <- 12 #pH data is column 3-12
+for(i in 3:nSiteHabitat) { #For each column with pH data
+  temperatureMeanVariance$temperatureMean[i-2] <- mean(temperatureData[,i], na.rm = TRUE) #Calculate the mean and put it in the designated row
+}
+for(i in 3:nSiteHabitat) { #For each column with pH data
+  temperatureMeanVariance$temperatureVariance[i-2] <- var(temperatureData[,i], na.rm = TRUE) #Calculate the variance and put it in the designated row
+}
+temperatureMeanVariance <- temperatureMeanVariance[,-1] #Remove Site.Habitat column
+head(temperatureMeanVariance) #Confirm calculations
+```
+
+### Merge environmental data
+
+```{r}
+environmentalData <- left_join(temperatureMeanVariance, pHMeanVariance, by = c("Site", "Habitat")) #Use left_join to merge dataframes and add NAs where the two dataframes do not match. temperatureData is used as the base because it has observations for all 10 Site and Habitat combinations
+environmentalData <- left_join(environmentalData, DOMeanVariance, by = c("Site", "Habitat")) #Add salinity data
+environmentalData <- left_join(environmentalData, salinityMeanVariance, by = c("Site", "Habitat")) #Add temperature data
+head(environmentalData)
+```
+
+### Combine oyster samples with environmental data
+
+```{r}
+biologicalReplicates <- read.csv("../../2017-09-06-Biological-Replicate-Information.csv", header = TRUE) #Import biological replciate information
+head(biologicalReplicates) #Confirm import
+```
+
+```{r}
+biologicalReplicates$Sample.Number <- as.character(biologicalReplicates$Sample.Number) #Convert sample number to character string
+biologicalReplicates$Sample.Number <- substr(biologicalReplicates$Sample.Number, 1, nchar(biologicalReplicates$Sample.Number)-2) #Remove -1 or -2 from end of sample number
+biologicalReplicates <- biologicalReplicates[1:49,] #Keep only the first 50 rows, since everything repeats. Also eliminate OBLNK2
+colnames(biologicalReplicates)[3] <- "Habitat" #Change Eelgrass.Condition to Habitat
+tail(biologicalReplicates) #Confirm changes
+```
+
+```{r}
+colnames(environmentalData)
+```
+
+
+```{r}
+environmentalSampleData <- data.frame("Sample.Number" = biologicalReplicates$Sample.Number,
+                                      "Site" = biologicalReplicates$Site,
+                                      "Habitat" = biologicalReplicates$Habitat,
+                                      "temperatureMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "temperatureVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "pHMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "pHVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "DOMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "DOVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "salinityMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "salinityVariance" = rep(0, times = length(biologicalReplicates$Sample.Number))) #Create a new dataframe for sample and environmental data. Column names follow the same ordering as environmentalData
+head(environmentalSampleData) #Confirm dataframe creation
+```
+
+```{r}
+colnames(environmentalSampleData)
+```
+
+
+```{r}
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 4:11]
+```
+
+```{r}
+environmentalData[environmentalData$Site == "CI" & environmentalData$Habitat == "Bare",3:10]
+```
+
+```{r}
+#Replace 0s in environmentalSampleData using corresponding information from environmentalData
+
+#Case Inlet
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 4:11] <- environmentalData[environmentalData$Site == "CI" & environmentalData$Habitat == "Bare", 3:10]
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Eelgrass", 4:11] <- environmentalData[environmentalData$Site == "CI" & environmentalData$Habitat == "Eelgrass", 3:10]
+
+#Fidalgo Bay
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Bare", 4:11] <- environmentalData[environmentalData$Site == "FB" & environmentalData$Habitat == "Bare", 3:10]
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Eelgrass", 4:11] <- environmentalData[environmentalData$Site == "FB" & environmentalData$Habitat == "Eelgrass", 3:10]
+
+#Port Gamble Bay
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Bare", 4:11] <- environmentalData[environmentalData$Site == "PG" & environmentalData$Habitat == "Bare", 3:10]
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Eelgrass", 4:11] <- environmentalData[environmentalData$Site == "PG" & environmentalData$Habitat == "Eelgrass", 3:10]
+
+#Skokomish River Delta
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Bare", 4:11] <- environmentalData[environmentalData$Site == "SK" & environmentalData$Habitat == "Bare", 3:10]
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Eelgrass", 4:11] <- environmentalData[environmentalData$Site == "SK" & environmentalData$Habitat == "Eelgrass", 3:10]
+
+#Willapa Bay
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Bare", 4:11] <- environmentalData[environmentalData$Site == "WB" & environmentalData$Habitat == "Bare", 3:10]
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Eelgrass", 4:11] <- environmentalData[environmentalData$Site == "WB" & environmentalData$Habitat == "Eelgrass", 3:10]
+
+head(environmentalSampleData) #Confirm replacements happened
+```
+
+### Transform environmental data
+
+```{r}
+row.names(environmentalSampleData) <- environmentalSampleData$Sample.Number #Assign Sample.Number as row names
+environmentalSampleData <- environmentalSampleData[,-1] #Remove Sample.Number column
+head(environmentalSampleData) #Confirm changes
+```
+
+
+```{r}
+environmentalSampleData.log <- log(environmentalSampleData[,-c(1:2)] + 1) #Log transform all columns that aren't Site and Habitat
+head(environmentalSampleData.log) #Confirm changes
+```
+
+# Determine the appropriate response model
+
+```{r}
+decorana(proteinAbundanceHT, ira = 0) #Determine gradient length. Gradient length <2 is best represented by a linear model (RDA), 2-4 could be unimodal (RDA or CCA appropriate), and >4 is greater than unimodal (CCA). The length of DCA1 is , so the underlying model is.
+```
+
+# Conducting CCA
+
+```{r}
+spe.cca <- cca(speabu.tran~., envdata.tran) #Perform the CCA
+summary(spe.cca) #Look at summary. Total inertia is the total variation explained by the CCA. Constrained inertia is the variation explained in Y by X. Unconstrained inertia is everything else.
+```
+
+## Significance tests
+
+```{r}
+anova(spe.cca) #Test significance of CCA in general
+```
+
+```{r}
+anova(spe.cca, by = 'axis') #Test significance of each axis
+```
+
+```{r}
+anova(spe.cca, by = 'terms') #Test significance of each predictor variable from X
+```
+
+## Ordination biplot
+
+```{r}
+plot(spe.cca, choices = c(1,2), type = 'points', display = 'wa', scaling = 2) #Visualize the ordination by plotting the weighted average scores. Scaling method optimizes for descriptors.
+```
+
+```{r}
+plot(spe.cca, choices = c(1,2), type = 'n', display = 'wa', scaling = 2) #Visualize the WA scores
+text(spe.cca, choices = c(1,2), labels = row.names(speabu)) #Add site indiciation instead of points
+```
+
+# Interpreting the constrained ordination
+
+```{r}
+round(intrasetcor(spe.cca), 5) #Obtain the intra-set correlation (structure) coefficients
+```
+
+```{r}
+round(intersetcor(spe.cca), 5) #Obtain the inter-set correlation (structure) coefficients
+```
+
+```{r}
+summary(spe.cca) #Get biplot scores for explanatory variables
+```
+
+```{r}
+plot(spe.cca, choices = c(1,2), display = c('wa', 'sp', 'bp'), scaling = 2) #Obtain the triplot with weighted average scores (wa), species scores (sp), and environmental variable biplot scores (bp). Scale to enhance descriptors.
+```
+
+```{r}
+plot(spe.cca, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on CCA dimensions
+points(spe.cca, choices = c(1,2), display = 'wa', pch = 19, cex = 1.5, scaling = 2) #Plot objects as points
+text(spe.cca, choices = c(1,2), display = 'sp', col = 'red', cex = .75, scaling = 2) #Plot descriptors as text
+text(spe.cca, choices = c(1,2), display = 'bp', col = 'blue') #Plot predictors
+```
+
