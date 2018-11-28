@@ -846,8 +846,8 @@ points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization
 legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
 legend("topleft", lty = c(1, 2), legend = c("Mean", "Variance"), col = c("grey80", "grey80"), cex = 0.5, bty = "n")
 
-ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "M", col = "grey80", lty = 1) #Add confidence ellipse around the data from means
-ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "V", col = "grey80", lty = 2) #Add confidence ellipse around the data from means
+ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "M", col = "grey80", lty = 1) #Add polygon around the data from means
+ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "V", col = "grey80", lty = 2) #Add polygon around the data from means
 ```
 
 ## Analysis of Similarities (ANOSIM)
