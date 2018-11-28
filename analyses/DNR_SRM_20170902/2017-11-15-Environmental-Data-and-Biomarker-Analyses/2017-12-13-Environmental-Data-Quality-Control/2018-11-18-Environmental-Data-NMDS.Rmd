@@ -433,7 +433,7 @@ head(DOMean) #Confirm dataframe filling. All "Inf" values are now replaced
 DOVariance <- data.frame("Date" = outplantDates,
                         "WBE-DO-var" = rep(0, length(outplantDates)),
                         "WBB-DO-var" = rep(0, length(outplantDates)),
-                        "SKE-DP-var" = rep(0, length(outplantDates)),
+                        "SKE-DO-var" = rep(0, length(outplantDates)),
                         "SKB-DO-var" = rep(0, length(outplantDates)),
                         "PGE-DO-var" = rep(0, length(outplantDates)),
                         "PGB-DO-var" = rep(0, length(outplantDates)),
@@ -583,14 +583,21 @@ head(temperatureVariance)
 ```
 
 ## Merge all dataframes together
+I'm going to ordinate means and variances separately, so they need to be in seaprate dataframes.
 
 ```{r}
-dailyEnvironmentalData <- cbind(pHMean, pHVariance,
+dailyMeanData <- cbind(pHMean, DOMean, salinityMean, temperatureMean) #Use cbind to merge all of the dataframes together
+colnames(dailyEnvironmentalData) #View column names
+```
+
+```{r}
+dailyMeanData <- cbind(pHMean, pHVariance,
                                 DOMean, DOVariance,
                                 salinityMean, salinityVariance, 
                                 temperatureMean, temperatureVariance) #Use cbind to merge all of the dataframes together
 colnames(dailyEnvironmentalData) #View column names
 ```
+
 
 ```{r}
 dailyEnvironmentalData <- dailyEnvironmentalData[-c(11, 21, 32, 43, 52, 61, 72)] #Remove all redundant "Date" columns
@@ -598,6 +605,8 @@ colnames(dailyEnvironmentalData) #Confirm column removal
 ```
 
 # Environmental data NMDS
+
+## Transform data
 
 ```{r}
 dailyEnvironmentalDataCorrected <- dailyEnvironmentalData #Duplicate dataframe
@@ -608,41 +617,48 @@ head(dailyEnvironmentalDataCorrected) #Confirm changes
 
 ```{r}
 envData.log <- log(dailyEnvironmentalDataCorrected + 1) #Log transform data before analysis
-#envData.log[is.na(envData.log)] <- 0 #Replace NAs with 0s
 envData.log <- envData.log[-c(32:34),] #Remove last three rows since the outplant ended before then
 tail(envData.log)
 ```
 
 ```{r}
 envData.log.trans <- data.frame(t(envData.log)) #Transpose dataframe so objects are environmental conditions at site-habitat combinations, and descriptors are dates. This is the data I will use for the NMDS.
+colnames(envData.log.trans) <- rownames(envData.log) #Rename columns so there is no "X" in front of dates
 head(envData.log.trans) #View transformation
 ```
 
 ```{r}
-colnames(envData.log.trans) <- rownames(envData.log) #Rename columns so there is no "X" in front of dates
 head(envData.log.trans) #View changes
 ```
 
+## Calculate dissimilarity matrix
 
 ```{r}
-nmds.scree(envData.log.trans, distance = "gower", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+envDataGowerDiss <- daisy(envData.log.trans, metric = "gower") #Calculate a dissimilarity (distance) matrix based on Gower's coefficient. Since vegan cannot handle missing values, use the daisy function from the cluster library to calculate the dissimilarity matrix to use in all vegan functions.
+envDataGowerDiss #Confirm matrix calculation
+```
+
+## Conduct the NMDS
+
+```{r}
+nmds.scree(envDataGowerDiss, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. There is an elbow at 2 ordination axes, which tells me that 2 axes should suffice for the analysis.
 ```
 
 ```{r}
-envData.log.gower.NMDS <- metaMDS(envData.log.trans, distance = 'gower', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on log transformed data using Gower's.
-envData.log.gower.NMDS$stress
+envData.log.gower.NMDS <- metaMDS(envDataGowerDiss, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on log transformed data using Gower's.
+envData.log.gower.NMDS$stress #Stress = 0.0344334
 ```
 
 ```{r}
-nmds.monte(envData.log.trans, distance = "gower", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07650153, is less than the expected stress value. P-value = 0.00990099
+nmds.monte(envDataGowerDiss, distance = 'euclidean', k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for 2 dimensions is significant. The observed stress value, 0.0344334, is less than the expected stress value. P-value = 
 ```
 
 ```{r}
-stressplot(envData.log.gower.NMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 0.994 (redundant with observed stress value and p-value from the randomization test)
+stressplot(envData.log.gower.NMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 0.990 (redundant with observed stress value and p-value from the randomization test)
 ```
 
 ```{r}
-vec.envData.log.gower <- envfit(envData.log.gower.NMDS$points, envData.log.trans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.envData.log.gower <- envfit(envData.log.gower.NMDS$points, envData.log.trans, perm = 1000, na.rm = TRUE) #Calculate loadings by correlating NMDS scores with original variables
 vec.envData.log.gower #Look at loadings
 ```
 
@@ -658,7 +674,8 @@ plotCustomization <- data.frame("Site" = rep(0, times = length(envData.log.trans
                                 "Habitat" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
                                 "Site-Habitat" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
                                 "Shape" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
-                                "Color" = rep(0, times = length(envData.log.trans$`2016-06-19`))) #Create a new dataframe to store plot customization information
+                                "Color" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Shape2" = rep(0, times = length(envData.log.trans$`2016-06-19`))) #Create a new dataframe to store plot customization information
 rownames(plotCustomization) <- rownames(envData.log.trans) #Use rownames from NMDS data as rownames for the customization information
 head(plotCustomization) #Confirm creation
 ```
@@ -704,22 +721,108 @@ head(plotCustomization) #Confirm changes
 
 ### Shape assignment
 
+#### Bare vs. Eelgrass
+
 ```{r}
-plotCustomization[grep(plotCustomization$Habitat, pattern = "Eelgrass"), "Shape"] <- 3 #Add 3to the Shape column for each instance of "Eelgrass" in the Habitat column
-plotCustomization[grep(plotCustomization$Habitat, pattern = "Bare"), "Shape"] <- 4 #Add 3to the Shape column for each instance of "Bare" in the Habitat column
+plotCustomization[grep(plotCustomization$Habitat, pattern = "Eelgrass"), "Shape"] <- 16 #Add 16 (filled circles) to the Shape column for each instance of "Eelgrass" in the Habitat column
+plotCustomization[grep(plotCustomization$Habitat, pattern = "Bare"), "Shape"] <- 1 #Add 1 (open circles) to the Shape column for each instance of "Bare" in the Habitat column
 head(plotCustomization) #Confirm changes
 ```
+
+#### Habitat and environmental variable
+
+```{r}
+#pH
+plotCustomization[grep(rownames(plotCustomization), pattern = "B.pH"), "Shape2"] <- 0 #Add 0 "open square" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+plotCustomization[grep(rownames(plotCustomization), pattern = "E.pH"), "Shape2"] <- 22 #Add 22 "closed square" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+
+#Dissolved oxygen
+plotCustomization[grep(rownames(plotCustomization), pattern = "B.DO"), "Shape2"] <- 1 #Add 1 "open circle" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+plotCustomization[grep(rownames(plotCustomization), pattern = "E.DO"), "Shape2"] <- 21 #Add 21 "closed circle" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+
+#Salinity
+plotCustomization[grep(rownames(plotCustomization), pattern = "B.sal"), "Shape2"] <- 5 #Add 5 "open diamond" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+plotCustomization[grep(rownames(plotCustomization), pattern = "E.sal"), "Shape2"] <- 23 #Add 23 "closed diamond" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+
+#Temperature
+plotCustomization[grep(rownames(plotCustomization), pattern = "B.temp"), "Shape2"] <- 6 #Add 6 "open triangle" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+plotCustomization[grep(rownames(plotCustomization), pattern = "E.temp"), "Shape2"] <- 25 #Add 25 "closed triangle" to the Shape2 column for each instance pH measurement from a bare habitat identified in the row names
+
+tail(plotCustomization) #Confirm changes
+```
+
 
 ### Color assignment
 
 ```{r}
-plotCustomization[grep(plotCustomization$Site, pattern = "CI"), "Color"] <- "red" #Add "red" to the Color column for each instance of "CI" in the Site column
-plotCustomization[grep(plotCustomization$Site, pattern = "FB"), "Color"] <- "blue" #Add "blue" to the Color column for each instance of "FB" in the Site column
-plotCustomization[grep(plotCustomization$Site, pattern = "PG"), "Color"] <- "magenta" #Add "magenta" to the Color column for each instance of "PG" in the Site column
-plotCustomization[grep(plotCustomization$Site, pattern = "SK"), "Color"] <- "green" #Add "green" to the Color column for each instance of "SK" in the Site column
-plotCustomization[grep(plotCustomization$Site, pattern = "WB"), "Color"] <- "black" #Add "black" to the Color column for each instance of "WB" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "CI"), "Color"] <- "#00A9BD" #Add "#00A9BD" to the Color column for each instance of "CI" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "FB"), "Color"] <- "#38001C" #Add "#38001C" to the Color column for each instance of "FB" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "PG"), "Color"] <- "#440D82" #Add "#440D82" to the Color column for each instance of "PG" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "SK"), "Color"] <- "#017A74" #Add "#017A74" to the Color column for each instance of "SK" in the Site column
+plotCustomization[grep(plotCustomization$Site, pattern = "WB"), "Color"] <- "#EB8B0C" #Add "#EB8B0C" to the Color column for each instance of "WB" in the Site column
 head(plotCustomization) #Confirm changes
 ```
+
+### Remake NMDS
+
+#### Site only
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = 16)
+
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the data from Case Inlet
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the data  from Fidalgo Bay
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the data from Port Gamble Bay
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
+
+legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5)
+```
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = 16)
+
+ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the data from Case Inlet
+ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the data  from Fidalgo Bay
+ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the data from Port Gamble Bay
+ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
+ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
+
+legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5)
+```
+
+#### Site and Habitat
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape)
+
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Eelgrass", col = "grey80", lty = 1) #Add confidence ellipse around the data from eelgrass habitats
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Bare", col = "grey80", lty = 2) #Add confidence ellipse around the data  from bare habitats
+
+legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5)
+```
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape)
+
+ordihull(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Eelgrass", col = "grey80", lty = 1) #Add confidence ellipse around the data from eelgrass habitats
+ordihull(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Bare", col = "grey80", lty = 2) #Add confidence ellipse around the data  from bare habitats
+
+legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5)
+```
+
+#### Site, habitat, and environmental variables
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
+legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
+```
+
 
 ## Analysis of Similarities (ANOSIM)
 
