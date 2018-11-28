@@ -854,4 +854,109 @@ ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "V",
 
 ### Global ANOSIM
 
+#### Site
+
+```{r}
+siteANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Site) #One-way ANOSIM by Site
+siteANOSIM$statistic #R = -0.03428841
+siteANOSIM$signif #p = 0.943
+plot(siteANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Habitat
+
+```{r}
+habitatANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Habitat) #One-way ANOSIM by Habitat
+habitatANOSIM$statistic #R = -0.02037461
+habitatANOSIM$signif #p = 0.982
+plot(habitatANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Site and Habitat
+
+```{r}
+siteAndHabitatANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Site.Habitat) #Two-way ANOSIM by Site and Habitat
+siteAndHabitatANOSIM$statistic #R = -0.09991229
+siteAndHabitatANOSIM$signif #p = 1
+plot(siteAndHabitatANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Parameter
+
+```{r}
+parameterANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Parameter) #One-way ANOSIM by Parameter (Means vs. Variances)
+parameterANOSIM$statistic #R = 0.7378174
+parameterANOSIM$signif #p = 0.001
+plot(parameterANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Parameter and Site
+
+```{r}
+plotCustomization$Parameter.Site <- paste(plotCustomization$Parameter, "", plotCustomization$Shape) #Combine Site and Parameter
+parameterSiteANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Parameter.Site) #Two-way ANOSIM by Parameter (Means vs. Variances) and Site
+parameterSiteANOSIM$statistic #R = 0.4778027
+parameterSiteANOSIM$signif #p = 0.001
+plot(parameterSiteANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Parameter and Habitat
+
+```{r}
+plotCustomization$Parameter.Habitat <- paste(plotCustomization$Parameter, "", plotCustomization$Habitat) #Combine Habitat and Parameter
+parameterHabitatANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$Parameter.Habitat) #Two-way ANOSIM by Parameter (Means vs. Variances) and Habitat
+parameterHabitatANOSIM$statistic #R = 0.4778027
+parameterHabitatANOSIM$signif #p = 0.001
+plot(parameterHabitatANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Environmental Variable
+
+```{r}
+plotCustomization$EnvironmentalVariable <- rep(0, times = length(plotCustomization$Site))
+plotCustomization[grep(rownames(plotCustomization), pattern = "pH"), "EnvironmentalVariable"] <- "pH"
+plotCustomization[grep(rownames(plotCustomization), pattern = "DO"), "EnvironmentalVariable"] <- "DO"
+plotCustomization[grep(rownames(plotCustomization), pattern = "sal"), "EnvironmentalVariable"] <- "S"
+plotCustomization[grep(rownames(plotCustomization), pattern = "temp"), "EnvironmentalVariable"] <- "T"
+tail(plotCustomization)
+```
+
+
+```{r}
+environmentalVariableANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$EnvironmentalVariable) #One-way ANOSIM by Environmental Variable
+environmentalVariableANOSIM$statistic #R = 0.1796322
+environmentalVariableANOSIM$signif #p = 0.001
+plot(environmentalVariableANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Environmental Variable and Site
+
+```{r}
+plotCustomization$EnvVariable.Site <- paste(plotCustomization$EnvironmentalVariable, "", plotCustomization$Site) #Combine Environmental Variable and Site
+environmentalVariableSiteANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$EnvVariable.Site) #Two-way ANOSIM by Environmental Variable and Site
+environmentalVariableSiteANOSIM$statistic #R = 0.02098092
+environmentalVariableSiteANOSIM$signif #p = 0.315
+plot(environmentalVariableSiteANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Environmental Variable and Habitat
+
+```{r}
+plotCustomization$EnvVariable.Habitat <- paste(plotCustomization$EnvironmentalVariable, "", plotCustomization$Habitat) #Combine Environmental Variable and Habitat
+environmentalVariableHabitatANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$EnvVariable.Habitat) #Two-way ANOSIM by Environmental Variable and Habitat
+environmentalVariableHabitatANOSIM$statistic #R = 0.1089352
+environmentalVariableHabitatANOSIM$signif #p = 0.007
+plot(environmentalVariableHabitatANOSIM) #Obtain boxplots and permutation test histogram
+```
+
+#### Environmental Variable and Parameter
+
+```{r}
+plotCustomization$EnvVariable.Parameter <- paste(plotCustomization$EnvironmentalVariable, "", plotCustomization$Parameter) #Combine Environmental Variable and Parameter
+environmentalVariableParameterANOSIM <- anosim(envDataGowerDiss, grouping = plotCustomization$EnvVariable.Parameter) #Two-way ANOSIM by Environmental Variable and Habitat
+environmentalVariableParameterANOSIM$statistic #R = 0.7802082
+environmentalVariableParameterANOSIM$signif #p = 0.001
+plot(environmentalVariableParameterANOSIM) #Obtain boxplots and permutation test histogram
+```
+
 ### Pairwise ANOSIM
