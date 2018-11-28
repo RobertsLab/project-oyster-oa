@@ -587,21 +587,24 @@ I'm going to ordinate means and variances separately, so they need to be in seap
 
 ```{r}
 dailyMeanData <- cbind(pHMean, DOMean, salinityMean, temperatureMean) #Use cbind to merge all of the dataframes together
-colnames(dailyEnvironmentalData) #View column names
+colnames(dailyMeanData) #View column names
 ```
 
 ```{r}
-dailyMeanData <- cbind(pHMean, pHVariance,
-                                DOMean, DOVariance,
-                                salinityMean, salinityVariance, 
-                                temperatureMean, temperatureVariance) #Use cbind to merge all of the dataframes together
-colnames(dailyEnvironmentalData) #View column names
+dailyMeanData <- dailyMeanData[,-c(11, 22, 31)] #Remove all redundant "Date" columns
+colnames(dailyMeanData) #Confirm column removal
 ```
 
 
 ```{r}
-dailyEnvironmentalData <- dailyEnvironmentalData[-c(11, 21, 32, 43, 52, 61, 72)] #Remove all redundant "Date" columns
-colnames(dailyEnvironmentalData) #Confirm column removal
+dailyVarianceData <- cbind(pHVariance, DOVariance, salinityVariance, temperatureVariance) #Use cbind to merge all of the dataframes together
+colnames(dailyVarianceData) #View column names
+```
+
+
+```{r}
+dailyVarianceData <- dailyVarianceData[,-c(11, 22, 31)] #Remove all redundant "Date" columns
+colnames(dailyVarianceData) #Confirm column removal
 ```
 
 # Environmental data NMDS
@@ -675,7 +678,8 @@ plotCustomization <- data.frame("Site" = rep(0, times = length(envData.log.trans
                                 "Site-Habitat" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
                                 "Shape" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
                                 "Color" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
-                                "Shape2" = rep(0, times = length(envData.log.trans$`2016-06-19`))) #Create a new dataframe to store plot customization information
+                                "Shape2" = rep(0, times = length(envData.log.trans$`2016-06-19`)),
+                                "Parameter" = rep(0, times = length(envData.log.trans$`2016-06-19`))) #Create a new dataframe to store plot customization information
 rownames(plotCustomization) <- rownames(envData.log.trans) #Use rownames from NMDS data as rownames for the customization information
 head(plotCustomization) #Confirm creation
 ```
@@ -763,6 +767,14 @@ plotCustomization[grep(plotCustomization$Site, pattern = "WB"), "Color"] <- "#EB
 head(plotCustomization) #Confirm changes
 ```
 
+### Parameter
+
+```{r}
+plotCustomization[grep(rownames(plotCustomization), pattern = "mean"), "Parameter"] <- "M" #Add "M" to the Parameter column for each instance of "mean" in the row names
+plotCustomization[grep(rownames(plotCustomization), pattern = "var"), "Parameter"] <- "V" #Add "V" to the Parameter column for each instance of "mean" in the row names
+tail(plotCustomization)
+```
+
 ### Remake NMDS
 
 #### Site only
@@ -777,7 +789,7 @@ ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", 
 ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
 ordiellipse(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
 
-legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5)
+legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5, bty = "n")
 ```
 
 ```{r}
@@ -790,7 +802,7 @@ ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col
 ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
 ordihull(envData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
 
-legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5)
+legend("topright", pch = c(rep(x = 16, times = 5)), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5, bty = "n")
 ```
 
 #### Site and Habitat
@@ -802,7 +814,7 @@ points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization
 ordiellipse(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Eelgrass", col = "grey80", lty = 1) #Add confidence ellipse around the data from eelgrass habitats
 ordiellipse(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Bare", col = "grey80", lty = 2) #Add confidence ellipse around the data  from bare habitats
 
-legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5)
+legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5, bty = "n")
 ```
 
 ```{r}
@@ -812,7 +824,7 @@ points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization
 ordihull(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Eelgrass", col = "grey80", lty = 1) #Add confidence ellipse around the data from eelgrass habitats
 ordihull(envData.log.gower.NMDS, plotCustomization$Habitat, show.groups = "Bare", col = "grey80", lty = 2) #Add confidence ellipse around the data  from bare habitats
 
-legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5)
+legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "grey80", "grey80"), cex = 0.5, bty = "n")
 ```
 
 #### Site, habitat, and environmental variables
@@ -821,8 +833,22 @@ legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "F
 fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
 points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
 legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
+legend("topleft", lty = c(1, 2), legend = c("Mean", "Variance"), col = c("grey80", "grey80"), cex = 0.5, bty = "n")
+
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "M", col = "grey80", lty = 1) #Add confidence ellipse around the data from means
+ordiellipse(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "V", col = "grey80", lty = 2) #Add confidence ellipse around the data from means
 ```
 
+
+```{r}
+fig.nmds <- ordiplot(envData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
+legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
+legend("topleft", lty = c(1, 2), legend = c("Mean", "Variance"), col = c("grey80", "grey80"), cex = 0.5, bty = "n")
+
+ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "M", col = "grey80", lty = 1) #Add confidence ellipse around the data from means
+ordihull(envData.log.gower.NMDS, plotCustomization$Parameter, show.groups = "V", col = "grey80", lty = 2) #Add confidence ellipse around the data from means
+```
 
 ## Analysis of Similarities (ANOSIM)
 
