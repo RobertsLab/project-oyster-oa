@@ -107,19 +107,19 @@ attach(NMDSColorShapeCustomization)
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
 head(NMDSColorShapeCustomization) #Confirm sorting
 detach(NMDSColorShapeCustomization)
-NMDS.Colors <- c(rep(x = "red", times = sum(NMDSColorShapeCustomization$Site == "CI")),
-            rep(x = "blue", times = sum(NMDSColorShapeCustomization$Site == "FB")),
-            rep(x = "magenta", times = sum(NMDSColorShapeCustomization$Site == "PG")),
-            rep(x = "green", times = sum(NMDSColorShapeCustomization$Site == "SK")),
-            rep(x = "black", times = sum(NMDSColorShapeCustomization$Site == "WB"))) #Create a color vector
+NMDS.Colors <- c(rep(x = "#00A9BD", times = sum(NMDSColorShapeCustomization$Site == "CI")),
+            rep(x = "#38001C", times = sum(NMDSColorShapeCustomization$Site == "FB")),
+            rep(x = "#440D82", times = sum(NMDSColorShapeCustomization$Site == "PG")),
+            rep(x = "#017A74", times = sum(NMDSColorShapeCustomization$Site == "SK")),
+            rep(x = "#EB8B0C", times = sum(NMDSColorShapeCustomization$Site == "WB"))) #Create a color vector
 NMDSColorShapeCustomization[,6] <- NMDS.Colors #Add the color vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
 attach(NMDSColorShapeCustomization)
 NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Eelgrass.Condition),] #Reorder so eelgrass condition is sorted alphabetically
 head(NMDSColorShapeCustomization) #Confirm sorting
 detach(NMDSColorShapeCustomization)
-NMDS.Shapes <- c(rep(x = 16, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Bare")),
-                 rep(x = 17, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Eelgrass"))) #Make a shape vector
+NMDS.Shapes <- c(rep(x = 1, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Bare")),
+                 rep(x = 16, times = sum(NMDSColorShapeCustomization$Eelgrass.Condition == "Eelgrass"))) #Make a shape vector
 NMDSColorShapeCustomization[,7] <- NMDS.Shapes #Add the shape vector to the dataframe
 head(NMDSColorShapeCustomization) #Confirm addition
 attach(NMDSColorShapeCustomization)
@@ -132,23 +132,18 @@ tail(NMDSColorShapeCustomization) #Confirm changes
 
 #### NMDS BY SITE WITH CONFIDENCE ELLIPSE ####
 
-#Legend for NMDS plot:
-#Case Inlet = Red
-#Fidalgo Bay = Blue
-#Port Gamble Bay = Magenta
-#Skokomish River Delta = Green
-#Willapa Bay = Black
-
+#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-11-28-Protein-Abundance-NMDS-Ellipse.pdf", width = 11, height = 8.5)
 fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
 text(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color) #Add oyster sample IDs to NMDS and color-code by site distinction
 
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "blue") #Add confidence ellipse around the oyster samples from Fidalgo Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "magenta") #Add confidence ellipse around the oyster samples from Port Gamble Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "green") #Add confidence ellipse around the oyster samples from Skokomish River Delta
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "black") #Add confidence ellipse around the oyster samples from Willapa Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the oyster samples from Case Inlet
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the oyster samples from Willapa Bay
 
-legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('red', 'blue', 'magenta', 'green', 'black'), cex = 0.5)
+legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5, bty = "n")
+#dev.off()
 
 #### PLOT JUST THE LOADINGS ####
 
@@ -208,27 +203,17 @@ legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black",
 
 #### NMDS BY SITE AND HABITAT WITH CONFIDENCE ELLIPSE ####
 
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-Analysis-Averaged.jpeg", width = 1000, height = 750)
+#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-11-28-Protein-Abundance-Site-Habitat-NMDS-Ellipse.pdf", width = 11, height = 8.5)
 fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
-
-#Legend for NMDS plot:
-#Bare = circle
-#Eelgrass = Triangle
-#Case Inlet = Red
-#Fidalgo Bay = Blue
-#Willapa Bay = Black
-#Skokomish River Delta = Green
-#Port Gamble Bay = Magenta
-
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
 
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "red") #Add confidence ellipse around the oyster samples from Case Inlet
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "blue") #Add confidence ellipse around the oyster samples from Fidalgo Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "magenta") #Add confidence ellipse around the oyster samples from Port Gamble Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "green") #Add confidence ellipse around the oyster samples from Skokomish River Delta
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "black") #Add confidence ellipse around the oyster samples from Willapa Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the oyster samples from Case Inlet
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the oyster samples from Willapa Bay
 
-legend("topright", pch = c(rep(x = 16, times = 6), 17), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('red', 'blue', 'black', 'green', 'magenta', 'black', 'black'), cex = 0.5)
+legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', 'black', 'black'), cex = 0.5, bty = "n")
 
 #dev.off()
 
