@@ -402,10 +402,21 @@ head(NMDSColorShapeCustomization) #Confirm changes
 tail(NMDSColorShapeCustomization) #Confirm changes
 ```
 
+### All proteins and predictors
+
 ```{r}
 plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on RDA dimensions
-points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 0.5, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 1, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'sp', pch = 22, col = 'grey20', bg = "grey20", cex = 0.5, scaling = 2) #Plot descriptors as text
+text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20', cex = 0.75) #Plot only marginally significant predictors
+```
+
+### Only significant proteins and predictors
+
+```{r}
+plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on RDA dimensions
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 1, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
 points(protEnvRDA, choices = c(1,2), display = 'sp', pch = 22, col = 'grey20', bg = "grey20", cex = 0.5, scaling = 2, select = c(4, 6:10, 14:15, 18:20, 22, 24)) #Plot descriptors as text
-text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20') #Plot only marginally significant predictors
+text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20', cex = 0.75, select = 1:2) #Plot only marginally significant predictors
 ```
 
