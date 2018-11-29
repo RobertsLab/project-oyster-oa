@@ -14,9 +14,11 @@ In this script, I'll perform a constrained ordination to understand the protein 
 # Install dependencies
 
 ```{r}
-install.packages("vegan")
+#install.packages("vegan")
 require(vegan)
-install.packages("dplyr")
+#install.packages("cluster") #Install cluster package. This package has the function daisy that is used for the gower dissimilarity matrix.
+require(cluster)
+#install.packages("dplyr")
 require(dplyr)
 
 source("../../biostats.R") #Biostats analysis wrapper
@@ -33,7 +35,7 @@ sessionInfo() #Obtain session information
 ## Protein abundance data
 
 ```{r}
-proteinAbundance <- read.csv("2018-11-27-Averaged-Areas-Pivoted-NAs.csv", header = TRUE) #Import protein abundance data
+proteinAbundance <- read.csv("2017-11-05-Averaged-Areas-Pivoted-Corrected.csv", header = TRUE) #Import protein abundance data
 row.names(proteinAbundance) <- proteinAbundance[,1] #Assign first column as rownames
 proteinAbundance <- proteinAbundance[,-1] #Remove first column
 proteinAbundance <- t(proteinAbundance) #Transpose dataframe
@@ -281,66 +283,129 @@ environmentalSampleData.log <- log(environmentalSampleData[,-c(1:2)] + 1) #Log t
 head(environmentalSampleData.log) #Confirm changes
 ```
 
+```{r}
+environmentalSampleData.log <- environmentalSampleData.log[rownames(proteinAbundanceHT),] #Ensure that samples in environmental data are those from the protein abundance data
+length(environmentalSampleData.log$temperatureMean) == length(proteinAbundanceHT$`CHOYP_ACAA2.1.1|m.30666 ELGLNNDITNMNGGAIALGHPLAASGTR`) #The column lengths are equal, so we are good to go.
+```
+
 # Determine the appropriate response model
 
 ```{r}
-decorana(proteinAbundanceHT, ira = 0) #Determine gradient length. Gradient length <2 is best represented by a linear model (RDA), 2-4 could be unimodal (RDA or CCA appropriate), and >4 is greater than unimodal (CCA). The length of DCA1 is , so the underlying model is.
+decorana(proteinAbundanceHT, ira = 0) #Determine gradient length. Gradient length <2 is best represented by a linear model (RDA), 2-4 could be unimodal (RDA or CCA appropriate), and >4 is greater than unimodal (CCA). The length of DCA1 is 0.372921, so the underlying model is linear. I will use RDA.
 ```
 
-# Conducting CCA
+# Conducting RDA
 
 ```{r}
-spe.cca <- cca(speabu.tran~., envdata.tran) #Perform the CCA
-summary(spe.cca) #Look at summary. Total inertia is the total variation explained by the CCA. Constrained inertia is the variation explained in Y by X. Unconstrained inertia is everything else.
+protEnvRDA <- rda(proteinAbundanceHT~., environmentalSampleData.log, na.action = na.exclude)
+summary(protEnvRDA) #Look at the summary. Total inertia is the total variation explained by the RDA. Constrained inertia is the variation explained in Y by X. Unconstrained inertia is everything else.
 ```
 
 ## Significance tests
 
 ```{r}
-anova(spe.cca) #Test significance of CCA in general
+anova(protEnvRDA) #Test significance of the RDA in general. F = 1.3064, p = 0.195, so the constrained ordination is not significant.
 ```
 
 ```{r}
-anova(spe.cca, by = 'axis') #Test significance of each axis
+anova(protEnvRDA, by = 'axis') #Test significance of each axis. No axis is significant.
 ```
 
 ```{r}
-anova(spe.cca, by = 'terms') #Test significance of each predictor variable from X
+anova(protEnvRDA, by = 'terms') #Test significance of each predictor variable from X. The mean and variance of temperature are marginally significant (p = 0.065 and 0.067 respectively)
 ```
 
 ## Ordination biplot
 
 ```{r}
-plot(spe.cca, choices = c(1,2), type = 'points', display = 'wa', scaling = 2) #Visualize the ordination by plotting the weighted average scores. Scaling method optimizes for descriptors.
+plot(protEnvRDA, choices = c(1,2), type = 'points', display = 'wa', scaling = 2) #Visualize the ordination by plotting the weighted average scores. Scaling method optimizes for descriptors.
 ```
 
 ```{r}
-plot(spe.cca, choices = c(1,2), type = 'n', display = 'wa', scaling = 2) #Visualize the WA scores
-text(spe.cca, choices = c(1,2), labels = row.names(speabu)) #Add site indiciation instead of points
+plot(protEnvRDA, choices = c(1,2), type = 'n', display = 'wa', scaling = 2) #Visualize the WA scores
+text(protEnvRDA, choices = c(1,2), labels = row.names(proteinAbundanceHT)) #Add sample ID instead of points
 ```
 
 # Interpreting the constrained ordination
 
 ```{r}
-round(intrasetcor(spe.cca), 5) #Obtain the intra-set correlation (structure) coefficients
+round(intrasetcor(protEnvRDA), 5) #Obtain the intra-set correlation (structure) coefficients
 ```
 
 ```{r}
-round(intersetcor(spe.cca), 5) #Obtain the inter-set correlation (structure) coefficients
+round(intersetcor(protEnvRDA), 5) #Obtain the inter-set correlation (structure) coefficients
 ```
 
 ```{r}
-summary(spe.cca) #Get biplot scores for explanatory variables
+summary(protEnvRDA) #Get biplot scores for explanatory variables
 ```
 
 ```{r}
-plot(spe.cca, choices = c(1,2), display = c('wa', 'sp', 'bp'), scaling = 2) #Obtain the triplot with weighted average scores (wa), species scores (sp), and environmental variable biplot scores (bp). Scale to enhance descriptors.
+plot(protEnvRDA, choices = c(1,2), display = c('wa', 'sp', 'bp'), scaling = 2) #Obtain the triplot with weighted average scores (wa), species scores (sp), and environmental variable biplot scores (bp). Scale to enhance descriptors.
+```
+
+#Customize RDA
+
+## Create a customization matrix
+
+```{r}
+temporaryData <- data.frame("Sample.Number" = biologicalReplicates$Sample.Number,
+                            y = rep(x = 0, times = length(biologicalReplicates$Sample.Number))) #Create a temporary dataframe with sample  names
+head(temporaryData) #Confirm dataframe creation
 ```
 
 ```{r}
-plot(spe.cca, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on CCA dimensions
-points(spe.cca, choices = c(1,2), display = 'wa', pch = 19, cex = 1.5, scaling = 2) #Plot objects as points
-text(spe.cca, choices = c(1,2), display = 'sp', col = 'red', cex = .75, scaling = 2) #Plot descriptors as text
-text(spe.cca, choices = c(1,2), display = 'bp', col = 'blue') #Plot predictors
+NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[,-2] #Remove empty column
+head(NMDSColorShapeCustomization) #Confirm removal
+```
+
+```{r}
+#Add region information (Puget Sound vs. Willapa Bay)
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization$Region <- c(rep("PS", times = (length(NMDSColorShapeCustomization$Site)-6)), rep("WB", times = 6)) #Add regional information
+NMDSColorShapeCustomization$NMDS.Region.Shapes <- c(rep(20, times = (length(NMDSColorShapeCustomization$Site)-6)), rep(8, times = 6))
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
+```
+
+```{r}
+#Create a color and shape palette
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDS.Colors <- c(rep(x = "#00A9BD", times = sum(NMDSColorShapeCustomization$Site == "CI")),
+            rep(x = "#38001C", times = sum(NMDSColorShapeCustomization$Site == "FB")),
+            rep(x = "#440D82", times = sum(NMDSColorShapeCustomization$Site == "PG")),
+            rep(x = "#017A74", times = sum(NMDSColorShapeCustomization$Site == "SK")),
+            rep(x = "#EB8B0C", times = sum(NMDSColorShapeCustomization$Site == "WB"))) #Create a color vector
+NMDSColorShapeCustomization[,6] <- NMDS.Colors #Add the color vector to the dataframe
+head(NMDSColorShapeCustomization) #Confirm addition
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Habitat),] #Reorder so habitat is sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDS.Shapes <- c(rep(x = 1, times = sum(NMDSColorShapeCustomization$Habitat == "Bare")),
+                 rep(x = 16, times = sum(NMDSColorShapeCustomization$Habitat == "Eelgrass"))) #Make a shape vector
+NMDSColorShapeCustomization[,7] <- NMDS.Shapes #Add the shape vector to the dataframe
+head(NMDSColorShapeCustomization) #Confirm addition
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Sample.Number),] #Resort by sample number
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Region", "Region.Shape", "Color", "Shape") #Change column names
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
+```
+
+```{r}
+plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on RDA dimensions
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 0.5, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'sp', pch = 22, col = 'grey20', bg = "grey20", cex = 0.5, scaling = 2, select = c(4, 6:10, 14:15, 18:20, 22, 24)) #Plot descriptors as text
+text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20') #Plot only marginally significant predictors
 ```
 
