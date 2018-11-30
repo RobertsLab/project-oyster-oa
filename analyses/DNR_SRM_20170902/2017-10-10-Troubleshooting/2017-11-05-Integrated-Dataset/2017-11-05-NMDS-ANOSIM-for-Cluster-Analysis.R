@@ -373,6 +373,8 @@ summary(siteFBWBANOSIM)
 siteFBWBANOSIM$statistic #R = 0.2567829
 siteFBWBANOSIM$signif #p = 0.035
 plot(siteFBWBANOSIM) #Obtain boxplots and permutation test histogram
+simperFBWB <- simper(dataFBWB[,1:37], group = dataFBWB[,38])
+summary(simperFBWB)
 
 #PG vs. SK
 
@@ -409,3 +411,5 @@ summary(siteSKWBANOSIM)
 siteSKWBANOSIM$statistic #R = 0.1540698
 siteSKWBANOSIM$signif #p = 0.079
 plot(siteSKWBANOSIM) #Obtain boxplots and permutation test histogram
+simperSKWB <- simper(dataSKWB[,1:37], group = dataSKWB[,38])
+summary(simperSKWB)
