@@ -502,6 +502,10 @@ head(varData.log.trans) #View transformation
 head(varData.log.trans) #View changes
 ```
 
+```{r}
+#write.csv(varData.log.trans, "2018-12-01-Variance-Environmental-Data-Log-Transformed.csv", row.names = TRUE) #Write out transformed data for future analyses
+```
+
 ## Calculate dissimilarity matrix
 
 ```{r}
@@ -710,7 +714,6 @@ ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", 
 sigLoadings <- envfit(varData.log.gower.NMDS$points, varData.log.trans[,c(5:7, 18, 29:30)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
 sigLoadings #View loadings
 ```
-
 
 ```{r}
 fig.nmds <- ordiplot(varData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object

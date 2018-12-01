@@ -502,6 +502,11 @@ colnames(meanData.log.trans) <- rownames(meanData.log) #Rename columns so there 
 head(meanData.log.trans) #View transformation
 ```
 
+```{r}
+#write.csv(meanData.log.trans, "2018-12-01-Mean-Environmental-Data-Log-Transformed.csv", row.names = TRUE) #Write out transformed data for future analyses
+```
+
+
 ## Calculate dissimilarity matrix
 
 ```{r}
