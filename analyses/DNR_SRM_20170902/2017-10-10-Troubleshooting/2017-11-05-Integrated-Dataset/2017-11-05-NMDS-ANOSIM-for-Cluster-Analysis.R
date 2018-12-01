@@ -63,7 +63,7 @@ proc.nmds.averaged.euclidean$stress #Stress of NMDS is 0.07508988
 nmds.monte(area4.tra, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.07508988, is less than the expected stress value. P-value = 0.00990099
 stressplot(proc.nmds.averaged.euclidean) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 0.994 (redundant with observed stress value and p-value from the randomization test)
 
-vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.tra, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
 vec.proc.nmds.averaged.euclidean #Look at loadings
 
 ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
@@ -145,12 +145,6 @@ ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show
 legend("topright", pch = rep(x = 16, times = 5), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish", "Willapa Bay"), col = c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'), cex = 0.5, bty = "n")
 #dev.off()
 
-#### PLOT JUST THE LOADINGS ####
-
-ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Create an empty plot
-vec.proc.nmds.averaged.euclidean <- envfit(proc.nmds.averaged.euclidean$points, area4.t, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
-plot(vec.proc.nmds.averaged.euclidean, p.max = 0.001, col = 'black') #Plot loadings that are significant at the 0.001 level
-
 #### NMDS BY SITE WITH POLYGONS ####
 
 #Legend for NMDS plot:
@@ -204,18 +198,36 @@ legend("topright", pch = c(16, 17), legend=c("Bare", "Eelgrass"), col=c("black",
 #### NMDS BY SITE AND HABITAT WITH CONFIDENCE ELLIPSE ####
 
 #pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-11-28-Protein-Abundance-Site-Habitat-NMDS-Ellipse.pdf", width = 11, height = 8.5)
-fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
 points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 1, text = "NMDS1", line = 2)
+axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 2, text = "NMDS2", line = 2)
+box(col = "grey80")
 
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the oyster samples from Case Inlet
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the oyster samples from Fidalgo Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the oyster samples from Port Gamble Bay
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the oyster samples from Skokomish River Delta
-ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the oyster samples from Willapa Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the oyster samples from Case Inlet
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the oyster samples from Fidalgo Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "PG", col = "#440D8288") #Add confidence ellipse around the oyster samples from Port Gamble Bay
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "SK", col = "#017A7488") #Add confidence ellipse around the oyster samples from Skokomish River Delta
+ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "WB", col = "#EB8B0C88") #Add confidence ellipse around the oyster samples from Willapa Bay
 
-legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', 'black', 'black'), cex = 0.5, bty = "n")
+legend("topleft", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', 'black', 'black'), cex = 0.5, bty = "n")
 
 #dev.off()
+
+#### PLOT JUST THE LOADINGS ####
+
+sigLoadings <- envfit(proc.nmds.averaged.euclidean$points, area4.tra[,c(5, 12:13, 19, 22, 30, 33)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
+sigLoadings #View loadings
+
+ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Create an empty plot
+plot(sigLoadings, col = 'grey20', labels = c("1", "2", "3", "4", "5", "6", "7")) #Plot loadings that simper determined were significant
+axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 1, text = "NMDS1", line = 2)
+axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 2, text = "NMDS2", line = 2)
+box(col = "grey80")
 
 #### NMDS BY REGION ####
 #I'm going to take my averaged normalized data and plot it by region (Puget Sound vs. Willapa Bay).

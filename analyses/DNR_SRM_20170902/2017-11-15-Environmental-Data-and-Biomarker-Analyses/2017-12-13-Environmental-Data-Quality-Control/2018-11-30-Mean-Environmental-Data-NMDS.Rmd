@@ -687,14 +687,20 @@ legend("topright", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "F
 #### Site, habitat, and environmental variables
 
 ```{r}
-fig.nmds <- ordiplot(meanData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "Axis 1", ylab = "Axis 2", cex = 0.5) #Save NMDS as a new object
+fig.nmds <- ordiplot(meanData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
 points(fig.nmds, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
-ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD") #Add confidence ellipse around the data from Case Inlet
-ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C") #Add confidence ellipse around the data  from Fidalgo Bay
-ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D82") #Add confidence ellipse around the data from Port Gamble Bay
-ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
-ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
-legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
+axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 1, text = "NMDS1", line = 2)
+axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 2, text = "NMDS2", line = 2)
+box(col = "grey80")
+legend("topleft", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.4, bty = "n")
+
+ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
+ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
+ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D8288") #Add confidence ellipse around the data from Port Gamble Bay
+ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A7488") #Add confidence ellipse around the data from Skokomish River Delta
+ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C88") #Add confidence ellipse around the data from Willapa Bay
 ```
 
 
@@ -707,6 +713,24 @@ ordihull(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", co
 ordihull(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A74") #Add confidence ellipse around the data from Skokomish River Delta
 ordihull(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C") #Add confidence ellipse around the data from Willapa Bay
 legend("topright", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.5, bty = "n")
+```
+
+#### Loadings only
+
+```{r}
+sigLoadings <- envfit(meanData.log.gower.NMDS$points, meanData.log.trans[,c(1:3, 5, 18:19)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
+sigLoadings #View loadings
+```
+
+
+```{r}
+fig.nmds <- ordiplot(meanData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
+plot(sigLoadings, col = 'grey20') #Plot loadings that simper determined were significant
+axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 1, text = "NMDS1", line = 2)
+axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 2, text = "NMDS2", line = 2)
+box(col = "grey80")
 ```
 
 ## Analysis of Similarities (ANOSIM)
