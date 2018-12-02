@@ -1,12 +1,8 @@
 #In this script, I'll make figure options for the DNR paper.
 
-#### SET WORKING DIRECTORY ####
-setwd("../../..") #Set working directory to the master SRM folder
-getwd()
-
 #### IMPORT DATA ####
 
-SRMDataNMDSAveragedCorrected <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
+SRMDataNMDSAveragedCorrected <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Averaged-Areas-Pivoted-Corrected.csv", header = TRUE) #Import modified dataset. This dataset has rownames as the first column, column names as sample IDs. Area data is averaged and corrected (no NAs)
 rownames(SRMDataNMDSAveragedCorrected) <- SRMDataNMDSAveragedCorrected[,1]
 SRMDataNMDSAveragedCorrected <- SRMDataNMDSAveragedCorrected[,-1] #Remove first column of rownames
 head(SRMDataNMDSAveragedCorrected) #Confirm import.
@@ -17,7 +13,7 @@ SRMDataNMDSAveragedCorrectedTransposed <- data.frame(t(SRMDataNMDSAveragedCorrec
 SRMDataNMDSAveragedCorrectedTransposed$Sample.Number <- rownames(SRMDataNMDSAveragedCorrectedTransposed) #Save rownames as a new column
 head(SRMDataNMDSAveragedCorrectedTransposed) #Confirm changes
 
-biologicalReplicates <- read.csv("2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-Biological-Replicate-Information-SampleID-Only.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
+biologicalReplicates <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-10-24-Coefficient-of-Variation/2017-10-25-Biological-Replicate-Information-SampleID-Only.csv", na.strings = "N/A") #Import site and eelgrass condition information (i.e. biological replicate information)
 head(biologicalReplicates) #Confirm import
 colnames(biologicalReplicates) <- c("Sample.Number", "Site", "Eelgrass.Condition")
 rownames(biologicalReplicates) <- biologicalReplicates$Sample.Number #Set sample number as row names
@@ -114,7 +110,7 @@ head(willapaBayAverages) #Confirm dataframe creation
 averagePeptideData <- rbind(caseInletAverages, fidalgoBayAverages, portGambleAverages, skokomishRiverAverages, willapaBayAverages) #Merge all averaged peptide data into a single dataframe
 #write.csv(averagePeptideData, "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv") #Wrote out table for future analyses
 
-averagePeptideData <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv", header = TRUE) #Import average peptide dataset
+averagePeptideData <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-16-Average-Peptide-Data-by-Site.csv", header = TRUE) #Import average peptide dataset
 head(averagePeptideData) #Confirm import
 averagePeptideData <- averagePeptideData[,-1] #Remove first column
 head(averagePeptideData) #Confirm column deletion
@@ -288,13 +284,13 @@ allheatmapDataNoTransPivot <- allheatmapDataNoTransPivot[,-1] #Remove peptide co
 head(allheatmapDataNoTransPivot) #Confirm changes
 
 #Make heatmap without any data transformation
-pheatmap(allheatmapDataNoTransPivot, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapPRGn) #This does not look good. Transformation is the best route.
+pheatmap(allheatmapDataNoTransPivot, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, legend = TRUE, color = heatmapBlue) #This does not look good. Transformation is the best route.
 
-peptideCommonNames <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Protein-Peptide-CommonName.csv", header = TRUE) #Import information with peptide common names
+peptideCommonNames <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Protein-Peptide-CommonName.csv", header = TRUE) #Import information with peptide common names
 head(peptideCommonNames) #Confirm import
 rownames(allheatmapDataPivoted) <- peptideCommonNames$Peptide #Assign the name and peptide information as rownames for heatmap data
 head(allheatmapDataPivoted) #Confirm changes
 
-#jpeg("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-02-27-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1000, height = 1000)
-pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, treeheight_col = 80, legend = TRUE, color = heatmapPRGn, fontsize_col = 20, fontsize_row = 12)
+#jpeg("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-02-15-DNR-Paper-Figure/2018-12-01-Average-Peptide-Abundance-Across-Sites-NamePeptide-Heatmap.jpeg", width = 1000, height = 1000)
+pheatmap(allheatmapDataPivoted, cluster_rows = FALSE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "average", show_rownames = TRUE, show_colnames = TRUE, treeheight_col = 80, legend = TRUE, color = heatmapBlue, fontsize_col = 20, fontsize_row = 12)
 #dev.off() #Turn off plotting device
