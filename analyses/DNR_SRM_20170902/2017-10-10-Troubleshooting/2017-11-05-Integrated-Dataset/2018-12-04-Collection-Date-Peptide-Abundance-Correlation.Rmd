@@ -1,0 +1,438 @@
+---
+title: "Redundancy Analysis (RDA) for Protein Abundance Data at Date of Collection"
+author: "Yaamini Venkataraman"
+date: "November 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) #Set up R Markdown File
+```
+
+In this script, I'll perform a constrained ordination to understand the protein abundance data given the environmental data at time of collection.
+
+# Install dependencies
+
+```{r}
+#install.packages("vegan")
+require(vegan)
+#install.packages("cluster") #Install cluster package. This package has the function daisy that is used for the gower dissimilarity matrix.
+require(cluster)
+#install.packages("dplyr")
+require(dplyr)
+
+source("../../biostats.R") #Biostats analysis wrapper
+```
+
+# Obtain session information
+
+```{r}
+sessionInfo() #Obtain session information
+```
+
+# Import and reformat data
+
+## Protein abundance data
+
+```{r}
+proteinAbundance <- read.csv("2017-11-05-Averaged-Areas-Pivoted-Corrected.csv", header = TRUE) #Import protein abundance data
+row.names(proteinAbundance) <- proteinAbundance[,1] #Assign first column as rownames
+proteinAbundance <- proteinAbundance[,-1] #Remove first column
+proteinAbundance <- t(proteinAbundance) #Transpose dataframe
+head(proteinAbundance) #Confirm changes
+```
+
+### Transform protein data
+
+```{r}
+proteinAbundanceHT <- data.trans(proteinAbundance, method = 'hellingers', plot = FALSE) #Hellinger (asymmetric) transformation
+head(proteinAbundanceHT) #Confirm transformation
+```
+
+## Environmental data
+For the environmental data, I want my rownames to be oyster samples, and my columns to be Site, Habitat, and the mean and variance of environmental variables at the designated Site and Habitat for the entire outplant.
+
+### Import and reformat environmental data
+
+```{r}
+dailyMeanData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-12-01-Mean-Environmental-Data-Log-Transformed.csv", header = TRUE) #Import mean data
+rownames(dailyMeanData) <- dailyMeanData[,1] #Set first column as row names
+dailyMeanData <- dailyMeanData[,-1] #Remove first column
+head(dailyMeanData)
+```
+
+```{r}
+collectionMeanData <- dailyMeanData$X2016.07.19 #Subset data from collection date
+```
+
+```{r}
+dailyVarianceData <- read.csv("../../2017-11-15-Environmental-Data-and-Biomarker-Analyses/2017-12-13-Environmental-Data-Quality-Control/2018-12-01-Variance-Environmental-Data-Log-Transformed.csv", header = TRUE) #Import mean data
+rownames(dailyVarianceData) <- dailyVarianceData[,1] #Set first column as row names
+dailyVarianceData <- dailyVarianceData[,-1] #Remove first column
+head(dailyVarianceData)
+```
+
+```{r}
+collectionVarianceData <- dailyVarianceData$X2016.07.19 #Subset data from collection date
+```
+
+```{r}
+environmentalData <- data.frame("Site" = rep(0, times = length(collectionMeanData)),
+                                "Habitat" = rep(0, times = length(collectionMeanData)),
+                                "Mean" = collectionMeanData,
+                                "Variance" = collectionVarianceData) #Create new dataframe with environmental data from collection date
+rownames(environmentalData) <- rownames(dailyMeanData) #Use same row names as daily mean values
+head(environmentalData) #Confirm changes
+```
+
+```{r}
+#Fill in sites based on row names
+environmentalData[grep(rownames(environmentalData), pattern = "CI"), "Site"] <- "CI"
+environmentalData[grep(rownames(environmentalData), pattern = "FB"), "Site"] <- "FB"
+environmentalData[grep(rownames(environmentalData), pattern = "PG"), "Site"] <- "PG"
+environmentalData[grep(rownames(environmentalData), pattern = "SK"), "Site"] <- "SK"
+environmentalData[grep(rownames(environmentalData), pattern = "WB"), "Site"] <- "WB"
+environmentalData$Site
+```
+
+```{r}
+#Fill in habitat based on row names
+
+#Bare
+environmentalData[grep(rownames(environmentalData), pattern = "CIB"), "Habitat"] <- "Bare"
+environmentalData[grep(rownames(environmentalData), pattern = "FBB"), "Habitat"] <- "Bare"
+environmentalData[grep(rownames(environmentalData), pattern = "PGB"), "Habitat"] <- "Bare"
+environmentalData[grep(rownames(environmentalData), pattern = "SKB"), "Habitat"] <- "Bare"
+environmentalData[grep(rownames(environmentalData), pattern = "WBB"), "Habitat"] <- "Bare"
+
+#Eelgrass
+environmentalData[grep(rownames(environmentalData), pattern = "CIE"), "Habitat"] <- "Eelgrass"
+environmentalData[grep(rownames(environmentalData), pattern = "FBE"), "Habitat"] <- "Eelgrass"
+environmentalData[grep(rownames(environmentalData), pattern = "PGE"), "Habitat"] <- "Eelgrass"
+environmentalData[grep(rownames(environmentalData), pattern = "SKE"), "Habitat"] <- "Eelgrass"
+environmentalData[grep(rownames(environmentalData), pattern = "WBE"), "Habitat"] <- "Eelgrass"
+
+environmentalData$Habitat
+```
+
+```{r}
+head(environmentalData)
+```
+
+```{r}
+#Subset each environmental variable into a new dataframe
+collectionpH <- environmentalData[grep(rownames(environmentalData), pattern = "pH"),]
+collectionDO <- environmentalData[grep(rownames(environmentalData), pattern = "DO"),]
+collectionSalinity <- environmentalData[grep(rownames(environmentalData), pattern = "sal"),]
+collectionTemperature <- environmentalData[grep(rownames(environmentalData), pattern = "temp"),]
+```
+
+### Combine oyster samples with environmental data
+
+```{r}
+biologicalReplicates <- read.csv("../../2017-09-06-Biological-Replicate-Information.csv", header = TRUE) #Import biological replciate information
+head(biologicalReplicates) #Confirm import
+```
+
+```{r}
+biologicalReplicates$Sample.Number <- as.character(biologicalReplicates$Sample.Number) #Convert sample number to character string
+biologicalReplicates$Sample.Number <- substr(biologicalReplicates$Sample.Number, 1, nchar(biologicalReplicates$Sample.Number)-2) #Remove -1 or -2 from end of sample number
+biologicalReplicates <- biologicalReplicates[1:49,] #Keep only the first 50 rows, since everything repeats. Also eliminate OBLNK2
+colnames(biologicalReplicates)[3] <- "Habitat" #Change Eelgrass.Condition to Habitat
+tail(biologicalReplicates) #Confirm changes
+```
+
+```{r}
+environmentalSampleData <- data.frame("Sample.Number" = biologicalReplicates$Sample.Number,
+                                      "Site" = biologicalReplicates$Site,
+                                      "Habitat" = biologicalReplicates$Habitat,
+                                      "temperatureMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "temperatureVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "pHMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "pHVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "DOMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "DOVariance" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "salinityMean" = rep(0, times = length(biologicalReplicates$Sample.Number)),
+                                      "salinityVariance" = rep(0, times = length(biologicalReplicates$Sample.Number))) #Create a new dataframe for sample and environmental data. Column names follow the same ordering as environmentalData
+head(environmentalSampleData) #Confirm dataframe creation
+```
+
+```{r}
+colnames(environmentalSampleData)
+```
+
+#### pH
+
+```{r}
+#Replace 0s in environmentalSampleData using corresponding information from collectionpH
+
+#Case Inlet
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 6:7] <- collectionpH[collectionpH$Site == "CI" & collectionpH$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Eelgrass", 6:7] <- collectionpH[collectionpH$Site == "CI" & collectionpH$Habitat == "Eelgrass", 3:4]
+
+#Fidalgo Bay
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Bare", 6:7] <- collectionpH[collectionpH$Site == "FB" & collectionpH$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Eelgrass", 6:7] <- collectionpH[collectionpH$Site == "FB" & collectionpH$Habitat == "Eelgrass", 3:4]
+
+#Port Gamble Bay
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Bare", 6:7] <- collectionpH[collectionpH$Site == "PG" & collectionpH$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Eelgrass", 6:7] <- NA
+
+#Skokomish River Delta
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Bare", 6:7] <- collectionpH[collectionpH$Site == "SK" & collectionpH$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Eelgrass", 6:7] <- collectionpH[collectionpH$Site == "SK" & collectionpH$Habitat == "Eelgrass", 3:4]
+
+#Willapa Bay
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Bare", 6:7] <- collectionpH[collectionpH$Site == "WB" & collectionpH$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Eelgrass", 6:7] <- collectionpH[collectionpH$Site == "WB" & collectionpH$Habitat == "Eelgrass", 3:4]
+
+head(environmentalSampleData) #Confirm replacements happened
+```
+
+#### Dissolved oxygen
+
+```{r}
+#Replace 0s in environmentalSampleData using corresponding information from collectionDO
+
+#Case Inlet
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 8:9] <- collectionDO[collectionDO$Site == "CI" & collectionDO$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Eelgrass", 8:9] <- collectionDO[collectionpH$Site == "CI" & collectionDO$Habitat == "Eelgrass", 3:4]
+
+#Fidalgo Bay
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Bare", 8:9] <- collectionDO[collectionDO$Site == "FB" & collectionDO$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Eelgrass", 8:9] <- collectionDO[collectionpH$Site == "FB" & collectionDO$Habitat == "Eelgrass", 3:4]
+
+#Port Gamble Bay
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Bare", 8:9] <- collectionDO[collectionDO$Site == "PG" & collectionDO$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Eelgrass", 8:9] <- NA
+
+#Skokomish River Delta
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Bare", 8:9] <- collectionDO[collectionDO$Site == "SK" & collectionDO$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Eelgrass", 8:9] <- collectionDO[collectionpH$Site == "SK" & collectionDO$Habitat == "Eelgrass", 3:4]
+
+#Willapa Bay
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Bare", 8:9] <- collectionDO[collectionDO$Site == "WB" & collectionDO$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Eelgrass", 8:9] <- collectionDO[collectionpH$Site == "WB" & collectionDO$Habitat == "Eelgrass", 3:4]
+
+head(environmentalSampleData) #Confirm replacements happened
+```
+
+#### Salinity
+
+```{r}
+#Replace 0s in environmentalSampleData using corresponding information from collectionSalinity
+
+#Case Inlet
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 10:11] <- collectionSalinity[collectionSalinity$Site == "CI" & collectionSalinity$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Eelgrass", 10:11] <- collectionSalinity[collectionSalinity$Site == "CI" & collectionSalinity$Habitat == "Eelgrass", 3:4]
+
+#Fidalgo Bay
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Bare", 10:11] <- collectionSalinity[collectionSalinity$Site == "FB" & collectionSalinity$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Eelgrass", 10:11] <- collectionSalinity[collectionSalinity$Site == "FB" & collectionSalinity$Habitat == "Eelgrass", 3:4]
+
+#Port Gamble Bay
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Bare", 10:11] <- NA
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Eelgrass", 10:11] <- collectionSalinity[collectionSalinity$Site == "PG" & collectionSalinity$Habitat == "Eelgrass", 3:4]
+
+#Skokomish River Delta
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Bare", 10:11] <- collectionSalinity[collectionSalinity$Site == "SK" & collectionSalinity$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Eelgrass", 10:11] <- collectionSalinity[collectionSalinity$Site == "SK" & collectionSalinity$Habitat == "Eelgrass", 3:4]
+
+#Willapa Bay
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Bare", 10:11] <- collectionSalinity[collectionSalinity$Site == "WB" & collectionSalinity$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Eelgrass", 10:11] <- NA
+
+head(environmentalSampleData) #Confirm replacements happened
+```
+
+#### Temperature
+
+```{r}
+#Replace 0s in environmentalSampleData using corresponding information from collectionTemperature
+
+#Case Inlet
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Bare", 4:5] <- collectionTemperature[collectionTemperature$Site == "CI" & collectionTemperature$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "CI" & environmentalSampleData$Habitat == "Eelgrass", 4:5] <- collectionTemperature[collectionTemperature$Site == "CI" & collectionTemperature$Habitat == "Eelgrass", 3:4]
+
+#Fidalgo Bay
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Bare", 4:5] <- collectionTemperature[collectionTemperature$Site == "FB" & collectionTemperature$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "FB" & environmentalSampleData$Habitat == "Eelgrass", 4:5] <- collectionTemperature[collectionTemperature$Site == "FB" & collectionTemperature$Habitat == "Eelgrass", 3:4]
+
+#Port Gamble Bay
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Bare", 4:5] <- collectionTemperature[collectionTemperature$Site == "PG" & collectionTemperature$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "PG" & environmentalSampleData$Habitat == "Eelgrass", 4:5] <- collectionTemperature[collectionTemperature$Site == "PG" & collectionTemperature$Habitat == "Eelgrass", 3:4]
+
+#Skokomish River Delta
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Bare", 4:5] <- collectionTemperature[collectionTemperature$Site == "SK" & collectionTemperature$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "SK" & environmentalSampleData$Habitat == "Eelgrass", 4:5] <- collectionTemperature[collectionTemperature$Site == "SK" & collectionTemperature$Habitat == "Eelgrass", 3:4]
+
+#Willapa Bay
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Bare", 4:5] <- collectionTemperature[collectionTemperature$Site == "WB" & collectionTemperature$Habitat == "Bare", 3:4]
+environmentalSampleData[environmentalSampleData$Site == "WB" & environmentalSampleData$Habitat == "Eelgrass", 4:5] <- collectionTemperature[collectionTemperature$Site == "WB" & collectionTemperature$Habitat == "Eelgrass", 3:4]
+
+head(environmentalSampleData) #Confirm replacements happened
+```
+
+### Transform environmental data
+
+```{r}
+row.names(environmentalSampleData) <- environmentalSampleData$Sample.Number #Assign Sample.Number as row names
+environmentalSampleData <- environmentalSampleData[,-1] #Remove Sample.Number column
+head(environmentalSampleData) #Confirm changes
+```
+
+```{r}
+#Ensure numbers are recognized as numbers
+environmentalSampleData$pHMean <- as.numeric(environmentalSampleData$pHMean)
+environmentalSampleData$pHVariance <- as.numeric(environmentalSampleData$pHVariance)
+```
+
+```{r}
+environmentalSampleData.log <- log(environmentalSampleData[,-c(1:2)] + 1) #Log transform environmental data
+```
+
+
+```{r}
+environmentalSampleData.log <- environmentalSampleData.log[rownames(proteinAbundanceHT),] #Ensure that samples in environmental data are those from the protein abundance data
+length(environmentalSampleData.log$temperatureMean) == length(proteinAbundanceHT$`CHOYP_ACAA2.1.1|m.30666 ELGLNNDITNMNGGAIALGHPLAASGTR`) #The column lengths are equal, so we are good to go.
+```
+
+# Determine the appropriate response model
+
+```{r}
+decorana(proteinAbundanceHT, ira = 0) #Determine gradient length. Gradient length <2 is best represented by a linear model (RDA), 2-4 could be unimodal (RDA or CCA appropriate), and >4 is greater than unimodal (CCA). The length of DCA1 is 0.372921, so the underlying model is linear. I will use RDA.
+```
+
+# Conducting RDA
+
+```{r}
+protEnvRDA <- rda(proteinAbundanceHT~., environmentalSampleData.log, na.action = na.exclude)
+summary(protEnvRDA) #Look at the summary. Total inertia is the total variation explained by the RDA. Constrained inertia is the variation explained in Y by X. Unconstrained inertia is everything else.
+```
+
+## Significance tests
+
+```{r}
+anova(protEnvRDA) #Test significance of the RDA in general. The constrained ordination is not significant.
+```
+
+```{r}
+anova(protEnvRDA, by = 'axis') #Test significance of each axis. No axis is significant.
+```
+
+```{r}
+anova(protEnvRDA, by = 'terms') #Test significance of each predictor variable from X. Temperature variance is marginally significant.
+```
+
+## Ordination biplot
+
+```{r}
+plot(protEnvRDA, choices = c(1,2), type = 'points', display = 'wa', scaling = 2) #Visualize the ordination by plotting the weighted average scores. Scaling method optimizes for descriptors.
+```
+
+```{r}
+plot(protEnvRDA, choices = c(1,2), type = 'n', display = 'wa', scaling = 2) #Visualize the WA scores
+text(protEnvRDA, choices = c(1,2), labels = row.names(proteinAbundanceHT)) #Add sample ID instead of points
+```
+
+# Interpreting the constrained ordination
+
+```{r}
+round(intrasetcor(protEnvRDA), 5) #Obtain the intra-set correlation (structure) coefficients
+```
+
+```{r}
+round(intersetcor(protEnvRDA), 5) #Obtain the inter-set correlation (structure) coefficients
+```
+
+```{r}
+summary(protEnvRDA) #Get biplot scores for explanatory variables
+```
+
+```{r}
+plot(protEnvRDA, choices = c(1,2), display = c('wa', 'sp', 'bp'), scaling = 2) #Obtain the triplot with weighted average scores (wa), species scores (sp), and environmental variable biplot scores (bp). Scale to enhance descriptors.
+```
+
+#Customize RDA
+
+## Create a customization matrix
+
+```{r}
+temporaryData <- data.frame("Sample.Number" = biologicalReplicates$Sample.Number,
+                            y = rep(x = 0, times = length(biologicalReplicates$Sample.Number))) #Create a temporary dataframe with sample  names
+head(temporaryData) #Confirm dataframe creation
+```
+
+```{r}
+NMDSColorShapeCustomization <- merge(x = temporaryData, y = biologicalReplicates, by = "Sample.Number") #Merge biological information with samples used
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[,-2] #Remove empty column
+head(NMDSColorShapeCustomization) #Confirm removal
+```
+
+```{r}
+#Add region information (Puget Sound vs. Willapa Bay)
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization$Region <- c(rep("PS", times = (length(NMDSColorShapeCustomization$Site)-6)), rep("WB", times = 6)) #Add regional information
+NMDSColorShapeCustomization$NMDS.Region.Shapes <- c(rep(20, times = (length(NMDSColorShapeCustomization$Site)-6)), rep(8, times = 6))
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
+```
+
+```{r}
+#Create a color and shape palette
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Site),] #Reorder so sites are sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDS.Colors <- c(rep(x = "#00A9BD", times = sum(NMDSColorShapeCustomization$Site == "CI")),
+            rep(x = "#38001C", times = sum(NMDSColorShapeCustomization$Site == "FB")),
+            rep(x = "#440D82", times = sum(NMDSColorShapeCustomization$Site == "PG")),
+            rep(x = "#017A74", times = sum(NMDSColorShapeCustomization$Site == "SK")),
+            rep(x = "#EB8B0C", times = sum(NMDSColorShapeCustomization$Site == "WB"))) #Create a color vector
+NMDSColorShapeCustomization[,6] <- NMDS.Colors #Add the color vector to the dataframe
+head(NMDSColorShapeCustomization) #Confirm addition
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Habitat),] #Reorder so habitat is sorted alphabetically
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+NMDS.Shapes <- c(rep(x = 1, times = sum(NMDSColorShapeCustomization$Habitat == "Bare")),
+                 rep(x = 16, times = sum(NMDSColorShapeCustomization$Habitat == "Eelgrass"))) #Make a shape vector
+NMDSColorShapeCustomization[,7] <- NMDS.Shapes #Add the shape vector to the dataframe
+head(NMDSColorShapeCustomization) #Confirm addition
+attach(NMDSColorShapeCustomization)
+NMDSColorShapeCustomization <- NMDSColorShapeCustomization[order(Sample.Number),] #Resort by sample number
+head(NMDSColorShapeCustomization) #Confirm sorting
+detach(NMDSColorShapeCustomization)
+colnames(NMDSColorShapeCustomization) <- c("Sample.Number", "Site", "Eelgrass.Condition", "Region", "Region.Shape", "Color", "Shape") #Change column names
+head(NMDSColorShapeCustomization) #Confirm changes
+tail(NMDSColorShapeCustomization) #Confirm changes
+```
+
+### All proteins and predictors
+
+```{r}
+plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2) #Create an empty plot based on RDA dimensions
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 1, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'sp', pch = 22, col = 'grey20', bg = "grey20", cex = 0.5, scaling = 2) #Plot descriptors as text
+text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20', cex = 0.75) #Plot only marginally significant predictors
+```
+
+### Only significant proteins and predictors
+
+```{r}
+plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Create an empty plot based on RDA dimensions
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 1, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'sp', col = 'grey20', pch = 4, cex = 1, scaling = 2, select = c(5, 12, 13, 19, 22, 30, 33)) #Plot significant proteins
+text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20', cex = 0.75, select = 1:2) #Plot only marginally significant predictors
+axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 1, text = "RDA1", line = 2)
+axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 2, text = "RDA2", line = 2)
+box(col = "grey80")
+
+legend("topleft", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', 'black', 'black'), cex = 0.5, bty = "n")
+```
+
