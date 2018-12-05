@@ -1,19 +1,15 @@
 #In this script, I'll quality control the environmental data. Using tidal data, I can replace any readings from when the probe was out of water with N/As.
 
-#### SET WORKING DIRECTORY ####
-setwd("../..") #Set working directory to the master SRM folder
-getwd()
-
 #### IMPORT AND FORMAT DATA ####
 
-tideData <- read.csv("../../data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE, strip.white = TRUE) #Import the tide data
+tideData <- read.csv("data/DNR/2017-12-13-Tidal-Data-by-Site.csv", header = TRUE, strip.white = TRUE) #Import the tide data
 head(tideData) #Confirm import
 tideData$Date <- as.Date(tideData$Date, format = "%m/%d/%y") #Convert entries to dates
 tideData$DateTime <- paste(tideData$Date, tideData$Time) #Create new DateTime column to easily merge tide and environmental data
 colnames(tideData) <- c("Date", "Time", "CI-Tide", "FB-Tide", "PG-Tide", "SK-Tide", "WB-Tide", "DateTime")
 head(tideData) #Confirm changes
 
-pHDOData <- read.csv("../../data/DNR/2017-11-14-Environmental-Data-from-Micah.csv", header = TRUE, na.strings = "NA") #Import file with pH and DO data
+pHDOData <- read.csv("data/DNR/2017-11-14-Environmental-Data-from-Micah.csv", header = TRUE, na.strings = "NA") #Import file with pH and DO data
 head(pHDOData) #Confirm import
 colnames(pHDOData) #View column names
 
@@ -31,7 +27,7 @@ DOData$Date <- as.Date(DOData$Date, format = "%m/%d/%y") #Convert entries to dat
 DOData$DateTime <- paste(DOData$Date, DOData$Time) #Create new DateTime column to easily merge tide and environmental data
 head(DOData) #Confirm changes
 
-salinityData <- read.csv("../../data/DNR/2018-05-30-Fixed-Salinity-from-Micah.csv", header = TRUE, na.strings = "NA", strip.white = TRUE) #Import salinity data and remove white space from end of Date and Time columns
+salinityData <- read.csv("data/DNR/2018-05-30-Fixed-Salinity-from-Micah.csv", header = TRUE, na.strings = "NA", strip.white = TRUE) #Import salinity data and remove white space from end of Date and Time columns
 head(salinityData) #Confirm import
 colnames(salinityData) #Get column names
 salinityData <- salinityData[,c(1:2, 4, 10, 12, 14, 20)] #Subset only the salinity information from bare outplants. Needed to use PGE instead of PGB since PGB has no salinity data. Also use FBE and WBE due to probe burial at bare sites.
@@ -83,7 +79,10 @@ proportionTestData <- data.frame("success" = c(CIexposed, FBexposed, PGexposed, 
                                 "failure" = c(CIsubmerged, FBsubmerged, PGsubmerged, SKsubmerged, WBsubmerged), 
                                 "total" = rep((((length(tideData$DateTime)*10)/60)), times = 5))
 
-prop.test(proportionTestData$success, proportionTestData$total) #Case Inlet was out of water more, but it doesn't explain any protein abundance results
+propTestResults <- prop.test(proportionTestData$success, proportionTestData$total)
+propTestResults
+pairwise.prop.test(proportionTestData$success, proportionTestData$total)
+
 
 #### REMOVE EXPOSURE TIMES ####
 
