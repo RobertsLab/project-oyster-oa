@@ -3,7 +3,7 @@ plotMatrix <- matrix(c(1, 2, 3,
                        1, 6, 7), nrow = 3, ncol = 3, byrow = TRUE) #Create a matrix and fill it in by row.
 plotMatrix #Confirm matrix creation
 
-pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
+#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
 
 par(mar = c(3, 0, 0, 2.5), oma = c(0, 3.5, 1, 0)) #Specify inner and outer margins
 layout(mat = plotMatrix, width = c(45, 15, 15)) #Create a layout based on the plot matrix. Column 1s width should be 3x as large as column 2. 
@@ -152,21 +152,35 @@ box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 3, line = -2, adj = -1, text = "             g. Dates") #Add subplot description
 
-dev.off()
-
 #### LEGEND ####
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Solution from KLo's blog! http://dr-k-lo.blogspot.com/2014/03/the-simplest-way-to-plot-legend-outside.html. Overlay a larger plot onto the already-created plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Create an empty plot
-legend("topleft", legend = c("Rhodophyta", "Ochrophyta", "Chlorophyta", "S1 (A1 to C3)", "S2 (D1 to F3)", "S3 (G1 to I3)"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), pch = c(0, 1, 2, 15, 15, 15), col = c("black", "black", "black", "#2C0709", "#960016", "#E50000"), bty = "n", text.font = c(4, 4, 4, 1, 1, 1), cex = 1) #Create legend that is right-justified (xjust) for phylum and site specificiation. Use italics where appopriate.
+
+rect(xleft = -0.992, ybottom = 0.75, xright = 0.186, ytop = 1.1, col = "white", border = "grey80") #Add a box with a grey80 border to section off legend. The top of the box will bleed off the page.
+
+#Legend with site specification
+legend(x = -0.99, y = 1.06, xpd = TRUE, inset = c(0, 0),
+       legend = c("Case Inlet", "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay"),
+       pch = c(rep(16, times = 5)), 
+       col = c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C'),
+       cex = rep(1.5, times = 5),
+       bg = "white", box.col = "white") #Create a horizontal legend (horiz = TRUE) that can be plotted outside of the plot boundaries (xpd = TRUE). Place the legend at x = -1, y = 1.
+
+#Legend with environmental parameters
+legend(x = -0.56, y = 1.06, xpd = TRUE, inset = c(0, 0), 
+       legend = c("pH", "Dissolved Oxygen", "Temperature", "Salinity"),
+       pch = c(0, 1, 5, 6), 
+       col = "grey20",
+       cex = rep(1.5, times = 4),
+       bg = "white", box.col = "white") #Create a horizontal legend (horiz = TRUE) that can be plotted outside of the plot boundaries (xpd = TRUE). Place the legend at x = -1, y = 1.
+
+#Legend with peptide and habitat specification
+legend(x = -0.19, y = 1.06, xpd = TRUE, inset = c(0, 0),
+       legend = c("Unvegetated", "Eelgrass", "Influential Peptides"),
+       pch = c(16, 1, 4), 
+       col = "grey20",
+       cex = rep(1.5, times = 3),
+       bg = "white", box.col = "white") #Create a horizontal legend (horiz = TRUE) that can be plotted outside of the plot boundaries (xpd = TRUE). Place the legend at x = -1, y = 1.
 
 #dev.off()
-
-
-
-
-
-
-
-
-
