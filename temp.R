@@ -3,11 +3,11 @@ plotMatrix <- matrix(c(1, 2, 3,
                        1, 6, 7), nrow = 3, ncol = 3, byrow = TRUE) #Create a matrix and fill it in by row.
 plotMatrix #Confirm matrix creation
 
-#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
+pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
 
-par(mar = c(3, 0, 0, 2.5), oma = c(0, 3.5, 0, 0)) #Specify inner and outer margins
+par(mar = c(3, 0, 0, 2.5), oma = c(0, 3.5, 1, 0)) #Specify inner and outer margins
 layout(mat = plotMatrix, width = c(45, 15, 15)) #Create a layout based on the plot matrix. Column 1s width should be 3x as large as column 2. 
-layout.show(n = 7) #Confirm the plot layout is what is desired
+#layout.show(n = 7) #Confirm the plot layout is what is desired
 
 #### PLOT 1 ####
 
@@ -26,9 +26,8 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "RDA1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 2, text = "RDA2", line = 2)
+mtext(side = 3, line = -11, at = c(-1, -10), text = "RDA") #Add test name
 
 #### PLOT 2 ####
 
@@ -45,11 +44,8 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-#mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-#mtext(side = 2, text = "NMDS2", line = 1.75, cex = 0.75)
-mtext(side = 3, line = -3, adj = -1, text = "NMDS: Stress = 0.075")
-
+mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.075") #Add stress value
 
 ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the oyster samples from Case Inlet
 ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the oyster samples from Fidalgo Bay
@@ -72,7 +68,6 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 
 #### PLOT 4 ####
 
@@ -89,9 +84,8 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 2, text = "NMDS2", line = 1.75, cex = 0.75)
+mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.017") #Add stress value
 
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
@@ -114,7 +108,6 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 
 #### PLOT 6 ####
 
@@ -131,9 +124,8 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 2, text = "NMDS2", line = 1.75, cex = 0.75)
+mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.034") #Add stress value
 
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
@@ -143,7 +135,7 @@ ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", 
 
 #### PLOT 7 ####
 
-fig.nmds3 <- ordiplot(varData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
+fig.nmds3 <- ordiplot(varData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n", xlim = c(-0.4, 0.9)) #Save NMDS as a new object
 plot(sigVarLoadings, col = 'grey20', labels = c("1 3", "2", "", "4 18", "5", "", "     21", "29", "30", "31")) #Plot loadings that simper determined were significant
 box(col = "white")
 box(col = "white")
@@ -156,6 +148,5 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 1, text = "NMDS1", line = 2, cex = 0.75)
 
-#dev.off()
+dev.off()
