@@ -27,7 +27,7 @@ box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 3, line = -11, at = c(-1, -10), text = "RDA") #Add test name
+mtext(side = 3, line = -11, at = c(-1, -10), text = "    a. RDA") #Add test name
 
 #### PLOT 2 ####
 
@@ -45,7 +45,7 @@ box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.075") #Add stress value
+mtext(side = 3, line = -2, adj = -1, text = "b. NMDS: Stress = 0.075") #Add stress value
 
 ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the oyster samples from Case Inlet
 ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the oyster samples from Fidalgo Bay
@@ -68,6 +68,7 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 3, line = -2, adj = -1, text = "          c. Peptides") #Add subplot description
 
 #### PLOT 4 ####
 
@@ -85,7 +86,7 @@ box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.017") #Add stress value
+mtext(side = 3, line = -2, adj = -1, text = "d. NMDS: Stress = 0.017") #Add stress value
 
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
@@ -108,6 +109,7 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 3, line = -2, adj = -1, text = "             e. Dates") #Add subplot description
 
 #### PLOT 6 ####
 
@@ -125,7 +127,7 @@ box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
-mtext(side = 3, line = -2, adj = -1, text = "  NMDS: Stress = 0.034") #Add stress value
+mtext(side = 3, line = -2, adj = -1, text = " f. NMDS: Stress = 0.034") #Add stress value
 
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
@@ -148,5 +150,23 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
+mtext(side = 3, line = -2, adj = -1, text = "             g. Dates") #Add subplot description
 
 dev.off()
+
+#### LEGEND ####
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Solution from KLo's blog! http://dr-k-lo.blogspot.com/2014/03/the-simplest-way-to-plot-legend-outside.html. Overlay a larger plot onto the already-created plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Create an empty plot
+legend("topleft", legend = c("Rhodophyta", "Ochrophyta", "Chlorophyta", "S1 (A1 to C3)", "S2 (D1 to F3)", "S3 (G1 to I3)"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), pch = c(0, 1, 2, 15, 15, 15), col = c("black", "black", "black", "#2C0709", "#960016", "#E50000"), bty = "n", text.font = c(4, 4, 4, 1, 1, 1), cex = 1) #Create legend that is right-justified (xjust) for phylum and site specificiation. Use italics where appopriate.
+
+#dev.off()
+
+
+
+
+
+
+
+
+
