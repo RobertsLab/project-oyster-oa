@@ -72,15 +72,15 @@ temperatureRange <- c(temperatureMin, temperatureMax)
 ## Dates (x-axis)
 
 ```{r}
-dateTime <- pHData$DateTime #Isolate dates and times
+temperatureAxisDates <- c("6/19", "6/24", "6/29", "7/04", "7/09", "7/14", "7/19") #Isolate dates for x-axis
 ```
 
 # Plot data
 
 ```{r}
-#jpeg("2018-11-20-Environmental-Data-Line-Graph.jpeg", width = 1200, height = 800) #Save as a new file
+#pdf("2018-11-20-Environmental-Data-Line-Graph.pdf", width = 11, height = 8.5) #Save as a new file
 
-par(mfrow = c(4, 5), oma = c(10, 5, 1, 1), mar = c(0, 2, 0, 0)) #Create a 4x5 multipanel plot, filling in the rows first. Add space along certain outer and inner margins.
+par(mfrow = c(4, 5), oma = c(6, 4, 1, 1), mar = c(0, 1.5, 0, 0)) #Create a 4x5 multipanel plot, filling in the rows first. Add space along certain outer and inner margins.
 
 #Temperature
 plot(temperatureData$CIB, xaxs = "i", yaxs = "i", axes = F, ann = F, xlim = c(1, 4896), ylim = temperatureRange, pch = 16, cex = 0.2, col = "#00A9BD") #Case Inlet bare
@@ -170,34 +170,30 @@ lines(DOData$CIE.DO, lty = 3, col = "grey80") #Eelgrass
 box(col = "grey80")
 axis(side = 2, las = 1, at = c(25, 45), col = "grey80") #Put the axis labels at the values specified
 mtext(side = 2, line = 3, "DO (mg/L)") #Add environmental variable indication
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureAxisDates, las = 3, col = "grey80") #Make x-axis
 
 plot(DOData$FBB.DO, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange, pch = 16, cex = 0.2, col = "#38001C") #Fidalgo Bay bare
 lines(DOData$FBE.DO, lty = 3, col = "grey80") #Eelgrass
 box(col = "grey80")
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureAxisDates, las = 3, col = "grey80") #Make x-axis
 
 plot(DOData$PGB.DO, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange, pch = 16, cex = 0.2, col = "#440D82") #Port Gamble bare
 lines(DOData$PGE.DO, lty = 3, col = "grey80") #Eelgrass
 box(col = "grey80")
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureAxisDates, las = 3, col = "grey80") #Make x-axis
 
 plot(DOData$SKB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange, pch = 16, cex = 0.2, col = "#017A74") #Skokomish River bare
 lines(DOData$SKE.DO, lty = 3, col = "grey80") #Eelgrass
 box(col = "grey80")
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureAxisDates, las = 3, col = "grey80") #Make x-axis
 
 plot(DOData$WBB.DO, type = "l", xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = DORange, pch = 16, cex = 0.2, col = "#EB8B0C") #Willapa Bay bare
 lines(DOData$WBE.DO, lty = 3, col = "grey80") #Eelgrass
 box(col = "grey80")
-axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureData$Date[seq(from = 1, to = length(temperatureData$Date), by = 144*5)], las = 3, col = "grey80") #Make x-axis
-mtext(side = 1, outer = TRUE, line = 7, "Date")
+axis(side = 1, at = seq(from = 1, to = length(temperatureData$Date), by = 144*5), lab = temperatureAxisDates, las = 2, col = "grey80") #Make x-axis
 
-#dev.off() #Turn off plotting device
+mtext(side = 1, outer = TRUE, line = 4, "Date") #Add x-axis label
+
+#dev.off()
 ```
-
-
-
-
-
 
