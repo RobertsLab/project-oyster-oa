@@ -99,7 +99,7 @@ proc.nmds.averaged.euclidean <- metaMDS(proteinAbundanceHT, distance = 'euclidea
 ### Loadings
 
 ```{r}
-sigProtLoadings <- envfit(proc.nmds.averaged.euclidean$points, proteinAbundanceHT[,c(5, 12:13, 19, 22, 30, 33)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
+sigProtLoadings <- envfit(proc.nmds.averaged.euclidean$points, proteinAbundanceHT[,c(4:5, 12:14, 19, 22, 30, 33:34)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
 sigProtLoadings #View loadings
 ```
 
@@ -115,7 +115,7 @@ meanData.log.gower.NMDS <- metaMDS(meanDataGowerDiss, distance = 'euclidean', k 
 ### Loadings
 
 ```{r}
-sigMeanLoadings <- envfit(meanData.log.gower.NMDS$points, meanData.log.trans[,c(1:3, 5, 18:19)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
+sigMeanLoadings <- envfit(meanData.log.gower.NMDS$points, meanData.log.trans[,c(1:7, 18:19)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
 sigMeanLoadings #View loadings
 ```
 
@@ -130,7 +130,7 @@ varData.log.gower.NMDS <- metaMDS(varDataGowerDiss, distance = 'euclidean', k = 
 ### Loadings
 
 ```{r}
-sigVarLoadings <- envfit(varData.log.gower.NMDS$points, varData.log.trans[,c(5:7, 18, 29:30)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
+sigVarLoadings <- envfit(varData.log.gower.NMDS$points, varData.log.trans[,c(1:5, 18, 21, 29:31)], perm = 1000, na.rm = TRUE) #Only calculate loadings simper identified as driving differences between FB-WB and SK-WB. See ANOSIM section for simper results.
 sigVarLoadings #View loadings
 ```
 
@@ -296,14 +296,23 @@ head(plotCustomization) #Confirm changes
 
 ```{r}
 plot(protEnvRDA, choices=c(1,2), type = 'none', scaling = 2, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Create an empty plot based on RDA dimensions
-points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 1, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
-points(protEnvRDA, choices = c(1,2), display = 'sp', col = 'grey20', pch = 4, cex = 1, scaling = 2, select = c(5, 12, 13, 19, 22, 30, 33)) #Plot significant proteins
+points(protEnvRDA, choices = c(1,2), display = 'wa', pch = NMDSColorShapeCustomization$Shape, cex = 2, scaling = 2, col = NMDSColorShapeCustomization$Color) #Plot objects as points
+points(protEnvRDA, choices = c(1,2), display = 'sp', col = 'grey20', pch = 4, cex = 2, scaling = 2, select = c(4:5, 12:14, 19, 22, 30, 33:34)) #Plot significant proteins
 text(protEnvRDA, choices = c(1,2), display = 'bp', col = 'grey20', cex = 0.75, select = 1:2) #Plot only marginally significant predictors
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "RDA1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "RDA2", line = 2)
-box(col = "grey80")
 
 legend("topleft", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fidalgo Bay", "Willapa Bay", "Skokomish", "Port Gamble", "Bare", "Eelgrass"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', 'black', 'black'), cex = 0.5, bty = "n")
 ```
@@ -312,12 +321,21 @@ legend("topleft", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fi
 
 ```{r}
 fig.nmds <- ordiplot(proc.nmds.averaged.euclidean, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
-points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape)
+points(fig.nmds, "sites", col = NMDSColorShapeCustomization$Color, pch = NMDSColorShapeCustomization$Shape, cex = 2)
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
 
 #ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the oyster samples from Case Inlet
 #ordiellipse(proc.nmds.averaged.euclidean, NMDSColorShapeCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the oyster samples from Fidalgo Bay
@@ -332,86 +350,131 @@ legend("topleft", pch = c(rep(x = 1, times = 6), 16), legend=c('Case Inlet', "Fi
 
 ```{r}
 ordiplot(proc.nmds.averaged.euclidean, choices = c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Create an empty plot
-plot(sigProtLoadings, col = 'grey20', labels = c("1", "2", "3", "4", "5", "6", "7")) #Plot loadings that simper determined were significant
+plot(sigProtLoadings, col = 'grey20', labels = c("  1", "1", "    2", "2", "", "4", "5 ", "6", "   6", "3 6"), cex = 1) #Plot loadings that simper determined were significant
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
 ```
 
 ## 4: Mean NMDS
 
 ```{r}
 fig.nmds2 <- ordiplot(meanData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
-points(fig.nmds2, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
+points(fig.nmds2, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color, cex = 2)
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
-legend("topleft", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.4, bty = "n")
 
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D8288") #Add confidence ellipse around the data from Port Gamble Bay
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A7488") #Add confidence ellipse around the data from Skokomish River Delta
 ordiellipse(meanData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C88") #Add confidence ellipse around the data from Willapa Bay
+
+legend("topleft", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.4, bty = "n")
 ```
 
 ## 5: Mean abundance loadings
 
 ```{r}
 fig.nmds2 <- ordiplot(meanData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
-plot(sigMeanLoadings, col = 'grey20') #Plot loadings that simper determined were significant
+plot(sigMeanLoadings, col = 'grey20', labels = c("1", "2", "   3", "", "5", "64", "  7", "18", "19")) #Plot loadings that simper determined were significant
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
 ```
 
 ## 6: Variance NMDS
 
 ```{r}
 fig.nmds3 <- ordiplot(varData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
-points(fig.nmds3, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color)
+points(fig.nmds3, "sites", col = plotCustomization$Color, pch = plotCustomization$Shape2, bg = plotCustomization$Color, cex = 2)
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
-legend("topleft", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.4, bty = "n")
 
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "CI", col = "#00A9BD88") #Add confidence ellipse around the data from Case Inlet
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "FB", col = "#38001C88") #Add confidence ellipse around the data  from Fidalgo Bay
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "PG", col = "#440D8288") #Add confidence ellipse around the data from Port Gamble Bay
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "SK", col = "#017A7488") #Add confidence ellipse around the data from Skokomish River Delta
 ordiellipse(varData.log.gower.NMDS, plotCustomization$Site, show.groups = "WB", col = "#EB8B0C88") #Add confidence ellipse around the data from Willapa Bay
+
+legend("topleft", pch = c(rep(x = 1, times = 6), 16, 0, 1, 5, 6), legend=c('Case Inlet', "Fidalgo Bay", "Port Gamble Bay", "Skokomish River Delta", "Willapa Bay", "Bare", "Eelgrass", "pH", "Dissolved Oxygen", "Salinity", "Temperature"), col=c('#00A9BD', '#38001C', '#440D82', '#017A74', '#EB8B0C', "black", "black", "black", "black", "black", "black"), cex = 0.4, bty = "n")
 ```
 
 ## 7: Variance loadings
 
 ```{r}
 fig.nmds3 <- ordiplot(varData.log.gower.NMDS, choices=c(1,2), type = "none", display = "sites", xlab = "", ylab = "", cex = 0.5, xaxt = "n", yaxt = "n") #Save NMDS as a new object
-plot(sigVarLoadings, col = 'grey20') #Plot loadings that simper determined were significant
+plot(sigVarLoadings, col = 'grey20', labels = c("1 3", "2", "", "4 18", "5", "", "     21", "29", "30", "31")) #Plot loadings that simper determined were significant
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
 axis(side = 1, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 1, text = "NMDS1", line = 2)
 axis(side = 2, labels = TRUE, col = "grey80", cex.axis = 0.75)
 mtext(side = 2, text = "NMDS2", line = 2)
-box(col = "grey80")
 ```
 
-# Establish layout
+# Create multipanel plot
 
 ```{r}
 plotMatrix <- matrix(c(1, 2, 3,
                        1, 4, 5,
                        1, 6, 7), nrow = 3, ncol = 3, byrow = TRUE) #Create a matrix and fill it in by row.
 plotMatrix #Confirm matrix creation
-```
 
-```{r}
 #pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
 
 par(mar = c(3, 3, 3, 0), oma = c(0, 0, 0, 0)) #Specify inner and outer margins
@@ -527,10 +590,6 @@ box(col = "grey80")
 
 #dev.off()
 ```
-
-
-
-# Create multipanel plot
 
 
 

@@ -526,7 +526,7 @@ meanData.log.gower.NMDS$stress #Stress = 0.01740668
 ```
 
 ```{r}
-nmds.monte(meanDataGowerDiss, distance = 'euclidean', k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for 2 dimensions is significant. The observed stress value, 0.0344334, is less than the expected stress value. P-value = 
+#nmds.monte(meanDataGowerDiss, distance = 'euclidean', k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for 2 dimensions is significant. The observed stress value, 0.0344334, is less than the expected stress value. P-value = 
 ```
 
 ```{r}
