@@ -1,13 +1,8 @@
 #In this script, I'll use an NMDS plot to see if my technical replicates are similar.
 
-#### SET WORKING DIRECTORY ####
-
-#setwd("../..") #Set working directory to the main SRM data file
-#getwd()
-
 #### IMPORT DATA ####
 
-SRMAreas <- read.csv("2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Gigas-SRM-Good-Samples-Total-Area.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
+SRMAreas <- read.csv("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-Gigas-SRM-Good-Samples-Total-Area.csv", na.strings = "#N/A") #Specify Skyline's special way of designating N/A values
 head(SRMAreas) #Confirm import
 tail(SRMAreas) #Confirm import
 
@@ -15,7 +10,7 @@ tail(SRMAreas) #Confirm import
 
 #I want to merge my Skyline data with sample names, sites, and eelgrass condition to create a master dataframe will all possible information
 
-sequenceFile <- read.csv("2017-07-28-SRM-Samples-Sequence-File.csv", na.strings = "N/A") # Import sequence file
+sequenceFile <- read.csv("analyses/DNR_SRM_20170902/2017-07-28-SRM-Samples-Sequence-File.csv", na.strings = "N/A") # Import sequence file
 head(sequenceFile) #Confirm import
 sequenceFile <- sequenceFile[,c(2,3,8)] #Keep the Replicate.Name, Comment and TIC columns
 names(sequenceFile) <- c("Replicate.Name", "Sample.Number", "TIC")
@@ -24,7 +19,7 @@ masterSRMData <- merge(x = SRMAreas, y = sequenceFile, by = "Replicate.Name") #M
 head(masterSRMData) #Confirm merge
 tail(masterSRMData) #Confirm merge
 
-biologicalReplicates <- read.csv("2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A", fileEncoding="UTF-8-BOM") #Import site and eelgrass condition information (i.e. biological replicate information), using specific file encoding information
+biologicalReplicates <- read.csv("analyses/DNR_SRM_20170902/2017-09-06-Biological-Replicate-Information.csv", na.strings = "N/A", fileEncoding="UTF-8-BOM") #Import site and eelgrass condition information (i.e. biological replicate information), using specific file encoding information
 head(biologicalReplicates) #Confirm import
 tail(biologicalReplicates) #Confirm import
 masterSRMDataBiologicalReplicates <- merge(x = masterSRMData, y = biologicalReplicates, by = "Sample.Number") #Add biological replicate information to master list.
@@ -79,7 +74,7 @@ head(SRMDataNMDSPivoted) #Confirm column removal
 #### NMDS PLOT ####
 
 #Load the source file for the biostats package
-source("biostats.R") #Either load the source R script or copy paste.
+source("analyses/DNR_SRM_20170902/biostats.R") #Either load the source R script or copy paste.
 install.packages("vegan") #Install vegan package
 library(vegan)
 
@@ -111,8 +106,8 @@ stressplot(proc.nmds.euclidean.autotransform) #Make Shepard plot
 #ordiplot(proc.nmds.euclidean.autotransform) #Plot basic NMDS
 ordiplot(proc.nmds.euclidean.autotransform, choices = c(1,2), type = "text", display = "sites") #Plot refined NMDS displaying only samples with their names
 
-#jpeg(filename = "2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2017-11-05-NMDS-TechnicalReplication-Normalized.jpeg", width = 1000, height = 750)
-ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites", cex = 0.7) #Plot refined NMDS displaying only samples with their names
+#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-10-NMDS-TechnicalReplication-Normalized.pdf", width = 11, height = 8.5)
+ordiplot(proc.nmds.euclidean, choices = c(1,2), type = "text", display = "sites", cex = .8) #Plot refined NMDS displaying only samples with their names
 #dev.off()
 
 #### CALCULATE DISTANCES BETWEEN TECHNICAL REPLICATE ORDINATIONS ####
