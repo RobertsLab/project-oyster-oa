@@ -82,7 +82,7 @@ temperatureAxisDates <- c("6/19", "6/24", "6/29", "7/04", "7/09", "7/14", "7/19"
 ```{r}
 #pdf("2018-11-20-Environmental-Data-Line-Graph.pdf", width = 11, height = 8.5) #Save as a new file
 
-par(mfrow = c(4, 5), oma = c(6, 4, 1, 1), mar = c(0, 1.5, 0, 0)) #Create a 4x5 multipanel plot, filling in the rows first. Add space along certain outer and inner margins.
+par(mfrow = c(4, 5), oma = c(6, 4, 3, 1), mar = c(0, 1.5, 0, 0)) #Create a 4x5 multipanel plot, filling in the rows first. Add space along certain outer and inner margins.
 
 #Temperature
 plot(temperatureData$CIB, xaxs = "i", yaxs = "i", axes = F, ann = F, xlim = c(1, 4896), ylim = temperatureRange, pch = 16, cex = 0.2, col = "#00A9BD") #Case Inlet bare
@@ -92,30 +92,35 @@ mtext(side = 3, line = -2.75, adj = 0, text = "Eelgrass", cex = 1, col = "grey50
 box(col = "grey80")
 axis(side = 2, las = 1, at = c(15, 35), col = "grey80") #Put the axis labels at the values specified
 mtext(side = 2, line = 3, "Temperature (ºC)") #Add environmental variable indication
+mtext(side = 3, line = 1, "Case Inlet") #Add site indication
 
 plot(temperatureData$FBB, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange, pch = 16, cex = 0.2, col = "#38001C") #Fidalgo Bay bare
 lines(temperatureData$FBE, lty = 3, col = "grey50") #Eelgrass
 mtext(side = 3, line = -1.5, adj = 0, text = "Unvegetated", cex = 1, col = "#38001C") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 mtext(side = 3, line = -2.75, adj = 0, text = "Eelgrass", cex = 1, col = "grey50") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 box(col = "grey80")
+mtext(side = 3, line = 1, "Fidalgo Bay") #Add site indication
 
 plot(temperatureData$PGB, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange, pch = 16, cex = 0.2, col = "#440D82") #Port Gamble bare
 lines(temperatureData$PGE, lty = 3, col = "grey50") #Eelgrass
 mtext(side = 3, line = -1.5, adj = 0, text = "Unvegetated", cex = 1, col = "#440D82") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 mtext(side = 3, line = -2.75, adj = 0, text = "Eelgrass", cex = 1, col = "grey50") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 box(col = "grey80")
+mtext(side = 3, line = 1, "Port Gamble Bay") #Add site indication
 
 plot(temperatureData$SKB, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange, pch = 16, cex = 0.2, col = "#017A74") #Skokomish River bare
 lines(temperatureData$SKE, lty = 3, col = "grey50") #Eelgrass
 mtext(side = 3, line = -1.5, adj = 0, text = "Unvegetated", cex = 1, col = "#017A74") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 mtext(side = 3, line = -2.75, adj = 0, text = "Eelgrass", cex = 1, col = "grey50") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 box(col = "grey80")
+mtext(side = 3, line = 1, "Skokomish River Delta") #Add site indication
 
 plot(temperatureData$WBB, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = temperatureRange, pch = 16, cex = 0.2, col = "#EB8B0C") #Willapa Bay bare
 lines(temperatureData$WBE, lty = 3, col = "grey50") #Eelgrass
 mtext(side = 3, line = -1.5, adj = 0, text = "Unvegetated", cex = 1, col = "#EB8B0C") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 mtext(side = 3, line = -2.75, adj = 0, text = "Eelgrass", cex = 1, col = "grey50") #Add habitat specificiation name. Use adj = 1 to left-justify the text
 box(col = "grey80")
+mtext(side = 3, line = 1, "Willapa Bay") #Add site indication
 
 #pH data
 plot(pHData$CIB.pH, xaxs = "i", yaxs = "i", axes = F, ann = F, ylim = pHRange, pch = 16, cex = 0.2, col = "#00A9BD") #Case Inlet bare
