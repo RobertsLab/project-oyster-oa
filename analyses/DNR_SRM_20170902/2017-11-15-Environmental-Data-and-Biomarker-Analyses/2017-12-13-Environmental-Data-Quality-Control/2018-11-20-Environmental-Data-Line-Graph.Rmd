@@ -11,11 +11,13 @@ In this script, I'll visualize environmental data for each site and habitat comb
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Install packages
+
 ```{r}
 sessionInfo()
 ```
 
-# Import data
+# Import environmental data
 
 ```{r}
 pHData <- read.csv("2018-11-18-pH-Tide-Data-Corrected.csv", header = TRUE, na.strings = "NA")
