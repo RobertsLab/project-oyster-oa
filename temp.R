@@ -2,7 +2,7 @@ plotMatrix <- matrix(c(1, 2,
                        1, 3), nrow = 2, ncol = 2, byrow = TRUE) #Create a matrix and fill it in by row.
 plotMatrix #Confirm matrix creation
 
-#pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
+pdf("analyses/DNR_SRM_20170902/2017-10-10-Troubleshooting/2017-11-05-Integrated-Dataset/2018-12-01-Multipanel-Ordination.pdf", width = 11, height = 8.5)
 
 par(mar = c(0, 0, 0, 2.5), oma = c(3, 3.5, 1, 0)) #Specify inner and outer margins
 layout(mat = plotMatrix, width = c(45, 25)) #Create a layout based on the plot matrix. Column 1s width should be 3x as large as column 2. 
@@ -87,9 +87,9 @@ legend(x = -0.78, y = 1.05, xpd = TRUE, inset = c(0, 0),
 #Legend with WB, peptide and habitat specification
 legend(x = -0.30, y = 1.05, xpd = TRUE, inset = c(0, 0),
        legend = c("Willapa Bay", "Unvegetated", "Eelgrass", "Influential Peptides"),
-       pch = c(16, 16, 1, 4), 
+       pch = c(16, 1, 16, 4), 
        col = c('#EB8B0C', "grey20", "grey20", "grey20"),
        cex = rep(1.2, times = 4),
        bg = "white", box.col = "white") #Create a horizontal legend (horiz = TRUE) that can be plotted outside of the plot boundaries (xpd = TRUE). Place the legend at x = -1, y = 1.
 
-#dev.off()
+dev.off()
