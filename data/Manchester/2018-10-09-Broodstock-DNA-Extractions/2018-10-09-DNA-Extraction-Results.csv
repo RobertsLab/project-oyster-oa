@@ -1,5 +1,5 @@
-﻿sampleID,treatment,stage,sex,extractionBatch,tissueMass,DNAConcentration,totalVolume,totalDNAEluted,volumeRemoved,revisedVolume,DNARemoved,revisedTotDNA
-01-T3,Low,0,N/A,2,19.7,7.78,50,389,0,50,0,389
+﻿sampleID,treatment,sex,stage,extractionBatch,tissueMass,DNAConcentration,totalVolume,totalDNAEluted,volumeRemoved,revisedVolume,DNARemoved,revisedTotDNA
+01-T3,Low,N/A,0,2,19.7,7.78,50,389,0,50,0,389
 02-T1,Low,F,2,1,19.7,31.2,50,1560,0,50,0,1560
 03-T1,Low,F,2,2,20.2,6.4,50,320,0,50,0,320
 04-T3,Low,N/A,0,1,19.8,14.4,50,720,0,50,0,720
