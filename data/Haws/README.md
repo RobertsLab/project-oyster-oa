@@ -22,4 +22,14 @@
 
 - `pH`: Oyster water pH.
 
+- `DNA_iso_date`: Date DNA was isolated.
+
+- `DNA_iso_initials`: Initials of person who isolated DNA.
+
+- `wgbs_seq_sub_date`: Submission date for whole genome bisulfite sequencing (WGBS).
+
+- `wgbs_seq_rec_date`: Receipt date for whole genome bisulfite sequencing (WGBS).
+
+- `wgbs_seq_id`: Sample ID assigned to WGBS sequencing data file.
+
 `hawaii_cgig_ploidy_samples_low-pH.csv.csv`: _C.gigas_ diploid/triploid exposed to high pH conditions. Columns are the same as `hawaii_cgig_ploidy_samples_high-pH.csv` (see above).
