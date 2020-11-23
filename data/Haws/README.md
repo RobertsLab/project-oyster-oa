@@ -4,7 +4,7 @@
 
 `hawaii_cgig_ploidy_samples_high-pH.csv`: _C.gigas_ diploid/triploid exposed to high pH conditions. Column descriptions:
 
-- `Sample_Name`: Format is `num_tissue`.
+- `Sample_Name`: Format is `num_tissue` for adult samples. Samples from spat have a single digit number.
 
 - `Species`: Oyster species.
 
