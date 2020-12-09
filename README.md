@@ -22,7 +22,7 @@ Oysters were strip spawned on July 30, 2017. Individual males were with female p
 
 ### Changes in DNA Methylation in Diploid & Triploid _Crassostrea gigas_ Exposed to Different pH Levels (ID: Hawaii)
 
-Adult diploid (n=24), adult triploid (n=24), diploid spat (n=24), and triploid spat (n=14) _Crassostrea gigas_ were exposed to low pH (pH=7.75) [adult diploid (n=12), adult triploid (n=12), diploid spat (n=12), and triploid spat (n=8)] or high pH (pH=8.2) [adult diploid (n=12), adult triploid (n=12), diploid spat (n=12), and triploid spat (n=6)] for six weeks. After treatment period (20200815), ctenida, gonad, and mantle were collected from each adult and stored in RNA/DNA Shield (ZymoResearch). Spat were _not_ dissected and were preserved whole in RNA/DNA Shield (ZymoResearch). Samples were received by us (Roberts Lab) on 20208020 and stored @ -80<sup>o</sup>C.
+The experiment was run by Dr. Maria Haws' Lab at the University of Hawaiʻi Hilo. Adult diploid (n=24), adult triploid (n=24), diploid spat (n=24), and triploid spat (n=14) _Crassostrea gigas_ were exposed to low pH (pH=7.75) [adult diploid (n=12), adult triploid (n=12), diploid spat (n=12), and triploid spat (n=8)] or high pH (pH=8.2) [adult diploid (n=12), adult triploid (n=12), diploid spat (n=12), and triploid spat (n=6)] for six weeks. After treatment period (20200815), ctenida, gonad, and mantle were collected from each adult and stored in RNA/DNA Shield (ZymoResearch). Spat were _not_ dissected and were preserved whole in RNA/DNA Shield (ZymoResearch). Samples were received by us (Roberts Lab) on 20208020 and stored @ -80<sup>o</sup>C.
 
 
 ## Repository Contents
