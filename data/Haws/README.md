@@ -32,4 +32,6 @@
 
 - `wgbs_seq_id`: Sample ID assigned to WGBS sequencing data file.
 
+- `ncbi_bioproject`: NCBI BioProject accession. To be used for citation in publication(s).
+
 `hawaii_cgig_ploidy_samples_low-pH.csv.csv`: _C.gigas_ diploid/triploid exposed to high pH conditions. Columns are the same as `hawaii_cgig_ploidy_samples_high-pH.csv` (see above).
