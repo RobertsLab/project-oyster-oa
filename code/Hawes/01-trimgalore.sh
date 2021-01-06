@@ -29,7 +29,7 @@
 --clip_R2 10 \
 --three_prime_clip_R1 10 \
 --three_prime_clip_R2 10 \
---path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
+--path_to_cutadapt /usr/lusers/yaaminiv/.local/bin/cutadapt \
 /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_1_R1.fq.gz \
 /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_1_R2.fq.gz \
 /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_2_R1.fq.gz \
