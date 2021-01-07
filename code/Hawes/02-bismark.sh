@@ -18,9 +18,9 @@
 #SBATCH --chdir=/gscratch/scrubbed/yaaminiv/Hawes/analyses/bismark
 
 # Directories and programs
-bismark_dir="/gscratch/srlab/programs/Bismark-0.21.0"
-bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
-samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+bismark_dir="/gscratch/srlab/programs/Bismark-0.22.3/"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.4.1-linux-x86_64/"
+samtools="/gscratch/srlab/programs/samtools-1.10/samtools"
 
 source /gscratch/srlab/programs/scripts/paths.sh
 
