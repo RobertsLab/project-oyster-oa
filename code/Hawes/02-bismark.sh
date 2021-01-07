@@ -24,12 +24,13 @@ samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
 
 source /gscratch/srlab/programs/scripts/paths.sh
 
-#Genome preparation
+#Genome Preparation
 #Sam White prepared the bisulfite genome: https://robertslab.github.io/sams-notebook/2019/02/21/Data-Management-Create-C.gigas-Bisulfite-Genome-with-Bismark-on-Mox.html
 
-#Alignment
+genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-genome/"
 
-genome_folder="/gscratch/FIND GENOME"
+#Align to Bisulfite Genome
+
 reads_dir="/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/"
 
 find ${reads_dir}*_R1_001_val_1.fq.gz \
@@ -40,7 +41,7 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 -score_min L,0,-0.6 \
 --non_directional \
 -1 ${reads_dir}{}_R1_001_val_1.fq.gz \
--2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz
 
 #Deduplication
 
@@ -51,7 +52,7 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --paired \
 {}.bam
 
-#Sorting for Downstream Applications
+#Sort for Downstream Applications
 
 find *deduplicated.bam | \
 xargs basename -s .bam | \
@@ -59,7 +60,7 @@ xargs -I{} ${samtools} \
 sort --threads 28 {}.bam \
 -o {}.sorted.bam
 
-#Indexing for Downstream Applications
+#Index for Downstream Applications
 
 find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
