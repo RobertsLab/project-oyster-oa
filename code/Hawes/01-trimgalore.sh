@@ -8,9 +8,9 @@
 ## Nodes
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
-#SBATCH --time=4-00:00:00
+#SBATCH --time=3-00:00:00
 ## Memory per node
-#SBATCH --mem=100G
+#SBATCH --mem=200G
 ##turn on e-mail notification
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=yaaminiv@uw.edu
@@ -22,7 +22,7 @@
 --output_dir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore \
 --paired \
 --fastqc_args \
-"--outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/fastqc/trimmed \
+"--outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore \
 --threads 28" \
 --illumina \
 --clip_R1 10 \
@@ -81,4 +81,4 @@
 
 #MultiQC
 /gscratch/srlab/programs/anaconda3/bin/multiqc \
-/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/trimmed/.
+/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/.
