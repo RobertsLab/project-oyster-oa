@@ -17,6 +17,8 @@
 ## Specify the working directory for this job
 #SBATCH --chdir=/gscratch/scrubbed/yaaminiv/Hawes/analyses/bismark
 
+set -e #Stop script if any command fails
+
 # Directories and programs
 bismark_dir="/gscratch/srlab/programs/Bismark-0.22.3/"
 bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.4.1-linux-x86_64/"
@@ -52,6 +54,14 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --paired \
 {}.bam
 
+#Methylation Extraction
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedGraph --counts --scaffolds \
+--multicore 14 \
+--buffer_size 75% \
+*deduplicated.bam
+
 #Sort for Downstream Applications
 
 find *deduplicated.bam | \
@@ -66,14 +76,6 @@ find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
-
-#Methylation Extraction
-
-${bismark_dir}/bismark_methylation_extractor \
---bedGraph --counts --scaffolds \
---multicore 14 \
---buffer_size 75% \
-*deduplicated.bam
 
 #HTML Processing Report
 
