@@ -1,0 +1,196 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_9_R2.fq.gz
+Trimming mode: paired-end
+Trim Galore version: 0.6.6
+Cutadapt version: 3.1
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; user defined)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+All Read 1 sequences will be trimmed by 10 bp from their 5' end to avoid poor qualities or biases
+All Read 2 sequences will be trimmed by 10 bp from their 5' end to avoid poor qualities or biases (e.g. M-bias for BS-Seq applications)
+All Read 1 sequences will be trimmed by 10 bp from their 3' end to avoid poor qualities or biases
+All Read 2 sequences will be trimmed by 10 bp from their 3' end to avoid poor qualities or biases
+Running FastQC on the data once trimming has completed
+Running FastQC with the following extra arguments: --outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore --threads 28
+Output file will be GZIP compressed
+
+
+This is cutadapt 3.1 with Python 3.8.5
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_9_R2.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 1536.59 s (31 µs/read; 1.92 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              49,101,606
+Reads with adapters:                20,297,822 (41.3%)
+Reads written (passing filters):    49,101,606 (100.0%)
+
+Total basepairs processed: 6,078,278,717 bp
+Quality-trimmed:               2,099,959 bp (0.0%)
+Total written (filtered):  6,051,789,039 bp (99.6%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 20297822 times
+
+No. of allowed errors:
+1-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 45.3%
+  C: 10.1%
+  G: 6.5%
+  T: 38.0%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	17869930	12275401.5	0	17869930
+2	1574910	3068850.4	0	1574910
+3	427072	767212.6	0	427072
+4	296533	191803.1	0	296533
+5	70445	47950.8	0	70445
+6	17079	11987.7	0	17079
+7	12905	2996.9	0	12905
+8	9863	749.2	0	9863
+9	2451	187.3	0	1954 497
+10	15313	46.8	1	14170 1143
+11	152	11.7	1	25 127
+12	46	2.9	1	12 34
+13	10	0.7	1	2 8
+14	7	0.7	1	4 3
+15	7	0.7	1	3 4
+16	6	0.7	1	1 5
+17	11	0.7	1	6 5
+18	5	0.7	1	4 1
+19	8	0.7	1	4 4
+20	4	0.7	1	3 1
+21	3	0.7	1	2 1
+22	2	0.7	1	1 1
+23	7	0.7	1	5 2
+24	4	0.7	1	3 1
+25	7	0.7	1	4 3
+26	5	0.7	1	2 3
+27	7	0.7	1	4 3
+28	8	0.7	1	5 3
+29	5	0.7	1	3 2
+30	3	0.7	1	2 1
+31	4	0.7	1	3 1
+32	9	0.7	1	4 5
+33	6	0.7	1	3 3
+34	4	0.7	1	2 2
+35	6	0.7	1	4 2
+36	5	0.7	1	3 2
+38	2	0.7	1	0 2
+39	6	0.7	1	4 2
+40	6	0.7	1	4 2
+41	7	0.7	1	7
+42	4	0.7	1	2 2
+43	6	0.7	1	4 2
+44	10	0.7	1	5 5
+45	5	0.7	1	5
+46	4	0.7	1	3 1
+47	3	0.7	1	1 2
+48	9	0.7	1	7 2
+49	5	0.7	1	5
+50	2	0.7	1	2
+51	10	0.7	1	5 5
+52	4	0.7	1	3 1
+53	9	0.7	1	6 3
+54	9	0.7	1	5 4
+55	4	0.7	1	3 1
+56	6	0.7	1	5 1
+57	11	0.7	1	6 5
+58	6	0.7	1	5 1
+59	4	0.7	1	4
+60	2	0.7	1	1 1
+61	6	0.7	1	5 1
+62	5	0.7	1	3 2
+63	7	0.7	1	5 2
+64	11	0.7	1	8 3
+65	7	0.7	1	6 1
+66	10	0.7	1	7 3
+67	5	0.7	1	4 1
+68	6	0.7	1	4 2
+69	8	0.7	1	7 1
+70	1	0.7	1	1
+71	3	0.7	1	1 2
+72	3	0.7	1	1 2
+73	5	0.7	1	3 2
+74	2	0.7	1	2
+75	6	0.7	1	3 3
+76	8	0.7	1	8
+77	8	0.7	1	8
+78	6	0.7	1	4 2
+79	10	0.7	1	6 4
+80	12	0.7	1	11 1
+81	4	0.7	1	1 3
+82	8	0.7	1	6 2
+83	11	0.7	1	9 2
+84	8	0.7	1	7 1
+85	6	0.7	1	4 2
+86	10	0.7	1	9 1
+87	3	0.7	1	3
+88	8	0.7	1	7 1
+89	4	0.7	1	4
+90	8	0.7	1	6 2
+91	4	0.7	1	3 1
+92	6	0.7	1	4 2
+93	8	0.7	1	6 2
+94	8	0.7	1	8
+95	18	0.7	1	16 2
+96	11	0.7	1	11
+97	10	0.7	1	10
+98	7	0.7	1	4 3
+99	7	0.7	1	6 1
+100	9	0.7	1	6 3
+101	11	0.7	1	7 4
+102	10	0.7	1	10
+103	6	0.7	1	5 1
+104	10	0.7	1	7 3
+105	9	0.7	1	6 3
+106	15	0.7	1	13 2
+107	10	0.7	1	9 1
+108	14	0.7	1	12 2
+109	13	0.7	1	11 2
+110	14	0.7	1	10 4
+111	8	0.7	1	8
+112	11	0.7	1	10 1
+113	18	0.7	1	15 3
+114	14	0.7	1	9 5
+115	5	0.7	1	4 1
+116	17	0.7	1	14 3
+117	10	0.7	1	7 3
+118	21	0.7	1	17 4
+119	16	0.7	1	15 1
+120	23	0.7	1	22 1
+121	24	0.7	1	20 4
+122	10	0.7	1	9 1
+123	9	0.7	1	7 2
+124	15	0.7	1	11 4
+125	17	0.7	1	14 3
+126	20	0.7	1	19 1
+127	16	0.7	1	13 3
+128	21	0.7	1	20 1
+129	20	0.7	1	19 1
+130	19	0.7	1	15 4
+131	9	0.7	1	8 1
+132	21	0.7	1	17 4
+133	31	0.7	1	18 13
+134	29	0.7	1	19 10
+135	43	0.7	1	22 21
+
+RUN STATISTICS FOR INPUT FILE: /gscratch/scrubbed/yaaminiv/Hawes/data/zr3644_9_R2.fq.gz
+=============================================
+49101606 sequences processed in total
+
+Total number of sequences analysed for the sequence pair length validation: 49101606
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 341760 (0.70%)
