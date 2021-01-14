@@ -35,15 +35,15 @@ genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-genome/"
 
 reads_dir="/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/"
 
-find ${reads_dir}*_R1_001_val_1.fq.gz \
-| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}*_R1_val_1.fq.gz \
+| xargs basename -s _R1_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001_val_1.fq.gz \
--2 ${reads_dir}{}_R2_001_val_2.fq.gz
+-1 ${reads_dir}{}_R1_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_val_2.fq.gz
 
 #Deduplication
 
