@@ -36,7 +36,7 @@ genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-genome/"
 reads_dir="/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/"
 
 find ${reads_dir}*_R1_val_1.fq.gz \
-| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+| xargs basename -s _R1_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
