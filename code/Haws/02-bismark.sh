@@ -29,7 +29,7 @@ source /gscratch/srlab/programs/scripts/paths.sh
 #Genome Preparation
 #Sam White prepared the bisulfite genome: https://robertslab.github.io/sams-notebook/2019/02/21/Data-Management-Create-C.gigas-Bisulfite-Genome-with-Bismark-on-Mox.html
 
-genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-genome/"
+genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-genome/Crassostrea_gigas.oyster_v9.dna_sm.toplevel/"
 
 #Align to Bisulfite Genome
 
