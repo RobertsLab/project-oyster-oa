@@ -75,7 +75,11 @@
 /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_23_R1_val_1.fq.gz	\
 /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_23_R2_val_2.fq.gz	\
 /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_24_R1_val_1.fq.gz	\
-/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_24_R2_val_2.fq.gz	\
+/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_24_R2_val_2.fq.gz
+
+#MultiQC: Files after second round of adapter trimming
+/gscratch/srlab/programs/anaconda3/bin/multiqc \
+/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/.
 
 #TrimGalore: Remove poly-G tails. Sequence obtained from FastQC reports
 /gscratch/srlab/programs/TrimGalore-0.6.6/trim_galore \
@@ -87,8 +91,8 @@
 --adapter GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG \
 --adapter2 GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG \
 --path_to_cutadapt /usr/lusers/yaaminiv/.local/bin/cutadapt \
+/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_1_R1_val_1.fq.gz	\
 
-
-#MultiQC
+#MultiQC: Files after poly-G tail trimming
 /gscratch/srlab/programs/anaconda3/bin/multiqc \
 /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/poly-G/.
