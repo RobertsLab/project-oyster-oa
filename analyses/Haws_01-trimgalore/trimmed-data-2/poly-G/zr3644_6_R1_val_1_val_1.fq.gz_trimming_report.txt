@@ -1,0 +1,171 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_6_R1_val_1_val_1.fq.gz
+Trimming mode: paired-end
+Trim Galore version: 0.6.6
+Cutadapt version: 3.1
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG' (user defined)
+Maximum trimming error rate: 0.1 (default)
+Optional adapter 2 sequence (only used for read 2 of paired-end files): 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Running FastQC on the data once trimming has completed
+Running FastQC with the following extra arguments: --outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/poly-G --threads 28
+Output file will be GZIP compressed
+
+
+This is cutadapt 3.1 with Python 3.8.5
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_6_R1_val_1_val_1.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 1476.24 s (27 µs/read; 2.19 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              54,004,139
+Reads with adapters:                 5,593,686 (10.4%)
+Reads written (passing filters):    54,004,139 (100.0%)
+
+Total basepairs processed: 5,710,082,467 bp
+Quality-trimmed:               2,138,241 bp (0.0%)
+Total written (filtered):  5,638,540,446 bp (98.7%)
+
+=== Adapter 1 ===
+
+Sequence: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG; Type: regular 3'; Length: 50; Trimmed: 5593686 times
+
+No. of allowed errors:
+1-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50 bp: 5
+
+Bases preceding removed adapters:
+  A: 21.7%
+  C: 4.6%
+  G: 0.0%
+  T: 73.7%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	3476905	13501034.8	0	3476905
+2	955395	3375258.7	0	955395
+3	205964	843814.7	0	205964
+4	56369	210953.7	0	56369
+5	16760	52738.4	0	16760
+6	4888	13184.6	0	4888
+7	2140	3296.2	0	2140
+8	1418	824.0	0	1418
+9	1374	206.0	0	1374
+10	2856	51.5	1	1268 1588
+11	2551	12.9	1	1199 1352
+12	2271	3.2	1	1094 1177
+13	1992	0.8	1	946 1046
+14	1804	0.2	1	907 897
+15	1522	0.1	1	755 767
+16	1373	0.0	1	725 648
+17	1112	0.0	1	572 540
+18	856	0.0	1	506 350
+19	855	0.0	1	525 330
+20	1326	0.0	2	492 327 507
+21	1181	0.0	2	468 309 404
+22	1145	0.0	2	488 307 350
+23	1051	0.0	2	428 267 356
+24	921	0.0	2	377 258 286
+25	920	0.0	2	398 254 268
+26	779	0.0	2	329 225 225
+27	803	0.0	2	391 204 208
+28	655	0.0	2	347 188 120
+29	607	0.0	2	290 177 140
+30	855	0.0	3	322 181 154 198
+31	862	0.0	3	308 181 146 227
+32	768	0.0	3	303 165 116 184
+33	773	0.0	3	281 168 150 174
+34	760	0.0	3	258 181 147 174
+35	748	0.0	3	282 178 119 169
+36	681	0.0	3	265 157 119 140
+37	604	0.0	3	280 128 81 115
+38	602	0.0	3	274 145 91 92
+39	592	0.0	3	240 146 112 94
+40	647	0.0	4	222 124 90 77 134
+41	704	0.0	4	229 135 99 96 145
+42	686	0.0	4	225 140 101 87 133
+43	626	0.0	4	187 135 84 91 129
+44	617	0.0	4	211 115 95 74 122
+45	611	0.0	4	203 129 89 102 88
+46	580	0.0	4	178 143 77 81 101
+47	569	0.0	4	207 130 85 67 80
+48	669	0.0	4	269 156 99 85 60
+49	1348	0.0	4	580 289 192 154 133
+50	1564	0.0	5	702 309 188 163 120 82
+51	1111	0.0	5	612 204 126 83 45 41
+52	1033	0.0	5	569 190 114 70 51 39
+53	919	0.0	5	544 165 86 64 33 27
+54	1021	0.0	5	678 148 93 45 45 12
+55	1117	0.0	5	720 186 95 55 38 23
+56	1263	0.0	5	909 186 80 42 28 18
+57	1200	0.0	5	871 178 67 31 26 27
+58	1293	0.0	5	966 166 79 43 24 15
+59	1274	0.0	5	970 149 76 50 20 9
+60	1042	0.0	5	731 166 77 27 25 16
+61	1133	0.0	5	887 128 60 32 18 8
+62	1398	0.0	5	1078 196 66 20 25 13
+63	1538	0.0	5	1252 164 63 35 19 5
+64	1673	0.0	5	1410 146 58 29 16 14
+65	1295	0.0	5	1026 141 65 31 21 11
+66	1539	0.0	5	1277 158 59 21 11 13
+67	1913	0.0	5	1640 181 46 23 15 8
+68	2682	0.0	5	2396 187 51 28 15 5
+69	3810	0.0	5	3482 213 65 26 17 7
+70	7478	0.0	5	7180 216 48 13 16 5
+71	16724	0.0	5	16335 283 68 18 10 10
+72	45944	0.0	5	45405 422 75 27 5 10
+73	132899	0.0	5	132153 619 80 31 11 5
+74	337676	0.0	5	336588 938 110 22 8 10
+75	35715	0.0	5	35454 197 34 17 10 3
+76	32404	0.0	5	32172 173 31 16 5 7
+77	66429	0.0	5	66146 204 38 23 10 8
+78	18498	0.0	5	18312 131 30 14 5 6
+79	43062	0.0	5	42844 147 28 25 9 9
+80	12994	0.0	5	12846 95 29 9 11 4
+81	10660	0.0	5	10521 90 27 10 6 6
+82	13833	0.0	5	13702 92 16 9 7 7
+83	9941	0.0	5	9789 104 23 10 9 6
+84	12373	0.0	5	12207 119 15 18 8 6
+85	2157	0.0	5	2069 47 17 11 8 5
+86	329	0.0	5	239 45 23 12 7 3
+87	201	0.0	5	144 28 15 8 2 4
+88	195	0.0	5	133 34 7 9 3 9
+89	207	0.0	5	140 29 13 12 9 4
+90	183	0.0	5	121 22 20 10 6 4
+91	163	0.0	5	111 26 15 6 3 2
+92	152	0.0	5	101 31 10 2 5 3
+93	119	0.0	5	79 23 11 5 1
+94	131	0.0	5	88 17 10 8 4 4
+95	111	0.0	5	73 12 8 9 5 4
+96	120	0.0	5	84 15 10 5 3 3
+97	126	0.0	5	77 19 7 11 7 5
+98	118	0.0	5	76 19 11 4 5 3
+99	91	0.0	5	53 17 11 5 2 3
+100	91	0.0	5	59 10 4 13 1 4
+101	79	0.0	5	43 16 7 5 4 4
+102	72	0.0	5	49 7 8 3 3 2
+103	63	0.0	5	41 9 5 2 5 1
+104	54	0.0	5	28 17 5 3 1
+105	34	0.0	5	21 6 3 2 1 1
+106	54	0.0	5	39 5 3 2 0 5
+107	26	0.0	5	15 5 2 0 2 2
+108	35	0.0	5	21 3 3 1 2 5
+109	19	0.0	5	18 0 1
+110	24	0.0	5	19 2 2 1
+111	11	0.0	5	6 1 0 3 0 1
+112	20	0.0	5	14 1 2 1 1 1
+113	8	0.0	5	6 2
+114	13	0.0	5	10 2 1
+115	137	0.0	5	134 1 1 0 0 1
+
+RUN STATISTICS FOR INPUT FILE: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_6_R1_val_1_val_1.fq.gz
+=============================================
+54004139 sequences processed in total
+

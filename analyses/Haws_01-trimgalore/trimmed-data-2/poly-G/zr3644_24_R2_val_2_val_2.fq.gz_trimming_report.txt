@@ -1,0 +1,182 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_24_R2_val_2_val_2.fq.gz
+Trimming mode: paired-end
+Trim Galore version: 0.6.6
+Cutadapt version: 3.1
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG' (user defined)
+Maximum trimming error rate: 0.1 (default)
+Optional adapter 2 sequence (only used for read 2 of paired-end files): 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG'
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Running FastQC on the data once trimming has completed
+Running FastQC with the following extra arguments: --outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/poly-G --threads 28
+Output file will be GZIP compressed
+
+
+This is cutadapt 3.1 with Python 3.8.5
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_24_R2_val_2_val_2.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 1450.22 s (27 µs/read; 2.19 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              52,894,890
+Reads with adapters:                 4,990,032 (9.4%)
+Reads written (passing filters):    52,894,890 (100.0%)
+
+Total basepairs processed: 5,589,271,116 bp
+Quality-trimmed:               2,547,797 bp (0.0%)
+Total written (filtered):  5,505,351,532 bp (98.5%)
+
+=== Adapter 1 ===
+
+Sequence: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG; Type: regular 3'; Length: 50; Trimmed: 4990032 times
+
+No. of allowed errors:
+1-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50 bp: 5
+
+Bases preceding removed adapters:
+  A: 13.4%
+  C: 5.1%
+  G: 0.0%
+  T: 81.4%
+  none/other: 0.0%
+WARNING:
+    The adapter is preceded by "T" extremely often.
+    The provided adapter sequence could be incomplete at its 5' end.
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	3175227	13223722.5	0	3175227
+2	856267	3305930.6	0	856267
+3	187098	826482.7	0	187098
+4	52094	206620.7	0	52094
+5	15535	51655.2	0	15535
+6	4474	12913.8	0	4474
+7	1660	3228.4	0	1660
+8	837	807.1	0	837
+9	796	201.8	0	796
+10	2687	50.4	1	703 1984
+11	2205	12.6	1	616 1589
+12	1767	3.2	1	547 1220
+13	1628	0.8	1	527 1101
+14	1366	0.2	1	455 911
+15	1179	0.0	1	393 786
+16	949	0.0	1	343 606
+17	734	0.0	1	266 468
+18	537	0.0	1	267 270
+19	515	0.0	1	246 269
+20	1232	0.0	2	309 248 675
+21	1175	0.0	2	279 257 639
+22	1053	0.0	2	249 236 568
+23	969	0.0	2	276 215 478
+24	844	0.0	2	246 176 422
+25	774	0.0	2	249 171 354
+26	687	0.0	2	223 156 308
+27	580	0.0	2	237 100 243
+28	471	0.0	2	194 112 165
+29	465	0.0	2	201 117 147
+30	849	0.0	3	205 106 166 372
+31	813	0.0	3	177 115 157 364
+32	722	0.0	3	165 108 130 319
+33	680	0.0	3	179 95 109 297
+34	684	0.0	3	178 102 115 289
+35	623	0.0	3	156 107 122 238
+36	580	0.0	3	167 92 97 224
+37	493	0.0	3	153 80 89 171
+38	453	0.0	3	152 91 90 120
+39	429	0.0	3	164 80 70 115
+40	719	0.0	4	133 85 85 109 307
+41	626	0.0	4	136 80 66 92 252
+42	625	0.0	4	124 73 64 111 253
+43	605	0.0	4	122 73 57 108 245
+44	522	0.0	4	103 51 69 101 198
+45	607	0.0	4	143 67 83 108 206
+46	502	0.0	4	123 69 69 74 167
+47	528	0.0	4	163 90 72 53 150
+48	571	0.0	4	188 105 89 99 90
+49	1529	0.0	4	423 310 317 253 226
+50	1605	0.0	5	393 292 255 253 226 186
+51	1297	0.0	5	402 250 200 175 143 127
+52	1081	0.0	5	340 215 184 130 111 101
+53	1048	0.0	5	419 228 141 105 95 60
+54	843	0.0	5	348 149 115 83 74 74
+55	891	0.0	5	373 176 113 93 77 59
+56	886	0.0	5	421 175 95 88 50 57
+57	771	0.0	5	357 146 98 76 57 37
+58	685	0.0	5	332 140 72 57 51 33
+59	673	0.0	5	341 124 88 49 40 31
+60	649	0.0	5	340 119 65 64 38 23
+61	655	0.0	5	351 117 77 50 30 30
+62	575	0.0	5	325 116 50 39 24 21
+63	631	0.0	5	368 107 69 33 29 25
+64	587	0.0	5	341 108 53 36 25 24
+65	640	0.0	5	409 98 56 25 28 24
+66	562	0.0	5	354 93 46 32 20 17
+67	666	0.0	5	449 103 51 32 15 16
+68	591	0.0	5	388 92 43 29 27 12
+69	713	0.0	5	528 88 36 25 20 16
+70	616	0.0	5	453 67 38 21 17 20
+71	529	0.0	5	372 74 40 21 11 11
+72	491	0.0	5	345 62 38 21 13 12
+73	491	0.0	5	351 60 32 20 15 13
+74	497	0.0	5	376 46 27 20 16 12
+75	573	0.0	5	429 62 32 20 23 7
+76	462	0.0	5	359 44 21 16 9 13
+77	501	0.0	5	385 60 23 15 9 9
+78	423	0.0	5	310 49 18 17 17 12
+79	475	0.0	5	346 62 27 16 15 9
+80	371	0.0	5	278 37 19 16 10 11
+81	376	0.0	5	283 44 18 12 10 9
+82	372	0.0	5	263 50 31 12 9 7
+83	343	0.0	5	267 33 18 9 5 11
+84	400	0.0	5	314 40 24 14 6 2
+85	325	0.0	5	257 30 16 6 8 8
+86	381	0.0	5	288 38 26 12 10 7
+87	322	0.0	5	247 31 16 15 7 6
+88	401	0.0	5	333 26 15 10 11 6
+89	299	0.0	5	249 28 7 4 5 6
+90	337	0.0	5	273 27 18 6 6 7
+91	291	0.0	5	223 35 16 6 7 4
+92	356	0.0	5	294 31 9 8 7 7
+93	272	0.0	5	214 26 11 10 4 7
+94	245	0.0	5	193 20 10 11 7 4
+95	300	0.0	5	238 29 9 12 5 7
+96	295	0.0	5	222 37 17 8 5 6
+97	278	0.0	5	214 28 12 10 7 7
+98	210	0.0	5	150 28 12 9 6 5
+99	295	0.0	5	259 18 8 5 5
+100	206	0.0	5	147 26 14 7 8 4
+101	337	0.0	5	290 18 12 7 7 3
+102	334	0.0	5	274 25 19 5 5 6
+103	276	0.0	5	229 22 6 7 9 3
+104	231	0.0	5	175 23 14 5 9 5
+105	315	0.0	5	271 17 11 6 6 4
+106	283	0.0	5	233 18 14 6 7 5
+107	301	0.0	5	243 31 8 5 7 7
+108	263	0.0	5	207 23 10 5 8 10
+109	424	0.0	5	296 44 56 12 6 10
+110	391	0.0	5	324 34 8 8 10 7
+111	347	0.0	5	252 41 11 12 16 15
+112	763	0.0	5	620 56 32 25 14 16
+113	948	0.0	5	811 52 31 20 22 12
+114	3179	0.0	5	2906 135 50 40 24 24
+115	624893	0.0	5	623953 715 102 64 31 28
+
+
+WARNING:
+    One or more of your adapter sequences may be incomplete.
+    Please see the detailed output above.
+
+RUN STATISTICS FOR INPUT FILE: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/zr3644_24_R2_val_2_val_2.fq.gz
+=============================================
+52894890 sequences processed in total
+
+Total number of sequences analysed for the sequence pair length validation: 52894890
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 650845 (1.23%)
