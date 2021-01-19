@@ -1,0 +1,69 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_13_R1_val_1.fq.gz
+Trimming mode: paired-end
+Trim Galore version: 0.6.6
+Cutadapt version: 3.1
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; user defined)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Running FastQC on the data once trimming has completed
+Running FastQC with the following extra arguments: --outdir /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2 --threads 28
+Output file will be GZIP compressed
+
+
+This is cutadapt 3.1 with Python 3.8.5
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_13_R1_val_1.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 1458.05 s (27 µs/read; 2.22 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              53,911,566
+Reads with adapters:                23,651,701 (43.9%)
+Reads written (passing filters):    53,911,566 (100.0%)
+
+Total basepairs processed: 5,759,871,046 bp
+Quality-trimmed:               6,988,047 bp (0.1%)
+Total written (filtered):  5,726,266,859 bp (99.4%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 23651701 times
+
+No. of allowed errors:
+1-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 45.7%
+  C: 10.3%
+  G: 6.4%
+  T: 37.6%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	21623159	13477891.5	0	21623159
+2	1323589	3369472.9	0	1323589
+3	481744	842368.2	0	481744
+4	220391	210592.1	0	220391
+5	1296	52648.0	0	1296
+6	512	13162.0	0	512
+7	157	3290.5	0	157
+8	42	822.6	0	42
+9	228	205.7	0	15 213
+10	466	51.4	1	8 458
+11	101	12.9	1	5 96
+12	14	3.2	1	0 14
+13	1	0.8	1	0 1
+16	1	0.8	1	0 1
+
+RUN STATISTICS FOR INPUT FILE: /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore/zr3644_13_R1_val_1.fq.gz
+=============================================
+53911566 sequences processed in total
+

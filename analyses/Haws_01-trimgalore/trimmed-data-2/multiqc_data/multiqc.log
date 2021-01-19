@@ -1,0 +1,298 @@
+[2021-01-17 01:34:30,056] multiqc                                            [DEBUG  ]  No MultiQC config found: /gscratch/srlab/programs/anaconda3/lib/python3.7/site-packages/multiqc_config.yaml
+[2021-01-17 01:34:30,057] multiqc                                            [DEBUG  ]  No MultiQC config found: /usr/lusers/yaaminiv/.multiqc_config.yaml
+[2021-01-17 01:34:30,057] multiqc                                            [DEBUG  ]  No MultiQC config found: multiqc_config.yaml
+[2021-01-17 01:34:30,057] multiqc                                            [DEBUG  ]  Command used: /gscratch/srlab/programs/anaconda3/bin/multiqc /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/.
+[2021-01-17 01:34:35,403] multiqc                                            [DEBUG  ]  Could not connect to multiqc.info for version check: <urlopen error timed out>
+[2021-01-17 01:34:35,403] multiqc                                            [INFO   ]  This is MultiQC v1.8
+[2021-01-17 01:34:35,405] multiqc                                            [DEBUG  ]  Command     : /gscratch/srlab/programs/anaconda3/bin/multiqc /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/.
+[2021-01-17 01:34:35,405] multiqc                                            [DEBUG  ]  Working dir : /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2
+[2021-01-17 01:34:35,405] multiqc                                            [INFO   ]  Template    : default
+[2021-01-17 01:34:35,405] multiqc                                            [DEBUG  ]  Running Python 3.7.3 (default, Mar 27 2019, 22:11:17)  [GCC 7.3.0]
+[2021-01-17 01:34:35,405] multiqc                                            [INFO   ]  Searching   : /gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2
+[2021-01-17 01:34:35,406] multiqc                                            [DEBUG  ]  Analysing modules: custom_content, conpair, peddy, methylQA, phantompeakqualtools, qualimap, preseq, quast, qorts, rna_seqc, rsem, rseqc, busco, goleft_indexcov, disambiguate, supernova, deeptools, sargasso, verifybamid, mirtrace, happy, homer, macs2, theta2, snpeff, gatk, htseq, bcftools, featureCounts, fgbio, dedup, damageprofiler, biobambam2, mtnucratio, picard, prokka, samblaster, samtools, sexdeterrmine, bamtools, jellyfish, vcftools, longranger, stacks, bbmap, bismark, biscuit, hicexplorer, hicup, hicpro, salmon, kallisto, slamdunk, star, hisat2, tophat, bowtie2, bowtie1, kat, leehom, adapterRemoval, clipandmerge, cutadapt, flexbar, trimmomatic, skewer, sortmerna, biobloomtools, fastq_screen, afterqc, fastp, fastqc, minionqc, mosdepth, clusterflow, bcl2fastq, interop, flash, seqyclean
+[2021-01-17 01:34:35,406] multiqc                                            [DEBUG  ]  Using temporary directory for creating report: /tmp/tmp5oqhap9x
+[2021-01-17 01:34:36,012] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_23_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,019] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_6_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,019] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_24_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,033] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_5_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,051] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_17_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,065] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_19_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,065] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_2_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,071] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_7_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,078] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_24_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,079] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_20_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,084] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_15_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,091] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_8_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,131] multiqc                                            [DEBUG  ]  File ignored by hicexplorer because it exceeded search pattern filesize limit: slurm-788394.out
+[2021-01-17 01:34:36,133] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: slurm-788394.out
+[2021-01-17 01:34:36,350] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_20_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,351] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_4_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,355] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_5_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,362] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_7_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,367] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_9_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,378] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_21_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,385] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_7_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,385] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_8_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,385] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_1_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,390] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_20_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,397] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_18_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,397] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_7_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,402] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_20_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,408] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_9_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,408] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_23_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,408] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_10_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,409] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_18_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,413] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_13_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,420] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_17_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,420] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_12_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,425] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_6_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,432] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_21_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,432] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_16_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,433] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_1_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,438] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_6_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,444] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_18_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,449] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_4_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,461] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_19_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,468] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_11_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,468] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_24_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,474] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_4_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,480] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_22_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,480] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_1_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,481] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_9_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,481] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_9_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,481] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_12_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,481] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_13_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,486] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_9_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,497] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_8_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,504] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_11_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,509] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_15_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,520] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_8_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,531] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_24_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,553] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_3_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,560] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_4_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,560] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_13_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,560] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_3_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,565] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_14_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,576] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_23_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,582] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_19_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_4_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_8_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_16_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_6_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_3_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,583] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_16_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,584] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_3_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,589] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_13_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,595] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_14_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,600] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_3_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,611] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_16_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,618] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_2_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,618] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_10_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,618] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_11_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,626] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_9_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,626] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_10_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,627] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_11_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,627] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_14_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,627] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_23_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,627] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_24_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,632] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_18_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,639] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_21_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,645] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_15_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,645] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_19_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,646] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_12_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,651] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_21_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,662] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_11_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,673] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_23_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,679] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_5_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,680] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_17_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,680] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_22_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,684] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_5_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,691] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_8_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,691] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_17_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,691] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_13_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,691] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_14_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,692] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_2_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,692] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_5_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,693] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_15_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,708] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_18_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,708] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_12_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,717] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_21_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,732] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_1_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,742] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_15_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,748] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_17_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,755] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_3_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,755] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_14_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,760] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_1_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,772] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_12_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,784] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_10_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,790] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_17_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,790] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_21_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,795] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_10_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,806] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_19_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,818] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_2_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,840] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_13_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,840] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_20_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,845] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_7_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,852] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_20_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,857] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_14_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,868] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_24_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,875] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_22_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,875] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_7_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,875] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_6_R1_val_1_val_1.fq.gz
+[2021-01-17 01:34:36,875] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_19_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,880] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_11_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,887] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_6_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,887] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_5_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,892] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_2_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,898] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_2_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,903] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_16_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,914] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_22_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,920] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_15_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,925] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_22_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,932] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_22_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,932] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_23_R1_val_1_val_1_fastqc.html
+[2021-01-17 01:34:36,932] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_16_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,932] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_4_R2_val_2_val_2_fastqc.html
+[2021-01-17 01:34:36,937] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_1_R1_val_1.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,948] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_12_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:36,972] multiqc                                            [DEBUG  ]  Ignoring file as matched an ignore pattern: zr3644_10_R2_val_2_val_2.fq.gz
+[2021-01-17 01:34:36,976] multiqc                                            [DEBUG  ]  File ignored by longranger/invocation because it exceeded search pattern filesize limit: zr3644_18_R2_val_2.fq.gz_trimming_report.txt
+[2021-01-17 01:34:41,663] multiqc.plots.bargraph                             [DEBUG  ]  Using matplotlib version 2.2.4
+[2021-01-17 01:34:41,676] multiqc.plots.linegraph                            [DEBUG  ]  Using matplotlib version 2.2.4
+[2021-01-17 01:34:41,717] multiqc                                            [DEBUG  ]  No samples found: custom_content
+[2021-01-17 01:34:41,867] multiqc                                            [DEBUG  ]  No samples found: conpair
+[2021-01-17 01:34:42,037] multiqc                                            [DEBUG  ]  No samples found: peddy
+[2021-01-17 01:34:42,168] multiqc                                            [DEBUG  ]  No samples found: methylQA
+[2021-01-17 01:34:42,185] multiqc                                            [DEBUG  ]  No samples found: phantompeakqualtools
+[2021-01-17 01:34:42,275] multiqc                                            [DEBUG  ]  No samples found: qualimap
+[2021-01-17 01:34:42,303] multiqc                                            [DEBUG  ]  No samples found: preseq
+[2021-01-17 01:34:42,350] multiqc                                            [DEBUG  ]  No samples found: quast
+[2021-01-17 01:34:42,379] multiqc                                            [DEBUG  ]  No samples found: qorts
+[2021-01-17 01:34:42,447] multiqc                                            [DEBUG  ]  No samples found: rna_seqc
+[2021-01-17 01:34:42,513] multiqc                                            [DEBUG  ]  No samples found: rsem
+[2021-01-17 01:34:42,625] multiqc                                            [DEBUG  ]  No samples found: rseqc
+[2021-01-17 01:34:42,681] multiqc                                            [DEBUG  ]  No samples found: busco
+[2021-01-17 01:34:42,770] multiqc                                            [DEBUG  ]  No samples found: goleft_indexcov
+[2021-01-17 01:34:42,819] multiqc                                            [DEBUG  ]  No samples found: disambiguate
+[2021-01-17 01:34:42,854] multiqc                                            [DEBUG  ]  No samples found: supernova
+[2021-01-17 01:34:42,964] multiqc                                            [DEBUG  ]  No samples found: deeptools
+[2021-01-17 01:34:43,051] multiqc                                            [DEBUG  ]  No samples found: sargasso
+[2021-01-17 01:34:43,086] multiqc                                            [DEBUG  ]  No samples found: verifybamid
+[2021-01-17 01:34:43,118] multiqc                                            [DEBUG  ]  No samples found: mirtrace
+[2021-01-17 01:34:43,137] multiqc                                            [DEBUG  ]  No samples found: happy
+[2021-01-17 01:34:43,178] multiqc                                            [DEBUG  ]  No samples found: homer
+[2021-01-17 01:34:43,195] multiqc                                            [DEBUG  ]  No samples found: macs2
+[2021-01-17 01:34:43,204] multiqc                                            [DEBUG  ]  No samples found: theta2
+[2021-01-17 01:34:43,228] multiqc                                            [DEBUG  ]  No samples found: snpeff
+[2021-01-17 01:34:43,303] multiqc                                            [DEBUG  ]  No samples found: gatk
+[2021-01-17 01:34:43,319] multiqc                                            [DEBUG  ]  No samples found: htseq
+[2021-01-17 01:34:43,353] multiqc                                            [DEBUG  ]  No samples found: bcftools
+[2021-01-17 01:34:43,362] multiqc                                            [DEBUG  ]  No samples found: featureCounts
+[2021-01-17 01:34:43,372] multiqc                                            [DEBUG  ]  No samples found: fgbio
+[2021-01-17 01:34:43,380] multiqc                                            [DEBUG  ]  No samples found: dedup
+[2021-01-17 01:34:43,435] multiqc                                            [DEBUG  ]  No samples found: damageprofiler
+[2021-01-17 01:34:43,752] multiqc                                            [DEBUG  ]  No samples found: biobambam2
+[2021-01-17 01:34:43,801] multiqc                                            [DEBUG  ]  No samples found: mtnucratio
+[2021-01-17 01:34:43,807] multiqc                                            [DEBUG  ]  No samples found: picard
+[2021-01-17 01:34:43,828] multiqc                                            [DEBUG  ]  No samples found: prokka
+[2021-01-17 01:34:43,837] multiqc                                            [DEBUG  ]  No samples found: samblaster
+[2021-01-17 01:34:43,905] multiqc                                            [DEBUG  ]  No samples found: samtools
+[2021-01-17 01:34:43,973] multiqc                                            [DEBUG  ]  No samples found: sexdeterrmine
+[2021-01-17 01:34:44,097] multiqc                                            [DEBUG  ]  No samples found: bamtools
+[2021-01-17 01:34:44,107] multiqc                                            [DEBUG  ]  No samples found: jellyfish
+[2021-01-17 01:34:44,136] multiqc                                            [DEBUG  ]  No samples found: vcftools
+[2021-01-17 01:34:44,187] multiqc                                            [DEBUG  ]  No samples found: longranger
+[2021-01-17 01:34:44,224] multiqc                                            [DEBUG  ]  No samples found: stacks
+[2021-01-17 01:34:44,371] multiqc                                            [DEBUG  ]  No samples found: bbmap
+[2021-01-17 01:34:44,410] multiqc                                            [DEBUG  ]  No samples found: bismark
+[2021-01-17 01:34:44,435] multiqc                                            [DEBUG  ]  No samples found: biscuit
+[2021-01-17 01:34:44,470] multiqc                                            [DEBUG  ]  No samples found: hicexplorer
+[2021-01-17 01:34:44,495] multiqc                                            [DEBUG  ]  No samples found: hicup
+[2021-01-17 01:34:44,521] multiqc                                            [DEBUG  ]  No samples found: hicpro
+[2021-01-17 01:34:44,530] multiqc                                            [DEBUG  ]  No samples found: salmon
+[2021-01-17 01:34:44,551] multiqc                                            [DEBUG  ]  No samples found: kallisto
+[2021-01-17 01:34:44,579] multiqc                                            [DEBUG  ]  No samples found: slamdunk
+[2021-01-17 01:34:44,608] multiqc                                            [DEBUG  ]  No samples found: star
+[2021-01-17 01:34:44,650] multiqc                                            [DEBUG  ]  No samples found: hisat2
+[2021-01-17 01:34:44,670] multiqc                                            [DEBUG  ]  No samples found: tophat
+[2021-01-17 01:34:44,689] multiqc                                            [DEBUG  ]  No samples found: bowtie2
+[2021-01-17 01:34:44,721] multiqc                                            [DEBUG  ]  No samples found: bowtie1
+[2021-01-17 01:34:44,732] multiqc                                            [DEBUG  ]  No samples found: kat
+[2021-01-17 01:34:44,741] multiqc                                            [DEBUG  ]  No samples found: leehom
+[2021-01-17 01:34:44,773] multiqc                                            [DEBUG  ]  No samples found: adapterRemoval
+[2021-01-17 01:34:44,782] multiqc                                            [DEBUG  ]  No samples found: clipandmerge
+[2021-01-17 01:34:44,947] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_7_R1_val_1
+[2021-01-17 01:34:44,980] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_15_R2_val_2
+[2021-01-17 01:34:44,986] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_17_R1_val_1
+[2021-01-17 01:34:45,012] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_5_R1_val_1
+[2021-01-17 01:34:45,013] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_9_R2_val_2
+[2021-01-17 01:34:45,014] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_21_R2_val_2
+[2021-01-17 01:34:45,015] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_20_R2_val_2
+[2021-01-17 01:34:45,016] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_20_R1_val_1
+[2021-01-17 01:34:45,017] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_13_R1_val_1
+[2021-01-17 01:34:45,018] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_6_R1_val_1
+[2021-01-17 01:34:45,019] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_6_R2_val_2
+[2021-01-17 01:34:45,020] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_4_R2_val_2
+[2021-01-17 01:34:45,021] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_19_R1_val_1
+[2021-01-17 01:34:45,022] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_4_R1_val_1
+[2021-01-17 01:34:45,023] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_9_R1_val_1
+[2021-01-17 01:34:45,023] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_8_R2_val_2
+[2021-01-17 01:34:45,024] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_15_R1_val_1
+[2021-01-17 01:34:45,025] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_8_R1_val_1
+[2021-01-17 01:34:45,026] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_24_R2_val_2
+[2021-01-17 01:34:45,027] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_3_R1_val_1
+[2021-01-17 01:34:45,028] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_14_R2_val_2
+[2021-01-17 01:34:45,029] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_23_R2_val_2
+[2021-01-17 01:34:45,030] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_13_R2_val_2
+[2021-01-17 01:34:45,031] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_3_R2_val_2
+[2021-01-17 01:34:45,032] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_16_R1_val_1
+[2021-01-17 01:34:45,033] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_18_R1_val_1
+[2021-01-17 01:34:45,034] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_21_R1_val_1
+[2021-01-17 01:34:45,035] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_11_R2_val_2
+[2021-01-17 01:34:45,036] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_23_R1_val_1
+[2021-01-17 01:34:45,037] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_5_R2_val_2
+[2021-01-17 01:34:45,038] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_17_R2_val_2
+[2021-01-17 01:34:45,039] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_1_R2_val_2
+[2021-01-17 01:34:45,040] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_12_R1_val_1
+[2021-01-17 01:34:45,040] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_10_R1_val_1
+[2021-01-17 01:34:45,041] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_10_R2_val_2
+[2021-01-17 01:34:45,042] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_19_R2_val_2
+[2021-01-17 01:34:45,043] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_2_R1_val_1
+[2021-01-17 01:34:45,044] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_7_R2_val_2
+[2021-01-17 01:34:45,045] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_14_R1_val_1
+[2021-01-17 01:34:45,046] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_24_R1_val_1
+[2021-01-17 01:34:45,047] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_11_R1_val_1
+[2021-01-17 01:34:45,048] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_2_R2_val_2
+[2021-01-17 01:34:45,048] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_16_R2_val_2
+[2021-01-17 01:34:45,049] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_22_R2_val_2
+[2021-01-17 01:34:45,050] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_22_R1_val_1
+[2021-01-17 01:34:45,051] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_1_R1_val_1
+[2021-01-17 01:34:45,052] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_12_R2_val_2
+[2021-01-17 01:34:45,053] multiqc.modules.cutadapt.cutadapt                  [DEBUG  ]  Duplicate sample name found! Overwriting: zr3644_18_R2_val_2
+[2021-01-17 01:34:45,054] multiqc.modules.cutadapt.cutadapt                  [INFO   ]  Found 48 reports
+[2021-01-17 01:34:45,069] multiqc                                            [DEBUG  ]  No samples found: flexbar
+[2021-01-17 01:34:45,109] multiqc                                            [DEBUG  ]  No samples found: trimmomatic
+[2021-01-17 01:34:45,221] multiqc                                            [DEBUG  ]  No samples found: skewer
+[2021-01-17 01:34:45,231] multiqc                                            [DEBUG  ]  No samples found: sortmerna
+[2021-01-17 01:34:45,252] multiqc                                            [DEBUG  ]  No samples found: biobloomtools
+[2021-01-17 01:34:45,279] multiqc                                            [DEBUG  ]  No samples found: fastq_screen
+[2021-01-17 01:34:45,319] multiqc                                            [DEBUG  ]  No samples found: afterqc
+[2021-01-17 01:34:45,345] multiqc                                            [DEBUG  ]  No samples found: fastp
+[2021-01-17 01:35:01,299] multiqc.modules.fastqc.fastqc                      [INFO   ]  Found 48 reports
+[2021-01-17 01:35:02,127] multiqc                                            [DEBUG  ]  No samples found: minionqc
+[2021-01-17 01:35:02,148] multiqc                                            [DEBUG  ]  No samples found: mosdepth
+[2021-01-17 01:35:02,184] multiqc                                            [DEBUG  ]  No samples found: clusterflow
+[2021-01-17 01:35:02,218] multiqc                                            [DEBUG  ]  No samples found: bcl2fastq
+[2021-01-17 01:35:02,251] multiqc                                            [DEBUG  ]  No samples found: interop
+[2021-01-17 01:35:02,275] multiqc                                            [DEBUG  ]  No samples found: flash
+[2021-01-17 01:35:02,305] multiqc                                            [DEBUG  ]  No samples found: seqyclean
+[2021-01-17 01:35:02,422] multiqc                                            [INFO   ]  Compressing plot data
+[2021-01-17 01:35:03,229] multiqc                                            [INFO   ]  Report      : multiqc_report.html
+[2021-01-17 01:35:03,229] multiqc                                            [INFO   ]  Data        : multiqc_data
+[2021-01-17 01:35:03,232] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_qualimap_bamqc_genome_results.txt' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:03,232] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_cutadapt.txt' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:03,233] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_fastqc.txt' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:03,234] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_general_stats.txt' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:03,235] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_sources.txt' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:03,236] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp5oqhap9x/multiqc_data/multiqc_data.json' to '/gscratch/scrubbed/yaaminiv/Hawes/analyses/trimgalore-2/multiqc_data'
+[2021-01-17 01:35:04,700] multiqc                                            [INFO   ]  MultiQC complete
