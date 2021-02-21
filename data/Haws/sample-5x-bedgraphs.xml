@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="http://owl.fish.washington.edu/halfshell/genomic-databank/Crassostrea_gigas.oyster_v9.dna_sm.toplevel.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="scaffold58:0-823709" version="8">
+    <Resources>
+        <Resource name="zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="Cgigas_v9_exon.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_exon.gff"/>
+        <Resource name="zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="Cgigas_v9_intron.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_intron.gff"/>
+        <Resource name="Cgigas_v9_gene.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_gene.gff"/>
+        <Resource name="zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="Cgigas_v9_1k5p_gene_promoter.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_1k5p_gene_promoter.gff"/>
+        <Resource name="zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_3_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_3_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="Cgigas_v9_TE.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_TE.gff"/>
+        <Resource name="zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_14_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_14_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource name="zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" path="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource index="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_CG.gff.idx" name="Cgigas_v9_CG.gff" path="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_CG.gff"/>
+    </Resources>
+    <Panel height="960" name="DataPanel" width="1903">
+        <Track attributeKey="zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_3_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_3_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_3_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="102,102,255" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,102,102" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_14_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_14_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_14_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,51,204" attributeKey="zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,204" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track attributeKey="zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,51" fontSize="10" id="https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" name="zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe._5x.bedgraph" renderer="BAR_CHART" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+    </Panel>
+    <Panel height="240" name="FeaturePanel" width="1903">
+        <Track attributeKey="Reference sequence" clazz="org.broad.igv.track.SequenceTrack" fontSize="10" id="Reference sequence" name="Reference sequence" sequenceTranslationStrandValue="POSITIVE" shouldShowTranslation="false" visible="true"/>
+        <Track attributeKey="Cgigas_v9_gene.gff" clazz="org.broad.igv.track.FeatureTrack" color="153,153,153" colorScale="ContinuousColorScale;0.0;35.0;255,255,255;0,0,178" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_gene.gff" name="Cgigas_v9_gene.gff" visible="true"/>
+        <Track attributeKey="Cgigas_v9_exon.gff" clazz="org.broad.igv.track.FeatureTrack" color="153,153,153" colorScale="ContinuousColorScale;0.0;322.0;255,255,255;0,0,178" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_exon.gff" name="Cgigas_v9_exon.gff" visible="true"/>
+        <Track attributeKey="Cgigas_v9_intron.gff" clazz="org.broad.igv.track.FeatureTrack" color="153,153,153" colorScale="ContinuousColorScale;0.0;313.0;255,255,255;0,0,178" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_intron.gff" name="Cgigas_v9_intron.gff" visible="true"/>
+        <Track attributeKey="Cgigas_v9_1k5p_gene_promoter.gff" clazz="org.broad.igv.track.FeatureTrack" color="153,153,153" colorScale="ContinuousColorScale;0.0;35.0;255,255,255;0,0,178" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_1k5p_gene_promoter.gff" name="Cgigas_v9_1k5p_gene_promoter.gff" visible="true"/>
+        <Track attributeKey="Cgigas_v9_TE.gff" clazz="org.broad.igv.track.FeatureTrack" color="153,153,153" colorScale="ContinuousColorScale;0.0;164.0;255,255,255;0,0,178" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_TE.gff" name="Cgigas_v9_TE.gff" visible="true"/>
+        <Track attributeKey="Cgigas_v9_CG.gff" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" featureVisibilityWindow="1000000" fontSize="10" id="https://eagle.fish.washington.edu/trilobite/Crassostrea_gigas_v9_tracks/Cgigas_v9_CG.gff" name="Cgigas_v9_CG.gff" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.7424042272126816"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
