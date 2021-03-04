@@ -187,6 +187,11 @@ methylKit::PCASamples(methylationInformationFilteredCov5, screeplot = TRUE) #Run
 dev.off()
 ```
 
+```{r}
+save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
+#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+```
+
 # Differentially methylated loci
 
 I will examine ploidy and treatment differences separately, using the other variable as a covariate.
