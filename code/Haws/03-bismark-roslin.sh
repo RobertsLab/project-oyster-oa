@@ -20,7 +20,7 @@
 set -e #Stop script if any command fails
 
 # Directories and programs
-bismark_dir="/gscratch/srlab/programs/Bismark-0.22.3/"
+bismark_dir="/gscratch/srlab/programs/Bismark-0.22.3"
 bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.4.1-linux-x86_64/"
 samtools="/gscratch/srlab/programs/samtools-1.10/samtools"
 
@@ -36,7 +36,7 @@ source /gscratch/srlab/programs/scripts/paths.sh
 genome_folder="/gscratch/scrubbed/yaaminiv/Hawes/data/Cg-roslin/"
 
 ${bismark_dir}/bismark_genome_preparation \
---path_to_bowtie ${bowtie2_dir} \
+--path_to_aligner ${bowtie2_dir} \
 --verbose \
 ${genome_folder}
 
