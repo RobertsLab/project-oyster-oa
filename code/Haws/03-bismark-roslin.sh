@@ -28,7 +28,7 @@ source /gscratch/srlab/programs/scripts/paths.sh
 
 #Genome Preparation
 #I combined the [Roslin genome assembly](https://www.ncbi.nlm.nih.gov/assembly/GCF_902806645.1) and [mitochondrial sequence](https://www.ncbi.nlm.nih.gov/nuccore/7212445?report=fasta).
-#The full genome can be found [here]()
+#The full genome can be found [here](https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/data/cgigas_uk_roslin_v1_genomic-mito.fa)
 
 #Prints detailed output for debugging
 #Path to genome folder
