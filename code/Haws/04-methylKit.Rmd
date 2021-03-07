@@ -253,7 +253,7 @@ save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in c
 I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
 
 ```{r}
-#write.csv(diffMethStatsPloidy50, "DML-ploidy-50-Cov5.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50, "../../analyses/Haws_04-methylKit/DML-ploidy-50-Cov5.csv") #Save table as .csv
 ```
 
 #### Hypermethylated DML
@@ -264,7 +264,7 @@ head(diffMethStatsPloidy50Hyper) #Confirm creation
 ```
 
 ```{r}
-#write.csv(diffMethStatsPloidy50Hyper, "DML-ploidy-50-Cov5-Hyper.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50Hyper, "../../analyses/Haws_04-methylKit/DML-ploidy-50-Cov5-Hyper.csv") #Save table as .csv
 ```
 
 #### Hypomethylated DML
@@ -275,7 +275,7 @@ head(diffMethStatsPloidy50Hypo) #Confirm creation
 ```
 
 ```{r}
-#write.csv(diffMethStatsPloidy50Hypo, "DML-ploidy-50-Cov5-Hypo.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50Hypo, "../../analyses/Haws_04-methylKit/DML-ploidy-50-Cov5-Hypo.csv") #Save table as .csv
 ```
 
 ### Randomization trial
@@ -372,7 +372,7 @@ save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in c
 I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
 
 ```{r}
-#write.csv(diffMethStatsTreatment50, "DML-Treatment-50-Cov5.csv") #Save table as .csv
+#write.csv(diffMethStatsTreatment50, "../../analyses/Haws_04-methylKit/DML-pH-50-Cov5.csv") #Save table as .csv
 ```
 
 #### Hypermethylated DML
@@ -383,7 +383,7 @@ head(diffMethStatsTreatment50Hyper) #Confirm creation
 ```
 
 ```{r}
-#write.csv(diffMethStatsTreatment50Hyper, "DML-Treatment-50-Cov5-Hyper.csv") #Save table as .csv
+#write.csv(diffMethStatsTreatment50Hyper, "../../analyses/Haws_04-methylKit/DML-pH-50-Cov5-Hyper.csv") #Save table as .csv
 ```
 
 #### Hypomethylated DML
@@ -394,7 +394,7 @@ head(diffMethStatsTreatment50Hypo) #Confirm creation
 ```
 
 ```{r}
-#write.csv(diffMethStatsTreatment50Hypo, "DML-Treatment-50-Cov5-Hypo.csv") #Save table as .csv
+#write.csv(diffMethStatsTreatment50Hypo, "../../analyses/Haws_04-methylKit/DML-pH-50-Cov5-Hypo.csv") #Save table as .csv
 ```
 
 ### Randomization trial
@@ -427,7 +427,10 @@ hist(pHRandTest) #Plot a histogram with randomization trial results
 
 #pHRandTest %>% filter(. > nrow(diffMethStatsTreatment50)) %>% nrow(.) / nrow(pHRandTest) #Calculate p-value
 ```
+
 # Save DMLs as BEDfiles
+
+*THE CODE BELOW HAS NOT BEEN UPDATED*
 
 ## Install packages
 
@@ -435,15 +438,19 @@ hist(pHRandTest) #Plot a histogram with randomization trial results
 
 ```{r}
 require(readr) #Load package
+```
 
-install.packages("tidyverse") #Install tidyverse
+```{r}
+#install.packages("tidyverse") #Install tidyverse
 require(tidyverse) #Load package
 ```
 
 ## DML
 
 ```{r}
-DML5xFilteredDestrand09152019 <- mutate(diffMethStats50FilteredCov5Destrand, start = start - 3, end = end) %>% select(chr, start, end, meth.diff) %>% mutate_if(is.numeric, as.integer) #Save as a BED file, and avoid writing information in scientific notation
+DML5xFilteredDestrand09152019 <- mutate(diffMethStats50FilteredCov5Destrand, start = start, end = end) %>%
+  select(chr, start, end, meth.diff) %>% 
+  mutate_if(is.numeric, as.integer) #Save as a BED file, and avoid writing information in scientific notation
 ```
 
 ```{r}
