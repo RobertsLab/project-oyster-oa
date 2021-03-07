@@ -314,7 +314,12 @@ for (i in 1:1000) { #For each iteration
     methylKit::getMethylDiff(., difference = 50, qvalue = 0.01) %>% #Reorganize, filter, normalize, and unite samples. Calculate diffMeth and obtain DML that are 50% and have a q-value of 0.01
     nrow() -> ploidyRandTest[i] #Save the number of DML identified
 }
+```
+
+```{r}
 hist(ploidyRandTest) #Plot a histogram with randomization trial results
+
+#ploidyRandTest %>% filter(. > nrow(diffMethStatsPloidy50)) %>% nrow(.) / nrow(ploidyRandTest) #Calculate p-value
 ```
 
 ## pH differences
