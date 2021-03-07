@@ -228,83 +228,91 @@ head(covariatePloidy) #Check dataframe format
 ## Ploidy differences
 
 ```{r}
-differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
+diffMethStatsPloidy50 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
                                                                    covariates = covariatepH,
                                                                    mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidy50 <- mmgetMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidy50) #Count the number of DML
+diffMethStatsPloidy50 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsPloidy50$chr) #Count the number of DML
 head(diffMethStatsPloidy50) #Confirm creation
 ```
+
+```{r}
+diffMethStatsPloidy75 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+length(diffMethStatsPloidy75$chr) #Count the number of DML
+head(diffMethStatsPloidy75) #Confirm creation
+```
+
+```{r}
+diffMethStatsPloidy100 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.01) #Identify loci that are at least 100% different
+length(diffMethStatsPloidy100$chr) #Count the number of DML
+head(diffMethStatsPloidy100) #Confirm creation
+```
+
+```{r}
+save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
+#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+```
+
+I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
 
 ```{r}
 #write.csv(diffMethStatsPloidy50, "DML-ploidy-50-Cov5.csv") #Save table as .csv
 ```
 
-```{r}
-diffMethStats75FilteredCov5Destrand <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
-length(diffMethStats75FilteredCov5Destrand$chr) #Count the number of DML
-head(diffMethStats75FilteredCov5Destrand) #Confirm creation
-```
-
-```{r}
-diffMethStats100FilteredCov5Destrand <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.001) #Identify loci that are at least 100% different
-length(diffMethStats100FilteredCov5Destrand$chr) #Count the number of DML
-head(diffMethStats100FilteredCov5Destrand) #Confirm creation
-```
-
-```{r}
-write.csv(diffMethStats100FilteredCov5Destrand, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-100-Cov5.csv") #Save table as .csv
-```
-
-I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
-
 #### Hypermethylated DML
 
 ```{r}
-diffMethStats50FilteredCov5DestrandHyper <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypermethylated loci that are at least 50% different
-head(diffMethStats50FilteredCov5DestrandHyper) #Confirm creation
+diffMethStatsPloidy50Hyper <- getMethylDiff(diffMethStatsPloidy50, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypermethylated loci that are at least 50% different
+head(diffMethStatsPloidy50Hyper) #Confirm creation
 ```
 
 ```{r}
-write.csv(diffMethStats50FilteredCov5DestrandHyper, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-50-Cov5-Hypermethylated.csv") #Save table as .csv
-```
-
-```{r}
-diffMethStats100FilteredCov5DestrandHyper <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.001, type = "hyper") #Identify hypermethylated loci that are at least 50% different
-length(diffMethStats100FilteredCov5DestrandHyper$chr) #Count number of DML
-head(diffMethStats100FilteredCov5DestrandHyper) #Confirm creation
-```
-
-```{r}
-write.csv(diffMethStats100FilteredCov5DestrandHyper, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-100-Cov5-Hypermethylated.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50Hyper, "DML-ploidy-50-Cov5-Hyper.csv") #Save table as .csv
 ```
 
 #### Hypomethylated DML
 
 ```{r}
-diffMethStats50FilteredCov5DestrandHypo <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 50, qvalue = 0.01, type = "hypo") #Identify hypomethylated loci that are at least 50% different
-head(diffMethStats50FilteredCov5DestrandHypo) #Confirm creation
+diffMethStatsPloidy50Hypo <- getMethylDiff(diffMethStatsPloidy50, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypomethylated loci that are at least 50% different
+head(diffMethStatsPloidy50Hypo) #Confirm creation
 ```
 
 ```{r}
-write.csv(diffMethStats50FilteredCov5DestrandHypo, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-50-Cov5-Hypomethylated.csv") #Save table as .csv
-```
-
-```{r}
-diffMethStats100FilteredCov5DestrandHypo <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.001, type = "hypo") #Identify hypomethylated loci that are at least 100% different
-length(diffMethStats100FilteredCov5DestrandHypo$chr) #Count number of DML
-head(diffMethStats100FilteredCov5DestrandHypo) #Confirm creation
-```
-
-```{r}
-write.csv(diffMethStats100FilteredCov5DestrandHypo, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-100-Cov5-Hypomethylated.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50Hypo, "DML-ploidy-50-Cov5-Hypo.csv") #Save table as .csv
 ```
 
 ## Treatment differences
+
+### Assign treatment information
+
+```{r}
+processedFilesFilteredT <- methylKit::reorganize(processedFiles,
+                                        sample.id = list("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                                                         "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                                                         "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                                                         "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
+                                        treatment = c(rep(0, times = 6),
+                                                      rep(1, times = 6),
+                                                      rep(0, times = 6),
+                                                      rep(1, times = 6))) %>%
+  methylKit::filterByCoverage(.,
+                              lo.count = 5, lo.perc = NULL,
+                              high.count = NULL, high.perc = 99.9) %>% 
+  methylKit::no
+#Reorganize processedFiles to provide treatment specification. Filter by coverage and normalize coverage between samples
+head(processedFilesT)
+```
+
+
+
+
+
+
+
 
 # Save DMLs as BEDfiles
 
