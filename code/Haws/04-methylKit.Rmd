@@ -26,7 +26,7 @@ BiocManager::install("methylKit") #Install methylkit
 ```
 
 ```{r}
-install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocInstaller::biocinstallRepos(), dependencies = TRUE) #Install more methylKit options
+install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocManager::repositories(), dependencies = TRUE) #Install more methylKit options
 ```
 
 ```{r}
