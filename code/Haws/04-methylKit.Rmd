@@ -207,9 +207,7 @@ save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in c
 
 I will examine ploidy and treatment differences separately, using the other variable as a covariate.
 
-## Create covariate matrix
-
-Each covaraite needs its own matrix, based on [the user guide](https://bioconductor.org/packages/release/bioc/vignettes/methylKit/inst/doc/methylKit.html#38_Accounting_for_covariates).
+## Ploidy differences
 
 ```{r}
 covariatepH <- data.frame("pH" = c(rep("H", times = 6),
@@ -220,20 +218,13 @@ head(covariatepH) #Check dataframe format
 ```
 
 ```{r}
-covariatePloidy <- data.frame("ploidy" = c(rep("2N", times = 12), 
-                                           rep("3N", times = 12))) #Create dataframe with ploidy covariate information
-head(covariatePloidy) #Check dataframe format
-```
-   
-## Ploidy differences
-
-```{r}
 diffMethStatsPloidy50 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
                                                                    covariates = covariatepH,
                                                                    mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
+### Identify DML
 ```{r}
 diffMethStatsPloidy50 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
 length(diffMethStatsPloidy50$chr) #Count the number of DML
@@ -285,6 +276,10 @@ head(diffMethStatsPloidy50Hypo) #Confirm creation
 #write.csv(diffMethStatsPloidy50Hypo, "DML-ploidy-50-Cov5-Hypo.csv") #Save table as .csv
 ```
 
+### Randomization trial
+
+I want to determine if the number of DML identified is significantly greater than what would be identified by chance.
+
 ## Treatment differences
 
 ### Assign treatment information
@@ -305,12 +300,79 @@ processedFilteredFilesCov5T <- methylKit::reorganize(processedFiles,
   methylKit::normalizeCoverage(.) #Reorganize processedFiles to provide treatment specification. Filter by coverage and normalize coverage between samples
 ```
 
+```{r}
+methylationInformationFilteredCov5T <- methylKit::unite(processedFilteredFilesCov5T, 
+                                                       destrand = FALSE) #Combine all processed files into a single table. Use destrand = TRUE to not destrand. By default only bases with data in all samples will be kept
+head(methylationInformationFilteredCov5T) #Confirm unite
+```
 
+```{r}
+covariatePloidy <- data.frame("ploidy" = c(rep("2N", times = 12), 
+                                           rep("3N", times = 12))) #Create dataframe with ploidy covariate information
+head(covariatePloidy) #Check dataframe format
+```
 
+```{r}
+diffMethStatsTreatment50 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
+                                                                   covariates = covariatePloidy,
+                                                                   mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
+head(differentialMethylationStatsTreatment) #Look at differential methylation statistics
+```
 
+### Identify DML
 
+```{r}
+diffMethStatsTreatment50 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsTreatment50$chr) #Count the number of DML
+head(diffMethStatsTreatment50) #Confirm creation
+```
 
+```{r}
+diffMethStatsTreatment75 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+length(diffMethStatsTreatment75$chr) #Count the number of DML
+head(diffMethStatsTreatment75) #Confirm creation
+```
 
+```{r}
+diffMethStatsTreatment100 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.01) #Identify loci that are at least 100% different
+length(diffMethStatsTreatment100$chr) #Count the number of DML
+head(diffMethStatsTreatment100) #Confirm creation
+```
+
+```{r}
+save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
+#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+```
+
+I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
+
+```{r}
+#write.csv(diffMethStatsTreatment50, "DML-Treatment-50-Cov5.csv") #Save table as .csv
+```
+
+#### Hypermethylated DML
+
+```{r}
+diffMethStatsTreatment50Hyper <- getMethylDiff(diffMethStatsTreatment50, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypermethylated loci that are at least 50% different
+head(diffMethStatsTreatment50Hyper) #Confirm creation
+```
+
+```{r}
+#write.csv(diffMethStatsTreatment50Hyper, "DML-Treatment-50-Cov5-Hyper.csv") #Save table as .csv
+```
+
+#### Hypomethylated DML
+
+```{r}
+diffMethStatsTreatment50Hypo <- getMethylDiff(diffMethStatsTreatment50, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypomethylated loci that are at least 50% different
+head(diffMethStatsTreatment50Hypo) #Confirm creation
+```
+
+```{r}
+#write.csv(diffMethStatsTreatment50Hypo, "DML-Treatment-50-Cov5-Hypo.csv") #Save table as .csv
+```
+
+### Randomization trial
 
 # Save DMLs as BEDfiles
 
