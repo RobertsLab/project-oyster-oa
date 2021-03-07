@@ -155,8 +155,14 @@ for(i in 1:nFiles) { #For each data file
 ## Comparative analysis
 
 ```{r}
-methylationInformationFilteredCov5 <- methylKit::unite(processedFilteredFilesCov5, destrand = FALSE) #Combine all processed files into a single table. Use destrand = TRUE to not destrand
+methylationInformationFilteredCov5 <- methylKit::unite(processedFilteredFilesCov5, 
+                                                       destrand = FALSE) #Combine all processed files into a single table. Use destrand = TRUE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5) #Confirm unite
+```
+
+```{r}
+save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
+#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
 ```
 
 ```{r}
@@ -196,32 +202,40 @@ save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in c
 
 I will examine ploidy and treatment differences separately, using the other variable as a covariate.
 
-*THIS PORTION OF THE SCRIPT HAS NOT BEEN EDITED AND TESTED YET*
+## Create covariate matrix
+
+Each covaraite needs its own matrix, based on [the user guide](https://bioconductor.org/packages/release/bioc/vignettes/methylKit/inst/doc/methylKit.html#38_Accounting_for_covariates).
+
+```{r}
+covariatepH <- data.frame("pH" = c(rep("H", times = 6),
+                                 rep("L", times = 6),
+                                 rep("H", times = 6),
+                                 rep("L", times = 6))) #Create dataframe with pH covariate information
+head(covariatepH) #Check dataframe format
+```
+
+```{r}
+covariatePloidy <- data.frame("ploidy" = c(rep("2N", times = 12), 
+                                           rep("3N", times = 12))) #Create dataframe with ploidy covariate information
+head(covariatePloidy) #Check dataframe format
+```
 
 ## Ploidy differences
 
 ```{r}
-differentialMethylationStatsFilteredCov5 <- calculateDiffMeth(methylationInformationFilteredCov5) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
-head(differentialMethylationStatsFilteredCov5) #Look at differential methylation statistics
+differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
+                                                                          covariates = covariatepH) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate
+head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
 ```{r}
-
+diffMethStatsPloidy50 <- getMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsPloidy50) #Count the number of DML
+head(diffMethStatsPloidy50) #Confirm creation
 ```
 
 ```{r}
-write.csv(differentialMethylationStatsFilteredCov5Destrand, "2019-09-15-Loci-Analysis/2019-09-15-All-Loci-Methylation-Statistic-Filtered-Destrand-50-Cov5.csv") #Save DML background as a .csv
-```
-
-I will try a 50% difference (what I did with *C. virginica*), but I will also try a 75% and 100% difference. Since I only have two samples, I want to increase the stringency so I feel more confident in my DML.
-
-```{r}
-diffMethStats50FilteredCov5Destrand <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
-head(diffMethStats50FilteredCov5Destrand) #Confirm creation
-```
-
-```{r}
-write.csv(diffMethStats50FilteredCov5Destrand, "2019-09-15-Loci-Analysis/2019-09-15-Differentially-Methylated-Loci-Filtered-Destrand-50-Cov5.csv") #Save table as .csv
+#write.csv(diffMethStatsPloidy50, "DML-ploidy-50-Cov5.csv") #Save table as .csv
 ```
 
 ```{r}
