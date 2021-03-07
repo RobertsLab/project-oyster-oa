@@ -33,6 +33,10 @@ install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocInstaller
 require(methylKit) #Load methylkit
 ```
 
+```{r}
+require(dplyr) #Load dplyr
+```
+
 # Obtain session information
 
 ```{r}
@@ -102,7 +106,8 @@ load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
 ```{r}
 processedFilteredFilesCov5 <- methylKit::filterByCoverage(processedFiles,
                                                           lo.count = 5, lo.perc = NULL,
-                                                          high.count = NULL, high.perc = 99.9) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9.
+                                                          high.count = NULL, high.perc = 99.9) %>% 
+  methylKit::normalizeCoverage(processedFilteredFilesCov5) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
 ```{r}
@@ -219,17 +224,18 @@ covariatePloidy <- data.frame("ploidy" = c(rep("2N", times = 12),
                                            rep("3N", times = 12))) #Create dataframe with ploidy covariate information
 head(covariatePloidy) #Check dataframe format
 ```
-
+   
 ## Ploidy differences
 
 ```{r}
 differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
-                                                                          covariates = covariatepH) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate
+                                                                   covariates = covariatepH,
+                                                                   mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidy50 <- getMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+diffMethStatsPloidy50 <- mmgetMethylDiff(differentialMethylationStatsPloidy, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
 length(diffMethStatsPloidy50) #Count the number of DML
 head(diffMethStatsPloidy50) #Confirm creation
 ```
