@@ -16,8 +16,10 @@ knitr::opts_chunk$set(echo = TRUE)
 # Install packages
 
 ```{r}
-#install.packages("devtools") #Install the devtools package
+install.packages("devtools") #Install the devtools package
 require(devtools) #Load devtools
+#source("http://bioconductor.org/biocLite.R") #Source package from bioconductor
+#biocLite("methylKit") #Install methylkit
 #install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocManager::repositories(), dependencies = TRUE) #Install more methylKit options
 require(methylKit) #Load methylkit
 ```
@@ -88,9 +90,12 @@ head(sampleMetadata) #Confirm dataframe creation
 I'll use `methRead` to create a methylation object from the coverage files, and include sample ID and treatment information.
 
 ```{r}
-setwd(dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") #Set working directory inside code chunk
+setwd(dir = "../../analyses/Haws_04-methylKit/") #Set working directory inside code chunk
 processedFiles <- methylKit::methRead(analysisFiles,
-                                      sample.id = sampleMetadata$sampleID,
+                                      sample.id = list("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                                                       "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                                                       "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                                                       "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
                                       assembly = "oyster_v9",
                                       treatment = sampleMetadata$ploidyTreatment,
                                       pipeline = "bismarkCoverage",
@@ -98,15 +103,10 @@ processedFiles <- methylKit::methRead(analysisFiles,
 ```
 
 ```{r}
-#save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
-```
-
-```{r}
 processedFilteredFilesCov5 <- methylKit::filterByCoverage(processedFiles,
                                                           lo.count = 5, lo.perc = NULL,
                                                           high.count = NULL, high.perc = 99.9) %>% 
-  methylKit::normalizeCoverage(processedFilteredFilesCov5) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
+  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
 ```{r}
