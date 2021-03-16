@@ -51,3 +51,8 @@ analyses/Haws_04-methylKit/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_rep
 analyses/Haws_04-methylKit/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov
 analyses/Haws_04-methylKit/methylKit.RData
 .Rhistory
+analyses/Haws_05_BS-SNPer/SNP-results.vcf
+analyses/Haws_05_BS-SNPer/SNP-candidates.txt
+analyses/Haws_05_BS-SNPer/CpG-meth-info.tab
+analyses/Haws_05_BS-SNPer/CHH-meth-info.tab
+analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
