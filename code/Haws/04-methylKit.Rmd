@@ -17,11 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 require(devtools) #Load devtools
-require(methylKit) #Load methylkit
-require(dplyr) #Load dplyr
-```
-
-```{r}
+require(methylKit) #Load methylKit
 require(dplyr) #Load dplyr
 ```
 
@@ -29,16 +25,6 @@ require(dplyr) #Load dplyr
 
 ```{r}
 sessionInfo()
-```
-
-# Download files from `gannet`
-
-```{bash}
-wget -r -l1 --no-parent --no-directories -A.merged_CpG_evidence.cov https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark/ #Download files from gannet to the curent directory (where script is saved). Exclude directory structure
-```
-
-```{bash}
-mv *.merged_CpG_evidence.cov ../../analyses/Haws_04-methylKit #Move files from current directory to analyses folder
 ```
 
 # Process methylation data
@@ -87,7 +73,6 @@ head(sampleMetadata) #Confirm dataframe creation
 I'll use `methRead` to create a methylation object from the coverage files, and include sample ID and treatment information.
 
 ```{r}
-setwd(dir = "../../analyses/Haws_04-methylKit/") #Set working directory inside code chunk
 processedFiles <- methylKit::methRead(analysisFiles,
                                       sample.id = list("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
                                                        "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
@@ -107,24 +92,18 @@ processedFilteredFilesCov5 <- methylKit::filterByCoverage(processedFiles,
 ```
 
 ```{r}
-save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 # Characterize general methylation
 
 ## Sample-specific descriptive statistics
 
-### Specify working directory for output
-
-```{bash}
-mkdir ../../analyses/Haws_04-methylKit/general-stats
-```
-
 ```{r}
 nFiles <- 24 #Count number of samples
-fileName <- data.frame("nameBase" = rep("../../analyses/Haws_04-methylKit/general-stats/percent-CpG-methylation", times = nFiles),
-                       "nameBase2" = rep("../../analyses/Haws_04-methylKit/general-stats/percent-CpG-coverage", times = nFiles),
+fileName <- data.frame("nameBase" = rep("general-stats/percent-CpG-methylation", times = nFiles),
+                       "nameBase2" = rep("general-stats/percent-CpG-coverage", times = nFiles),
                        "sample.ID" = 1:24) #Create new dataframe for filenames
 head(fileName) #Confirm dataframe creation
 ```
@@ -162,8 +141,8 @@ head(methylationInformationFilteredCov5) #Confirm unite
 ```
 
 ```{r}
-save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 ```{r}
@@ -171,32 +150,32 @@ clusteringInformationFilteredCov5 <- methylKit::clusterSamples(methylationInform
 ```
 
 ```{r}
-jpeg(filename = "../../analyses/Haws_04-methylKit/general-stats/Full-Sample-Pearson-Correlation-Plot-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "general-stats/Full-Sample-Pearson-Correlation-Plot-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
 methylKit::getCorrelation(methylationInformationFilteredCov5, plot = TRUE) #Understand correlation between methylation patterns in different samples
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "../../analyses/Haws_04-methylKit/general-stats/Full-Sample-CpG-Methylation-Clustering-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "general-stats/Full-Sample-CpG-Methylation-Clustering-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
 methylKit::clusterSamples(methylationInformationFilteredCov5, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "../../analyses/Haws_04-methylKit/general-stats/Full-Sample-Methylation-PCA-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "general-stats/Full-Sample-Methylation-PCA-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
 methylKit::PCASamples(methylationInformationFilteredCov5) #Run a PCA analysis on percent methylation for all samples
 dev.off() #Turn off plotting device
 ```
 
 ```{r}
-jpeg(filename = "../../analyses/Haws_04-methylKit/general-stats/Full-Sample-Methylation-Screeplot-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "general-stats/Full-Sample-Methylation-Screeplot-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
 methylKit::PCASamples(methylationInformationFilteredCov5, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
 dev.off()
 ```
 
 ```{r}
-save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 # Differentially methylated loci
@@ -218,10 +197,17 @@ head(covariatepH) #Check dataframe format
 ### Identify DML
 
 ```{r}
-diffMethStatsPloidy50 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
+differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
                                                                    covariates = covariatepH,
-                                                                   mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
+                                                                   overdispersion = "MN", test = "Chisq",
+                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
+```
+
+```{r}
+diffMethStatsPloidy25 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsPloidy25$chr) #Count the number of DML
+head(diffMethStatsPloidy25) #Confirm creation
 ```
 
 ```{r}
@@ -231,26 +217,20 @@ head(diffMethStatsPloidy50) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidy75 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+diffMethStatsPloidy75 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
 length(diffMethStatsPloidy75$chr) #Count the number of DML
 head(diffMethStatsPloidy75) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidy100 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.01) #Identify loci that are at least 100% different
-length(diffMethStatsPloidy100$chr) #Count the number of DML
-head(diffMethStatsPloidy100) #Confirm creation
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 ```{r}
-save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
-```
-
-I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
-
-```{r}
-#write.csv(diffMethStatsPloidy50, "../../analyses/Haws_04-methylKit/DML-ploidy-50-Cov5.csv") #Save table as .csv
+write.csv(diffMethStatsPloidy25, "DML/DML-ploidy-25-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsPloidy50, "DML/DML-ploidy-50-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsPloidy75, "DML/DML-ploidy-75-Cov5.csv", quote = FALSE) #Save table as .csv
 ```
 
 ## pH differences
@@ -258,16 +238,9 @@ I'm going to use the following settings moving forward: 500% difference and q-va
 ### Assign treatment information
 
 ```{r}
-methylationInformationFilteredCov5T <- methylKit::reorganize(processedFiles,
-                                                     sample.id = sampleMetadata$sampleID,
-                                                     treatment = sampleMetadata$pHTreatment) %>%
-  methylKit::filterByCoverage(.,
-                              lo.count = 5, lo.perc = NULL,
-                              high.count = NULL, high.perc = 99.9) %>%
-  methylKit::normalizeCoverage(.) %>%
-  methylKit::unite(processedFilteredFilesCov5T,
-                   destrand = FALSE,
-                   mc.cores = 4) #Reorganize processedFiles to provide pH treatment specification. Filter by coverage and normalize coverage between samples. Combine all processed files into a single table. Use destrand = TRUE to not destrand. By default only bases with data in all samples will be kept
+methylationInformationFilteredCov5T <- methylKit::reorganize(methylationInformationFilteredCov5,
+                                                             sample.id = sampleMetadata$sampleID,
+                                                             treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification.
 head(methylationInformationFilteredCov5T) #Confirm unite
 ```
 
@@ -282,10 +255,17 @@ head(covariatePloidy) #Check dataframe format
 ### Identify DML
 
 ```{r}
-diffMethStatsTreatment50 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
-                                                                   covariates = covariatePloidy,
-                                                                   mc.cores = 4) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 4 cores.
+differentialMethylationStatsTreatment <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5T,
+                                                                      covariates = covariatePloidy,
+                                                                      overdispersion = "MN", test = "Chisq",
+                                                                      mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
 head(differentialMethylationStatsTreatment) #Look at differential methylation statistics
+```
+
+```{r}
+diffMethStatsTreatment25 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 25, qvalue = 0.01) #Identify loci that are at least 75% different
+length(diffMethStatsTreatment25$chr) #Count the number of DML
+head(diffMethStatsTreatment25) #Confirm creation
 ```
 
 ```{r}
@@ -295,24 +275,18 @@ head(diffMethStatsTreatment50) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsTreatment75 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+diffMethStatsTreatment75 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
 length(diffMethStatsTreatment75$chr) #Count the number of DML
 head(diffMethStatsTreatment75) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsTreatment100 <- methylKit::getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 99, qvalue = 0.01) #Identify loci that are at least 100% different
-length(diffMethStatsTreatment100$chr) #Count the number of DML
-head(diffMethStatsTreatment100) #Confirm creation
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 ```{r}
-save.image("../../analyses/Haws_04-methylKit/methylKit.RData") #Save R Data in case R crashes
-#load("../../analyses/Haws_04-methylKit/methylKit.RData") #Load R Data
-```
-
-I'm going to use the following settings moving forward: 500% difference and q-value < 0.001.
-
-```{r}
-#write.csv(diffMethStatsTreatment50, "../../analyses/Haws_04-methylKit/DML-pH-50-Cov5.csv") #Save table as .csv
+write.csv(diffMethStatsTreatment25, "DML/DML-pH-25-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsTreatment50, "DML/DML-pH-50-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsTreatment75, "DML/DML-pH-75-Cov5.csv", quote = FALSE) #Save table as .csv
 ```
