@@ -69,5 +69,5 @@ singularity exec \
 --bind="$TMPDIR/var/run:/var/run/rstudio-server" \
 --bind="$TMPDIR/tmp:/tmp" \
 --bind=/gscratch/scrubbed/${USER} \
-${container_path}/${container} \
+/gscratch/srlab/programs/singularity_containers/rstudio-4.0.2.sjw-01 \
 rserver --www-port ${PORT} --auth-none=0 --auth-pam-helper-path=pam-helper --auth-stay-signed-in-days=30 --auth-timeout-minutes=0
