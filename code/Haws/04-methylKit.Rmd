@@ -11,12 +11,12 @@ In this script, I'll get preliminary methylation information from diploid and tr
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "/gscratch/scrubbed/yaaminiv/Hawes/analyses/methylKit/") #Set root directory
 ```
 
 # Install packages
 
 ```{r}
-require(devtools) #Load devtools
 require(methylKit) #Load methylKit
 require(dplyr) #Load dplyr
 ```
@@ -199,8 +199,7 @@ head(covariatepH) #Check dataframe format
 ```{r}
 differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
                                                                    covariates = covariatepH,
-                                                                   overdispersion = "MN", test = "Chisq",
-                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
+                                                                   overdispersion = "MN", test = "Chisq") #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
