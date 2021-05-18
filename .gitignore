@@ -62,3 +62,4 @@ analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
 *.bedgraph-unMeth
 *.bed
 *.bed-Gene
+*.bed-exonUTR
