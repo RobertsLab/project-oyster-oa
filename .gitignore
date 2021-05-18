@@ -63,3 +63,9 @@ analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
 *.bed
 *.bed-Gene
 *.bed-exonUTR
+*.bed-intron
+*.bed-downstreamFlanks
+*.bed-intergenic
+*.bed-lncRNA
+*.bed-TE
+*.bed-upstreamFlanks
