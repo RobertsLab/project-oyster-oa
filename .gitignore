@@ -56,3 +56,4 @@ analyses/Haws_05_BS-SNPer/SNP-candidates.txt
 analyses/Haws_05_BS-SNPer/CpG-meth-info.tab
 analyses/Haws_05_BS-SNPer/CHH-meth-info.tab
 analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
+*.bedgraph
