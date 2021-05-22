@@ -180,11 +180,17 @@ write.csv(diffMethStatsPloidy50, "DML/DML-ploidy-50-Cov5.csv", quote = FALSE) #S
 
 ### Assign treatment information
 
-methylationInformationFilteredCov5T <- methylKit::reorganize(methylationInformationFilteredCov5,
+#I need to reorganize samples before uniting, since the min.per.group in unite was based on ploidy treamtent information.
+
+methylationInformationFilteredCov5T <- methylKit::reorganize(processedFilteredFilesCov5,
                                                              sample.id = sampleMetadata$sampleID,
-                                                             treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification.
+                                                             treatment = sampleMetadata$pHTreatment) %>%
+  methylKit::unite(., destrand = FALSE, min.per.group = 8L) #Re-assign treatment information to filtered and normalized 5x CpG loci, then unite 5x loci with coverage in at least 8/12 samples/treatment
+
 head(methylationInformationFilteredCov5T) #Confirm unite
-length(methylationInformationFilteredCov5T$chr) #1984530 CpGs with data in all samples. 4557452 CpGs with data in 9/12 samples using min.per.group = 9, 5103729 with min.per.group = 8.
+length(methylationInformationFilteredCov5T$chr) #1984530 CpGs with data in all samples. 5086421 with min.per.group = 8.
+
+save.image("methylKit.RData") #Save R Data in case R crashes
 
 ### Create covariate matrix
 
@@ -203,11 +209,11 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 #load("methylKit.RData") #Load R Data
 
 diffMethStatsTreatment25 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 25, qvalue = 0.01) #Identify loci that are at least 75% different
-length(diffMethStatsTreatment25$chr) #Count the number of DML: 42
+length(diffMethStatsTreatment25$chr) #Count the number of DML: 40
 head(diffMethStatsTreatment25) #Confirm creation
 
 diffMethStatsTreatment50 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsTreatment50$chr) #Count the number of DML: 3
+length(diffMethStatsTreatment50$chr) #Count the number of DML: 4
 head(diffMethStatsTreatment50) #Confirm creation
 
 save.image("methylKit.RData") #Save R Data in case R crashes
