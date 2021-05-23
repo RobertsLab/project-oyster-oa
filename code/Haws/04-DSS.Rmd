@@ -1,0 +1,78 @@
+---
+title: "04-DSS.Rmd"
+output: github_document
+---
+
+# Set up R Markdown document
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "/gscratch/scrubbed/yaaminiv/Hawes/analyses/DSS") #Set root directory
+```
+
+# Load packages
+
+```{r}
+require(tidyverse)
+require(dplyr)
+require(locfit) #Dependency for bsseq
+require(bsseq) #Dependency for DSS
+require(DSS)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Load data
+
+## Modify Bismark output for DSS
+
+I'll need to create a BSseq class object, which will then be used to conduct a general model. Columns for imported files should be: chr, pos, N (read coverage), and X (reads methylated).
+
+```{bash}
+for f in *cov
+do
+  awk '{print $1"\t"$2"\t"$5+$6"\t"$5}' ${f} \
+  > ${f}.txt
+done
+```
+
+```{bash}
+for f in *txt
+do
+  sed  -i '1i chr\tpos\tN\tX' ${f}
+done
+```
+
+```{bash}
+for f in *txt
+do
+   [ -f ${f} ] || continue
+    mv "${f}" "${f//_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov/}"
+done
+```
+
+## Import data
+
+```{r}
+coverageFiles <- list.files(pattern = "*txt") #Create a file list for all 24 files to import
+list2env(lapply(setNames(coverageFiles, 
+         read.table(header = TRUE)),
+         envir = .GlobalEnv) #Import files with list2env. Use lapply to setNames. Files will be named zr3644_#
+
+```
+
+```{r}
+tbl <- list.files(pattern = "*txt") %>%
+  map_df(~read_table(.))
+```
+
+
+
+
+
+
+
+
+
