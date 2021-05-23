@@ -22,7 +22,7 @@
 # Set user-defined variables inside this box.
 
 # Set container path
-container_path="/usr/lusers/yaaminiv"
+container_path="/gscratch/home/yaaminiv"
 
 # Set container name
 container="rstudio-4.0.2.yrv-v1.0.sif"
@@ -58,6 +58,12 @@ When done using RStudio Server, terminate the job by:
       scancel -f ${SLURM_JOB_ID}
 END
 
+mkdir -p "$TMPDIR/tmp/rstudio-server"
+uuidgen > "$TMPDIR/tmp/rstudio-server/secure-cookie-key"
+chmod 0600 "$TMPDIR/tmp/rstudio-server/secure-cookie-key"
+
+mkdir -p "$TMPDIR/var/lib"
+mkdir -p "$TMPDIR/var/run"
 
 # User-installed R packages go into their home directory
 if [ ! -e ${HOME}/.Renviron ]
