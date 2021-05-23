@@ -69,3 +69,4 @@ analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
 *.bed-lncRNA
 *.bed-TE
 *.bed-upstreamFlanks
+*.bed-CDS
