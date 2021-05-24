@@ -15,7 +15,6 @@ knitr::opts_knit$set(root.dir = "/gscratch/scrubbed/yaaminiv/Hawes/analyses/DSS"
 ```{r}
 require(tidyverse)
 require(dplyr)
-require(locfit) #Dependency for bsseq
 require(bsseq) #Dependency for DSS
 require(DSS)
 ```
@@ -57,22 +56,111 @@ done
 
 ```{r}
 coverageFiles <- list.files(pattern = "*txt") #Create a file list for all 24 files to import
-list2env(lapply(setNames(coverageFiles, 
-         read.table(header = TRUE)),
-         envir = .GlobalEnv) #Import files with list2env. Use lapply to setNames. Files will be named zr3644_#
-
+list2env(lapply(setNames(coverageFiles,
+                         make.names(gsub("", "", coverageFiles))), read.table, header = TRUE),
+         envir = .GlobalEnv) #Import all coverage files into R global environment, using first line as header
 ```
 
 ```{r}
-tbl <- list.files(pattern = "*txt") %>%
-  map_df(~read_table(.))
+BSobj <- makeBSseqData(dat = list(zr3644_1.txt, zr3644_2.txt, zr3644_3.txt, zr3644_4.txt, zr3644_5.txt, zr3644_6.txt,
+                                  zr3644_7.txt, zr3644_8.txt, zr3644_9.txt, zr3644_10.txt, zr3644_11.txt, zr3644_12.txt,
+                                  zr3644_13.txt, zr3644_14.txt, zr3644_15.txt, zr3644_16.txt, zr3644_17.txt, zr3644_18.txt,
+                                  zr3644_19.txt, zr3644_20.txt, zr3644_21.txt, zr3644_22.txt, zr3644_23.txt, zr3644_24.txt),
+                       sampleNames = c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                                       "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                                       "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                                       "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6")) #Make BSseq object. dat = list of dataframes with coverage information. sampleNames = sample names.
+BSobj #Check BSobj was created
 ```
 
+```{r}
+save.image("DSS.Rdata") #Save R data
+```
 
+# Set up general experimental design
 
+```{r}
+design <- data.frame("ploidy" = c(rep("D", times = 12),
+                                  rep("T", times = 12)),
+                     "pH" = c(rep("H", times = 6),
+                               rep("L", times = 6),
+                               rep("H", times = 6),
+                               rep("L", times = 6))) #Create dataframe with experimental design information
+row.names(design) <- c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                       "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                       "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                       "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6") #Set sampleID as rownames
+head(design) #Check format
+```
 
+# Fit a general linear model
 
+The model only needs to be fit once, then the parameters can be tested based on model fitting results.
 
+```{r}
+DMLfit <- DMLfit.multiFactor(BSobj, design = design, formula = ~ploidy + pH + ploidy:pH) #Formula: intercept, additive effect of ploidy and pH, and interaction
+colnames(DMLfit$X) #Column names of the design matrix (ploidyT = ploidy triploid, pHL = pH low, ploidyT:pHL = interaction)
+```
 
+```{r}
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for ploidy
+
+```{r}
+DMLtest.ploidy <- DMLtest.multiFactor(DMLfit, coef = "ploidyT") #Test the ploidy effect
+head(DMLtest.ploidy) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+ploidy.DML <- subset(DMLtest.ploidy, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(ploidy.DML) #Check output
+length(ploidy.DML$chr) #178 DML
+```
+
+```{r}
+write.csv(ploidy.DML, "DML/DML-ploidy-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for pH
+
+```{r}
+DMLtest.pH <- DMLtest.multiFactor(DMLfit, coef = "pHL") #Test the pH effect
+head(DMLtest.pH) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+pH.DML <- subset(DMLtest.pH, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(pH.DML) #Check output
+length(pH.DML$chr) #154 DML
+```
+
+```{r}
+write.csv(pH.DML, "DML/DML-pH-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for ploidy:pH
+
+```{r}
+DMLtest.ploidypH <- DMLtest.multiFactor(DMLfit, coef = "ploidyT:pHL") #Test the ploidy-pH interaction
+head(DMLtest.ploidypH) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+ploidypH.DML <- subset(DMLtest.ploidypH, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(ploidypH.DML) #Check output
+length(ploidypH.DML$chr) #53 DML
+```
+
+```{r}
+write.csv(ploidypH.DML, "DML/DML-ploidypH-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
 
 
