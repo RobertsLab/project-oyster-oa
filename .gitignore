@@ -71,3 +71,5 @@ analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
 *.bed-upstreamFlanks
 *.bed-CDS
 analyses/Haws_08-GOterm-annotation/20210601-cgigas-roslin-mito-blastx.outfmt6
+analyses/Haws_08-GOterm-annotation/cgigas-roslin-mito-blastx.outfmt6.codeIsolated
+analyses/Haws_08-GOterm-annotation/gigas-blast-sort.tab
