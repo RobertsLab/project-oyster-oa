@@ -73,3 +73,6 @@ analyses/Haws_05_BS-SNPer/CHG-meth-info.tab
 analyses/Haws_08-GOterm-annotation/20210601-cgigas-roslin-mito-blastx.outfmt6
 analyses/Haws_08-GOterm-annotation/cgigas-roslin-mito-blastx.outfmt6.codeIsolated
 analyses/Haws_08-GOterm-annotation/gigas-blast-sort.tab
+analyses/Haws_08-GOterm-annotation/uniprot-SP-GO.sorted
+analyses/Haws_08-GOterm-annotation/gigas-blast-annot.tab
+analyses/Haws_08-GOterm-annotation/_blast-annot.tab
