@@ -14,7 +14,7 @@ push @{$agent->requests_redirectable}, 'POST';
 my $response = $agent->post("$base/$tool/",
                             [ 'file' => [$list],
                               'format' => 'txt',
-                              'from' => 'P_ENTREZGENEID',
+                              'from' => 'P_REFSEQ_AC',
                               'to' => 'ACC',
                             ],
                             'Content_Type' => 'form-data');
