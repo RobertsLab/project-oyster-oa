@@ -76,3 +76,6 @@ analyses/Haws_08-GOterm-annotation/gigas-blast-sort.tab
 analyses/Haws_08-GOterm-annotation/uniprot-SP-GO.sorted
 analyses/Haws_08-GOterm-annotation/gigas-blast-annot.tab
 analyses/Haws_08-GOterm-annotation/_blast-annot.tab
+analyses/Haws_08-GOterm-annotation/_blast-GO-unfolded.sorted
+analyses/Haws_08-GOterm-annotation/_blast-GO-unfolded.tab
+analyses/Haws_08-GOterm-annotation/_intermediate.file
