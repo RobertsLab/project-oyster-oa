@@ -79,3 +79,5 @@ analyses/Haws_08-GOterm-annotation/_blast-annot.tab
 analyses/Haws_08-GOterm-annotation/_blast-GO-unfolded.sorted
 analyses/Haws_08-GOterm-annotation/_blast-GO-unfolded.tab
 analyses/Haws_08-GOterm-annotation/_intermediate.file
+analyses/Haws_08-GOterm-annotation/Blastquery-GOslim.tab
+analyses/Haws_08-GOterm-annotation/GO-GOslim.sorted
