@@ -251,16 +251,15 @@ mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-a
 
 #pdf("figures/triploid-frequency-distribution.pdf", width = 11, height = 8.5)
 
-hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = TRUE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[4], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
 
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "2.5", "5", "7.5"), at = c(0, 2.5e+06, 5e+06, 7.5e+06), cex.axis = 1.2) #add y-axis
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6", "8"), at = c(0, 2e+06, 4e+06, 6e+06, 8e+06), cex.axis = 1.2) #add y-axis
 mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-axis label
 
 #dev.off()
-
 
 ## Principal Components Analysis
 
