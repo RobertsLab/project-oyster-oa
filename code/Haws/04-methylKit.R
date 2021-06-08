@@ -7,6 +7,10 @@ setwd("/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") 
 require(methylKit) #Load methylKit
 require(dplyr) #Load dplyr
 
+install.packages("scales")
+require(scales)
+require(vegan)
+
 # Obtain session information
 
 sessionInfo()
@@ -262,6 +266,50 @@ mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-a
 #dev.off()
 
 ## Principal Components Analysis
+
+allDataPCA <- PCASamples(methylationInformationFilteredCov5, obj.return = TRUE) #Run a PCA analysis on percent methylation for all samples. methylKit uses prcomp to create the PCA matrix
+summary(allDataPCA) #Look at summary statistics. The first PC explains 11.0% of variation, the second PC explains 6.63% of variation
+
+#pdf("figures/all-sample-PCA.pdf", width = 11, height = 8.5)
+
+par(mar = c(5, 5, 1, 1)) #Specify inner and outer margins
+
+fig.allDataPCA <- ordiplot(allDataPCA, choices = c(1, 2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
+
+points(fig.allDataPCA, "sites", col = c(rep(alpha(plotColors[5], 0.5), times = 12), rep(alpha(plotColors[4], 0.5), times = 12)), pch = c(rep(16, times = 6), rep(17, times = 6), rep(16, times = 6), rep(17, times = 6)), cex = 3) #Add each sample. Purple = diploid, pink = triploid, 16 = high pH, 17 = low pH
+
+#Add multiple white boxes on top of the default black box to manually change the color
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+box(col = "white")
+
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "0", col = plotColors[5]) #Add confidence ellipse around diploids
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "1", col = plotColors[4]) #Add confidence ellipse around triploids
+
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "0", col = plotColors[5], lty = 2) #Add confidence ellipse around the samples in high pH
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "1", col = plotColors[2], lty = 2) #Add confidence ellipse around the samples in low pH
+
+axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.7) #Add x-axis
+mtext(side = 1, text = "PC 1 (11.0%)", line = 3, cex = 1.5) #Add x-axis label
+
+axis(side =  2, labels = TRUE, col = "grey80", cex.axis = 1.7) #Add y-axis
+mtext(side = 2, text = "PC 2 (6.63%)", line = 3, cex = 1.5) #Add y-axis label
+
+legend("bottomright", 
+       pch = c(15, 15, 16, 17), 
+       legend = c("Diploid", "Triploid", "High pH", "Low pH"), 
+       col = c(plotColors[5], plotColors[4], "grey20", "grey20"), 
+       cex = 1.7, bty = "n") #Add a legend with information about ambient and elevated samples
+
+#dev.off()
+
 
 ## CpG overlaps with the genome
 
