@@ -214,3 +214,7 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #dev.off()
 ```
 
+```{r}
+save.image("../../project-oyster-oa.RData") #Save RData
+```
+
