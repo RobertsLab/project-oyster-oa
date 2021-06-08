@@ -2,7 +2,7 @@
 
 # Load packages
 
-setwd("/gscratch/scrubbed/yaaminiv/Hawes/analyses/methylKit/") #Set root directory
+setwd("/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") #Set root directory
 
 require(methylKit) #Load methylKit
 require(dplyr) #Load dplyr
@@ -221,3 +221,37 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 
 write.csv(diffMethStatsTreatment25, "DML/DML-pH-25-Cov5.csv", quote = FALSE) #Save table as .csv
 write.csv(diffMethStatsTreatment50, "DML/DML-pH-50-Cov5.csv", quote = FALSE) #Save table as .csv
+
+# Figures
+
+plotColors <- rev(RColorBrewer::brewer.pal(8, "PuRd")) #Create a color palette for the barplots. Reverse the order so the darkest shade is used first.
+
+## Coverage plots
+
+
+
+
+## Methylation frequency distributions
+
+ploidyMethylation <- read.table("../Haws_06-methylation-landscape/ploidy-methylation-averages.bedgraph", sep = "\t", header = FALSE) #Import ploidy methylation information
+colnames(ploidyMethylation) <- c("diploid", "triploid") #Add column names
+head(ploidyMethylation) #Confirm import
+
+#pdf("figures/diploid-frequency-distribution.pdf", width = 11, height = 8.5)
+
+hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 7.5e+06)) #Create base plot
+
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
+
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2.5", "5", "7.5"), at = c(0, 2.5e+06, 5e+06, 7.5e+06), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-axis label
+
+#dev.off()
+
+
+## Principal Components Analysis
+
+## CpG overlaps with the genome
+
+## Multipanel plot
