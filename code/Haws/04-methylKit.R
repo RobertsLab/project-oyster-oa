@@ -310,7 +310,6 @@ legend("bottomright",
 
 #dev.off()
 
-
 ## CpG overlaps with the genome
 
 ## Multipanel plot
