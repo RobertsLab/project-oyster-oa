@@ -108,56 +108,57 @@ write.csv(CpGLocationMethDMLploidy, "CpG-location-statResults-ploidy.txt", quote
 ## Import file counts
 
 ```{r}
-cpgFeatureOverlapsploidy <- read.table("DML-ploidy-DSS-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("ploidyDML", "filename")) #Import line counts
-cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[-c(2, 3, 10),] #Drop extra lines
-cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[c(4, 1, 6, 8, 3, 7, 2, 5),] #Reorganize rows to match order: exon UTR, CDS, intron, upstream, downstream, lncRNA, TE, intergenic
-head(cpgFeatureOverlapsploidy) #Confirm import
+cpgFeatureOverlapspH <- read.table("DML-pH-DSS-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("pHDML", "filename")) #Import line counts
+cpgFeatureOverlapspH <- cpgFeatureOverlapspH[-c(2, 3, 10),] #Drop extra lines
+cpgFeatureOverlapspH <- cpgFeatureOverlapspH[c(4, 1, 6, 8, 3, 7, 2, 5),] #Reorganize rows to match order: exon UTR, CDS, intron, upstream, downstream, lncRNA, TE, intergenic
+head(cpgFeatureOverlapspH) #Confirm import
 ```
 
 ```{r}
-cpgFeatureOverlapsploidy$Meth <- cpgFeatureOverlaps$Meth #Add methylated CpG information
-rownames(cpgFeatureOverlapsploidy) <- row.names(cpgFeatureOverlaps) #Add rowname information
-cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[,-2] #Drop filename column
-cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[,c(2,1)] #Reorder columns
-head(cpgFeatureOverlapsploidy)
+cpgFeatureOverlapspH$Meth <- cpgFeatureOverlaps$Meth #Add methylated CpG information
+rownames(cpgFeatureOverlapspH) <- row.names(cpgFeatureOverlaps) #Add rowname information
+cpgFeatureOverlapspH <- cpgFeatureOverlapspH[,-2] #Drop filename column
+cpgFeatureOverlapspH <- cpgFeatureOverlapspH[,c(2,1)] #Reorder columns
+head(cpgFeatureOverlapspH)
 ```
 
 ## Contingency test
 
 ```{r}
-cpgLocationStatTestploidy <- data.frame(t(cpgFeatureOverlapsploidy)) #Transpose for statistical testing
-head(cpgLocationStatTestploidy) #Confirm formatting
+cpgLocationStatTestpH <- data.frame(t(cpgFeatureOverlapspH)) #Transpose for statistical testing
+head(cpgLocationStatTestpH) #Confirm formatting
 ```
 
 ```{r}
-CpGLocationMethDMLploidy <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(cpgLocationStatTestploidy)) { #For each genome feature
-  MethFeature <- cpgLocationStatTestploidy[1,i] #Variable for # genome feature overlaps for methylated CpGs
-  ploidyFeature <- cpgLocationStatTestploidy[2,i] #Variable for # genome feature overlaps for ploidy DML
-  MethNotFeature <- sum(cpgLocationStatTestploidy[1,-i]) #Variable for # other CpG types for methylated CpGs
-  ploidyNotFeature <- sum(cpgLocationStatTestploidy[2,-i]) #Variable for # other CpG types for ploidy DML
-  ct <- matrix(c(MethFeature, ploidyFeature, MethNotFeature, ploidyNotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(cpgLocationStatTestploidy[i])), paste0("Not", colnames(cpgLocationStatTestploidy[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(cpgLocationStatTestploidy)[c(1,2)])) #Assign row names: methylated CpGs, ploidy DML
+CpGLocationMethDMLpH <- data.frame() #Create empty dataframe to store chi-squared results
+
+for(i in 1:ncol(cpgLocationStatTestpH)) { #For each genome feature
+  MethFeature <- cpgLocationStatTestpH[1,i] #Variable for # genome feature overlaps for methylated CpGs
+  pHFeature <- cpgLocationStatTestpH[2,i] #Variable for # genome feature overlaps for pH DML
+  MethNotFeature <- sum(cpgLocationStatTestpH[1,-i]) #Variable for # other CpG types for methylated CpGs
+  pHNotFeature <- sum(cpgLocationStatTestpH[2,-i]) #Variable for # other CpG types for pH DML
+  ct <- matrix(c(MethFeature, pHFeature, MethNotFeature, pHNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(cpgLocationStatTestpH[i])), paste0("Not", colnames(cpgLocationStatTestpH[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(cpgLocationStatTestpH)[c(1,2)])) #Assign row names: methylated CpGs, pH DML
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(cpgLocationStatTestploidy)[i]) #Add CpG type to results
-  CpGLocationMethDMLploidy <- rbind(CpGLocationMethDMLploidy, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(cpgLocationStatTestpH)[i]) #Add CpG type to results
+  CpGLocationMethDMLpH <- rbind(CpGLocationMethDMLpH, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(CpGLocationMethDMLploidy)
+head(CpGLocationMethDMLpH)
 ```
 
 ```{r}
-CpGLocationMethDMLploidy$p.adj <- p.adjust(CpGLocationMethDMLploidy$p.value, method = "fdr") #Correct p-value using FDR
-range(CpGLocationMethDMLploidy$p.adj) #Look at range of p-values
-head(CpGLocationMethDMLploidy) #Confirm changes
+CpGLocationMethDMLpH$p.adj <- p.adjust(CpGLocationMethDMLpH$p.value, method = "fdr") #Correct p-value using FDR
+range(CpGLocationMethDMLpH$p.adj) #Look at range of p-values
+head(CpGLocationMethDMLpH) #Confirm changes
 ```
 
 ```{r}
-write.csv(CpGLocationMethDMLploidy, "CpG-location-statResults-ploidy.txt", quote = FALSE, row.names = TRUE) #Save statistical output
+write.csv(CpGLocationMethDMLpH, "CpG-location-statResults-pH.txt", quote = FALSE, row.names = TRUE) #Save statistical output
 ```
 
 # ploidy:pH-DML
