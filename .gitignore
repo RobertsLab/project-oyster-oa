@@ -107,3 +107,13 @@ analyses/Haws_06-methylation-landscape/zr3644_6_R1_val_1_val_1_val_1_bismark_bt2
 analyses/Haws_06-methylation-landscape/zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov.txt
 analyses/Haws_06-methylation-landscape/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov.txt
 analyses/Haws_06-methylation-landscape/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov.txt
+analyses/Haws_08-GOterm-annotation/cgigas_uk_roslin_v1_mRNA.transcriptID.geneID
+analyses/Haws_08-GOterm-annotation/DML-pH-DSS.GeneIDs
+analyses/Haws_08-GOterm-annotation/DML-pH-DSS.GeneIDs.geneOverlap
+analyses/Haws_08-GOterm-annotation/DML-pH-DSS.GeneIDs.geneOverlap.transcriptIDs
+analyses/Haws_08-GOterm-annotation/DML-ploidy-DSS.GeneIDs
+analyses/Haws_08-GOterm-annotation/DML-ploidy-DSS.GeneIDs.geneOverlap
+analyses/Haws_08-GOterm-annotation/DML-ploidy-DSS.GeneIDs.geneOverlap.transcriptIDs
+analyses/Haws_08-GOterm-annotation/DML-ploidypH-DSS.GeneIDs
+analyses/Haws_08-GOterm-annotation/DML-ploidypH-DSS.GeneIDs.geneOverlap
+analyses/Haws_08-GOterm-annotation/DML-ploidypH-DSS.GeneIDs.geneOverlap.transcriptIDs
