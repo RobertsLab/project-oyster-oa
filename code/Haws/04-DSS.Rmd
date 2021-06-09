@@ -7,7 +7,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/gscratch/scrubbed/yaaminiv/Hawes/analyses/DSS") #Set root directory
+knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-DSS/") #Set root directory
 ```
 
 # Load packages
@@ -17,6 +17,15 @@ require(tidyverse)
 require(dplyr)
 require(bsseq) #Dependency for DSS
 require(DSS)
+```
+
+```{r}
+#Packages for visualization
+#install.packages("gplots")
+#install.packages("dichromat")
+
+require(gplots)
+require(dichromat)
 ```
 
 ```{r}
@@ -162,5 +171,50 @@ write.csv(ploidypH.DML, "DML/DML-ploidypH-DSS.csv", quote = FALSE) #Save table a
 
 save.image("DSS.Rdata") #Save R data
 ```
+
+# Figures
+
+## Load data
+
+```{r}
+#load("../../project-oyster-oa.RData") #Load plotting data
+```
+
+```{r}
+#Import DML lists
+
+ploidy.DML <- read.csv("DML/DML-ploidy-DSS.csv")
+ploidy.DML <- ploidy.DML[,-1] #Drop first column
+colnames(ploidy.DML)[2] <- "start" #Rename second column (pos to start)
+ploidy.DML$end <- ploidy.DML$start + 2 #Add end position information
+head(ploidy.DML)
+
+pH.DML <- read.csv("DML/DML-pH-DSS.csv")
+pH.DML <- pH.DML[,-1] #Drop first column
+colnames(pH.DML)[2] <- "start" #Rename second column (pos to start)
+pH.DML$end <- pH.DML$start + 2 #Add end position information
+head(pH.DML)
+
+ploidypH.DML <- read.csv("DML/DML-ploidypH-DSS.csv")
+ploidypH.DML <- ploidypH.DML[,-1] #Drop first column
+colnames(ploidypH.DML)[2] <- "start" #Rename second column (pos to start)
+ploidypH.DML$end <- ploidypH.DML$start + 2 #Add end position information
+head(ploidypH.DML)
+```
+
+## Format data
+
+```{r}
+ploidy.DML.pos <- ploidy.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(ploidy.DML.pos) #Confirm reduction
+
+pH.DML.pos <- pH.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(pH.DML.pos) #Confirm reduction
+
+ploidypH.DML.pos <- ploidypH.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(ploidypH.DML.pos) #Confirm reduction
+```
+
+## 
 
 
