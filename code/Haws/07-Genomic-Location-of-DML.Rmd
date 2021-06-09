@@ -219,32 +219,37 @@ head(CpGLocationMethDMLploidypH) #Confirm changes
 write.csv(CpGLocationMethDMLploidypH, "CpG-location-statResults-ploidypH.txt", quote = FALSE, row.names = TRUE) #Save statistical output
 ```
 
-
-
-
-
-
 # Create stacked barplot
 
 ```{r}
-cpgFeatureOverlapsPercentsFem <- cpgFeatureOverlapsFem #Duplicate dataframe
-for (i in 1:length(cpgFeatureOverlapsFem)) {
-  cpgFeatureOverlapsPercentsFem[,i] <- (cpgFeatureOverlapsPercentsFem[,i] / (sum(cpgFeatureOverlapsPercentsFem[,i]))) * 100
+cpgFeatureOverlapsPercentsploidy <- cpgFeatureOverlapsploidy #Duplicate dataframe
+for (i in 1:length(cpgFeatureOverlapsploidy)) {
+  cpgFeatureOverlapsPercentsploidy[,i] <- (cpgFeatureOverlapsPercentsploidy[,i] / (sum(cpgFeatureOverlapsPercentsploidy[,i]))) * 100
 } #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
-head(cpgFeatureOverlapsPercentsFem) #Check calculations
+head(cpgFeatureOverlapsPercentsploidy) #Check calculations
 ```
 
 ```{r}
-cpgFeatureOverlapsPercentsInd <- cpgFeatureOverlapsInd #Duplicate dataframe
-for (i in 1:length(cpgFeatureOverlapsInd)) {
-  cpgFeatureOverlapsPercentsInd[,i] <- (cpgFeatureOverlapsPercentsInd[,i] / (sum(cpgFeatureOverlapsPercentsInd[,i]))) * 100
+cpgFeatureOverlapsPercentspH <- cpgFeatureOverlapspH #Duplicate dataframe
+for (i in 1:length(cpgFeatureOverlapspH)) {
+  cpgFeatureOverlapsPercentspH[,i] <- (cpgFeatureOverlapsPercentspH[,i] / (sum(cpgFeatureOverlapsPercentspH[,i]))) * 100
 } #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
-head(cpgFeatureOverlapsPercentsInd) #Check calculations
+head(cpgFeatureOverlapsPercentspH) #Check calculations
 ```
 
 ```{r}
-cpgFeatureOverlapsPercentsBind <- cbind(cpgFeatureOverlapsPercentsFem, cpgFeatureOverlapsPercentsInd) #Combine dataframes
-cpgFeatureOverlapsPercentsBind <- cpgFeatureOverlapsPercentsBind[,c(2,1,3)] #Reorganize and drop columns
+cpgFeatureOverlapsPercentsploidypH <- cpgFeatureOverlapsploidypH #Duplicate dataframe
+for (i in 1:length(cpgFeatureOverlapsploidypH)) {
+  cpgFeatureOverlapsPercentsploidypH[,i] <- (cpgFeatureOverlapsPercentsploidypH[,i] / (sum(cpgFeatureOverlapsPercentsploidypH[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
+head(cpgFeatureOverlapsPercentsploidypH) #Check calculations
+```
+
+```{r}
+cpgFeatureOverlapsPercentsBind <- cbind(cpgFeatureOverlapsPercentsploidy, 
+                                        cpgFeatureOverlapsPercentspH,
+                                        cpgFeatureOverlapsPercentsploidypH) #Combine dataframes
+cpgFeatureOverlapsPercentsBind <- cpgFeatureOverlapsPercentsBind[,c(1,2,4,6)] #Reorganize and drop columns
 head(cpgFeatureOverlapsPercentsBind)
 ```
 
@@ -253,10 +258,10 @@ head(cpgFeatureOverlapsPercentsBind)
 
 par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
 
-barplot(t(t(cpgFeatureOverlapsPercentsBind[,c(1:3)])), 
-        col= plotColors2, 
+barplot(t(t(cpgFeatureOverlapsPercentsBind[,c(1:4)])), 
+        col= plotColors, 
         axes = FALSE, 
-        names.arg = c("High", "Female", "Indeterminate"), cex.names = 1.5,
+        names.arg = c("High", "Ploidy", "pH", "Interaction"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
@@ -276,7 +281,7 @@ legend(x = 0.57, y = 0.87,
                   "Intergenic"),
        pch = 22, 
         col = "black", 
-        pt.bg = plotColors2,
+        pt.bg = plotColors,
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
@@ -284,3 +289,8 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 
 #dev.off()
 ```
+
+```{r}
+save.image("../../project-oyster-oa.RData") #Save R data
+```
+
