@@ -464,3 +464,7 @@ legend("bottomright", xpd = TRUE, inset = c(0, 0),
 dev.off()
 ```
 
+```{r}
+save.image("../../project-oyster-oa.RData") #Save R data
+```
+
