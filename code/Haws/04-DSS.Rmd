@@ -334,4 +334,81 @@ heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors2), scale = "none", m
 
 #dev.off()
 ```
+# Chromosome distribution
+
+```{r}
+geneGFF <- read.table("/Volumes/web-1/halfshell/genomic-databank/cgigas_uk_roslin_v1_gene.gff", sep = "\t") #Import gene gff file
+genechrCounts <-as.data.frame(table(geneGFF$V1)) #Count the number of genes/chromosome
+colnames(genechrCounts) <- c("chr", "geneCount") #Rename columns
+nrow(genechrCounts) #There are 10 chromosomes + extra scaffolds that were not placed into chromosomes
+```
+
+```{r}
+CGmotifs <- read.table("../../../project-gigas-oa-meth/genome-feature-files/cgigas_uk_roslin_v1_fuzznuc_CGmotif.gff", sep = "\t") #Import CG motif file
+CGmotifsCounts <-as.data.frame(table(CGmotifs$V1)) #Count the number of CpGs/chromosome
+colnames(CGmotifsCounts) <- c("chr", "chrCpGCounts") #Rename columns
+nrow(CGmotifsCounts) #There are 10 chromosomes + extra scaffolds that were not placed into chromosomes
+head(CGmotifsCounts)
+```
+
+## ploidy DML
+
+```{r}
+DMLchrCountsploidy <-as.data.frame(table(ploidy.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountsploidy) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountsploidy) #Confirm formatting
+```
+
+```{r}
+DMLchrCountsploidy <- merge(x = DMLchrCountsploidy, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountsploidy <- merge(x = DMLchrCountsploidy, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountsploidy$DMLbyChrCpG <- (DMLchrCountsploidy$DMLCount / DMLchrCountsploidy$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountsploidy, "DML/ploidy-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountsploidy <- DMLchrCountsploidy[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## pH DML
+
+```{r}
+DMLchrCountspH <-as.data.frame(table(pH.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountspH) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountspH) #Confirm formatting
+```
+
+```{r}
+DMLchrCountspH <- merge(x = DMLchrCountspH, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountspH <- merge(x = DMLchrCountspH, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountspH$DMLbyChrCpG <- (DMLchrCountspH$DMLCount / DMLchrCountspH$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountspH, "DML/pH-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountspH <- DMLchrCountspH[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## ploidy:pH DML
+
+```{r}
+DMLchrCountsploidypH <-as.data.frame(table(ploidypH.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountsploidypH) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountsploidypH) #Confirm formatting
+```
+
+```{r}
+DMLchrCountsploidypH <- merge(x = DMLchrCountsploidypH, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountsploidypH <- merge(x = DMLchrCountsploidypH, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountsploidypH$DMLbyChrCpG <- (DMLchrCountsploidypH$DMLCount / DMLchrCountsploidypH$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountsploidypH, "DML/ploidypH-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountsploidypH <- DMLchrCountsploidypH[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## Plot
+
+
 
