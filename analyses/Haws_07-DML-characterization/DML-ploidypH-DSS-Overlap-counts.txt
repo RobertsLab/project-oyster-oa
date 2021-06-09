@@ -1,7 +1,6 @@
 6	DML-ploidypH-DSS-CDS.bed
 51	DML-ploidypH-DSS-Gene-wb.bed
 48	DML-ploidypH-DSS-Gene.bed
-0	DML-ploidypH-DSS-Overlap-counts.txt
 14	DML-ploidypH-DSS-TE.bed
 0	DML-ploidypH-DSS-downstream.bed
 3	DML-ploidypH-DSS-exonUTR.bed
@@ -9,3 +8,4 @@
 41	DML-ploidypH-DSS-intron.bed
 2	DML-ploidypH-DSS-lncRNA.bed
 1	DML-ploidypH-DSS-unique-CT-SNPs.bed
+0	DML-ploidypH-DSS-upstream.bed
