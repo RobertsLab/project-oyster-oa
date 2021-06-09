@@ -207,7 +207,9 @@ head(ploidypH.DML)
 ```
 
 ```{r}
-union_1x <- read.table("union_1x.bedgraph", sep = "\t", header = TRUE) #Import union 1x bedgraph
+union_1x <- read.table("../Haws_06-methylation-landscape/union_1x.bedgraph", sep = "\t", header = TRUE) #Import union 1x bedgraph
+colnames(union_1x)[1] <- "chr"
+head(union_1x) #Confirm import
 ```
 
 ## ploidy DML
@@ -219,27 +221,36 @@ head(ploidy.DML.pos) #Confirm reduction
 
 ```{r}
 ploidy.DML.pos.meth <- merge(x = ploidy.DML.pos, y = union_1x, by = c("chr", "start", "end")) #Match with 1x union information
+length(ploidy.DML.pos.meth$chr) == length(ploidy.DML.pos$chr) #Check that lengths match
+head(ploidy.DML.pos.meth) #Confirm merge
+```
+
+```{r}
+rownames(ploidy.DML.pos.meth) <- paste(ploidy.DML.pos.meth$chr, ploidy.DML.pos.meth$start, ploidy.DML.pos.meth$end, sep = ".") #Paste chr, start, end information to make row names
+ploidy.DML.pos.meth <- ploidy.DML.pos.meth[,-c(1:3)] #Drop chr, start, end columns
+head(ploidy.DML.pos.meth) #Confirm formatting
+```
+
+```{r}
+for (i in 1:length(ploidy.DML.pos.meth$X1)) {
+  ploidy.DML.pos.meth[,i] <- as.numeric(as.character(ploidy.DML.pos.meth[,i]))
+} #Convert all columns to numeric format
 head(ploidy.DML.pos.meth)
 ```
 
-
 ```{r}
-rownames(ploidy.DML.pos.meth) <- do.call(paste, c(data[,1:3], sep = ".")) #Paste chr, start, end information to make row names
-ploidy.DML.pos.meth <- ploidy.DML.pos.meth[,-1:3] #Drop chr, start, end columns
-```
-
-```{r}
-#pdf("figures/ploidy-heatmap.pdf", width = 11, height = 8.5)
+pdf("figures/ploidy-heatmap.pdf", width = 11, height = 8.5)
 
 par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
 
-heatmap.2(ploidy.DML.pos.meth, col = rev(plotColors2), scale = "none", margins = c(1,1),
-          trace = "none", tracecol = "black",
+heatmap.2(t(t(ploidy.DML.pos.meth)), col = rev(plotColors2), scale = "none", margins = c(1,1),
+          trace = "none", tracecol = "black", Colv = FALSE,
           labRow = FALSE, labCol = FALSE, 
-          ColSideColors = c(rep("grey20", times = 6), rep("grey40", times = 6), rep("grey60", times = 6), rep("grey80", times = 6)),
+          ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
           key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
-          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or label columns. Use ColSideColors to indicate colors for low (dark) and ambient (light) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
-#dev.off()
+          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+
+dev.off()
 ```
 
 ## pH DML
