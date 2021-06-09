@@ -1,0 +1,11 @@
+26	DML-ploidy-DSS-CDS.bed
+161	DML-ploidy-DSS-Gene-wb.bed
+145	DML-ploidy-DSS-Gene.bed
+66	DML-ploidy-DSS-TE.bed
+8	DML-ploidy-DSS-downstream.bed
+8	DML-ploidy-DSS-exonUTR.bed
+18	DML-ploidy-DSS-intergenic.bed
+114	DML-ploidy-DSS-intron.bed
+1	DML-ploidy-DSS-lncRNA.bed
+3	DML-ploidy-DSS-unique-CT-SNPs.bed
+8	DML-ploidy-DSS-upstream.bed
