@@ -301,4 +301,37 @@ ploidypH.DML.pos <- ploidypH.DML[,c(1,2,6)] #Reduce dataframe to only include ch
 head(ploidypH.DML.pos) #Confirm reduction
 ```
 
+```{r}
+ploidypH.DML.pos.meth <- merge(x = ploidypH.DML.pos, y = union_1x, by = c("chr", "start", "end")) #Match with 1x union information
+length(ploidypH.DML.pos.meth$chr) == length(ploidypH.DML.pos$chr) #Check that lengths match
+head(ploidypH.DML.pos.meth) #Confirm merge
+```
+
+```{r}
+rownames(ploidypH.DML.pos.meth) <- paste(ploidypH.DML.pos.meth$chr, ploidypH.DML.pos.meth$start, ploidypH.DML.pos.meth$end, sep = ".") #Paste chr, start, end information to make row names
+ploidypH.DML.pos.meth <- ploidypH.DML.pos.meth[,-c(1:3)] #Drop chr, start, end columns
+head(ploidypH.DML.pos.meth) #Confirm formatting
+```
+
+```{r}
+for (i in 1:length(ploidypH.DML.pos.meth$X1)) {
+  ploidypH.DML.pos.meth[,i] <- as.numeric(as.character(ploidypH.DML.pos.meth[,i]))
+} #Convert all columns to numeric format
+head(ploidypH.DML.pos.meth)
+```
+
+```{r}
+#pdf("figures/ploidypH-heatmap.pdf", width = 11, height = 8.5)
+
+par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
+
+heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors2), scale = "none", margins = c(1,1),
+          trace = "none", tracecol = "black", Colv = FALSE,
+          labRow = FALSE, labCol = FALSE, 
+          ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
+          key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
+          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) ploidypH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+
+#dev.off()
+```
 
