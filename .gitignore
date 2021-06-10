@@ -122,3 +122,5 @@ analyses/Haws_08-GOterm-annotation/union_1x.GeneIDs.geneOverlap
 analyses/Haws_08-GOterm-annotation/union_1x.GeneIDs.geneOverlap.transcriptIDs
 analyses/Haws_08-GOterm-annotation/union_1x.GeneIDs.geneOverlap.transcriptIDs.GOAnnot
 analyses/Haws_08-GOterm-annotation/geneid2go.tab
+analyses/Haws_08-GOterm-annotation/geneid2go-union1x.tab
+analyses/Haws_08-GOterm-annotation/union_1x.transcriptIDs.unique
