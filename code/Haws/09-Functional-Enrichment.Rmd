@@ -343,3 +343,33 @@ resultFisher.ploidypHMF <- getSigGroups(ploidypHGOdataMF, test.stat) #Extract si
 resultFisher.ploidypHMF #Get results summary
 ```
 
+## Summary table for all GO terms with test _P_-values < 0.05
+
+| **DML** | **GO Category** |  **GO ID** |                  *GO Term**                 | **Annotated Genes** | **Genes with DML** | **Expected** | **_P_-value** |
+|:-------:|:---------------:|:----------:|:-------------------------------------------:|:-------------------:|:------------------:|:------------:|:-------------:|
+|  ploidy |        MF       | GO:0045296 |               cadherin binding              |          7          |          4         |     0.02     |    1.50E-06   |
+|  ploidy |        MF       | GO:0050839 |        cell adhesion molecule binding       |          7          |          4         |     0.02     |    1.50E-06   |
+|    pH   |        BP       | GO:0043523 |    regulation of neuron apoptotic process   |          17         |          2         |     0.01     |    0.00062    |
+|    pH   |        BP       | GO:0051402 |           neuron apoptotic process          |          17         |          2         |     0.01     |    0.00062    |
+|    pH   |        BP       | GO:0070997 |                 neuron death                |          20         |          2         |     0.01     |    0.00086    |
+|    pH   |        BP       | GO:1901214 |          regulation of neuron death         |          20         |          2         |     0.01     |    0.00086    |
+|    pH   |        BP       | GO:0042981 |       regulation of apoptotic process       |          37         |          2         |     0.03     |    0.00297    |
+|    pH   |        BP       | GO:0043067 |     regulation of programmed cell death     |          40         |          2         |     0.03     |    0.00346    |
+|    pH   |        BP       | GO:0006915 |              apoptotic process              |          41         |          2         |     0.03     |    0.00364    |
+|    pH   |        BP       | GO:0010941 |           regulation of cell death          |          42         |          2         |     0.03     |    0.00382    |
+|    pH   |        BP       | GO:0012501 |            programmed cell death            |          44         |          2         |     0.03     |    0.00418    |
+|    pH   |        BP       | GO:0008219 |                  cell death                 |          46         |          2         |     0.03     |    0.00456    |
+|    pH   |        MF       | GO:0017022 |                myosin binding               |          8          |          2         |     0.01     |    0.00021    |
+|    pH   |        MF       | GO:0061630 |      ubiquitin protein ligase activity      |          22         |          2         |     0.02     |    0.00171    |
+|    pH   |        MF       | GO:0061659 |    ubiquitin-like protein ligase activity   |          22         |          2         |     0.02     |    0.00171    |
+|    pH   |        MF       | GO:0008092 |         cytoskeletal protein binding        |          37         |          2         |     0.03     |    0.00481    |
+|    pH   |        MF       | GO:0004842 |    ubiquitin-protein transferase activity   |          41         |          2         |     0.04     |    0.00588    |
+|    pH   |        MF       | GO:0008270 |               zinc ion binding              |          41         |          2         |     0.04     |    0.00588    |
+|    pH   |        MF       | GO:0019787 | ubiquitin-like protein transferase activ... |          41         |          2         |     0.04     |    0.00588    |
+|    pH   |        MF       | GO:0046914 |         transition metal ion binding        |          41         |          2         |     0.04     |    0.00588    |
+|    pH   |        MF       | GO:0005515 |               protein binding               |          73         |          2         |     0.06     |    0.01794    |
+|    pH   |        MF       | GO:0016740 |             transferase activity            |          74         |          2         |     0.06     |    0.01841    |
+|    pH   |        MF       | GO:0140096 |    catalytic activity acting on a protein   |          76         |          2         |     0.07     |    0.01937    |
+|    pH   |        MF       | GO:0003824 |              catalytic activity             |          94         |          2         |     0.08     |    0.02889    |
+|    pH   |        MF       | GO:0046872 |              metal ion binding              |         115         |          2         |      0.1     |    0.04193    |
+|    pH   |        MF       | GO:0043169 |                cation binding               |         116         |          2         |      0.1     |     0.0426    |
