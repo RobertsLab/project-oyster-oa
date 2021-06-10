@@ -166,8 +166,8 @@ ploidyGOdataBP #Get summary of object
 
 ```{r}
 test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
-resultFisherBP <- getSigGroups(ploidyGOdataBP, test.stat)
-resultFisherBP
+resultFisher.ploidyBP <- getSigGroups(ploidyGOdataBP, test.stat)
+resultFisher.ploidyBP
 ```
 
 ### Cellular components
@@ -179,8 +179,8 @@ ploidyGOdataCC #Get summary of object
 ```
 
 ```{r}
-resultFisherCC <- getSigGroups(ploidyGOdataCC, test.stat)
-resultFisherCC
+resultFisher.ploidyCC <- getSigGroups(ploidyGOdataCC, test.stat)
+resultFisher.ploidyCC
 ```
 
 ### Molecular function
@@ -192,19 +192,19 @@ ploidyGOdataMF #Get summary of object
 ```
 
 ```{r}
-resultFisherMF <- getSigGroups(ploidyGOdataMF, test.stat) #Extract significant GOterms using Fisher exact test
-resultFisherMF #Get results summary
+resultFisher.ploidyMF <- getSigGroups(ploidyGOdataMF, test.stat) #Extract significant GOterms using Fisher exact test
+resultFisher.ploidyMF #Get results summary
 ```
 
 ```{r}
-pvalFis.ploidyMF <- score(resultFisherMF) #Extract p-values
+pvalFis.ploidyMF <- score(resultFisher.ploidyMF) #Extract p-values
 head(pvalFis.ploidyMF)
 hist(pvalFis.ploidyMF, 50, xlab = "p-values") #Plot histogram of p-values
 ```
 
 
 ```{r}
-allRes.ploidyMF <- GenTable(ploidyGOdataMF, classic = resultFisherMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.ploidyMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
+allRes.ploidyMF <- GenTable(ploidyGOdataMF, classic = resultFisher.ploidyMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.ploidyMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
 head(allRes.ploidyMF)
 ```
 
@@ -212,6 +212,134 @@ head(allRes.ploidyMF)
 write.csv(allRes.ploidyMF, "ploidy-MF-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
+## pH-DML
+
+```{r}
+pHGenes <- pHDMLGOterms$transcript #Extract transcript ID
+pHGeneList <- factor(as.integer(geneNames %in% pHGenes))
+names(pHGeneList) <- pHGenes
+str(pHGeneList)
+```
+
+### Biological processes
+
+```{r}
+pHGOdataBP <- new("topGOdata", ontology = "BP", allGenes = pHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+pHGOdataBP #Get summary of object
+```
+
+```{r}
+test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
+resultFisher.pHBP <- getSigGroups(pHGOdataBP, test.stat)
+resultFisher.pHBP
+```
+
+```{r}
+pvalFis.pHBP <- score(resultFisher.pHBP) #Extract p-values
+head(pvalFis.pHBP)
+hist(pvalFis.pHBP, 50, xlab = "p-values") #Plot histogram of p-values
+```
 
 
+```{r}
+allRes.pHBP <- GenTable(pHGOdataBP, classic = resultFisher.pHBP, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.pHBP)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
+head(allRes.pHBP)
+```
+
+```{r}
+write.csv(allRes.pHBP, "pH-BP-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+### Cellular components
+
+```{r}
+pHGOdataCC <- new("topGOdata", ontology = "CC", allGenes = pHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+pHGOdataCC #Get summary of object
+```
+
+```{r}
+resultFisher.pHCC <- getSigGroups(pHGOdataCC, test.stat)
+resultFisher.pHCC
+```
+
+### Molecular function
+
+```{r}
+pHGOdataMF <- new("topGOdata", ontology = "MF", allGenes = pHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+pHGOdataMF #Get summary of object
+```
+
+```{r}
+resultFisher.pHMF <- getSigGroups(pHGOdataMF, test.stat) #Extract significant GOterms using Fisher exact test
+resultFisher.pHMF #Get results summary
+```
+
+```{r}
+pvalFis.pHMF <- score(resultFisher.pHMF) #Extract p-values
+head(pvalFis.pHMF)
+hist(pvalFis.pHMF, 50, xlab = "p-values") #Plot histogram of p-values
+```
+
+
+```{r}
+allRes.pHMF <- GenTable(pHGOdataMF, classic = resultFisher.pHMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.pHMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
+head(allRes.pHMF)
+```
+
+```{r}
+write.csv(allRes.pHMF, "pH-MF-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+
+## ploidypH-DML
+
+```{r}
+ploidypHGenes <- ploidypHDMLGOterms$transcript #Extract transcript ID
+ploidypHGeneList <- factor(as.integer(geneNames %in% ploidypHGenes))
+names(ploidypHGeneList) <- ploidypHGenes
+str(ploidypHGeneList)
+```
+
+### Biological processes
+
+```{r}
+ploidypHGOdataBP <- new("topGOdata", ontology = "BP", allGenes = ploidypHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidypHGOdataBP #Get summary of object
+```
+
+```{r}
+test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
+resultFisher.ploidypHBP <- getSigGroups(ploidypHGOdataBP, test.stat)
+resultFisher.ploidypHBP
+```
+
+### Cellular components
+
+```{r}
+ploidypHGOdataCC <- new("topGOdata", ontology = "CC", allGenes = ploidypHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidypHGOdataCC #Get summary of object
+```
+
+```{r}
+resultFisher.ploidypHCC <- getSigGroups(ploidypHGOdataCC, test.stat)
+resultFisher.ploidypHCC
+```
+
+### Molecular function
+
+```{r}
+ploidypHGOdataMF <- new("topGOdata", ontology = "MF", allGenes = ploidypHGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidypHGOdataMF #Get summary of object
+```
+
+```{r}
+resultFisher.ploidypHMF <- getSigGroups(ploidypHGOdataMF, test.stat) #Extract significant GOterms using Fisher exact test
+resultFisher.ploidypHMF #Get results summary
+```
 
