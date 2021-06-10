@@ -1,0 +1,217 @@
+---
+title: "Functional Enrichment"
+author: "Yaamini Venkataraman"
+output: html_document
+---
+
+In this script, I'll create summary tables for genomic location information, run statistcal tests, and visualize the distribution of DML in the genome.
+
+# Prepare R Markdown file
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_09-functional-enrichment/") #Set root directory
+```
+
+# Install packages
+
+```{r}
+require(BiocManager)
+require(topGO)
+```
+
+```{r}
+require(tidyverse)
+```
+
+# Obtain session information
+
+```{r}
+sessionInfo()
+```
+# Describe GO terms associated with DML
+
+Before launching into enrichment, I want to create lists of GOterms associated with each DML list for descriptive purposes.
+
+## ploidy-DML
+
+```{r}
+ploidyDMLGOterms <- read.table("../Haws_08-GOterm-annotation/DML-ploidy-DSS.GeneIDs.geneOverlap.transcriptIDs.GOAnnot", header = FALSE, sep = "\t", col.names = c("transcript", "geneID", "chr", "start", "end", "GOID", "GOterm", "GOSlim", "GOcat")) #Import list of GO term annotations for ploidy DML
+head(ploidyDMLGOterms)
+```
+
+```{r}
+ploidyDMLGOtermCounts <- as.data.frame(table(ploidyDMLGOterms$GOID)) #Create table with GOID and counts
+colnames(ploidyDMLGOtermCounts) <- c("GOID", "Freq") #Add column names
+range(ploidyDMLGOtermCounts$Freq) #Get range of GOID frequency
+nrow(ploidyDMLGOtermCounts) #Number of unique GOIDs associated with ploidy-DML
+```
+
+### Biological processes
+
+```{r}
+ploidyDMLGOtermsBP <- ploidyDMLGOterms %>% filter(., ploidyDMLGOterms$GOcat == "P") #Filter biological process terms
+ploidyDMLGOtermCountsBP <- as.data.frame(table(ploidyDMLGOtermsBP$GOID)) #Count GOIDs
+colnames(ploidyDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
+ploidyDMLGOtermCountsBP <- ploidyDMLGOtermCountsBP %>% filter(ploidyDMLGOtermCountsBP$Freq != 0)
+range(ploidyDMLGOtermCountsBP$Freq) #Get range of GOID frequency
+nrow(ploidyDMLGOtermCountsBP) #Number of unique GOIDs associated with ploidy-DML
+```
+
+## pH-DML
+
+```{r}
+pHDMLGOterms <- read.table("../Haws_08-GOterm-annotation/DML-pH-DSS.GeneIDs.geneOverlap.transcriptIDs.GOAnnot", header = FALSE, sep = "\t", col.names = c("transcript", "geneID", "chr", "start", "end", "GOID", "GOterm", "GOSlim", "GOcat")) #Import list of GO term annotations for pH DML
+head(pHDMLGOterms)
+```
+
+```{r}
+pHDMLGOtermCounts <- as.data.frame(table(pHDMLGOterms$GOID)) #Create table with GOID and counts
+colnames(pHDMLGOtermCounts) <- c("GOID", "Freq") #Add column names
+range(pHDMLGOtermCounts$Freq) #Get range of GOID frequency
+nrow(pHDMLGOtermCounts) #Number of unique GOIDs associated with pH-DML
+```
+
+### Biological processes
+
+```{r}
+pHDMLGOtermsBP <- pHDMLGOterms %>% filter(., pHDMLGOterms$GOcat == "P") #Filter biological process terms
+pHDMLGOtermCountsBP <- as.data.frame(table(pHDMLGOtermsBP$GOID)) #Count GOIDs
+colnames(pHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
+pHDMLGOtermCountsBP <- pHDMLGOtermCountsBP %>% filter(pHDMLGOtermCountsBP$Freq != 0)
+range(pHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
+nrow(pHDMLGOtermCountsBP) #Number of unique GOIDs associated with pH-DML
+```
+
+## ploidypH-DML
+
+```{r}
+ploidypHDMLGOterms <- read.table("../Haws_08-GOterm-annotation/DML-ploidypH-DSS.GeneIDs.geneOverlap.transcriptIDs.GOAnnot", header = FALSE, sep = "\t", col.names = c("transcript", "geneID", "chr", "start", "end", "GOID", "GOterm", "GOSlim", "GOcat")) #Import list of GO term annotations for ploidypH DML
+head(ploidypHDMLGOterms)
+```
+
+```{r}
+ploidypHDMLGOtermCounts <- as.data.frame(table(ploidypHDMLGOterms$GOID)) #Create table with GOID and counts
+colnames(ploidypHDMLGOtermCounts) <- c("GOID", "Freq") #Add column names
+range(ploidypHDMLGOtermCounts$Freq) #Get range of GOID frequency
+nrow(ploidypHDMLGOtermCounts) #Number of unique GOIDs associated with ploidypH-DML
+```
+
+### Biological processes
+
+```{r}
+ploidypHDMLGOtermsBP <- ploidypHDMLGOterms %>% filter(., ploidypHDMLGOterms$GOcat == "P") #Filter biological process terms
+ploidypHDMLGOtermCountsBP <- as.data.frame(table(ploidypHDMLGOtermsBP$GOID)) #Count GOIDs
+colnames(ploidypHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
+ploidypHDMLGOtermCountsBP <- ploidypHDMLGOtermCountsBP %>% filter(ploidypHDMLGOtermCountsBP$Freq != 0)
+range(ploidypHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
+nrow(ploidypHDMLGOtermCountsBP) #Number of unique GOIDs associated with ploidypH-DML
+```
+
+## Common GOterms 
+
+```{r}
+commonGOtermCounts <- merge(x = ploidyDMLGOtermCounts, y = pHDMLGOtermCounts, by = "GOID") #Identify common DML between ploidy and pH, and merge to create a new dataframe
+commonGOtermCounts <- merge(x = commonGOtermCounts, y = ploidypHDMLGOtermCounts, by = "GOID") #Add interaction DML GOterms
+colnames(commonGOtermCounts) <- c("GOID", "ploidy", "pH", "ploidypH") #Add column names
+nrow(commonGOtermCounts) #61 GOterms common
+head(commonGOtermCounts)
+```
+
+### Biological processes
+
+```{r}
+commonGOtermCountsBP <- merge(x = ploidyDMLGOtermCountsBP, y = pHDMLGOtermCountsBP, by = "GOID") #Identify common DML between ploidy and pH, and merge to create a new dataframe
+commonGOtermCountsBP <- merge(x = commonGOtermCountsBP, y = ploidypHDMLGOtermCountsBP, by = "GOID") #Add interaction DML GOterms
+colnames(commonGOtermCountsBP) <- c("GOID", "ploidy", "pH", "ploidypH") #Add column names
+commonGOtermCountsBP <- commonGOtermCountsBP[rowSums(commonGOtermCountsBP[,2:4])>0,] #Remove rows where each frequency = 0
+nrow(commonGOtermCountsBP) #18 GOterms common
+head(commonGOtermCountsBP)
+```
+
+# Gene enrichment with `topGO`
+
+Following protocol from [Chandra Rajan et al. 2021](https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15675#support-information-section). Script found [here](https://onlinelibrary-wiley-com.offcampus.lib.washington.edu/action/downloadSupplement?doi=10.1111%2Fgcb.15675&file=gcb15675-sup-0002-FileS2.txt).
+
+## Load data for gene enrichment
+
+```{r}
+geneID2GO <- readMappings(file = "../Haws_08-GOterm-annotation/geneid2go-union1x.tab") #Loading the GO annotations and GeneIDs. Each line has one transcript ID and all associated GOterms
+str(head(geneID2GO)) #Confirm file structure
+```
+
+```{r}
+geneNames <- names(geneID2GO) #Extract names to use as gene universe
+head(geneNames)
+```
+
+## ploidy-DML
+
+I'm using the list of genes with DML as my list of interest. 
+
+```{r}
+ploidyGenes <- ploidyDMLGOterms$transcript #Extract transcript ID
+ploidyGeneList <- factor(as.integer(geneNames %in% ploidyGenes))
+names(ploidyGeneList) <- ploidyGenes
+str(ploidyGeneList)
+```
+
+### Biological processes
+
+```{r}
+ploidyGOdataBP <- new("topGOdata", ontology = "BP", allGenes = ploidyGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidyGOdataBP #Get summary of object
+```
+
+```{r}
+test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
+resultFisherBP <- getSigGroups(ploidyGOdataBP, test.stat)
+resultFisherBP
+```
+
+### Cellular components
+
+```{r}
+ploidyGOdataCC <- new("topGOdata", ontology = "CC", allGenes = ploidyGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidyGOdataCC #Get summary of object
+```
+
+```{r}
+resultFisherCC <- getSigGroups(ploidyGOdataCC, test.stat)
+resultFisherCC
+```
+
+### Molecular function
+
+```{r}
+ploidyGOdataMF <- new("topGOdata", ontology = "MF", allGenes = ploidyGeneList,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+ploidyGOdataMF #Get summary of object
+```
+
+```{r}
+resultFisherMF <- getSigGroups(ploidyGOdataMF, test.stat) #Extract significant GOterms using Fisher exact test
+resultFisherMF #Get results summary
+```
+
+```{r}
+pvalFis.ploidyMF <- score(resultFisherMF) #Extract p-values
+head(pvalFis.ploidyMF)
+hist(pvalFis.ploidyMF, 50, xlab = "p-values") #Plot histogram of p-values
+```
+
+
+```{r}
+allRes.ploidyMF <- GenTable(ploidyGOdataMF, classic = resultFisherMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.ploidyMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
+head(allRes.ploidyMF)
+```
+
+```{r}
+write.csv(allRes.ploidyMF, "ploidy-MF-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+
+
+
