@@ -76,7 +76,7 @@ nrow(pHDMLGOtermCounts) #Number of unique GOIDs associated with pH-DML
 
 ```{r}
 pHDMLGOtermsBP <- pHDMLGOterms %>% filter(., pHDMLGOterms$GOcat == "P") #Filter biological process terms
-pHDMLGOtermCountsBP <- as.data.frame(table(pHDMLGOtermsBP$GOSlim)) #Count GOIDs
+pHDMLGOtermCountsBP <- as.data.frame(table(pHDMLGOtermsBP$GOID)) #Count GOIDs
 colnames(pHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
 pHDMLGOtermCountsBP <- pHDMLGOtermCountsBP %>% filter(pHDMLGOtermCountsBP$Freq != 0)
 range(pHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
