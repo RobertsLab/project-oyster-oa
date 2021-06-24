@@ -83,6 +83,10 @@ range(pHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
 nrow(pHDMLGOtermCountsBP) #Number of unique GOIDs associated with pH-DML
 ```
 
+```{r}
+write.csv(pHDMLGOtermCountsBP, "pH-BP-GOterms.csv", quote = FALSE, row.names = FALSE)
+```
+
 ## ploidypH-DML
 
 ```{r}
