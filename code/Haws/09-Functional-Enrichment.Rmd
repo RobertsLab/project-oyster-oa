@@ -76,7 +76,7 @@ nrow(pHDMLGOtermCounts) #Number of unique GOIDs associated with pH-DML
 
 ```{r}
 pHDMLGOtermsBP <- pHDMLGOterms %>% filter(., pHDMLGOterms$GOcat == "P") #Filter biological process terms
-pHDMLGOtermCountsBP <- as.data.frame(table(pHDMLGOtermsBP$GOID)) #Count GOIDs
+pHDMLGOtermCountsBP <- as.data.frame(table(pHDMLGOtermsBP$GOSlim)) #Count GOIDs
 colnames(pHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
 pHDMLGOtermCountsBP <- pHDMLGOtermCountsBP %>% filter(pHDMLGOtermCountsBP$Freq != 0)
 range(pHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
@@ -101,12 +101,17 @@ nrow(ploidypHDMLGOtermCounts) #Number of unique GOIDs associated with ploidypH-D
 
 ```{r}
 ploidypHDMLGOtermsBP <- ploidypHDMLGOterms %>% filter(., ploidypHDMLGOterms$GOcat == "P") #Filter biological process terms
-ploidypHDMLGOtermCountsBP <- as.data.frame(table(ploidypHDMLGOtermsBP$GOID)) #Count GOIDs
+ploidypHDMLGOtermCountsBP <- as.data.frame(table(ploidypHDMLGOtermsBP$GOterm)) #Count GOIDs
 colnames(ploidypHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
 ploidypHDMLGOtermCountsBP <- ploidypHDMLGOtermCountsBP %>% filter(ploidypHDMLGOtermCountsBP$Freq != 0)
 range(ploidypHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
 nrow(ploidypHDMLGOtermCountsBP) #Number of unique GOIDs associated with ploidypH-DML
 ```
+
+```{r}
+write.csv(ploidypHDMLGOtermCountsBP, "ploidypH-BP-GOterms.csv", quote = FALSE, row.names = FALSE)
+```
+
 
 ## Common GOterms 
 
