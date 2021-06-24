@@ -1,60 +1,60 @@
 GOID,Freq
-acetyl-CoA biosynthetic process,3
-actin filament network formation,34
-actin filament organization,34
-barbed-end actin filament uncapping,68
-blood coagulation,34
-bone development,3
-bone trabecula formation,3
-camera-type eye development,3
-cell adhesion,1
-cell cycle,2
-cell division,2
-cell migration,34
-cell surface receptor linked signal transduction,1
-cellular homeostasis,4
-cellular response to amino acid starvation,2
-cellular response to glucose starvation,2
-ceramide biosynthetic process,1
-chromatin remodeling,1
-citrate metabolic process,3
-covalent chromatin modification,1
-cytoskeletal anchoring at plasma membrane,1
-dendrite morphogenesis,2
-embryonic eye morphogenesis,3
-embryonic limb morphogenesis,3
-fatty acid biosynthetic process,3
-homophilic cell adhesion,1
-intracellular protein transport,1
-ion homeostasis,1
-lamellipodium assembly,34
-limb morphogenesis,3
-lipid biosynthetic process,3
-mitochondrion transport along microtubule,4
-negative regulation of axon regeneration,3
-negative regulation of fat cell differentiation,1
-nervous system development,11
-oxaloacetate metabolic process,3
-positive regulation of actin filament polymerization,68
-positive regulation of bone mineralization,3
-positive regulation of cell migration,34
-positive regulation of osteoblast differentiation,3
-positive regulation of proteasomal ubiquitin-dependent protein catabolic process,1
-positive regulation of stress fiber formation,34
-post-chaperonin tubulin folding pathway,1
-protein polyubiquitination,1
-protein transport,13
-protein ubiquitination,1
-protein ubiquitination during ubiquitin-dependent protein catabolic process,2
-regulation of cell-cell adhesion,1
-regulation of transcription, DNA-dependent,4
-regulation of vesicle fusion,2
-renal sodium ion absorption,1
-ruffle organization,34
-small GTPase mediated signal transduction,4
-spermatogenesis,1
-sphingolipid biosynthetic process,1
-transcription, DNA-dependent,4
-transport,1
-urate metabolic process,34
-vesicle-mediated transport,2
+GO:0000209,1
+GO:0006085,3
+GO:0006101,3
+GO:0006107,3
+GO:0006338,1
+GO:0006351,4
+GO:0006355,4
+GO:0006633,3
+GO:0006810,1
+GO:0006886,1
+GO:0007015,34
+GO:0007016,1
+GO:0007023,1
+GO:0007049,2
+GO:0007155,1
+GO:0007156,1
+GO:0007166,1
+GO:0007264,4
+GO:0007283,1
+GO:0007399,11
+GO:0007596,34
+GO:0008610,3
+GO:0015031,13
+GO:0016192,2
+GO:0016477,34
+GO:0016567,1
+GO:0016569,1
+GO:0019725,4
+GO:0022407,1
+GO:0030032,34
+GO:0030148,1
+GO:0030326,3
+GO:0030335,34
+GO:0030501,3
+GO:0030838,68
+GO:0031338,2
+GO:0031529,34
+GO:0032436,1
+GO:0034198,2
+GO:0035108,3
+GO:0042149,2
+GO:0042787,2
+GO:0043010,3
+GO:0045599,1
+GO:0045669,3
+GO:0046415,34
+GO:0046513,1
+GO:0047497,4
+GO:0048048,3
+GO:0048681,3
+GO:0048813,2
+GO:0050801,1
+GO:0051301,2
+GO:0051496,34
+GO:0051638,68
+GO:0051639,34
+GO:0060346,3
+GO:0060348,3
+GO:0070294,1

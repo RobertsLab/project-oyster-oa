@@ -101,7 +101,7 @@ nrow(ploidypHDMLGOtermCounts) #Number of unique GOIDs associated with ploidypH-D
 
 ```{r}
 ploidypHDMLGOtermsBP <- ploidypHDMLGOterms %>% filter(., ploidypHDMLGOterms$GOcat == "P") #Filter biological process terms
-ploidypHDMLGOtermCountsBP <- as.data.frame(table(ploidypHDMLGOtermsBP$GOterm)) #Count GOIDs
+ploidypHDMLGOtermCountsBP <- as.data.frame(table(ploidypHDMLGOtermsBP$GOID)) #Count GOIDs
 colnames(ploidypHDMLGOtermCountsBP) <- c("GOID", "Freq") #Add column names
 ploidypHDMLGOtermCountsBP <- ploidypHDMLGOtermCountsBP %>% filter(ploidypHDMLGOtermCountsBP$Freq != 0)
 range(ploidypHDMLGOtermCountsBP$Freq) #Get range of GOID frequency
