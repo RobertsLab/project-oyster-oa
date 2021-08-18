@@ -429,7 +429,7 @@ max(DMLchrCounts$DMLbyChrCpGploidypH)
 
 
 ```{r}
-pdf("figures/DML-chr-distribution.pdf", width = 11, height = 8.5)
+#pdf("figures/DML-chr-distribution.pdf", width = 11, height = 8.5)
 
 par(mar = c(5,7,2,10)) #Change figure boundaries
 
@@ -439,7 +439,7 @@ DMLbarplot <- barplot(as.matrix(t(DMLchrCounts)),
                       xlim = c(0.7,11.5),
                       ylim = c(0,10e-5),
                       cex.names = 1.5,
-                      col = c(plotColors[4], plotColors[5], plotColors[6])) #Create a barplot and save as a new object. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis. The object contains x coordinates for bars, so xlim is set at 11.5
+                      col = c(plotColors[4], plotColors[6], "white")) #Create a barplot and save as a new object. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis. The object contains x coordinates for bars, so xlim is set at 11.5
 mtext(side = 1, "Chromosome", line = 3, cex = 1.5) #Add x-axis label
 axis(side = 2, line = 1.5, at = seq(0, 10e-05, by = 2e-05), labels = seq(0, 10, by = 2), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis for DML counts
 mtext(side = 2, "Number DML per 10,000 CpGs", line = 5, cex = 1.5) #Add y-axis label for DML counts
@@ -449,7 +449,7 @@ plot(x = DMLbarplot,
      y = DMLchrCountsploidy$geneCount,
      type = "b",
      axes = FALSE, xlab = "", ylab = "", xaxs = "i", yaxs = "i",
-     pch = 16, col = plotColors[2],
+     pch = 16, col = "black",
      xlim = c(0,12), ylim = c(0,4500)) #Plot points and lines (type = "b") for gene count by chromosome. Use the coordinates from DMLbarplotInd (x = DMLbarplotInd) and set xlim = (0,12) so plots are lined up. Use axes = FALSE to remove both axes. Remove x and y lables (xlab = ""; ylab = ""). Set ylim = (0,4500) to account for max y-values. Use xaxs and yxaxs to remove space between axes.
 axis(side = 4, line = 1.5, at = seq(0, 6500, by = 500), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis for gene sequence counts
 mtext(side = 4, "Number of Genes", line = 6, cex = 1.5) #Add y-axis label for gene sequence counts
@@ -461,9 +461,9 @@ legend("bottomright", xpd = TRUE, inset = c(0, 0),
        bty = "n", cex = 1.25,
        pch = c(22, 22, 22), 
         col = "black",
-        pt.bg = c(plotColors[4], plotColors[5], plotColors[6])) #Add a legend with information about DML list
+        pt.bg = c(plotColors[4], plotColors[6], "white")) #Add a legend with information about DML list
 
-dev.off()
+#dev.off()
 ```
 
 ```{r}
