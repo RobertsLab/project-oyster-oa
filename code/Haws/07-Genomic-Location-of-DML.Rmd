@@ -369,6 +369,38 @@ write.csv(genepHDMLCounts, "Number-of-pH-DML-per-Gene.csv", quote = FALSE, row.n
 
 ## ploidy:pH-DML
 
+```{r}
+genePloidypHOverlaps <- read.table("DML-ploidypH-DSS-Gene-wb.bed", header = FALSE, sep = "\t") #Import table of gene-DML overlaps
+head(genePloidypHOverlaps) #Confirm import
+```
+
+```{r}
+geneIDPloidypH <- read.table("geneID-ploidypH-DML-overlap.tab") #Import column with gene ID information already separated
+nrow(geneIDPloidypH) == nrow(genePloidypHOverlaps) #Check that both dataframes have the same number of rows
+head(geneIDPloidypH) #Confim import
+```
+
+```{r}
+genePloidypHOverlaps <- cbind(genePloidypHOverlaps[,-c(4:6,9:12)], geneIDPloidypH) #Add gene ID column to overlap information
+colnames(genePloidypHOverlaps) <- c("chr", "DMLstart", "DMLend",
+                                    "geneStart", "geneEnd", "geneID") #Add column names
+head(genePloidypHOverlaps) #Confirm formatting
+```
+
+```{r}
+genePloidypHDMLCounts <- as.data.frame(table(genePloidypHOverlaps$geneID)) #Create a dataframe with the number of DML/gene
+colnames(genePloidypHDMLCounts) <- c("geneID", "numDML") #Add column names
+head(genePloidypHDMLCounts) #Confirm formatting
+```
+
+```{r}
+range(genePloidypHDMLCounts$numDML) #Range of number DML/gene: 1-23
+hist(genePloidypHDMLCounts$numDML) #Plot the frequency of multiple DML in genes. Most genes have 1 DML
+```
+
+```{r}
+write.csv(genePloidypHDMLCounts, "Number-of-ploidypH-DML-per-Gene.csv", quote = FALSE, row.names = FALSE) #Save file with number of DML per gene
+```
 
 ```{r}
 save.image("../../project-oyster-oa.RData") #Save R data
