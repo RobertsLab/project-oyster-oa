@@ -10,7 +10,7 @@ In this script, I'll create summary tables for genomic location information, run
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_07-DML-characterization/") #Set root directory
+knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_07-DML-characterization/") #Set root directory
 ```
 
 # Install packages
@@ -34,14 +34,15 @@ sessionInfo()
 # Establish color scheme
 
 ```{r}
-plotColors <- rev(RColorBrewer::brewer.pal(8, "PuRd")) #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer. Reverse the order so the darkest shade is used first.
+plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
+                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70") #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer.
 ```
 
 # Import data
 
 ```{r}
-#save.image("../../project-gigas-oa-meth.Rdata")
-#load("../../project-gigas-oa-meth.Rdata") #Load R Data if not already loaded
+#save.image("../../project-oyster-oa.Rdata")
+#load("../../project-oyster-oa.Rdata") #Load R Data if not already loaded
 ```
 
 I will look at genomic locations of each sex-specific DML list, then create a plot for visualization.
@@ -58,7 +59,7 @@ head(cpgFeatureOverlapsploidy) #Confirm import
 ```
 
 ```{r}
-cpgFeatureOverlapsploidy$Meth <- cpgFeatureOverlaps$Meth #Add methylated CpG information
+cpgFeatureOverlapsploidy$allCpGs <- cpgFeatureOverlaps$allCpGs #Add all 5x CpG information
 rownames(cpgFeatureOverlapsploidy) <- row.names(cpgFeatureOverlaps) #Add rowname information
 cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[,-2] #Drop filename column
 cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[,c(2,1)] #Reorder columns
@@ -73,34 +74,34 @@ head(cpgLocationStatTestploidy) #Confirm formatting
 ```
 
 ```{r}
-CpGLocationMethDMLploidy <- data.frame() #Create empty dataframe to store chi-squared results
+CpGLocationallDMLploidy <- data.frame() #Create empty dataframe to store chi-squared results
 for(i in 1:ncol(cpgLocationStatTestploidy)) { #For each genome feature
-  MethFeature <- cpgLocationStatTestploidy[1,i] #Variable for # genome feature overlaps for methylated CpGs
+  allFeature <- cpgLocationStatTestploidy[1,i] #Variable for # genome feature overlaps for all CpGs
   ploidyFeature <- cpgLocationStatTestploidy[2,i] #Variable for # genome feature overlaps for ploidy DML
-  MethNotFeature <- sum(cpgLocationStatTestploidy[1,-i]) #Variable for # other CpG types for methylated CpGs
+  allNotFeature <- sum(cpgLocationStatTestploidy[1,-i]) #Variable for # other CpG types for all CpGs
   ploidyNotFeature <- sum(cpgLocationStatTestploidy[2,-i]) #Variable for # other CpG types for ploidy DML
-  ct <- matrix(c(MethFeature, ploidyFeature, MethNotFeature, ploidyNotFeature), ncol = 2) #Create contingency table
+  ct <- matrix(c(allFeature, ploidyFeature, allNotFeature, ploidyNotFeature), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(cpgLocationStatTestploidy[i])), paste0("Not", colnames(cpgLocationStatTestploidy[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(cpgLocationStatTestploidy)[c(1,2)])) #Assign row names: methylated CpGs, ploidy DML
+  rownames(ct) <- c(as.character(row.names(cpgLocationStatTestploidy)[c(1,2)])) #Assign row names: all CpGs, ploidy DML
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$GenomeFeature <- as.character(colnames(cpgLocationStatTestploidy)[i]) #Add CpG type to results
-  CpGLocationMethDMLploidy <- rbind(CpGLocationMethDMLploidy, ctResults) #Add test statistics to master table
+  CpGLocationallDMLploidy <- rbind(CpGLocationallDMLploidy, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(CpGLocationMethDMLploidy)
+head(CpGLocationallDMLploidy)
 ```
 
 ```{r}
-CpGLocationMethDMLploidy$p.adj <- p.adjust(CpGLocationMethDMLploidy$p.value, method = "fdr") #Correct p-value using FDR
-range(CpGLocationMethDMLploidy$p.adj) #Look at range of p-values
-head(CpGLocationMethDMLploidy) #Confirm changes
+CpGLocationallDMLploidy$p.adj <- p.adjust(CpGLocationallDMLploidy$p.value, method = "fdr") #Correct p-value using FDR
+range(CpGLocationallDMLploidy$p.adj) #Look at range of p-values
+head(CpGLocationallDMLploidy) #Confirm changes
 ```
 
 ```{r}
-write.csv(CpGLocationMethDMLploidy, "CpG-location-statResults-ploidy.txt", quote = FALSE, row.names = TRUE) #Save statistical output
+write.csv(CpGLocationallDMLploidy, "CpG-location-statResults-ploidy.txt", quote = FALSE, row.names = TRUE) #Save statistical output
 ```
 
 # pH-DML
