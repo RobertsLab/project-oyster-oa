@@ -10,7 +10,7 @@ In this script, I'll create summary tables for genomic location information, run
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_06-methylation-landscape/") #Set root directory
+knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_06-methylation-landscape/") #Set root directory
 ```
 
 # Install packages
@@ -34,7 +34,8 @@ sessionInfo()
 # Establish color scheme
 
 ```{r}
-plotColors <- rev(RColorBrewer::brewer.pal(8, "PuRd")) #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer. Reverse the order so the darkest shade is used first.
+plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
+                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70") #Create a color palette for the barplots.
 ```
 
 # Genomic location of methylated CpGs
@@ -183,7 +184,7 @@ head(cpgFeatureOverlapsPercents) #Check calculations
 par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
 
 barplot(t(t(cpgFeatureOverlapsPercents[,c(1:4)])), 
-        col= plotColors, 
+        col= rev(plotColors), 
         axes = FALSE, 
         names.arg = c("All 5x CpGs", "High", "Moderate", "Low"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
@@ -205,7 +206,7 @@ legend(x = 0.57, y = 0.87,
                   "Intergenic"),
        pch = 22, 
         col = "black", 
-        pt.bg = plotColors,
+        pt.bg = rev(plotColors),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
