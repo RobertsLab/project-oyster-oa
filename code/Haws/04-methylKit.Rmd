@@ -456,7 +456,7 @@ plotMatrix #Confirm matrix creation
 ```
 
 ```{r}
-pdf("../../analyses/Haws_04-methylKit/figures/general-meth-landscape-multipanel.pdf", width = 11, height = 8.5)
+#pdf("../../analyses/Haws_04-methylKit/figures/general-meth-landscape-multipanel.pdf", width = 11, height = 8.5)
 
 par(mar = c(4, 2, 3, 1), oma = c(1, 4, 1, 2)) #Specify inner and outer margins
 layout(mat = plotMatrix, width = c(30, 30, 13, 60))
@@ -541,7 +541,7 @@ legend("bottomright",
 
 mtext(side = 3, text = "E) PCA", adj = 0)
 
-dev.off()
+#dev.off()
 ```
 
 ```{r}
