@@ -334,6 +334,39 @@ write.csv(genePloidyDMLCounts, "Number-of-ploidy-DML-per-Gene.csv", quote = FALS
 
 ## pH-DML
 
+```{r}
+genepHOverlaps <- read.table("DML-pH-DSS-Gene-wb.bed", header = FALSE, sep = "\t") #Import table of gene-DML overlaps
+head(genepHOverlaps) #Confirm import
+```
+
+```{r}
+geneIDpH <- read.table("geneID-pH-DML-overlap.tab") #Import column with gene ID information already separated
+nrow(geneIDpH) == nrow(genepHOverlaps) #Check that both dataframes have the same number of rows
+head(geneIDpH) #Confim import
+```
+
+```{r}
+genepHOverlaps <- cbind(genepHOverlaps[,-c(4:6,9:12)], geneIDpH) #Add gene ID column to overlap information
+colnames(genepHOverlaps) <- c("chr", "DMLstart", "DMLend",
+                              "geneStart", "geneEnd", "geneID") #Add column names
+head(genepHOverlaps) #Confirm formatting
+```
+
+```{r}
+genepHDMLCounts <- as.data.frame(table(genepHOverlaps$geneID)) #Create a dataframe with the number of DML/gene
+colnames(genepHDMLCounts) <- c("geneID", "numDML") #Add column names
+head(genepHDMLCounts) #Confirm formatting
+```
+
+```{r}
+range(genepHDMLCounts$numDML) #Range of number DML/gene: 1-8
+hist(genepHDMLCounts$numDML) #Plot the frequency of multiple DML in genes. Most genes have 1 DML
+```
+
+```{r}
+write.csv(genepHDMLCounts, "Number-of-pH-DML-per-Gene.csv", quote = FALSE, row.names = FALSE) #Save file with number of DML per gene
+```
+
 ## ploidy:pH-DML
 
 
