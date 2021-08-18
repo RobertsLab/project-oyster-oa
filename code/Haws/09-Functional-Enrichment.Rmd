@@ -592,3 +592,8 @@ dfpHMF <- simplifyGO(matpHMF, plot = FALSE) #Cluster GOterms by semantic similar
 head(dfpHMF) #Dataframe with GOIDs, GOterms, and cluster
 sort(table(dfpHMF$cluster)) #Obtain size of clusters
 ```
+
+```{r}
+save.image("../../project-oyster-oa.RData") #Save R Data
+```
+
