@@ -512,6 +512,83 @@ resultFisher.ploidypHMF #Get results summary
 ```
 
 ```{r}
-save.image("project-oyster-oa.RData") #Save R Data
+save.image("../../project-oyster-oa.RData") #Save R Data
 ```
 
+# Figures
+
+I will use `simplifyEnrichment` to create heatmaps that cluster GO terms by semantic similarity.
+
+```{bash}
+mkdir figures
+```
+
+## ploidy-DML
+
+### Biological processes
+
+```{r}
+matPloidyBP <- GO_similarity(go_id = sigRes.ploidyBP$GOID, ont = "BP") #Calculate the semantic similarity matrix using the Rel method (default)
+```
+
+```{r}
+#pdf("figures/simplifyEnrichment-ploidy-BP.pdf", width = 11, height = 8.5) #Save figure
+
+simplifyGO(matPloidyBP,
+           column_title = "", col = rev(plotColors), fontsize_range = c(10,40),
+           word_cloud_grob_param = list(col = "black", max_width = 25)) #Plot GOterms based on semantic similarity. Do not include a column title. Set colors to be plot colors, and set fontsize to range from 10 to 40. Pass arguments to word_cloud_grob_param to dictate the colors of the words and maximum width
+
+#dev.off()
+```
+
+```{r}
+dfPloidyBP <- simplifyGO(matPloidyBP, plot = FALSE) #Cluster GOterms by semantic similarity
+head(dfPloidyBP) #Dataframe with GOIDs, GOterms, and cluster
+sort(table(dfPloidyBP$cluster)) #Obtain size of clusters
+```
+
+## pH-DML
+
+### Biological processes
+
+```{r}
+matpHBP <- GO_similarity(go_id = sigRes.pHBP$GOID, ont = "BP") #Calculate the semantic similarity matrix using the Rel method (default)
+```
+
+```{r}
+#pdf("figures/simplifyEnrichment-pH-BP.pdf", width = 11, height = 8.5) #Save figure
+
+simplifyGO(matpHBP,
+           column_title = "", col = rev(plotColors), fontsize_range = c(10,40),
+           word_cloud_grob_param = list(col = "black", max_width = 25)) #Plot GOterms based on semantic similarity. Do not include a column title. Set colors to be plot colors, and set fontsize to range from 10 to 40. Pass arguments to word_cloud_grob_param to dictate the colors of the words and maximum width
+
+#dev.off()
+```
+
+```{r}
+dfpHBP <- simplifyGO(matpHBP, plot = FALSE) #Cluster GOterms by semantic similarity
+head(dfpHBP) #Dataframe with GOIDs, GOterms, and cluster
+sort(table(dfpHBP$cluster)) #Obtain size of clusters
+```
+
+### Molecular function
+
+```{r}
+matpHMF <- GO_similarity(go_id = sigRes.pHMF$GOID, ont = "MF") #Calculate the semantic similarity matrix using the Rel method (default)
+```
+
+```{r}
+#pdf("figures/simplifyEnrichment-pH-MF.pdf", width = 11, height = 8.5) #Save figure
+
+simplifyGO(matpHMF,
+           column_title = "", col = rev(plotColors), fontsize_range = c(10,40),
+           word_cloud_grob_param = list(col = "black", max_width = 25)) #Plot GOterms based on semantic similarity. Do not include a column title. Set colors to be plot colors, and set fontsize to range from 10 to 40. Pass arguments to word_cloud_grob_param to dictate the colors of the words and maximum width
+
+#dev.off()
+```
+
+```{r}
+dfpHMF <- simplifyGO(matpHMF, plot = FALSE) #Cluster GOterms by semantic similarity
+head(dfpHMF) #Dataframe with GOIDs, GOterms, and cluster
+sort(table(dfpHMF$cluster)) #Obtain size of clusters
+```
