@@ -1,0 +1,128 @@
+GOID,p.value,transcript,geneID,chr,start,end,GOterm,GOSlim,GOcat
+GO:0004842,0.00597,XM_034454439.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034453551.1,117683735,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455773.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455776.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034452312.1,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454441.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455777.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455781.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425897.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425890.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455778.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425895.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454440.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454438.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425892.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454444.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455780.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455782.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455774.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454443.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_020066246.2,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455775.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425896.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_011425894.3,105326056,NC_047566.1,3996134,3996136,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034475686.1,105349000,NC_047563.1,40904647,40904649,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034454442.1,105330472,NC_047567.1,4830649,4830651,ubiquitin-protein ligase activity,other molecular function,F
+GO:0004842,0.00597,XM_034455783.1,117684293,NC_047568.1,6248102,6248104,ubiquitin-protein ligase activity,other molecular function,F
+GO:0008092,0.00488,XM_034469456.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034469461.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034468111.1,105340614,NC_047561.1,20199446,20199448,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034469457.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034469459.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034469462.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008092,0.00488,XM_034469458.1,105322131,NC_047561.1,22518848,22518850,cytoskeletal protein binding,cytoskeletal activity,F
+GO:0008270,0.00597,XM_034465392.1,105335191,NC_047560.1,55774316,55774318,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454438.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034451081.1,105348104,NC_047566.1,56153337,56153339,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034458509.1,105328838,NC_047559.1,47000336,47000338,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034452312.1,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454440.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454441.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454439.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034453551.1,117683735,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454442.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034465393.1,105335191,NC_047560.1,55774316,55774318,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463808.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_020066246.2,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454444.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034451080.1,105348104,NC_047566.1,56153337,56153339,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034454443.1,105330472,NC_047567.1,4830649,4830651,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463800.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034465391.1,105335191,NC_047560.1,55774316,55774318,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034477818.1,117691546,NC_047563.1,44904312,44904314,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463800.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463800.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463799.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425896.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463799.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463800.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463799.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463808.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463799.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034470058.1,105348300,NC_047561.1,1264710,1264712,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463801.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463809.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463801.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034470060.1,105348300,NC_047561.1,1264710,1264712,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034451082.1,105348104,NC_047566.1,56153337,56153339,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463801.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463800.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463799.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425890.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463802.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463801.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463801.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425892.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463802.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034470059.1,105348300,NC_047561.1,1264710,1264712,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463802.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463808.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463803.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425895.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463803.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463802.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463803.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463808.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463803.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463802.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463803.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463809.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463804.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034477817.1,117691546,NC_047563.1,44904312,44904314,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463804.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463809.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463804.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463809.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463808.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463809.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463804.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463810.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425897.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463810.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463805.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463810.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463805.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463810.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463805.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463810.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463805.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463804.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463807.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034465389.1,105335191,NC_047560.1,55774316,55774318,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463807.1,117687382,NC_047560.1,4561429,4561431,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463805.1,117687382,NC_047560.1,4561420,4561422,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463807.1,117687382,NC_047560.1,4561492,4561494,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034465390.1,105335191,NC_047560.1,55774316,55774318,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463807.1,117687382,NC_047560.1,4561508,4561510,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_011425894.3,105326056,NC_047566.1,3996134,3996136,zinc ion binding,other molecular function,F
+GO:0008270,0.00597,XM_034463807.1,117687382,NC_047560.1,4565018,4565020,zinc ion binding,other molecular function,F
+GO:0017022,0.00021,XM_034452312.1,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_020066246.2,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425894.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425890.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425895.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425897.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425896.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F
+GO:0017022,0.00021,XM_011425892.3,105326056,NC_047566.1,3996134,3996136,myosin binding,cytoskeletal activity,F

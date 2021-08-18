@@ -145,6 +145,19 @@ nrow(pHDMLGOtermCountsBP) #Number of unique GOIDs associated with pH-DML
 write.csv(pHDMLGOtermCountsBP, "pH-BP-GOterms.csv", quote = FALSE, row.names = FALSE)
 ```
 
+```{r}
+pHDMLGOtermsMF <- pHDMLGOtermsFiltered %>% filter(., pHDMLGOtermsFiltered$GOcat == "F") #Filter biological process terms
+pHDMLGOtermCountsMF <- as.data.frame(table(pHDMLGOtermsMF$GOID)) #Count GOIDs
+colnames(pHDMLGOtermCountsMF) <- c("GOID", "Freq") #Add column names
+pHDMLGOtermCountsMF <- pHDMLGOtermCountsMF %>% filter(pHDMLGOtermCountsMF$Freq != 0)
+range(pHDMLGOtermCountsMF$Freq) #Get range of GOID frequency
+nrow(pHDMLGOtermCountsMF) #Number of unique GOIDs associated with pH-DML
+```
+
+```{r}
+write.csv(pHDMLGOtermCountsMF, "pH-MF-GOterms.csv", quote = FALSE, row.names = FALSE)
+```
+
 ## ploidypH-DML
 
 ### Remove overlaps with C/T SNPs
@@ -270,7 +283,7 @@ head(sigRes.ploidyBPAnnot) #Confirm formatting
 ```
 
 ```{r}
-write.csv(sigRes.ploidyBPAnnot, "all-BP-EnrichedGO-DML-withTranscript.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+write.csv(sigRes.ploidyBPAnnot, "ploidy-BP-EnrichedGO-DML-withTranscript.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
 ```{r}
@@ -325,7 +338,7 @@ str(pHGeneList)
 
 ```{r}
 pHGOdataBP <- new("topGOdata", ontology = "BP", allGenes = pHGeneList,
-                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
 pHGOdataBP #Get summary of object
 ```
 
@@ -341,7 +354,6 @@ head(pvalFis.pHBP)
 hist(pvalFis.pHBP, 50, xlab = "p-values") #Plot histogram of p-values
 ```
 
-
 ```{r}
 allRes.pHBP <- GenTable(pHGOdataBP, classic = resultFisher.pHBP, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.pHBP)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
 head(allRes.pHBP)
@@ -351,11 +363,40 @@ head(allRes.pHBP)
 write.csv(allRes.pHBP, "pH-BP-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
+#### Match enriched GOterms with general annotation information
+
+```{r}
+sigRes.pHBP <- allRes.pHBP[1:10,c(1, 6)] #Filter significantly enriched GOterms, only keep GOID and p-value
+colnames(sigRes.pHBP) <- c("GOID", "p.value") #Change column names
+head(sigRes.pHBP)
+```
+
+```{r}
+sigRes.pHBPAnnot <- merge(sigRes.pHBP, pHDMLGOtermsBP, by = "GOID") #Additional annotations
+sigRes.pHBPAnnot <- unique(sigRes.pHBPAnnot[,-11]) #Drop GOcat column and retain only unique lines 
+length(unique(sigRes.pHBPAnnot$geneID)) #8 unique genes
+length(unique(sigRes.pHBPAnnot$transcript)) #29 unique transcripts
+head(sigRes.pHBPAnnot) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.pHBPAnnot, "pH-BP-EnrichedGO-DML-withTranscript.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+```{r}
+sigRes.pHBPAnnotnoT <- unique(sigRes.pHBPAnnot[,-3]) #Drop transcript column and keep only unique rows
+head(sigRes.pHBPAnnotnoT) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.pHBPAnnotnoT, "pH-BP-EnrichedGO-DML.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
 ### Cellular components
 
 ```{r}
 pHGOdataCC <- new("topGOdata", ontology = "CC", allGenes = pHGeneList,
-                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
 pHGOdataCC #Get summary of object
 ```
 
@@ -368,7 +409,7 @@ resultFisher.pHCC
 
 ```{r}
 pHGOdataMF <- new("topGOdata", ontology = "MF", allGenes = pHGeneList,
-                      annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO) #Create biological process topGO object
 pHGOdataMF #Get summary of object
 ```
 
@@ -383,7 +424,6 @@ head(pvalFis.pHMF)
 hist(pvalFis.pHMF, 50, xlab = "p-values") #Plot histogram of p-values
 ```
 
-
 ```{r}
 allRes.pHMF <- GenTable(pHGOdataMF, classic = resultFisher.pHMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.pHMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
 head(allRes.pHMF)
@@ -393,6 +433,34 @@ head(allRes.pHMF)
 write.csv(allRes.pHMF, "pH-MF-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
+#### Match enriched GOterms with general annotation information
+
+```{r}
+sigRes.pHMF <- allRes.pHMF[1:8,c(1, 6)] #Filter significantly enriched GOterms, only keep GOID and p-value
+colnames(sigRes.pHMF) <- c("GOID", "p.value") #Change column names
+head(sigRes.pHMF)
+```
+
+```{r}
+sigRes.pHMFAnnot <- merge(sigRes.pHMF, pHDMLGOtermsMF, by = "GOID") #Additional annotations
+sigRes.pHMFAnnot <- unique(sigRes.pHMFAnnot[,-11]) #Drop GOcat column and retain only unique lines 
+length(unique(sigRes.pHMFAnnot$geneID)) #13 unique genes
+length(unique(sigRes.pHMFAnnot$transcript)) #59 unique transcripts
+head(sigRes.pHMFAnnot) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.pHMFAnnot, "pH-MF-EnrichedGO-DML-withTranscript.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+```{r}
+sigRes.pHMFAnnotnoT <- unique(sigRes.pHMFAnnot[,-3]) #Drop transcript column and keep only unique rows
+head(sigRes.pHMFAnnotnoT) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.pHMFAnnotnoT, "pH-MF-EnrichedGO-DML.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
 
 ## ploidypH-DML
 
