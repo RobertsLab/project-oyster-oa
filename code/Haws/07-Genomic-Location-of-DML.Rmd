@@ -260,9 +260,9 @@ head(cpgFeatureOverlapsPercentsBind)
 par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
 
 barplot(t(t(cpgFeatureOverlapsPercentsBind[,c(1:4)])), 
-        col= plotColors, 
+        col= rev(plotColors), 
         axes = FALSE, 
-        names.arg = c("High", "Ploidy", "pH", "Interaction"), cex.names = 1.5,
+        names.arg = c("All 5x CpGs", "Ploidy", "pH", "Interaction"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
@@ -282,7 +282,7 @@ legend(x = 0.57, y = 0.87,
                   "Intergenic"),
        pch = 22, 
         col = "black", 
-        pt.bg = plotColors,
+        pt.bg = rev(plotColors),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
