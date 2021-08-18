@@ -483,7 +483,7 @@ mtext(side = 3, text = "B) Triploid coverage", adj = 0)
 
 #Diploid methylation
 
-hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[7], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, at = 110, cex = 1.5) #Add x-axis label
