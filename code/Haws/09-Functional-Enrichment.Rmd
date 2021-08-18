@@ -511,3 +511,7 @@ resultFisher.ploidypHMF <- getSigGroups(ploidypHGOdataMF, test.stat) #Extract si
 resultFisher.ploidypHMF #Get results summary
 ```
 
+```{r}
+save.image("project-oyster-oa.RData") #Save R Data
+```
+
