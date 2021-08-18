@@ -1,0 +1,10 @@
+GOID,p.value,transcript,geneID,chr,start,end,GOterm,GOSlim,GOcat
+GO:0006470,0.0087,XM_034465703.1,105331010,NC_047560.1,599436,599438,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465703.1,105331010,NC_047560.1,599422,599424,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465702.1,105331010,NC_047560.1,599436,599438,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465702.1,105331010,NC_047560.1,599422,599424,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465700.1,105331010,NC_047560.1,599438,599440,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465700.1,105331010,NC_047560.1,599436,599438,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465702.1,105331010,NC_047560.1,599438,599440,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465703.1,105331010,NC_047560.1,599438,599440,protein amino acid dephosphorylation,protein metabolism,P
+GO:0006470,0.0087,XM_034465700.1,105331010,NC_047560.1,599422,599424,protein amino acid dephosphorylation,protein metabolism,P

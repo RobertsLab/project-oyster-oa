@@ -197,15 +197,6 @@ nrow(ploidypHDMLGOtermCountsBP) #Number of unique GOIDs associated with ploidypH
 write.csv(ploidypHDMLGOtermCountsBP, "ploidypH-BP-GOterms.csv", quote = FALSE, row.names = FALSE)
 ```
 
-
-
-
-
-
-
-
-
-
 # Gene enrichment with `topGO`
 
 Following protocol from [Chandra Rajan et al. 2021](https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15675#support-information-section). Script found [here](https://onlinelibrary-wiley-com.offcampus.lib.washington.edu/action/downloadSupplement?doi=10.1111%2Fgcb.15675&file=gcb15675-sup-0002-FileS2.txt).
@@ -227,7 +218,7 @@ head(geneNames)
 I'm using the list of genes with DML as my list of interest. 
 
 ```{r}
-ploidyGenes <- ploidyDMLGOterms$transcript #Extract transcript ID
+ploidyGenes <- ploidyDMLGOtermsFiltered$transcript #Extract transcript ID
 ploidyGeneList <- factor(as.integer(geneNames %in% ploidyGenes))
 names(ploidyGeneList) <- ploidyGenes
 str(ploidyGeneList)
@@ -245,6 +236,50 @@ ploidyGOdataBP #Get summary of object
 test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
 resultFisher.ploidyBP <- getSigGroups(ploidyGOdataBP, test.stat)
 resultFisher.ploidyBP
+```
+
+```{r}
+pvalFis.ploidyBP <- score(resultFisher.ploidyBP) #Extract p-values
+head(pvalFis.ploidyBP)
+hist(pvalFis.ploidyBP, 50, xlab = "p-values") #Plot histogram of p-values
+```
+
+```{r}
+allRes.ploidyBP <- GenTable(ploidyGOdataBP, classic = resultFisher.ploidyBP, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.ploidyBP)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
+head(allRes.ploidyBP)
+```
+
+```{r}
+write.csv(allRes.ploidyBP, "ploidy-BP-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+#### Match enriched GOterms with general annotation information
+
+```{r}
+sigRes.ploidyBP <- allRes.ploidyBP[1:3,c(1, 6)] #Filter significantly enriched GOterms, only keep GOID and p-value
+colnames(sigRes.ploidyBP) <- c("GOID", "p.value") #Change column names
+head(sigRes.ploidyBP)
+```
+
+```{r}
+sigRes.ploidyBPAnnot <- merge(sigRes.ploidyBP, ploidyDMLGOtermsBP, by = "GOID") #Additional annotations
+sigRes.ploidyBPAnnot <- unique(sigRes.ploidyBPAnnot[,-11]) #Drop GOcat column and retain only unique lines 
+length(unique(sigRes.ploidyBPAnnot$geneID)) #1 unique genes
+length(unique(sigRes.ploidyBPAnnot$transcript)) #3 unique transcripts
+head(sigRes.ploidyBPAnnot) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.ploidyBPAnnot, "all-BP-EnrichedGO-DML-withTranscript.csv", quote = FALSE, row.names = FALSE) #Save dataframe
+```
+
+```{r}
+sigRes.ploidyBPAnnotnoT <- unique(sigRes.ploidyBPAnnot[,-3]) #Drop transcript column and keep only unique rows
+head(sigRes.ploidyBPAnnotnoT) #Confirm formatting
+```
+
+```{r}
+write.csv(sigRes.ploidyBPAnnotnoT, "ploidy-BP-EnrichedGO-DML.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
 ### Cellular components
@@ -274,25 +309,13 @@ resultFisher.ploidyMF #Get results summary
 ```
 
 ```{r}
-pvalFis.ploidyMF <- score(resultFisher.ploidyMF) #Extract p-values
-head(pvalFis.ploidyMF)
-hist(pvalFis.ploidyMF, 50, xlab = "p-values") #Plot histogram of p-values
-```
-
-
-```{r}
-allRes.ploidyMF <- GenTable(ploidyGOdataMF, classic = resultFisher.ploidyMF, ranksOf = "classic", orderBy = "classic", topNodes = length(pvalFis.ploidyMF)) #Create a statistical results table with statistical test results. Order by p-value (classic), and include all results (topNodes)
-head(allRes.ploidyMF)
-```
-
-```{r}
 write.csv(allRes.ploidyMF, "ploidy-MF-FisherTestResults.csv", quote = FALSE, row.names = FALSE) #Save dataframe
 ```
 
 ## pH-DML
 
 ```{r}
-pHGenes <- pHDMLGOterms$transcript #Extract transcript ID
+pHGenes <- pHDMLGOtermsFiltered$transcript #Extract transcript ID
 pHGeneList <- factor(as.integer(geneNames %in% pHGenes))
 names(pHGeneList) <- pHGenes
 str(pHGeneList)
@@ -374,7 +397,7 @@ write.csv(allRes.pHMF, "pH-MF-FisherTestResults.csv", quote = FALSE, row.names =
 ## ploidypH-DML
 
 ```{r}
-ploidypHGenes <- ploidypHDMLGOterms$transcript #Extract transcript ID
+ploidypHGenes <- ploidypHDMLGOtermsFiltered$transcript #Extract transcript ID
 ploidypHGeneList <- factor(as.integer(geneNames %in% ploidypHGenes))
 names(ploidypHGeneList) <- ploidypHGenes
 str(ploidypHGeneList)

@@ -1,0 +1,2218 @@
+GO.ID,Term,Annotated,Significant,Expected,classic
+GO:0006470,protein dephosphorylation,10,2,0.03,0.0087
+GO:0098609,cell-cell adhesion,11,2,0.03,0.0105
+GO:0016311,dephosphorylation,13,2,0.04,0.0146
+GO:0030334,regulation of cell migration,18,2,0.05,0.0274
+GO:2000145,regulation of cell motility,18,2,0.05,0.0274
+GO:0002685,regulation of leukocyte migration,2,1,0.01,0.0288
+GO:0002687,positive regulation of leukocyte migrati...,2,1,0.01,0.0288
+GO:0002691,regulation of cellular extravasation,2,1,0.01,0.0288
+GO:0002693,positive regulation of cellular extravas...,2,1,0.01,0.0288
+GO:0006816,calcium ion transport,2,1,0.01,0.0288
+GO:0006939,smooth muscle contraction,2,1,0.01,0.0288
+GO:0006940,regulation of smooth muscle contraction,2,1,0.01,0.0288
+GO:0007159,leukocyte cell-cell adhesion,2,1,0.01,0.0288
+GO:0007204,positive regulation of cytosolic calcium...,2,1,0.01,0.0288
+GO:0007584,response to nutrient,2,1,0.01,0.0288
+GO:0009581,detection of external stimulus,2,1,0.01,0.0288
+GO:0009582,detection of abiotic stimulus,2,1,0.01,0.0288
+GO:0009612,response to mechanical stimulus,2,1,0.01,0.0288
+GO:0010038,response to metal ion,2,1,0.01,0.0288
+GO:0010039,response to iron ion,2,1,0.01,0.0288
+GO:0010040,response to iron(II) ion,2,1,0.01,0.0288
+GO:0010959,regulation of metal ion transport,2,1,0.01,0.0288
+GO:0016048,detection of temperature stimulus,2,1,0.01,0.0288
+GO:0019226,transmission of nerve impulse,2,1,0.01,0.0288
+GO:0019228,neuronal action potential,2,1,0.01,0.0288
+GO:0019233,sensory perception of pain,2,1,0.01,0.0288
+GO:0022409,positive regulation of cell-cell adhesio...,2,1,0.01,0.0288
+GO:0030001,metal ion transport,2,1,0.01,0.0288
+GO:0031638,zymogen activation,2,1,0.01,0.0288
+GO:0031644,regulation of nervous system process,2,1,0.01,0.0288
+GO:0031646,positive regulation of nervous system pr...,2,1,0.01,0.0288
+GO:0031670,cellular response to nutrient,2,1,0.01,0.0288
+GO:0032354,response to follicle-stimulating hormone,2,1,0.01,0.0288
+GO:0032355,response to estradiol,2,1,0.01,0.0288
+GO:0032516,positive regulation of phosphoprotein ph...,2,1,0.01,0.0288
+GO:0033197,response to vitamin E,2,1,0.01,0.0288
+GO:0033273,response to vitamin,2,1,0.01,0.0288
+GO:0034698,response to gonadotropin,2,1,0.01,0.0288
+GO:0043133,hindgut contraction,2,1,0.01,0.0288
+GO:0043134,regulation of hindgut contraction,2,1,0.01,0.0288
+GO:0043271,negative regulation of ion transport,2,1,0.01,0.0288
+GO:0043525,positive regulation of neuron apoptotic ...,2,1,0.01,0.0288
+GO:0043666,regulation of phosphoprotein phosphatase...,2,1,0.01,0.0288
+GO:0044557,relaxation of smooth muscle,2,1,0.01,0.0288
+GO:0045123,cellular extravasation,2,1,0.01,0.0288
+GO:0045760,positive regulation of action potential,2,1,0.01,0.0288
+GO:0045933,positive regulation of muscle contractio...,2,1,0.01,0.0288
+GO:0045987,positive regulation of smooth muscle con...,2,1,0.01,0.0288
+GO:0050900,leukocyte migration,2,1,0.01,0.0288
+GO:0050901,leukocyte tethering or rolling,2,1,0.01,0.0288
+GO:0050906,detection of stimulus involved in sensor...,2,1,0.01,0.0288
+GO:0050951,sensory perception of temperature stimul...,2,1,0.01,0.0288
+GO:0050961,detection of temperature stimulus involv...,2,1,0.01,0.0288
+GO:0050965,detection of temperature stimulus involv...,2,1,0.01,0.0288
+GO:0050966,detection of mechanical stimulus involve...,2,1,0.01,0.0288
+GO:0050974,detection of mechanical stimulus involve...,2,1,0.01,0.0288
+GO:0050982,detection of mechanical stimulus,2,1,0.01,0.0288
+GO:0051051,negative regulation of transport,2,1,0.01,0.0288
+GO:0051606,detection of stimulus,2,1,0.01,0.0288
+GO:0051924,regulation of calcium ion transport,2,1,0.01,0.0288
+GO:0051926,negative regulation of calcium ion trans...,2,1,0.01,0.0288
+GO:0051969,regulation of transmission of nerve impu...,2,1,0.01,0.0288
+GO:0051971,positive regulation of transmission of n...,2,1,0.01,0.0288
+GO:0060401,cytosolic calcium ion transport,2,1,0.01,0.0288
+GO:0060402,calcium ion transport into cytosol,2,1,0.01,0.0288
+GO:0060450,positive regulation of hindgut contracti...,2,1,0.01,0.0288
+GO:0060456,positive regulation of digestive system ...,2,1,0.01,0.0288
+GO:0061756,leukocyte adhesion to vascular endotheli...,2,1,0.01,0.0288
+GO:0062149,detection of stimulus involved in sensor...,2,1,0.01,0.0288
+GO:0070509,calcium ion import,2,1,0.01,0.0288
+GO:0070555,response to interleukin-1,2,1,0.01,0.0288
+GO:0070588,calcium ion transmembrane transport,2,1,0.01,0.0288
+GO:0071295,cellular response to vitamin,2,1,0.01,0.0288
+GO:0071306,cellular response to vitamin E,2,1,0.01,0.0288
+GO:0071347,cellular response to interleukin-1,2,1,0.01,0.0288
+GO:0071371,cellular response to gonadotropin stimul...,2,1,0.01,0.0288
+GO:0071372,cellular response to follicle-stimulatin...,2,1,0.01,0.0288
+GO:0071392,cellular response to estradiol stimulus,2,1,0.01,0.0288
+GO:0072672,neutrophil extravasation,2,1,0.01,0.0288
+GO:0090075,relaxation of muscle,2,1,0.01,0.0288
+GO:0090279,regulation of calcium ion import,2,1,0.01,0.0288
+GO:0090281,negative regulation of calcium ion impor...,2,1,0.01,0.0288
+GO:0097202,activation of cysteine-type endopeptidas...,2,1,0.01,0.0288
+GO:0097529,myeloid leukocyte migration,2,1,0.01,0.0288
+GO:0097530,granulocyte migration,2,1,0.01,0.0288
+GO:0097553,calcium ion transmembrane import into cy...,2,1,0.01,0.0288
+GO:0098657,import into cell,2,1,0.01,0.0288
+GO:0098659,inorganic cation import across plasma me...,2,1,0.01,0.0288
+GO:0098703,calcium ion import across plasma membran...,2,1,0.01,0.0288
+GO:0098739,import across plasma membrane,2,1,0.01,0.0288
+GO:0098908,regulation of neuronal action potential,2,1,0.01,0.0288
+GO:0099587,inorganic ion import across plasma membr...,2,1,0.01,0.0288
+GO:1901077,regulation of relaxation of muscle,2,1,0.01,0.0288
+GO:1901079,positive regulation of relaxation of mus...,2,1,0.01,0.0288
+GO:1901080,regulation of relaxation of smooth muscl...,2,1,0.01,0.0288
+GO:1901082,positive regulation of relaxation of smo...,2,1,0.01,0.0288
+GO:1901216,positive regulation of neuron death,2,1,0.01,0.0288
+GO:1902622,regulation of neutrophil migration,2,1,0.01,0.0288
+GO:1902624,positive regulation of neutrophil migrat...,2,1,0.01,0.0288
+GO:1902656,calcium ion import into cytosol,2,1,0.01,0.0288
+GO:1903037,regulation of leukocyte cell-cell adhesi...,2,1,0.01,0.0288
+GO:1903039,positive regulation of leukocyte cell-ce...,2,1,0.01,0.0288
+GO:1903236,regulation of leukocyte tethering or rol...,2,1,0.01,0.0288
+GO:1903238,positive regulation of leukocyte tetheri...,2,1,0.01,0.0288
+GO:1904457,positive regulation of neuronal action p...,2,1,0.01,0.0288
+GO:1904994,regulation of leukocyte adhesion to vasc...,2,1,0.01,0.0288
+GO:1904996,positive regulation of leukocyte adhesio...,2,1,0.01,0.0288
+GO:1990266,neutrophil migration,2,1,0.01,0.0288
+GO:2000389,regulation of neutrophil extravasation,2,1,0.01,0.0288
+GO:2000391,positive regulation of neutrophil extrav...,2,1,0.01,0.0288
+GO:0040012,regulation of locomotion,20,2,0.06,0.0333
+GO:0007155,cell adhesion,22,2,0.06,0.0398
+GO:0022610,biological adhesion,22,2,0.06,0.0398
+GO:0001935,endothelial cell proliferation,3,1,0.01,0.0428
+GO:0001936,regulation of endothelial cell prolifera...,3,1,0.01,0.0428
+GO:0001937,negative regulation of endothelial cell ...,3,1,0.01,0.0428
+GO:0003407,neural retina development,3,1,0.01,0.0428
+GO:0007600,sensory perception,3,1,0.01,0.0428
+GO:0010842,retina layer formation,3,1,0.01,0.0428
+GO:0031290,retinal ganglion cell axon guidance,3,1,0.01,0.0428
+GO:0048593,camera-type eye morphogenesis,3,1,0.01,0.0428
+GO:0050680,negative regulation of epithelial cell p...,3,1,0.01,0.0428
+GO:0050954,sensory perception of mechanical stimulu...,3,1,0.01,0.0428
+GO:0060041,retina development in camera-type eye,3,1,0.01,0.0428
+GO:0060042,retina morphogenesis in camera-type eye,3,1,0.01,0.0428
+GO:0016477,cell migration,23,2,0.06,0.0432
+GO:0048870,cell motility,23,2,0.06,0.0432
+GO:0051674,localization of cell,23,2,0.06,0.0432
+GO:0007156,homophilic cell adhesion via plasma memb...,4,1,0.01,0.0567
+GO:0048592,eye morphogenesis,4,1,0.01,0.0567
+GO:0090596,sensory organ morphogenesis,4,1,0.01,0.0567
+GO:0098742,cell-cell adhesion via plasma-membrane a...,4,1,0.01,0.0567
+GO:0002237,response to molecule of bacterial origin,5,1,0.01,0.0704
+GO:0006874,cellular calcium ion homeostasis,5,1,0.01,0.0704
+GO:0009266,response to temperature stimulus,5,1,0.01,0.0704
+GO:0010921,regulation of phosphatase activity,5,1,0.01,0.0704
+GO:0010922,positive regulation of phosphatase activ...,5,1,0.01,0.0704
+GO:0030335,positive regulation of cell migration,5,1,0.01,0.0704
+GO:0032496,response to lipopolysaccharide,5,1,0.01,0.0704
+GO:0033993,response to lipid,5,1,0.01,0.0704
+GO:0045785,positive regulation of cell adhesion,5,1,0.01,0.0704
+GO:0051017,actin filament bundle assembly,5,1,0.01,0.0704
+GO:0051272,positive regulation of cellular componen...,5,1,0.01,0.0704
+GO:0051480,regulation of cytosolic calcium ion conc...,5,1,0.01,0.0704
+GO:0071396,cellular response to lipid,5,1,0.01,0.0704
+GO:0072503,cellular divalent inorganic cation homeo...,5,1,0.01,0.0704
+GO:2000147,positive regulation of cell motility,5,1,0.01,0.0704
+GO:0010950,positive regulation of endopeptidase act...,6,1,0.02,0.0839
+GO:0010952,positive regulation of peptidase activit...,6,1,0.02,0.0839
+GO:0016485,protein processing,6,1,0.02,0.0839
+GO:0031668,cellular response to extracellular stimu...,6,1,0.02,0.0839
+GO:0031669,cellular response to nutrient levels,6,1,0.02,0.0839
+GO:0042493,response to drug,6,1,0.02,0.0839
+GO:0043010,camera-type eye development,6,1,0.02,0.0839
+GO:0050673,epithelial cell proliferation,6,1,0.02,0.0839
+GO:0050678,regulation of epithelial cell proliferat...,6,1,0.02,0.0839
+GO:0050877,nervous system process,6,1,0.02,0.0839
+GO:0051604,protein maturation,6,1,0.02,0.0839
+GO:0052547,regulation of peptidase activity,6,1,0.02,0.0839
+GO:0052548,regulation of endopeptidase activity,6,1,0.02,0.0839
+GO:0055074,calcium ion homeostasis,6,1,0.02,0.0839
+GO:0061572,actin filament bundle organization,6,1,0.02,0.0839
+GO:0071496,cellular response to external stimulus,6,1,0.02,0.0839
+GO:0072507,divalent inorganic cation homeostasis,6,1,0.02,0.0839
+GO:2000116,regulation of cysteine-type endopeptidas...,6,1,0.02,0.0839
+GO:2001056,positive regulation of cysteine-type end...,6,1,0.02,0.0839
+GO:0001654,eye development,7,1,0.02,0.0972
+GO:0006873,cellular ion homeostasis,7,1,0.02,0.0972
+GO:0006875,cellular metal ion homeostasis,7,1,0.02,0.0972
+GO:0007586,digestion,7,1,0.02,0.0972
+GO:0010035,response to inorganic substance,7,1,0.02,0.0972
+GO:0022407,regulation of cell-cell adhesion,7,1,0.02,0.0972
+GO:0022600,digestive system process,7,1,0.02,0.0972
+GO:0030003,cellular cation homeostasis,7,1,0.02,0.0972
+GO:0035304,regulation of protein dephosphorylation,7,1,0.02,0.0972
+GO:0035307,positive regulation of protein dephospho...,7,1,0.02,0.0972
+GO:0040017,positive regulation of locomotion,7,1,0.02,0.0972
+GO:0043523,regulation of neuron apoptotic process,7,1,0.02,0.0972
+GO:0044058,regulation of digestive system process,7,1,0.02,0.0972
+GO:0045862,positive regulation of proteolysis,7,1,0.02,0.0972
+GO:0048880,sensory system development,7,1,0.02,0.0972
+GO:0051402,neuron apoptotic process,7,1,0.02,0.0972
+GO:0070997,neuron death,7,1,0.02,0.0972
+GO:0150063,visual system development,7,1,0.02,0.0972
+GO:1901214,regulation of neuron death,7,1,0.02,0.0972
+GO:0040011,locomotion,39,2,0.11,0.1091
+GO:0009725,response to hormone,8,1,0.02,0.1103
+GO:0010942,positive regulation of cell death,8,1,0.02,0.1103
+GO:0030162,regulation of proteolysis,8,1,0.02,0.1103
+GO:0032870,cellular response to hormone stimulus,8,1,0.02,0.1103
+GO:0043065,positive regulation of apoptotic process,8,1,0.02,0.1103
+GO:0043068,positive regulation of programmed cell d...,8,1,0.02,0.1103
+GO:0050801,ion homeostasis,8,1,0.02,0.1103
+GO:0055065,metal ion homeostasis,8,1,0.02,0.1103
+GO:0055080,cation homeostasis,8,1,0.02,0.1103
+GO:0098771,inorganic ion homeostasis,8,1,0.02,0.1103
+GO:0007409,axonogenesis,9,1,0.03,0.1232
+GO:0007411,axon guidance,9,1,0.03,0.1232
+GO:0009991,response to extracellular stimulus,9,1,0.03,0.1232
+GO:0031667,response to nutrient levels,9,1,0.03,0.1232
+GO:0009617,response to bacterium,10,1,0.03,0.1359
+GO:0030155,regulation of cell adhesion,10,1,0.03,0.1359
+GO:0035303,regulation of dephosphorylation,10,1,0.03,0.1359
+GO:0035306,positive regulation of dephosphorylation,10,1,0.03,0.1359
+GO:0051240,positive regulation of multicellular org...,10,1,0.03,0.1359
+GO:0061564,axon development,10,1,0.03,0.1359
+GO:0007015,actin filament organization,11,1,0.03,0.1484
+GO:0009887,animal organ morphogenesis,11,1,0.03,0.1484
+GO:0001667,ameboidal-type cell migration,12,1,0.03,0.1608
+GO:0007423,sensory organ development,12,1,0.03,0.1608
+GO:0010594,regulation of endothelial cell migration,12,1,0.03,0.1608
+GO:0010596,negative regulation of endothelial cell ...,12,1,0.03,0.1608
+GO:0010631,epithelial cell migration,12,1,0.03,0.1608
+GO:0010632,regulation of epithelial cell migration,12,1,0.03,0.1608
+GO:0010633,negative regulation of epithelial cell m...,12,1,0.03,0.1608
+GO:0016525,negative regulation of angiogenesis,12,1,0.03,0.1608
+GO:0030336,negative regulation of cell migration,12,1,0.03,0.1608
+GO:0034097,response to cytokine,12,1,0.03,0.1608
+GO:0040013,negative regulation of locomotion,12,1,0.03,0.1608
+GO:0043542,endothelial cell migration,12,1,0.03,0.1608
+GO:0045765,regulation of angiogenesis,12,1,0.03,0.1608
+GO:0051271,negative regulation of cellular componen...,12,1,0.03,0.1608
+GO:0071345,cellular response to cytokine stimulus,12,1,0.03,0.1608
+GO:0090130,tissue migration,12,1,0.03,0.1608
+GO:0090132,epithelium migration,12,1,0.03,0.1608
+GO:1901342,regulation of vasculature development,12,1,0.03,0.1608
+GO:1901343,negative regulation of vasculature devel...,12,1,0.03,0.1608
+GO:2000146,negative regulation of cell motility,12,1,0.03,0.1608
+GO:2000181,negative regulation of blood vessel morp...,12,1,0.03,0.1608
+GO:0009605,response to external stimulus,50,2,0.14,0.1633
+GO:0009611,response to wounding,13,1,0.04,0.1730
+GO:0051270,regulation of cellular component movemen...,52,2,0.14,0.1736
+GO:0002684,positive regulation of immune system pro...,15,1,0.04,0.1968
+GO:0022603,regulation of anatomical structure morph...,15,1,0.04,0.1968
+GO:0055082,cellular chemical homeostasis,15,1,0.04,0.1968
+GO:0048878,chemical homeostasis,16,1,0.04,0.2084
+GO:0030036,actin cytoskeleton organization,17,1,0.05,0.2199
+GO:0001525,angiogenesis,18,1,0.05,0.2313
+GO:0001568,blood vessel development,18,1,0.05,0.2313
+GO:0001944,vasculature development,18,1,0.05,0.2313
+GO:0006508,proteolysis,18,1,0.05,0.2313
+GO:0048514,blood vessel morphogenesis,18,1,0.05,0.2313
+GO:0006793,phosphorus metabolic process,63,2,0.18,0.2318
+GO:0006796,phosphate-containing compound metabolic ...,63,2,0.18,0.2318
+GO:0019725,cellular homeostasis,19,1,0.05,0.2424
+GO:0032989,cellular component morphogenesis,19,1,0.05,0.2424
+GO:0032990,cell part morphogenesis,19,1,0.05,0.2424
+GO:0048667,cell morphogenesis involved in neuron di...,19,1,0.05,0.2424
+GO:0048812,neuron projection morphogenesis,19,1,0.05,0.2424
+GO:0048858,cell projection morphogenesis,19,1,0.05,0.2424
+GO:0051093,negative regulation of developmental pro...,19,1,0.05,0.2424
+GO:0097485,neuron projection guidance,19,1,0.05,0.2424
+GO:0120039,plasma membrane bounded cell projection ...,19,1,0.05,0.2424
+GO:0048519,negative regulation of biological proces...,65,2,0.18,0.2425
+GO:0000904,cell morphogenesis involved in different...,20,1,0.06,0.2534
+GO:0008285,negative regulation of cell population p...,20,1,0.06,0.2534
+GO:0031175,neuron projection development,20,1,0.06,0.2534
+GO:0042592,homeostatic process,20,1,0.06,0.2534
+GO:0048666,neuron development,20,1,0.06,0.2534
+GO:2000026,regulation of multicellular organismal d...,20,1,0.06,0.2534
+GO:0000902,cell morphogenesis,21,1,0.06,0.2643
+GO:0010647,positive regulation of cell communicatio...,21,1,0.06,0.2643
+GO:0023056,positive regulation of signaling,21,1,0.06,0.2643
+GO:0030182,neuron differentiation,21,1,0.06,0.2643
+GO:0009607,response to biotic stimulus,22,1,0.06,0.2750
+GO:0043207,response to external biotic stimulus,22,1,0.06,0.2750
+GO:0051707,response to other organism,22,1,0.06,0.2750
+GO:0042127,regulation of cell population proliferat...,23,1,0.06,0.2855
+GO:0051241,negative regulation of multicellular org...,23,1,0.06,0.2855
+GO:0042981,regulation of apoptotic process,24,1,0.07,0.2959
+GO:0043067,regulation of programmed cell death,24,1,0.07,0.2959
+GO:0048646,anatomical structure formation involved ...,24,1,0.07,0.2959
+GO:0051336,regulation of hydrolase activity,24,1,0.07,0.2959
+GO:0051345,positive regulation of hydrolase activit...,24,1,0.07,0.2959
+GO:0022008,neurogenesis,25,1,0.07,0.3061
+GO:0048468,cell development,25,1,0.07,0.3061
+GO:0048699,generation of neurons,25,1,0.07,0.3061
+GO:0072359,circulatory system development,25,1,0.07,0.3061
+GO:0051239,regulation of multicellular organismal p...,77,2,0.21,0.3072
+GO:0010941,regulation of cell death,26,1,0.07,0.3162
+GO:0035239,tube morphogenesis,26,1,0.07,0.3162
+GO:0043085,positive regulation of catalytic activit...,26,1,0.07,0.3162
+GO:0044419,biological process involved in interspec...,26,1,0.07,0.3162
+GO:0006935,chemotaxis,27,1,0.08,0.3262
+GO:0042330,taxis,27,1,0.08,0.3262
+GO:0002682,regulation of immune system process,28,1,0.08,0.3360
+GO:0042221,response to chemical,85,2,0.24,0.3498
+GO:0032879,regulation of localization,86,2,0.24,0.3551
+GO:0006355,regulation of transcription, DNA-templat...,32,1,0.09,0.3738
+GO:0008283,cell population proliferation,32,1,0.09,0.3738
+GO:1903506,regulation of nucleic acid-templated tra...,32,1,0.09,0.3738
+GO:2001141,regulation of RNA biosynthetic process,32,1,0.09,0.3738
+GO:0006915,apoptotic process,33,1,0.09,0.3829
+GO:0012501,programmed cell death,33,1,0.09,0.3829
+GO:0050793,regulation of developmental process,33,1,0.09,0.3829
+GO:0002376,immune system process,35,1,0.1,0.4007
+GO:0006351,transcription, DNA-templated,35,1,0.1,0.4007
+GO:0008219,cell death,35,1,0.1,0.4007
+GO:0032774,RNA biosynthetic process,35,1,0.1,0.4007
+GO:0097659,nucleic acid-templated transcription,35,1,0.1,0.4007
+GO:0001508,action potential,36,1,0.1,0.4095
+GO:0006936,muscle contraction,36,1,0.1,0.4095
+GO:0006937,regulation of muscle contraction,36,1,0.1,0.4095
+GO:0035295,tube development,36,1,0.1,0.4095
+GO:0035637,multicellular organismal signaling,36,1,0.1,0.4095
+GO:0098900,regulation of action potential,36,1,0.1,0.4095
+GO:2000112,regulation of cellular macromolecule bio...,36,1,0.1,0.4095
+GO:0006464,cellular protein modification process,98,2,0.27,0.4170
+GO:0036211,protein modification process,98,2,0.27,0.4170
+GO:0019219,regulation of nucleobase-containing comp...,37,1,0.1,0.4181
+GO:0051252,regulation of RNA metabolic process,37,1,0.1,0.4181
+GO:0009653,anatomical structure morphogenesis,38,1,0.11,0.4265
+GO:0043412,macromolecule modification,101,2,0.28,0.4321
+GO:0018130,heterocycle biosynthetic process,39,1,0.11,0.4349
+GO:0019438,aromatic compound biosynthetic process,39,1,0.11,0.4349
+GO:0034654,nucleobase-containing compound biosynthe...,39,1,0.11,0.4349
+GO:1901362,organic cyclic compound biosynthetic pro...,39,1,0.11,0.4349
+GO:0044267,cellular protein metabolic process,104,2,0.29,0.4469
+GO:0003012,muscle system process,41,1,0.11,0.4512
+GO:0009889,regulation of biosynthetic process,41,1,0.11,0.4512
+GO:0010556,regulation of macromolecule biosynthetic...,41,1,0.11,0.4512
+GO:0031326,regulation of cellular biosynthetic proc...,41,1,0.11,0.4512
+GO:0042391,regulation of membrane potential,41,1,0.11,0.4512
+GO:0048513,animal organ development,41,1,0.11,0.4512
+GO:0090257,regulation of muscle system process,41,1,0.11,0.4512
+GO:0006812,cation transport,42,1,0.12,0.4592
+GO:0098655,cation transmembrane transport,42,1,0.12,0.4592
+GO:0098660,inorganic ion transmembrane transport,42,1,0.12,0.4592
+GO:0098662,inorganic cation transmembrane transport,42,1,0.12,0.4592
+GO:0019538,protein metabolic process,109,2,0.3,0.4711
+GO:0009628,response to abiotic stimulus,44,1,0.12,0.4749
+GO:0010646,regulation of cell communication,44,1,0.12,0.4749
+GO:0014070,response to organic cyclic compound,44,1,0.12,0.4749
+GO:0023051,regulation of signaling,44,1,0.12,0.4749
+GO:0071407,cellular response to organic cyclic comp...,44,1,0.12,0.4749
+GO:0007399,nervous system development,45,1,0.13,0.4825
+GO:0010468,regulation of gene expression,45,1,0.13,0.4825
+GO:0031401,positive regulation of protein modificat...,45,1,0.13,0.4825
+GO:0044271,cellular nitrogen compound biosynthetic ...,45,1,0.13,0.4825
+GO:0044057,regulation of system process,46,1,0.13,0.4901
+GO:1901564,organonitrogen compound metabolic proces...,114,2,0.32,0.4947
+GO:0006950,response to stress,47,1,0.13,0.4975
+GO:0034645,cellular macromolecule biosynthetic proc...,47,1,0.13,0.4975
+GO:0097435,supramolecular fiber organization,47,1,0.13,0.4975
+GO:0023052,signaling,115,2,0.32,0.4994
+GO:0010562,positive regulation of phosphorus metabo...,48,1,0.13,0.5048
+GO:0045937,positive regulation of phosphate metabol...,48,1,0.13,0.5048
+GO:0016070,RNA metabolic process,49,1,0.14,0.5121
+GO:0007154,cell communication,119,2,0.33,0.5177
+GO:0003008,system process,50,1,0.14,0.5192
+GO:0043269,regulation of ion transport,50,1,0.14,0.5192
+GO:0030029,actin filament-based process,51,1,0.14,0.5262
+GO:0032270,positive regulation of cellular protein ...,51,1,0.14,0.5262
+GO:0051247,positive regulation of protein metabolic...,51,1,0.14,0.5262
+GO:0009059,macromolecule biosynthetic process,52,1,0.14,0.5331
+GO:0034220,ion transmembrane transport,53,1,0.15,0.5399
+GO:0055085,transmembrane transport,53,1,0.15,0.5399
+GO:0007010,cytoskeleton organization,54,1,0.15,0.5466
+GO:0019220,regulation of phosphate metabolic proces...,54,1,0.15,0.5466
+GO:0051174,regulation of phosphorus metabolic proce...,54,1,0.15,0.5466
+GO:0030154,cell differentiation,55,1,0.15,0.5533
+GO:0048523,negative regulation of cellular process,57,1,0.16,0.5662
+GO:1901701,cellular response to oxygen-containing c...,57,1,0.16,0.5662
+GO:1901576,organic substance biosynthetic process,58,1,0.16,0.5725
+GO:1901700,response to oxygen-containing compound,58,1,0.16,0.5725
+GO:0022607,cellular component assembly,59,1,0.16,0.5788
+GO:0044249,cellular biosynthetic process,59,1,0.16,0.5788
+GO:0051173,positive regulation of nitrogen compound...,59,1,0.16,0.5788
+GO:0009058,biosynthetic process,60,1,0.17,0.5849
+GO:0009719,response to endogenous stimulus,60,1,0.17,0.5849
+GO:0030030,cell projection organization,60,1,0.17,0.5849
+GO:0031399,regulation of protein modification proce...,60,1,0.17,0.5849
+GO:0044085,cellular component biogenesis,60,1,0.17,0.5849
+GO:0048869,cellular developmental process,60,1,0.17,0.5849
+GO:0050790,regulation of catalytic activity,60,1,0.17,0.5849
+GO:0051049,regulation of transport,60,1,0.17,0.5849
+GO:0071495,cellular response to endogenous stimulus,60,1,0.17,0.5849
+GO:0090304,nucleic acid metabolic process,60,1,0.17,0.5849
+GO:0120036,plasma membrane bounded cell projection ...,60,1,0.17,0.5849
+GO:0044260,cellular macromolecule metabolic process,135,2,0.38,0.5864
+GO:0010467,gene expression,61,1,0.17,0.5910
+GO:0032501,multicellular organismal process,137,2,0.38,0.5944
+GO:0006807,nitrogen compound metabolic process,138,2,0.38,0.5984
+GO:0006928,movement of cell or subcellular componen...,138,2,0.38,0.5984
+GO:0051716,cellular response to stimulus,142,2,0.4,0.6141
+GO:0006139,nucleobase-containing compound metabolic...,65,1,0.18,0.6144
+GO:0006725,cellular aromatic compound metabolic pro...,65,1,0.18,0.6144
+GO:0046483,heterocycle metabolic process,65,1,0.18,0.6144
+GO:1901360,organic cyclic compound metabolic proces...,65,1,0.18,0.6144
+GO:0043170,macromolecule metabolic process,143,2,0.4,0.6179
+GO:0031325,positive regulation of cellular metaboli...,66,1,0.18,0.6200
+GO:0044093,positive regulation of molecular functio...,66,1,0.18,0.6200
+GO:0009893,positive regulation of metabolic process,67,1,0.19,0.6256
+GO:0010604,positive regulation of macromolecule met...,67,1,0.19,0.6256
+GO:0032268,regulation of cellular protein metabolic...,67,1,0.19,0.6256
+GO:0051246,regulation of protein metabolic process,67,1,0.19,0.6256
+GO:0070887,cellular response to chemical stimulus,67,1,0.19,0.6256
+GO:0071310,cellular response to organic substance,67,1,0.19,0.6256
+GO:0044238,primary metabolic process,146,2,0.41,0.6293
+GO:0010033,response to organic substance,68,1,0.19,0.6311
+GO:0050794,regulation of cellular process,148,2,0.41,0.6367
+GO:0050896,response to stimulus,148,2,0.41,0.6367
+GO:0034641,cellular nitrogen compound metabolic pro...,70,1,0.2,0.6418
+GO:0016043,cellular component organization,150,2,0.42,0.6440
+GO:0044237,cellular metabolic process,151,2,0.42,0.6477
+GO:0071840,cellular component organization or bioge...,151,2,0.42,0.6477
+GO:0071704,organic substance metabolic process,153,2,0.43,0.6548
+GO:0008152,metabolic process,155,2,0.43,0.6618
+GO:0050789,regulation of biological process,156,2,0.43,0.6653
+GO:0065009,regulation of molecular function,76,1,0.21,0.6721
+GO:0007275,multicellular organism development,79,1,0.22,0.6863
+GO:0048731,system development,79,1,0.22,0.6863
+GO:0051171,regulation of nitrogen compound metaboli...,83,1,0.23,0.7043
+GO:0065007,biological regulation,172,2,0.48,0.7170
+GO:0006811,ion transport,86,1,0.24,0.7171
+GO:0048518,positive regulation of biological proces...,88,1,0.25,0.7253
+GO:0048522,positive regulation of cellular process,88,1,0.25,0.7253
+GO:0051649,establishment of localization in cell,88,1,0.25,0.7253
+GO:0080090,regulation of primary metabolic process,89,1,0.25,0.7294
+GO:0031323,regulation of cellular metabolic process,90,1,0.25,0.7333
+GO:0051179,localization,178,2,0.5,0.7346
+GO:0048856,anatomical structure development,93,1,0.26,0.7449
+GO:0060255,regulation of macromolecule metabolic pr...,97,1,0.27,0.7596
+GO:0019222,regulation of metabolic process,99,1,0.28,0.7666
+GO:0032502,developmental process,100,1,0.28,0.7700
+GO:0065008,regulation of biological quality,106,1,0.3,0.7896
+GO:0007165,signal transduction,109,1,0.3,0.7987
+GO:0051641,cellular localization,110,1,0.31,0.8017
+GO:0006810,transport,141,1,0.39,0.8749
+GO:0051234,establishment of localization,141,1,0.39,0.8749
+GO:0006996,organelle organization,142,1,0.4,0.8767
+GO:0009987,cellular process,289,2,0.81,0.9267
+GO:0008150,biological_process,315,2,0.88,0.9469
+GO:0000003,reproduction,31,0,0.09,1.0000
+GO:0000045,autophagosome assembly,2,0,0.01,1.0000
+GO:0000075,cell cycle checkpoint,3,0,0.01,1.0000
+GO:0000076,DNA replication checkpoint,2,0,0.01,1.0000
+GO:0000077,DNA damage checkpoint,3,0,0.01,1.0000
+GO:0000086,G2/M transition of mitotic cell cycle,45,0,0.13,1.0000
+GO:0000122,negative regulation of transcription by ...,13,0,0.04,1.0000
+GO:0000165,MAPK cascade,48,0,0.13,1.0000
+GO:0000183,rDNA heterochromatin assembly,8,0,0.02,1.0000
+GO:0000209,protein polyubiquitination,6,0,0.02,1.0000
+GO:0000226,microtubule cytoskeleton organization,37,0,0.1,1.0000
+GO:0000271,polysaccharide biosynthetic process,4,0,0.01,1.0000
+GO:0000272,polysaccharide catabolic process,4,0,0.01,1.0000
+GO:0000278,mitotic cell cycle,53,0,0.15,1.0000
+GO:0000280,nuclear division,3,0,0.01,1.0000
+GO:0000281,mitotic cytokinesis,1,0,0,1.0000
+GO:0000302,response to reactive oxygen species,5,0,0.01,1.0000
+GO:0000375,RNA splicing, via transesterification re...,17,0,0.05,1.0000
+GO:0000377,RNA splicing, via transesterification re...,17,0,0.05,1.0000
+GO:0000380,alternative mRNA splicing, via spliceoso...,10,0,0.03,1.0000
+GO:0000381,regulation of alternative mRNA splicing,...,10,0,0.03,1.0000
+GO:0000398,mRNA splicing, via spliceosome,17,0,0.05,1.0000
+GO:0000422,autophagy of mitochondrion,2,0,0.01,1.0000
+GO:0000447,endonucleolytic cleavage in ITS1 to sepa...,1,0,0,1.0000
+GO:0000460,maturation of 5.8S rRNA,1,0,0,1.0000
+GO:0000462,maturation of SSU-rRNA from tricistronic...,1,0,0,1.0000
+GO:0000466,maturation of 5.8S rRNA from tricistroni...,1,0,0,1.0000
+GO:0000469,cleavage involved in rRNA processing,1,0,0,1.0000
+GO:0000472,endonucleolytic cleavage to generate mat...,1,0,0,1.0000
+GO:0000478,endonucleolytic cleavage involved in rRN...,1,0,0,1.0000
+GO:0000479,endonucleolytic cleavage of tricistronic...,1,0,0,1.0000
+GO:0000480,endonucleolytic cleavage in 5'-ETS of tr...,1,0,0,1.0000
+GO:0000578,embryonic axis specification,2,0,0.01,1.0000
+GO:0000910,cytokinesis,1,0,0,1.0000
+GO:0000966,RNA 5'-end processing,1,0,0,1.0000
+GO:0000967,rRNA 5'-end processing,1,0,0,1.0000
+GO:0001501,skeletal system development,5,0,0.01,1.0000
+GO:0001503,ossification,3,0,0.01,1.0000
+GO:0001505,regulation of neurotransmitter levels,2,0,0.01,1.0000
+GO:0001541,ovarian follicle development,2,0,0.01,1.0000
+GO:0001558,regulation of cell growth,8,0,0.02,1.0000
+GO:0001649,osteoblast differentiation,3,0,0.01,1.0000
+GO:0001655,urogenital system development,5,0,0.01,1.0000
+GO:0001656,metanephros development,2,0,0.01,1.0000
+GO:0001657,ureteric bud development,5,0,0.01,1.0000
+GO:0001658,branching involved in ureteric bud morph...,2,0,0.01,1.0000
+GO:0001666,response to hypoxia,5,0,0.01,1.0000
+GO:0001676,long-chain fatty acid metabolic process,2,0,0.01,1.0000
+GO:0001678,cellular glucose homeostasis,8,0,0.02,1.0000
+GO:0001696,gastric acid secretion,5,0,0.01,1.0000
+GO:0001701,in utero embryonic development,13,0,0.04,1.0000
+GO:0001702,gastrulation with mouth forming second,2,0,0.01,1.0000
+GO:0001704,formation of primary germ layer,3,0,0.01,1.0000
+GO:0001707,mesoderm formation,3,0,0.01,1.0000
+GO:0001736,establishment of planar polarity,1,0,0,1.0000
+GO:0001737,establishment of imaginal disc-derived w...,1,0,0,1.0000
+GO:0001738,morphogenesis of a polarized epithelium,1,0,0,1.0000
+GO:0001745,compound eye morphogenesis,1,0,0,1.0000
+GO:0001756,somitogenesis,5,0,0.01,1.0000
+GO:0001763,morphogenesis of a branching structure,2,0,0.01,1.0000
+GO:0001764,neuron migration,1,0,0,1.0000
+GO:0001775,cell activation,11,0,0.03,1.0000
+GO:0001816,cytokine production,11,0,0.03,1.0000
+GO:0001817,regulation of cytokine production,6,0,0.02,1.0000
+GO:0001819,positive regulation of cytokine producti...,4,0,0.01,1.0000
+GO:0001822,kidney development,5,0,0.01,1.0000
+GO:0001823,mesonephros development,5,0,0.01,1.0000
+GO:0001837,epithelial to mesenchymal transition,5,0,0.01,1.0000
+GO:0001889,liver development,3,0,0.01,1.0000
+GO:0001932,regulation of protein phosphorylation,49,0,0.14,1.0000
+GO:0001933,negative regulation of protein phosphory...,11,0,0.03,1.0000
+GO:0001934,positive regulation of protein phosphory...,43,0,0.12,1.0000
+GO:0001942,hair follicle development,3,0,0.01,1.0000
+GO:0001947,heart looping,3,0,0.01,1.0000
+GO:0001952,regulation of cell-matrix adhesion,3,0,0.01,1.0000
+GO:0001954,positive regulation of cell-matrix adhes...,3,0,0.01,1.0000
+GO:0002009,morphogenesis of an epithelium,17,0,0.05,1.0000
+GO:0002027,regulation of heart rate,34,0,0.09,1.0000
+GO:0002028,regulation of sodium ion transport,6,0,0.02,1.0000
+GO:0002040,sprouting angiogenesis,9,0,0.03,1.0000
+GO:0002042,cell migration involved in sprouting ang...,9,0,0.03,1.0000
+GO:0002062,chondrocyte differentiation,3,0,0.01,1.0000
+GO:0002076,osteoblast development,3,0,0.01,1.0000
+GO:0002088,lens development in camera-type eye,3,0,0.01,1.0000
+GO:0002097,tRNA wobble base modification,1,0,0,1.0000
+GO:0002098,tRNA wobble uridine modification,1,0,0,1.0000
+GO:0002164,larval development,1,0,0,1.0000
+GO:0002165,instar larval or pupal development,11,0,0.03,1.0000
+GO:0002168,instar larval development,1,0,0,1.0000
+GO:0002218,activation of innate immune response,13,0,0.04,1.0000
+GO:0002220,innate immune response activating cell s...,5,0,0.01,1.0000
+GO:0002223,stimulatory C-type lectin receptor signa...,5,0,0.01,1.0000
+GO:0002230,positive regulation of defense response ...,8,0,0.02,1.0000
+GO:0002244,hematopoietic progenitor cell differenti...,10,0,0.03,1.0000
+GO:0002250,adaptive immune response,5,0,0.01,1.0000
+GO:0002252,immune effector process,15,0,0.04,1.0000
+GO:0002253,activation of immune response,13,0,0.04,1.0000
+GO:0002263,cell activation involved in immune respo...,6,0,0.02,1.0000
+GO:0002274,myeloid leukocyte activation,6,0,0.02,1.0000
+GO:0002275,myeloid cell activation involved in immu...,6,0,0.02,1.0000
+GO:0002283,neutrophil activation involved in immune...,6,0,0.02,1.0000
+GO:0002366,leukocyte activation involved in immune ...,6,0,0.02,1.0000
+GO:0002429,immune response-activating cell surface ...,5,0,0.01,1.0000
+GO:0002431,Fc receptor mediated stimulatory signali...,5,0,0.01,1.0000
+GO:0002433,immune response-regulating cell surface ...,5,0,0.01,1.0000
+GO:0002443,leukocyte mediated immunity,6,0,0.02,1.0000
+GO:0002444,myeloid leukocyte mediated immunity,6,0,0.02,1.0000
+GO:0002446,neutrophil mediated immunity,6,0,0.02,1.0000
+GO:0002449,lymphocyte mediated immunity,5,0,0.01,1.0000
+GO:0002460,adaptive immune response based on somati...,5,0,0.01,1.0000
+GO:0002520,immune system development,23,0,0.06,1.0000
+GO:0002683,negative regulation of immune system pro...,10,0,0.03,1.0000
+GO:0002697,regulation of immune effector process,8,0,0.02,1.0000
+GO:0002757,immune response-activating signal transd...,5,0,0.01,1.0000
+GO:0002758,innate immune response-activating signal...,5,0,0.01,1.0000
+GO:0002764,immune response-regulating signaling pat...,5,0,0.01,1.0000
+GO:0002768,immune response-regulating cell surface ...,5,0,0.01,1.0000
+GO:0002831,regulation of response to biotic stimulu...,13,0,0.04,1.0000
+GO:0002833,positive regulation of response to bioti...,13,0,0.04,1.0000
+GO:0003002,regionalization,22,0,0.06,1.0000
+GO:0003006,developmental process involved in reprod...,25,0,0.07,1.0000
+GO:0003007,heart morphogenesis,7,0,0.02,1.0000
+GO:0003013,circulatory system process,37,0,0.1,1.0000
+GO:0003014,renal system process,5,0,0.01,1.0000
+GO:0003015,heart process,34,0,0.09,1.0000
+GO:0003143,embryonic heart tube morphogenesis,5,0,0.01,1.0000
+GO:0003148,outflow tract septum morphogenesis,2,0,0.01,1.0000
+GO:0003151,outflow tract morphogenesis,2,0,0.01,1.0000
+GO:0003157,endocardium development,2,0,0.01,1.0000
+GO:0003158,endothelium development,11,0,0.03,1.0000
+GO:0003159,morphogenesis of an endothelium,9,0,0.03,1.0000
+GO:0003170,heart valve development,2,0,0.01,1.0000
+GO:0003171,atrioventricular valve development,2,0,0.01,1.0000
+GO:0003179,heart valve morphogenesis,2,0,0.01,1.0000
+GO:0003181,atrioventricular valve morphogenesis,2,0,0.01,1.0000
+GO:0003188,heart valve formation,2,0,0.01,1.0000
+GO:0003190,atrioventricular valve formation,2,0,0.01,1.0000
+GO:0003197,endocardial cushion development,2,0,0.01,1.0000
+GO:0003198,epithelial to mesenchymal transition inv...,2,0,0.01,1.0000
+GO:0003203,endocardial cushion morphogenesis,2,0,0.01,1.0000
+GO:0003205,cardiac chamber development,2,0,0.01,1.0000
+GO:0003206,cardiac chamber morphogenesis,2,0,0.01,1.0000
+GO:0003208,cardiac ventricle morphogenesis,2,0,0.01,1.0000
+GO:0003214,cardiac left ventricle morphogenesis,2,0,0.01,1.0000
+GO:0003220,left ventricular cardiac muscle tissue m...,2,0,0.01,1.0000
+GO:0003229,ventricular cardiac muscle tissue develo...,2,0,0.01,1.0000
+GO:0003231,cardiac ventricle development,2,0,0.01,1.0000
+GO:0003249,cell proliferation involved in heart val...,2,0,0.01,1.0000
+GO:0003250,regulation of cell proliferation involve...,2,0,0.01,1.0000
+GO:0003251,positive regulation of cell proliferatio...,2,0,0.01,1.0000
+GO:0003272,endocardial cushion formation,2,0,0.01,1.0000
+GO:0003279,cardiac septum development,2,0,0.01,1.0000
+GO:0003281,ventricular septum development,2,0,0.01,1.0000
+GO:0003299,muscle hypertrophy in response to stress,3,0,0.01,1.0000
+GO:0003300,cardiac muscle hypertrophy,5,0,0.01,1.0000
+GO:0003348,cardiac endothelial cell differentiation,2,0,0.01,1.0000
+GO:0003360,brainstem development,2,0,0.01,1.0000
+GO:0005975,carbohydrate metabolic process,19,0,0.05,1.0000
+GO:0005976,polysaccharide metabolic process,4,0,0.01,1.0000
+GO:0005977,glycogen metabolic process,4,0,0.01,1.0000
+GO:0005978,glycogen biosynthetic process,4,0,0.01,1.0000
+GO:0005980,glycogen catabolic process,4,0,0.01,1.0000
+GO:0005981,regulation of glycogen catabolic process,4,0,0.01,1.0000
+GO:0005996,monosaccharide metabolic process,16,0,0.04,1.0000
+GO:0006000,fructose metabolic process,1,0,0,1.0000
+GO:0006003,fructose 2,6-bisphosphate metabolic proc...,1,0,0,1.0000
+GO:0006006,glucose metabolic process,16,0,0.04,1.0000
+GO:0006022,aminoglycan metabolic process,1,0,0,1.0000
+GO:0006026,aminoglycan catabolic process,1,0,0,1.0000
+GO:0006027,glycosaminoglycan catabolic process,1,0,0,1.0000
+GO:0006029,proteoglycan metabolic process,1,0,0,1.0000
+GO:0006073,cellular glucan metabolic process,4,0,0.01,1.0000
+GO:0006082,organic acid metabolic process,7,0,0.02,1.0000
+GO:0006084,acetyl-CoA metabolic process,4,0,0.01,1.0000
+GO:0006085,acetyl-CoA biosynthetic process,4,0,0.01,1.0000
+GO:0006086,acetyl-CoA biosynthetic process from pyr...,4,0,0.01,1.0000
+GO:0006090,pyruvate metabolic process,5,0,0.01,1.0000
+GO:0006091,generation of precursor metabolites and ...,9,0,0.03,1.0000
+GO:0006094,gluconeogenesis,1,0,0,1.0000
+GO:0006096,glycolytic process,4,0,0.01,1.0000
+GO:0006099,tricarboxylic acid cycle,1,0,0,1.0000
+GO:0006109,regulation of carbohydrate metabolic pro...,14,0,0.04,1.0000
+GO:0006112,energy reserve metabolic process,4,0,0.01,1.0000
+GO:0006163,purine nucleotide metabolic process,5,0,0.01,1.0000
+GO:0006164,purine nucleotide biosynthetic process,4,0,0.01,1.0000
+GO:0006165,nucleoside diphosphate phosphorylation,4,0,0.01,1.0000
+GO:0006259,DNA metabolic process,23,0,0.06,1.0000
+GO:0006260,DNA replication,15,0,0.04,1.0000
+GO:0006261,DNA-dependent DNA replication,1,0,0,1.0000
+GO:0006270,DNA replication initiation,1,0,0,1.0000
+GO:0006275,regulation of DNA replication,3,0,0.01,1.0000
+GO:0006281,DNA repair,12,0,0.03,1.0000
+GO:0006283,transcription-coupled nucleotide-excisio...,7,0,0.02,1.0000
+GO:0006289,nucleotide-excision repair,7,0,0.02,1.0000
+GO:0006302,double-strand break repair,3,0,0.01,1.0000
+GO:0006308,DNA catabolic process,5,0,0.01,1.0000
+GO:0006323,DNA packaging,12,0,0.03,1.0000
+GO:0006325,chromatin organization,32,0,0.09,1.0000
+GO:0006333,chromatin assembly or disassembly,11,0,0.03,1.0000
+GO:0006338,chromatin remodeling,21,0,0.06,1.0000
+GO:0006342,chromatin silencing,10,0,0.03,1.0000
+GO:0006357,regulation of transcription by RNA polym...,13,0,0.04,1.0000
+GO:0006364,rRNA processing,1,0,0,1.0000
+GO:0006366,transcription by RNA polymerase II,13,0,0.04,1.0000
+GO:0006396,RNA processing,20,0,0.06,1.0000
+GO:0006397,mRNA processing,17,0,0.05,1.0000
+GO:0006399,tRNA metabolic process,1,0,0,1.0000
+GO:0006400,tRNA modification,1,0,0,1.0000
+GO:0006401,RNA catabolic process,5,0,0.01,1.0000
+GO:0006402,mRNA catabolic process,5,0,0.01,1.0000
+GO:0006403,RNA localization,3,0,0.01,1.0000
+GO:0006405,RNA export from nucleus,3,0,0.01,1.0000
+GO:0006406,mRNA export from nucleus,3,0,0.01,1.0000
+GO:0006409,tRNA export from nucleus,3,0,0.01,1.0000
+GO:0006412,translation,1,0,0,1.0000
+GO:0006413,translational initiation,1,0,0,1.0000
+GO:0006417,regulation of translation,1,0,0,1.0000
+GO:0006468,protein phosphorylation,50,0,0.14,1.0000
+GO:0006469,negative regulation of protein kinase ac...,5,0,0.01,1.0000
+GO:0006473,protein acetylation,21,0,0.06,1.0000
+GO:0006475,internal protein amino acid acetylation,21,0,0.06,1.0000
+GO:0006476,protein deacetylation,8,0,0.02,1.0000
+GO:0006479,protein methylation,3,0,0.01,1.0000
+GO:0006509,membrane protein ectodomain proteolysis,1,0,0,1.0000
+GO:0006511,ubiquitin-dependent protein catabolic pr...,3,0,0.01,1.0000
+GO:0006513,protein monoubiquitination,3,0,0.01,1.0000
+GO:0006516,glycoprotein catabolic process,1,0,0,1.0000
+GO:0006518,peptide metabolic process,5,0,0.01,1.0000
+GO:0006606,protein import into nucleus,6,0,0.02,1.0000
+GO:0006611,protein export from nucleus,3,0,0.01,1.0000
+GO:0006629,lipid metabolic process,9,0,0.03,1.0000
+GO:0006631,fatty acid metabolic process,2,0,0.01,1.0000
+GO:0006637,acyl-CoA metabolic process,4,0,0.01,1.0000
+GO:0006643,membrane lipid metabolic process,5,0,0.01,1.0000
+GO:0006644,phospholipid metabolic process,5,0,0.01,1.0000
+GO:0006664,glycolipid metabolic process,5,0,0.01,1.0000
+GO:0006665,sphingolipid metabolic process,5,0,0.01,1.0000
+GO:0006672,ceramide metabolic process,5,0,0.01,1.0000
+GO:0006677,glycosylceramide metabolic process,5,0,0.01,1.0000
+GO:0006678,glucosylceramide metabolic process,5,0,0.01,1.0000
+GO:0006680,glucosylceramide catabolic process,5,0,0.01,1.0000
+GO:0006684,sphingomyelin metabolic process,5,0,0.01,1.0000
+GO:0006685,sphingomyelin catabolic process,5,0,0.01,1.0000
+GO:0006687,glycosphingolipid metabolic process,5,0,0.01,1.0000
+GO:0006690,icosanoid metabolic process,2,0,0.01,1.0000
+GO:0006743,ubiquinone metabolic process,1,0,0,1.0000
+GO:0006744,ubiquinone biosynthetic process,1,0,0,1.0000
+GO:0006753,nucleoside phosphate metabolic process,5,0,0.01,1.0000
+GO:0006757,ATP generation from ADP,4,0,0.01,1.0000
+GO:0006790,sulfur compound metabolic process,4,0,0.01,1.0000
+GO:0006801,superoxide metabolic process,5,0,0.01,1.0000
+GO:0006809,nitric oxide biosynthetic process,3,0,0.01,1.0000
+GO:0006813,potassium ion transport,34,0,0.09,1.0000
+GO:0006814,sodium ion transport,6,0,0.02,1.0000
+GO:0006820,anion transport,39,0,0.11,1.0000
+GO:0006839,mitochondrial transport,4,0,0.01,1.0000
+GO:0006855,drug transmembrane transport,3,0,0.01,1.0000
+GO:0006857,oligopeptide transport,3,0,0.01,1.0000
+GO:0006869,lipid transport,5,0,0.01,1.0000
+GO:0006879,cellular iron ion homeostasis,2,0,0.01,1.0000
+GO:0006886,intracellular protein transport,9,0,0.03,1.0000
+GO:0006887,exocytosis,6,0,0.02,1.0000
+GO:0006897,endocytosis,6,0,0.02,1.0000
+GO:0006898,receptor-mediated endocytosis,3,0,0.01,1.0000
+GO:0006909,phagocytosis,5,0,0.01,1.0000
+GO:0006913,nucleocytoplasmic transport,9,0,0.03,1.0000
+GO:0006914,autophagy,6,0,0.02,1.0000
+GO:0006919,activation of cysteine-type endopeptidas...,3,0,0.01,1.0000
+GO:0006941,striated muscle contraction,34,0,0.09,1.0000
+GO:0006942,regulation of striated muscle contractio...,34,0,0.09,1.0000
+GO:0006952,defense response,20,0,0.06,1.0000
+GO:0006954,inflammatory response,8,0,0.02,1.0000
+GO:0006955,immune response,20,0,0.06,1.0000
+GO:0006974,cellular response to DNA damage stimulus,18,0,0.05,1.0000
+GO:0006979,response to oxidative stress,13,0,0.04,1.0000
+GO:0006997,nucleus organization,15,0,0.04,1.0000
+GO:0006998,nuclear envelope organization,3,0,0.01,1.0000
+GO:0007005,mitochondrion organization,32,0,0.09,1.0000
+GO:0007006,mitochondrial membrane organization,4,0,0.01,1.0000
+GO:0007009,plasma membrane organization,5,0,0.01,1.0000
+GO:0007017,microtubule-based process,102,0,0.28,1.0000
+GO:0007018,microtubule-based movement,65,0,0.18,1.0000
+GO:0007020,microtubule nucleation,34,0,0.09,1.0000
+GO:0007030,Golgi organization,25,0,0.07,1.0000
+GO:0007033,vacuole organization,2,0,0.01,1.0000
+GO:0007044,cell-substrate junction assembly,3,0,0.01,1.0000
+GO:0007049,cell cycle,78,0,0.22,1.0000
+GO:0007050,cell cycle arrest,3,0,0.01,1.0000
+GO:0007051,spindle organization,2,0,0.01,1.0000
+GO:0007052,mitotic spindle organization,2,0,0.01,1.0000
+GO:0007077,mitotic nuclear envelope disassembly,3,0,0.01,1.0000
+GO:0007093,mitotic cell cycle checkpoint,2,0,0.01,1.0000
+GO:0007105,cytokinesis, site selection,1,0,0,1.0000
+GO:0007157,heterophilic cell-cell adhesion via plas...,1,0,0,1.0000
+GO:0007160,cell-matrix adhesion,4,0,0.01,1.0000
+GO:0007162,negative regulation of cell adhesion,5,0,0.01,1.0000
+GO:0007163,establishment or maintenance of cell pol...,2,0,0.01,1.0000
+GO:0007164,establishment of tissue polarity,1,0,0,1.0000
+GO:0007166,cell surface receptor signaling pathway,35,0,0.1,1.0000
+GO:0007167,enzyme linked receptor protein signaling...,17,0,0.05,1.0000
+GO:0007169,transmembrane receptor protein tyrosine ...,7,0,0.02,1.0000
+GO:0007178,transmembrane receptor protein serine/th...,10,0,0.03,1.0000
+GO:0007179,transforming growth factor beta receptor...,8,0,0.02,1.0000
+GO:0007183,SMAD protein complex assembly,5,0,0.01,1.0000
+GO:0007186,G protein-coupled receptor signaling pat...,3,0,0.01,1.0000
+GO:0007187,G protein-coupled receptor signaling pat...,3,0,0.01,1.0000
+GO:0007194,negative regulation of adenylate cyclase...,34,0,0.09,1.0000
+GO:0007202,activation of phospholipase C activity,5,0,0.01,1.0000
+GO:0007214,gamma-aminobutyric acid signaling pathwa...,3,0,0.01,1.0000
+GO:0007219,Notch signaling pathway,10,0,0.03,1.0000
+GO:0007224,smoothened signaling pathway,6,0,0.02,1.0000
+GO:0007225,patched ligand maturation,4,0,0.01,1.0000
+GO:0007264,small GTPase mediated signal transductio...,14,0,0.04,1.0000
+GO:0007267,cell-cell signaling,47,0,0.13,1.0000
+GO:0007268,chemical synaptic transmission,41,0,0.11,1.0000
+GO:0007276,gamete generation,25,0,0.07,1.0000
+GO:0007281,germ cell development,10,0,0.03,1.0000
+GO:0007283,spermatogenesis,15,0,0.04,1.0000
+GO:0007292,female gamete generation,10,0,0.03,1.0000
+GO:0007338,single fertilization,5,0,0.01,1.0000
+GO:0007346,regulation of mitotic cell cycle,14,0,0.04,1.0000
+GO:0007368,determination of left/right symmetry,9,0,0.03,1.0000
+GO:0007369,gastrulation,5,0,0.01,1.0000
+GO:0007389,pattern specification process,22,0,0.06,1.0000
+GO:0007405,neuroblast proliferation,4,0,0.01,1.0000
+GO:0007413,axonal fasciculation,2,0,0.01,1.0000
+GO:0007417,central nervous system development,2,0,0.01,1.0000
+GO:0007420,brain development,2,0,0.01,1.0000
+GO:0007424,open tracheal system development,1,0,0,1.0000
+GO:0007440,foregut morphogenesis,3,0,0.01,1.0000
+GO:0007444,imaginal disc development,11,0,0.03,1.0000
+GO:0007446,imaginal disc growth,1,0,0,1.0000
+GO:0007447,imaginal disc pattern formation,11,0,0.03,1.0000
+GO:0007472,wing disc morphogenesis,1,0,0,1.0000
+GO:0007476,imaginal disc-derived wing morphogenesis,1,0,0,1.0000
+GO:0007492,endoderm development,5,0,0.01,1.0000
+GO:0007498,mesoderm development,5,0,0.01,1.0000
+GO:0007507,heart development,7,0,0.02,1.0000
+GO:0007517,muscle organ development,9,0,0.03,1.0000
+GO:0007548,sex differentiation,2,0,0.01,1.0000
+GO:0007552,metamorphosis,1,0,0,1.0000
+GO:0007560,imaginal disc morphogenesis,1,0,0,1.0000
+GO:0007568,aging,13,0,0.04,1.0000
+GO:0007569,cell aging,5,0,0.01,1.0000
+GO:0007596,blood coagulation,7,0,0.02,1.0000
+GO:0007599,hemostasis,7,0,0.02,1.0000
+GO:0007605,sensory perception of sound,1,0,0,1.0000
+GO:0007610,behavior,3,0,0.01,1.0000
+GO:0007611,learning or memory,3,0,0.01,1.0000
+GO:0007612,learning,3,0,0.01,1.0000
+GO:0007623,circadian rhythm,8,0,0.02,1.0000
+GO:0008015,blood circulation,37,0,0.1,1.0000
+GO:0008016,regulation of heart contraction,34,0,0.09,1.0000
+GO:0008033,tRNA processing,1,0,0,1.0000
+GO:0008037,cell recognition,2,0,0.01,1.0000
+GO:0008038,neuron recognition,2,0,0.01,1.0000
+GO:0008064,regulation of actin polymerization or de...,5,0,0.01,1.0000
+GO:0008104,protein localization,55,0,0.15,1.0000
+GO:0008154,actin polymerization or depolymerization,5,0,0.01,1.0000
+GO:0008213,protein alkylation,3,0,0.01,1.0000
+GO:0008217,regulation of blood pressure,3,0,0.01,1.0000
+GO:0008284,positive regulation of cell population p...,3,0,0.01,1.0000
+GO:0008286,insulin receptor signaling pathway,6,0,0.02,1.0000
+GO:0008360,regulation of cell shape,1,0,0,1.0000
+GO:0008361,regulation of cell size,3,0,0.01,1.0000
+GO:0008380,RNA splicing,17,0,0.05,1.0000
+GO:0008406,gonad development,2,0,0.01,1.0000
+GO:0008544,epidermis development,4,0,0.01,1.0000
+GO:0008584,male gonad development,2,0,0.01,1.0000
+GO:0008585,female gonad development,2,0,0.01,1.0000
+GO:0008589,regulation of smoothened signaling pathw...,2,0,0.01,1.0000
+GO:0008593,regulation of Notch signaling pathway,10,0,0.03,1.0000
+GO:0008610,lipid biosynthetic process,5,0,0.01,1.0000
+GO:0008631,intrinsic apoptotic signaling pathway in...,5,0,0.01,1.0000
+GO:0008637,apoptotic mitochondrial changes,4,0,0.01,1.0000
+GO:0008643,carbohydrate transport,3,0,0.01,1.0000
+GO:0008645,hexose transmembrane transport,3,0,0.01,1.0000
+GO:0009056,catabolic process,32,0,0.09,1.0000
+GO:0009057,macromolecule catabolic process,22,0,0.06,1.0000
+GO:0009060,aerobic respiration,1,0,0,1.0000
+GO:0009100,glycoprotein metabolic process,1,0,0,1.0000
+GO:0009117,nucleotide metabolic process,5,0,0.01,1.0000
+GO:0009132,nucleoside diphosphate metabolic process,4,0,0.01,1.0000
+GO:0009135,purine nucleoside diphosphate metabolic ...,4,0,0.01,1.0000
+GO:0009150,purine ribonucleotide metabolic process,5,0,0.01,1.0000
+GO:0009152,purine ribonucleotide biosynthetic proce...,4,0,0.01,1.0000
+GO:0009165,nucleotide biosynthetic process,4,0,0.01,1.0000
+GO:0009179,purine ribonucleoside diphosphate metabo...,4,0,0.01,1.0000
+GO:0009185,ribonucleoside diphosphate metabolic pro...,4,0,0.01,1.0000
+GO:0009250,glucan biosynthetic process,4,0,0.01,1.0000
+GO:0009251,glucan catabolic process,4,0,0.01,1.0000
+GO:0009259,ribonucleotide metabolic process,5,0,0.01,1.0000
+GO:0009260,ribonucleotide biosynthetic process,4,0,0.01,1.0000
+GO:0009267,cellular response to starvation,4,0,0.01,1.0000
+GO:0009395,phospholipid catabolic process,5,0,0.01,1.0000
+GO:0009408,response to heat,3,0,0.01,1.0000
+GO:0009451,RNA modification,1,0,0,1.0000
+GO:0009566,fertilization,8,0,0.02,1.0000
+GO:0009615,response to virus,9,0,0.03,1.0000
+GO:0009743,response to carbohydrate,13,0,0.04,1.0000
+GO:0009744,response to sucrose,4,0,0.01,1.0000
+GO:0009746,response to hexose,9,0,0.03,1.0000
+GO:0009749,response to glucose,9,0,0.03,1.0000
+GO:0009790,embryo development,19,0,0.05,1.0000
+GO:0009791,post-embryonic development,11,0,0.03,1.0000
+GO:0009792,embryo development ending in birth or eg...,15,0,0.04,1.0000
+GO:0009798,axis specification,2,0,0.01,1.0000
+GO:0009799,specification of symmetry,9,0,0.03,1.0000
+GO:0009826,unidimensional cell growth,1,0,0,1.0000
+GO:0009855,determination of bilateral symmetry,9,0,0.03,1.0000
+GO:0009880,embryonic pattern specification,9,0,0.03,1.0000
+GO:0009886,post-embryonic animal morphogenesis,1,0,0,1.0000
+GO:0009888,tissue development,28,0,0.08,1.0000
+GO:0009890,negative regulation of biosynthetic proc...,16,0,0.04,1.0000
+GO:0009891,positive regulation of biosynthetic proc...,22,0,0.06,1.0000
+GO:0009892,negative regulation of metabolic process,45,0,0.13,1.0000
+GO:0009894,regulation of catabolic process,16,0,0.04,1.0000
+GO:0009895,negative regulation of catabolic process,6,0,0.02,1.0000
+GO:0009896,positive regulation of catabolic process,10,0,0.03,1.0000
+GO:0009913,epidermal cell differentiation,1,0,0,1.0000
+GO:0009914,hormone transport,2,0,0.01,1.0000
+GO:0009948,anterior/posterior axis specification,2,0,0.01,1.0000
+GO:0009952,anterior/posterior pattern specification,5,0,0.01,1.0000
+GO:0009953,dorsal/ventral pattern formation,4,0,0.01,1.0000
+GO:0009966,regulation of signal transduction,42,0,0.12,1.0000
+GO:0009967,positive regulation of signal transducti...,19,0,0.05,1.0000
+GO:0009968,negative regulation of signal transducti...,15,0,0.04,1.0000
+GO:0010243,response to organonitrogen compound,48,0,0.13,1.0000
+GO:0010256,endomembrane system organization,33,0,0.09,1.0000
+GO:0010389,regulation of G2/M transition of mitotic...,11,0,0.03,1.0000
+GO:0010390,histone monoubiquitination,3,0,0.01,1.0000
+GO:0010469,regulation of signaling receptor activit...,5,0,0.01,1.0000
+GO:0010498,proteasomal protein catabolic process,3,0,0.01,1.0000
+GO:0010517,regulation of phospholipase activity,5,0,0.01,1.0000
+GO:0010518,positive regulation of phospholipase act...,5,0,0.01,1.0000
+GO:0010543,regulation of platelet activation,5,0,0.01,1.0000
+GO:0010544,negative regulation of platelet activati...,5,0,0.01,1.0000
+GO:0010557,positive regulation of macromolecule bio...,17,0,0.05,1.0000
+GO:0010558,negative regulation of macromolecule bio...,16,0,0.04,1.0000
+GO:0010563,negative regulation of phosphorus metabo...,11,0,0.03,1.0000
+GO:0010564,regulation of cell cycle process,11,0,0.03,1.0000
+GO:0010573,vascular endothelial growth factor produ...,1,0,0,1.0000
+GO:0010574,regulation of vascular endothelial growt...,1,0,0,1.0000
+GO:0010575,positive regulation of vascular endothel...,1,0,0,1.0000
+GO:0010605,negative regulation of macromolecule met...,43,0,0.12,1.0000
+GO:0010608,posttranscriptional regulation of gene e...,20,0,0.06,1.0000
+GO:0010611,regulation of cardiac muscle hypertrophy,5,0,0.01,1.0000
+GO:0010612,regulation of cardiac muscle adaptation,3,0,0.01,1.0000
+GO:0010614,negative regulation of cardiac muscle hy...,5,0,0.01,1.0000
+GO:0010616,negative regulation of cardiac muscle ad...,3,0,0.01,1.0000
+GO:0010623,programmed cell death involved in cell d...,1,0,0,1.0000
+GO:0010628,positive regulation of gene expression,5,0,0.01,1.0000
+GO:0010629,negative regulation of gene expression,30,0,0.08,1.0000
+GO:0010638,positive regulation of organelle organiz...,13,0,0.04,1.0000
+GO:0010639,negative regulation of organelle organiz...,7,0,0.02,1.0000
+GO:0010640,regulation of platelet-derived growth fa...,1,0,0,1.0000
+GO:0010648,negative regulation of cell communicatio...,15,0,0.04,1.0000
+GO:0010675,regulation of cellular carbohydrate meta...,14,0,0.04,1.0000
+GO:0010676,positive regulation of cellular carbohyd...,4,0,0.01,1.0000
+GO:0010692,regulation of alkaline phosphatase activ...,3,0,0.01,1.0000
+GO:0010694,positive regulation of alkaline phosphat...,3,0,0.01,1.0000
+GO:0010717,regulation of epithelial to mesenchymal ...,5,0,0.01,1.0000
+GO:0010718,positive regulation of epithelial to mes...,5,0,0.01,1.0000
+GO:0010720,positive regulation of cell development,2,0,0.01,1.0000
+GO:0010765,positive regulation of sodium ion transp...,6,0,0.02,1.0000
+GO:0010810,regulation of cell-substrate adhesion,3,0,0.01,1.0000
+GO:0010811,positive regulation of cell-substrate ad...,3,0,0.01,1.0000
+GO:0010817,regulation of hormone levels,14,0,0.04,1.0000
+GO:0010827,regulation of glucose transmembrane tran...,3,0,0.01,1.0000
+GO:0010862,positive regulation of pathway-restricte...,2,0,0.01,1.0000
+GO:0010863,positive regulation of phospholipase C a...,5,0,0.01,1.0000
+GO:0010876,lipid localization,7,0,0.02,1.0000
+GO:0010906,regulation of glucose metabolic process,14,0,0.04,1.0000
+GO:0010907,positive regulation of glucose metabolic...,4,0,0.01,1.0000
+GO:0010927,cellular component assembly involved in ...,2,0,0.01,1.0000
+GO:0010948,negative regulation of cell cycle proces...,3,0,0.01,1.0000
+GO:0010970,transport along microtubule,42,0,0.12,1.0000
+GO:0010971,positive regulation of G2/M transition o...,8,0,0.02,1.0000
+GO:0010972,negative regulation of G2/M transition o...,3,0,0.01,1.0000
+GO:0010975,regulation of neuron projection developm...,3,0,0.01,1.0000
+GO:0010977,negative regulation of neuron projection...,1,0,0,1.0000
+GO:0014033,neural crest cell differentiation,2,0,0.01,1.0000
+GO:0014065,phosphatidylinositol 3-kinase signaling,1,0,0,1.0000
+GO:0014066,regulation of phosphatidylinositol 3-kin...,1,0,0,1.0000
+GO:0014068,positive regulation of phosphatidylinosi...,1,0,0,1.0000
+GO:0014074,response to purine-containing compound,34,0,0.09,1.0000
+GO:0014706,striated muscle tissue development,5,0,0.01,1.0000
+GO:0014741,negative regulation of muscle hypertroph...,5,0,0.01,1.0000
+GO:0014743,regulation of muscle hypertrophy,5,0,0.01,1.0000
+GO:0014745,negative regulation of muscle adaptation,3,0,0.01,1.0000
+GO:0014887,cardiac muscle adaptation,3,0,0.01,1.0000
+GO:0014888,striated muscle adaptation,3,0,0.01,1.0000
+GO:0014896,muscle hypertrophy,5,0,0.01,1.0000
+GO:0014897,striated muscle hypertrophy,5,0,0.01,1.0000
+GO:0014898,cardiac muscle hypertrophy in response t...,3,0,0.01,1.0000
+GO:0014916,regulation of lung blood pressure,3,0,0.01,1.0000
+GO:0015031,protein transport,32,0,0.09,1.0000
+GO:0015711,organic anion transport,3,0,0.01,1.0000
+GO:0015748,organophosphate ester transport,5,0,0.01,1.0000
+GO:0015749,monosaccharide transmembrane transport,3,0,0.01,1.0000
+GO:0015833,peptide transport,39,0,0.11,1.0000
+GO:0015893,drug transport,3,0,0.01,1.0000
+GO:0015914,phospholipid transport,5,0,0.01,1.0000
+GO:0015931,nucleobase-containing compound transport,3,0,0.01,1.0000
+GO:0015980,energy derivation by oxidation of organi...,5,0,0.01,1.0000
+GO:0016032,viral process,7,0,0.02,1.0000
+GO:0016042,lipid catabolic process,9,0,0.03,1.0000
+GO:0016049,cell growth,8,0,0.02,1.0000
+GO:0016051,carbohydrate biosynthetic process,5,0,0.01,1.0000
+GO:0016052,carbohydrate catabolic process,8,0,0.02,1.0000
+GO:0016055,Wnt signaling pathway,4,0,0.01,1.0000
+GO:0016064,immunoglobulin mediated immune response,5,0,0.01,1.0000
+GO:0016071,mRNA metabolic process,22,0,0.06,1.0000
+GO:0016072,rRNA metabolic process,1,0,0,1.0000
+GO:0016192,vesicle-mediated transport,12,0,0.03,1.0000
+GO:0016202,regulation of striated muscle tissue dev...,3,0,0.01,1.0000
+GO:0016236,macroautophagy,6,0,0.02,1.0000
+GO:0016246,RNA interference,1,0,0,1.0000
+GO:0016310,phosphorylation,54,0,0.15,1.0000
+GO:0016318,ommatidial rotation,1,0,0,1.0000
+GO:0016335,morphogenesis of larval imaginal disc ep...,1,0,0,1.0000
+GO:0016336,establishment or maintenance of polarity...,1,0,0,1.0000
+GO:0016339,calcium-dependent cell-cell adhesion via...,1,0,0,1.0000
+GO:0016358,dendrite development,10,0,0.03,1.0000
+GO:0016441,posttranscriptional gene silencing,14,0,0.04,1.0000
+GO:0016458,gene silencing,24,0,0.07,1.0000
+GO:0016486,peptide hormone processing,4,0,0.01,1.0000
+GO:0016567,protein ubiquitination,20,0,0.06,1.0000
+GO:0016569,covalent chromatin modification,31,0,0.09,1.0000
+GO:0016570,histone modification,29,0,0.08,1.0000
+GO:0016571,histone methylation,3,0,0.01,1.0000
+GO:0016572,histone phosphorylation,5,0,0.01,1.0000
+GO:0016573,histone acetylation,21,0,0.06,1.0000
+GO:0016574,histone ubiquitination,3,0,0.01,1.0000
+GO:0016575,histone deacetylation,8,0,0.02,1.0000
+GO:0016579,protein deubiquitination,4,0,0.01,1.0000
+GO:0016925,protein sumoylation,3,0,0.01,1.0000
+GO:0017015,regulation of transforming growth factor...,5,0,0.01,1.0000
+GO:0017038,protein import,6,0,0.02,1.0000
+GO:0018022,peptidyl-lysine methylation,3,0,0.01,1.0000
+GO:0018026,peptidyl-lysine monomethylation,1,0,0,1.0000
+GO:0018105,peptidyl-serine phosphorylation,47,0,0.13,1.0000
+GO:0018107,peptidyl-threonine phosphorylation,5,0,0.01,1.0000
+GO:0018108,peptidyl-tyrosine phosphorylation,5,0,0.01,1.0000
+GO:0018149,peptide cross-linking,1,0,0,1.0000
+GO:0018193,peptidyl-amino acid modification,71,0,0.2,1.0000
+GO:0018205,peptidyl-lysine modification,24,0,0.07,1.0000
+GO:0018209,peptidyl-serine modification,47,0,0.13,1.0000
+GO:0018210,peptidyl-threonine modification,5,0,0.01,1.0000
+GO:0018212,peptidyl-tyrosine modification,5,0,0.01,1.0000
+GO:0018393,internal peptidyl-lysine acetylation,21,0,0.06,1.0000
+GO:0018394,peptidyl-lysine acetylation,21,0,0.06,1.0000
+GO:0019048,modulation by virus of host process,3,0,0.01,1.0000
+GO:0019049,mitigation of host defenses by virus,3,0,0.01,1.0000
+GO:0019058,viral life cycle,4,0,0.01,1.0000
+GO:0019079,viral genome replication,1,0,0,1.0000
+GO:0019080,viral gene expression,3,0,0.01,1.0000
+GO:0019083,viral transcription,3,0,0.01,1.0000
+GO:0019216,regulation of lipid metabolic process,7,0,0.02,1.0000
+GO:0019221,cytokine-mediated signaling pathway,7,0,0.02,1.0000
+GO:0019318,hexose metabolic process,16,0,0.04,1.0000
+GO:0019319,hexose biosynthetic process,1,0,0,1.0000
+GO:0019369,arachidonic acid metabolic process,2,0,0.01,1.0000
+GO:0019377,glycolipid catabolic process,5,0,0.01,1.0000
+GO:0019439,aromatic compound catabolic process,10,0,0.03,1.0000
+GO:0019637,organophosphate metabolic process,10,0,0.03,1.0000
+GO:0019693,ribose phosphate metabolic process,5,0,0.01,1.0000
+GO:0019724,B cell mediated immunity,5,0,0.01,1.0000
+GO:0019752,carboxylic acid metabolic process,7,0,0.02,1.0000
+GO:0019827,stem cell population maintenance,12,0,0.03,1.0000
+GO:0019915,lipid storage,2,0,0.01,1.0000
+GO:0019941,modification-dependent protein catabolic...,3,0,0.01,1.0000
+GO:0019953,sexual reproduction,31,0,0.09,1.0000
+GO:0021675,nerve development,1,0,0,1.0000
+GO:0022402,cell cycle process,53,0,0.15,1.0000
+GO:0022404,molting cycle process,3,0,0.01,1.0000
+GO:0022405,hair cycle process,3,0,0.01,1.0000
+GO:0022406,membrane docking,34,0,0.09,1.0000
+GO:0022408,negative regulation of cell-cell adhesio...,5,0,0.01,1.0000
+GO:0022411,cellular component disassembly,5,0,0.01,1.0000
+GO:0022412,cellular process involved in reproductio...,10,0,0.03,1.0000
+GO:0022414,reproductive process,31,0,0.09,1.0000
+GO:0022604,regulation of cell morphogenesis,1,0,0,1.0000
+GO:0022613,ribonucleoprotein complex biogenesis,1,0,0,1.0000
+GO:0022898,regulation of transmembrane transporter ...,40,0,0.11,1.0000
+GO:0023019,signal transduction involved in regulati...,3,0,0.01,1.0000
+GO:0023021,termination of signal transduction,5,0,0.01,1.0000
+GO:0023057,negative regulation of signaling,15,0,0.04,1.0000
+GO:0023061,signal release,2,0,0.01,1.0000
+GO:0030010,establishment of cell polarity,2,0,0.01,1.0000
+GO:0030031,cell projection assembly,39,0,0.11,1.0000
+GO:0030038,contractile actin filament bundle assemb...,3,0,0.01,1.0000
+GO:0030041,actin filament polymerization,5,0,0.01,1.0000
+GO:0030048,actin filament-based movement,34,0,0.09,1.0000
+GO:0030097,hemopoiesis,20,0,0.06,1.0000
+GO:0030100,regulation of endocytosis,3,0,0.01,1.0000
+GO:0030111,regulation of Wnt signaling pathway,1,0,0,1.0000
+GO:0030148,sphingolipid biosynthetic process,5,0,0.01,1.0000
+GO:0030149,sphingolipid catabolic process,5,0,0.01,1.0000
+GO:0030163,protein catabolic process,8,0,0.02,1.0000
+GO:0030167,proteoglycan catabolic process,1,0,0,1.0000
+GO:0030168,platelet activation,5,0,0.01,1.0000
+GO:0030178,negative regulation of Wnt signaling pat...,1,0,0,1.0000
+GO:0030193,regulation of blood coagulation,6,0,0.02,1.0000
+GO:0030194,positive regulation of blood coagulation,1,0,0,1.0000
+GO:0030195,negative regulation of blood coagulation,5,0,0.01,1.0000
+GO:0030198,extracellular matrix organization,3,0,0.01,1.0000
+GO:0030200,heparan sulfate proteoglycan catabolic p...,1,0,0,1.0000
+GO:0030201,heparan sulfate proteoglycan metabolic p...,1,0,0,1.0000
+GO:0030203,glycosaminoglycan metabolic process,1,0,0,1.0000
+GO:0030239,myofibril assembly,2,0,0.01,1.0000
+GO:0030261,chromosome condensation,1,0,0,1.0000
+GO:0030278,regulation of ossification,3,0,0.01,1.0000
+GO:0030282,bone mineralization,3,0,0.01,1.0000
+GO:0030307,positive regulation of cell growth,3,0,0.01,1.0000
+GO:0030308,negative regulation of cell growth,5,0,0.01,1.0000
+GO:0030326,embryonic limb morphogenesis,4,0,0.01,1.0000
+GO:0030397,membrane disassembly,3,0,0.01,1.0000
+GO:0030490,maturation of SSU-rRNA,1,0,0,1.0000
+GO:0030500,regulation of bone mineralization,3,0,0.01,1.0000
+GO:0030501,positive regulation of bone mineralizati...,3,0,0.01,1.0000
+GO:0030509,BMP signaling pathway,4,0,0.01,1.0000
+GO:0030510,regulation of BMP signaling pathway,2,0,0.01,1.0000
+GO:0030511,positive regulation of transforming grow...,2,0,0.01,1.0000
+GO:0030513,positive regulation of BMP signaling pat...,2,0,0.01,1.0000
+GO:0030516,regulation of axon extension,2,0,0.01,1.0000
+GO:0030682,mitigation of host defenses by symbiont,3,0,0.01,1.0000
+GO:0030705,cytoskeleton-dependent intracellular tra...,42,0,0.12,1.0000
+GO:0030718,germ-line stem cell population maintenan...,10,0,0.03,1.0000
+GO:0030832,regulation of actin filament length,5,0,0.01,1.0000
+GO:0030833,regulation of actin filament polymerizat...,5,0,0.01,1.0000
+GO:0030837,negative regulation of actin filament po...,5,0,0.01,1.0000
+GO:0030855,epithelial cell differentiation,6,0,0.02,1.0000
+GO:0030859,polarized epithelial cell differentiatio...,1,0,0,1.0000
+GO:0030878,thyroid gland development,3,0,0.01,1.0000
+GO:0031032,actomyosin structure organization,9,0,0.03,1.0000
+GO:0031047,gene silencing by RNA,14,0,0.04,1.0000
+GO:0031048,heterochromatin assembly by small RNA,1,0,0,1.0000
+GO:0031056,regulation of histone modification,11,0,0.03,1.0000
+GO:0031057,negative regulation of histone modificat...,9,0,0.03,1.0000
+GO:0031058,positive regulation of histone modificat...,2,0,0.01,1.0000
+GO:0031060,regulation of histone methylation,2,0,0.01,1.0000
+GO:0031062,positive regulation of histone methylati...,2,0,0.01,1.0000
+GO:0031099,regeneration,1,0,0,1.0000
+GO:0031102,neuron projection regeneration,1,0,0,1.0000
+GO:0031103,axon regeneration,1,0,0,1.0000
+GO:0031109,microtubule polymerization or depolymeri...,34,0,0.09,1.0000
+GO:0031145,anaphase-promoting complex-dependent cat...,2,0,0.01,1.0000
+GO:0031214,biomineral tissue development,3,0,0.01,1.0000
+GO:0031279,regulation of cyclase activity,34,0,0.09,1.0000
+GO:0031280,negative regulation of cyclase activity,34,0,0.09,1.0000
+GO:0031324,negative regulation of cellular metaboli...,29,0,0.08,1.0000
+GO:0031327,negative regulation of cellular biosynth...,16,0,0.04,1.0000
+GO:0031328,positive regulation of cellular biosynth...,22,0,0.06,1.0000
+GO:0031329,regulation of cellular catabolic process,11,0,0.03,1.0000
+GO:0031330,negative regulation of cellular cataboli...,1,0,0,1.0000
+GO:0031331,positive regulation of cellular cataboli...,10,0,0.03,1.0000
+GO:0031333,negative regulation of protein-containin...,5,0,0.01,1.0000
+GO:0031344,regulation of cell projection organizati...,8,0,0.02,1.0000
+GO:0031345,negative regulation of cell projection o...,6,0,0.02,1.0000
+GO:0031346,positive regulation of cell projection o...,2,0,0.01,1.0000
+GO:0031347,regulation of defense response,16,0,0.04,1.0000
+GO:0031348,negative regulation of defense response,8,0,0.02,1.0000
+GO:0031349,positive regulation of defense response,13,0,0.04,1.0000
+GO:0031400,negative regulation of protein modificat...,20,0,0.06,1.0000
+GO:0031497,chromatin assembly,11,0,0.03,1.0000
+GO:0031503,protein-containing complex localization,3,0,0.01,1.0000
+GO:0031507,heterochromatin assembly,11,0,0.03,1.0000
+GO:0031570,DNA integrity checkpoint,3,0,0.01,1.0000
+GO:0031572,G2 DNA damage checkpoint,2,0,0.01,1.0000
+GO:0031589,cell-substrate adhesion,4,0,0.01,1.0000
+GO:0031647,regulation of protein stability,8,0,0.02,1.0000
+GO:0031935,regulation of chromatin silencing,8,0,0.02,1.0000
+GO:0031937,positive regulation of chromatin silenci...,8,0,0.02,1.0000
+GO:0032069,regulation of nuclease activity,5,0,0.01,1.0000
+GO:0032070,regulation of deoxyribonuclease activity,5,0,0.01,1.0000
+GO:0032071,regulation of endodeoxyribonuclease acti...,5,0,0.01,1.0000
+GO:0032075,positive regulation of nuclease activity,5,0,0.01,1.0000
+GO:0032077,positive regulation of deoxyribonuclease...,5,0,0.01,1.0000
+GO:0032079,positive regulation of endodeoxyribonucl...,5,0,0.01,1.0000
+GO:0032091,negative regulation of protein binding,5,0,0.01,1.0000
+GO:0032098,regulation of appetite,3,0,0.01,1.0000
+GO:0032101,regulation of response to external stimu...,20,0,0.06,1.0000
+GO:0032102,negative regulation of response to exter...,9,0,0.03,1.0000
+GO:0032103,positive regulation of response to exter...,18,0,0.05,1.0000
+GO:0032147,activation of protein kinase activity,7,0,0.02,1.0000
+GO:0032187,actomyosin contractile ring localization,1,0,0,1.0000
+GO:0032188,establishment of actomyosin contractile ...,1,0,0,1.0000
+GO:0032231,regulation of actin filament bundle asse...,3,0,0.01,1.0000
+GO:0032233,positive regulation of actin filament bu...,3,0,0.01,1.0000
+GO:0032259,methylation,3,0,0.01,1.0000
+GO:0032269,negative regulation of cellular protein ...,21,0,0.06,1.0000
+GO:0032271,regulation of protein polymerization,5,0,0.01,1.0000
+GO:0032272,negative regulation of protein polymeriz...,5,0,0.01,1.0000
+GO:0032274,gonadotropin secretion,2,0,0.01,1.0000
+GO:0032275,luteinizing hormone secretion,2,0,0.01,1.0000
+GO:0032276,regulation of gonadotropin secretion,2,0,0.01,1.0000
+GO:0032278,positive regulation of gonadotropin secr...,2,0,0.01,1.0000
+GO:0032330,regulation of chondrocyte differentiatio...,3,0,0.01,1.0000
+GO:0032332,positive regulation of chondrocyte diffe...,3,0,0.01,1.0000
+GO:0032368,regulation of lipid transport,5,0,0.01,1.0000
+GO:0032370,positive regulation of lipid transport,5,0,0.01,1.0000
+GO:0032386,regulation of intracellular transport,8,0,0.02,1.0000
+GO:0032388,positive regulation of intracellular tra...,5,0,0.01,1.0000
+GO:0032409,regulation of transporter activity,45,0,0.13,1.0000
+GO:0032411,positive regulation of transporter activ...,45,0,0.13,1.0000
+GO:0032412,regulation of ion transmembrane transpor...,40,0,0.11,1.0000
+GO:0032414,positive regulation of ion transmembrane...,40,0,0.11,1.0000
+GO:0032434,regulation of proteasomal ubiquitin-depe...,1,0,0,1.0000
+GO:0032436,positive regulation of proteasomal ubiqu...,1,0,0,1.0000
+GO:0032446,protein modification by small protein co...,23,0,0.06,1.0000
+GO:0032504,multicellular organism reproduction,25,0,0.07,1.0000
+GO:0032506,cytokinetic process,1,0,0,1.0000
+GO:0032507,maintenance of protein location in cell,12,0,0.03,1.0000
+GO:0032525,somite rostral/caudal axis specification,2,0,0.01,1.0000
+GO:0032535,regulation of cellular component size,8,0,0.02,1.0000
+GO:0032611,interleukin-1 beta production,3,0,0.01,1.0000
+GO:0032612,interleukin-1 production,3,0,0.01,1.0000
+GO:0032613,interleukin-10 production,5,0,0.01,1.0000
+GO:0032615,interleukin-12 production,5,0,0.01,1.0000
+GO:0032651,regulation of interleukin-1 beta product...,3,0,0.01,1.0000
+GO:0032652,regulation of interleukin-1 production,3,0,0.01,1.0000
+GO:0032731,positive regulation of interleukin-1 bet...,3,0,0.01,1.0000
+GO:0032732,positive regulation of interleukin-1 pro...,3,0,0.01,1.0000
+GO:0032787,monocarboxylic acid metabolic process,7,0,0.02,1.0000
+GO:0032868,response to insulin,6,0,0.02,1.0000
+GO:0032869,cellular response to insulin stimulus,6,0,0.02,1.0000
+GO:0032878,regulation of establishment or maintenan...,1,0,0,1.0000
+GO:0032880,regulation of protein localization,16,0,0.04,1.0000
+GO:0032881,regulation of polysaccharide metabolic p...,4,0,0.01,1.0000
+GO:0032906,transforming growth factor beta2 product...,5,0,0.01,1.0000
+GO:0032907,transforming growth factor beta3 product...,3,0,0.01,1.0000
+GO:0032909,regulation of transforming growth factor...,5,0,0.01,1.0000
+GO:0032910,regulation of transforming growth factor...,3,0,0.01,1.0000
+GO:0032916,positive regulation of transforming grow...,3,0,0.01,1.0000
+GO:0032924,activin receptor signaling pathway,3,0,0.01,1.0000
+GO:0032928,regulation of superoxide anion generatio...,5,0,0.01,1.0000
+GO:0032930,positive regulation of superoxide anion ...,5,0,0.01,1.0000
+GO:0032940,secretion by cell,8,0,0.02,1.0000
+GO:0032943,mononuclear cell proliferation,5,0,0.01,1.0000
+GO:0032956,regulation of actin cytoskeleton organiz...,10,0,0.03,1.0000
+GO:0032970,regulation of actin filament-based proce...,44,0,0.12,1.0000
+GO:0033036,macromolecule localization,57,0,0.16,1.0000
+GO:0033043,regulation of organelle organization,18,0,0.05,1.0000
+GO:0033044,regulation of chromosome organization,10,0,0.03,1.0000
+GO:0033135,regulation of peptidyl-serine phosphoryl...,40,0,0.11,1.0000
+GO:0033137,negative regulation of peptidyl-serine p...,6,0,0.02,1.0000
+GO:0033138,positive regulation of peptidyl-serine p...,34,0,0.09,1.0000
+GO:0033157,regulation of intracellular protein tran...,5,0,0.01,1.0000
+GO:0033194,response to hydroperoxide,5,0,0.01,1.0000
+GO:0033314,mitotic DNA replication checkpoint,2,0,0.01,1.0000
+GO:0033365,protein localization to organelle,26,0,0.07,1.0000
+GO:0033500,carbohydrate homeostasis,8,0,0.02,1.0000
+GO:0033554,cellular response to stress,34,0,0.09,1.0000
+GO:0033559,unsaturated fatty acid metabolic process,2,0,0.01,1.0000
+GO:0033564,anterior/posterior axon guidance,1,0,0,1.0000
+GO:0033619,membrane protein proteolysis,1,0,0,1.0000
+GO:0033673,negative regulation of kinase activity,5,0,0.01,1.0000
+GO:0033674,positive regulation of kinase activity,7,0,0.02,1.0000
+GO:0033684,regulation of luteinizing hormone secret...,2,0,0.01,1.0000
+GO:0033686,positive regulation of luteinizing hormo...,2,0,0.01,1.0000
+GO:0033687,osteoblast proliferation,4,0,0.01,1.0000
+GO:0033688,regulation of osteoblast proliferation,4,0,0.01,1.0000
+GO:0033689,negative regulation of osteoblast prolif...,3,0,0.01,1.0000
+GO:0033690,positive regulation of osteoblast prolif...,1,0,0,1.0000
+GO:0033692,cellular polysaccharide biosynthetic pro...,4,0,0.01,1.0000
+GO:0033865,nucleoside bisphosphate metabolic proces...,4,0,0.01,1.0000
+GO:0033866,nucleoside bisphosphate biosynthetic pro...,4,0,0.01,1.0000
+GO:0033875,ribonucleoside bisphosphate metabolic pr...,4,0,0.01,1.0000
+GO:0034030,ribonucleoside bisphosphate biosynthetic...,4,0,0.01,1.0000
+GO:0034032,purine nucleoside bisphosphate metabolic...,4,0,0.01,1.0000
+GO:0034033,purine nucleoside bisphosphate biosynthe...,4,0,0.01,1.0000
+GO:0034109,homotypic cell-cell adhesion,5,0,0.01,1.0000
+GO:0034110,regulation of homotypic cell-cell adhesi...,5,0,0.01,1.0000
+GO:0034111,negative regulation of homotypic cell-ce...,5,0,0.01,1.0000
+GO:0034204,lipid translocation,5,0,0.01,1.0000
+GO:0034219,carbohydrate transmembrane transport,3,0,0.01,1.0000
+GO:0034248,regulation of cellular amide metabolic p...,6,0,0.02,1.0000
+GO:0034250,positive regulation of cellular amide me...,6,0,0.02,1.0000
+GO:0034284,response to monosaccharide,9,0,0.03,1.0000
+GO:0034285,response to disaccharide,4,0,0.01,1.0000
+GO:0034329,cell junction assembly,3,0,0.01,1.0000
+GO:0034330,cell junction organization,3,0,0.01,1.0000
+GO:0034341,response to interferon-gamma,8,0,0.02,1.0000
+GO:0034349,glial cell apoptotic process,5,0,0.01,1.0000
+GO:0034350,regulation of glial cell apoptotic proce...,5,0,0.01,1.0000
+GO:0034351,negative regulation of glial cell apopto...,5,0,0.01,1.0000
+GO:0034389,lipid droplet organization,2,0,0.01,1.0000
+GO:0034394,protein localization to cell surface,1,0,0,1.0000
+GO:0034401,chromatin organization involved in regul...,11,0,0.03,1.0000
+GO:0034470,ncRNA processing,2,0,0.01,1.0000
+GO:0034471,ncRNA 5'-end processing,1,0,0,1.0000
+GO:0034504,protein localization to nucleus,26,0,0.07,1.0000
+GO:0034599,cellular response to oxidative stress,13,0,0.04,1.0000
+GO:0034605,cellular response to heat,3,0,0.01,1.0000
+GO:0034613,cellular protein localization,31,0,0.09,1.0000
+GO:0034614,cellular response to reactive oxygen spe...,5,0,0.01,1.0000
+GO:0034622,cellular protein-containing complex asse...,44,0,0.12,1.0000
+GO:0034635,glutathione transport,3,0,0.01,1.0000
+GO:0034637,cellular carbohydrate biosynthetic proce...,4,0,0.01,1.0000
+GO:0034643,establishment of mitochondrion localizat...,4,0,0.01,1.0000
+GO:0034655,nucleobase-containing compound catabolic...,10,0,0.03,1.0000
+GO:0034660,ncRNA metabolic process,2,0,0.01,1.0000
+GO:0034728,nucleosome organization,10,0,0.03,1.0000
+GO:0034762,regulation of transmembrane transport,43,0,0.12,1.0000
+GO:0034764,positive regulation of transmembrane tra...,40,0,0.11,1.0000
+GO:0034765,regulation of ion transmembrane transpor...,43,0,0.12,1.0000
+GO:0034767,positive regulation of ion transmembrane...,40,0,0.11,1.0000
+GO:0034770,histone H4-K20 methylation,1,0,0,1.0000
+GO:0034771,histone H4-K20 monomethylation,1,0,0,1.0000
+GO:0034775,glutathione transmembrane transport,3,0,0.01,1.0000
+GO:0034968,histone lysine methylation,3,0,0.01,1.0000
+GO:0035019,somatic stem cell population maintenance,12,0,0.03,1.0000
+GO:0035050,embryonic heart tube development,5,0,0.01,1.0000
+GO:0035051,cardiocyte differentiation,2,0,0.01,1.0000
+GO:0035065,regulation of histone acetylation,11,0,0.03,1.0000
+GO:0035066,positive regulation of histone acetylati...,2,0,0.01,1.0000
+GO:0035067,negative regulation of histone acetylati...,9,0,0.03,1.0000
+GO:0035088,establishment or maintenance of apical/b...,1,0,0,1.0000
+GO:0035089,establishment of apical/basal cell polar...,1,0,0,1.0000
+GO:0035107,appendage morphogenesis,5,0,0.01,1.0000
+GO:0035108,limb morphogenesis,4,0,0.01,1.0000
+GO:0035113,embryonic appendage morphogenesis,4,0,0.01,1.0000
+GO:0035114,imaginal disc-derived appendage morphoge...,1,0,0,1.0000
+GO:0035120,post-embryonic appendage morphogenesis,1,0,0,1.0000
+GO:0035150,regulation of tube size,1,0,0,1.0000
+GO:0035151,regulation of tube size, open tracheal s...,1,0,0,1.0000
+GO:0035152,regulation of tube architecture, open tr...,1,0,0,1.0000
+GO:0035159,regulation of tube length, open tracheal...,1,0,0,1.0000
+GO:0035172,hemocyte proliferation,10,0,0.03,1.0000
+GO:0035194,post-transcriptional gene silencing by R...,14,0,0.04,1.0000
+GO:0035195,gene silencing by miRNA,13,0,0.04,1.0000
+GO:0035206,regulation of hemocyte proliferation,10,0,0.03,1.0000
+GO:0035207,negative regulation of hemocyte prolifer...,10,0,0.03,1.0000
+GO:0035209,pupal development,1,0,0,1.0000
+GO:0035220,wing disc development,11,0,0.03,1.0000
+GO:0035222,wing disc pattern formation,10,0,0.03,1.0000
+GO:0035234,ectopic germ cell programmed cell death,1,0,0,1.0000
+GO:0035262,gonad morphogenesis,2,0,0.01,1.0000
+GO:0035265,organ growth,1,0,0,1.0000
+GO:0035270,endocrine system development,3,0,0.01,1.0000
+GO:0035282,segmentation,5,0,0.01,1.0000
+GO:0035315,hair cell differentiation,1,0,0,1.0000
+GO:0035316,non-sensory hair organization,1,0,0,1.0000
+GO:0035317,imaginal disc-derived wing hair organiza...,1,0,0,1.0000
+GO:0035329,hippo signaling,1,0,0,1.0000
+GO:0035383,thioester metabolic process,4,0,0.01,1.0000
+GO:0035384,thioester biosynthetic process,4,0,0.01,1.0000
+GO:0035443,tripeptide transmembrane transport,3,0,0.01,1.0000
+GO:0035556,intracellular signal transduction,65,0,0.18,1.0000
+GO:0035601,protein deacylation,8,0,0.02,1.0000
+GO:0035672,oligopeptide transmembrane transport,3,0,0.01,1.0000
+GO:0035725,sodium ion transmembrane transport,6,0,0.02,1.0000
+GO:0035794,positive regulation of mitochondrial mem...,4,0,0.01,1.0000
+GO:0035821,modulation of process of other organism,3,0,0.01,1.0000
+GO:0036098,male germ-line stem cell population main...,10,0,0.03,1.0000
+GO:0036214,contractile ring localization,1,0,0,1.0000
+GO:0036230,granulocyte activation,6,0,0.02,1.0000
+GO:0036290,protein trans-autophosphorylation,1,0,0,1.0000
+GO:0036293,response to decreased oxygen levels,5,0,0.01,1.0000
+GO:0036302,atrioventricular canal development,2,0,0.01,1.0000
+GO:0036473,cell death in response to oxidative stre...,5,0,0.01,1.0000
+GO:0038034,signal transduction in absence of ligand,1,0,0,1.0000
+GO:0038092,nodal signaling pathway,3,0,0.01,1.0000
+GO:0038093,Fc receptor signaling pathway,5,0,0.01,1.0000
+GO:0038094,Fc-gamma receptor signaling pathway,5,0,0.01,1.0000
+GO:0038096,Fc-gamma receptor signaling pathway invo...,5,0,0.01,1.0000
+GO:0040007,growth,9,0,0.03,1.0000
+GO:0040008,regulation of growth,9,0,0.03,1.0000
+GO:0040029,regulation of gene expression, epigeneti...,10,0,0.03,1.0000
+GO:0042060,wound healing,10,0,0.03,1.0000
+GO:0042067,establishment of ommatidial planar polar...,1,0,0,1.0000
+GO:0042100,B cell proliferation,5,0,0.01,1.0000
+GO:0042110,T cell activation,3,0,0.01,1.0000
+GO:0042113,B cell activation,5,0,0.01,1.0000
+GO:0042118,endothelial cell activation,2,0,0.01,1.0000
+GO:0042119,neutrophil activation,6,0,0.02,1.0000
+GO:0042133,neurotransmitter metabolic process,2,0,0.01,1.0000
+GO:0042136,neurotransmitter biosynthetic process,2,0,0.01,1.0000
+GO:0042176,regulation of protein catabolic process,5,0,0.01,1.0000
+GO:0042177,negative regulation of protein catabolic...,4,0,0.01,1.0000
+GO:0042180,cellular ketone metabolic process,1,0,0,1.0000
+GO:0042181,ketone biosynthetic process,1,0,0,1.0000
+GO:0042254,ribosome biogenesis,1,0,0,1.0000
+GO:0042274,ribosomal small subunit biogenesis,1,0,0,1.0000
+GO:0042303,molting cycle,3,0,0.01,1.0000
+GO:0042306,regulation of protein import into nucleu...,5,0,0.01,1.0000
+GO:0042307,positive regulation of protein import in...,5,0,0.01,1.0000
+GO:0042325,regulation of phosphorylation,49,0,0.14,1.0000
+GO:0042326,negative regulation of phosphorylation,11,0,0.03,1.0000
+GO:0042327,positive regulation of phosphorylation,43,0,0.12,1.0000
+GO:0042445,hormone metabolic process,4,0,0.01,1.0000
+GO:0042542,response to hydrogen peroxide,5,0,0.01,1.0000
+GO:0042554,superoxide anion generation,5,0,0.01,1.0000
+GO:0042593,glucose homeostasis,8,0,0.02,1.0000
+GO:0042594,response to starvation,4,0,0.01,1.0000
+GO:0042633,hair cycle,3,0,0.01,1.0000
+GO:0042634,regulation of hair cycle,3,0,0.01,1.0000
+GO:0042692,muscle cell differentiation,14,0,0.04,1.0000
+GO:0042733,embryonic digit morphogenesis,2,0,0.01,1.0000
+GO:0042742,defense response to bacterium,5,0,0.01,1.0000
+GO:0042752,regulation of circadian rhythm,8,0,0.02,1.0000
+GO:0042754,negative regulation of circadian rhythm,8,0,0.02,1.0000
+GO:0042815,bipolar cell growth,1,0,0,1.0000
+GO:0042886,amide transport,39,0,0.11,1.0000
+GO:0042908,xenobiotic transport,3,0,0.01,1.0000
+GO:0042939,tripeptide transport,3,0,0.01,1.0000
+GO:0043009,chordate embryonic development,15,0,0.04,1.0000
+GO:0043043,peptide biosynthetic process,1,0,0,1.0000
+GO:0043044,ATP-dependent chromatin remodeling,10,0,0.03,1.0000
+GO:0043062,extracellular structure organization,3,0,0.01,1.0000
+GO:0043066,negative regulation of apoptotic process,17,0,0.05,1.0000
+GO:0043069,negative regulation of programmed cell d...,17,0,0.05,1.0000
+GO:0043086,negative regulation of catalytic activit...,39,0,0.11,1.0000
+GO:0043087,regulation of GTPase activity,13,0,0.04,1.0000
+GO:0043149,stress fiber assembly,3,0,0.01,1.0000
+GO:0043161,proteasome-mediated ubiquitin-dependent ...,3,0,0.01,1.0000
+GO:0043254,regulation of protein-containing complex...,5,0,0.01,1.0000
+GO:0043266,regulation of potassium ion transport,34,0,0.09,1.0000
+GO:0043268,positive regulation of potassium ion tra...,34,0,0.09,1.0000
+GO:0043270,positive regulation of ion transport,45,0,0.13,1.0000
+GO:0043280,positive regulation of cysteine-type end...,3,0,0.01,1.0000
+GO:0043281,regulation of cysteine-type endopeptidas...,3,0,0.01,1.0000
+GO:0043299,leukocyte degranulation,6,0,0.02,1.0000
+GO:0043312,neutrophil degranulation,6,0,0.02,1.0000
+GO:0043392,negative regulation of DNA binding,8,0,0.02,1.0000
+GO:0043393,regulation of protein binding,5,0,0.01,1.0000
+GO:0043405,regulation of MAP kinase activity,5,0,0.01,1.0000
+GO:0043407,negative regulation of MAP kinase activi...,5,0,0.01,1.0000
+GO:0043408,regulation of MAPK cascade,13,0,0.04,1.0000
+GO:0043409,negative regulation of MAPK cascade,13,0,0.04,1.0000
+GO:0043414,macromolecule methylation,3,0,0.01,1.0000
+GO:0043434,response to peptide hormone,6,0,0.02,1.0000
+GO:0043436,oxoacid metabolic process,7,0,0.02,1.0000
+GO:0043467,regulation of generation of precursor me...,4,0,0.01,1.0000
+GO:0043470,regulation of carbohydrate catabolic pro...,4,0,0.01,1.0000
+GO:0043471,regulation of cellular carbohydrate cata...,4,0,0.01,1.0000
+GO:0043473,pigmentation,1,0,0,1.0000
+GO:0043484,regulation of RNA splicing,10,0,0.03,1.0000
+GO:0043486,histone exchange,10,0,0.03,1.0000
+GO:0043487,regulation of RNA stability,5,0,0.01,1.0000
+GO:0043488,regulation of mRNA stability,5,0,0.01,1.0000
+GO:0043491,protein kinase B signaling,1,0,0,1.0000
+GO:0043500,muscle adaptation,5,0,0.01,1.0000
+GO:0043502,regulation of muscle adaptation,5,0,0.01,1.0000
+GO:0043524,negative regulation of neuron apoptotic ...,1,0,0,1.0000
+GO:0043534,blood vessel endothelial cell migration,9,0,0.03,1.0000
+GO:0043535,regulation of blood vessel endothelial c...,9,0,0.03,1.0000
+GO:0043537,negative regulation of blood vessel endo...,9,0,0.03,1.0000
+GO:0043543,protein acylation,21,0,0.06,1.0000
+GO:0043547,positive regulation of GTPase activity,13,0,0.04,1.0000
+GO:0043549,regulation of kinase activity,7,0,0.02,1.0000
+GO:0043578,nuclear matrix organization,12,0,0.03,1.0000
+GO:0043583,ear development,5,0,0.01,1.0000
+GO:0043588,skin development,3,0,0.01,1.0000
+GO:0043603,cellular amide metabolic process,14,0,0.04,1.0000
+GO:0043604,amide biosynthetic process,10,0,0.03,1.0000
+GO:0043618,regulation of transcription from RNA pol...,8,0,0.02,1.0000
+GO:0043619,regulation of transcription from RNA pol...,8,0,0.02,1.0000
+GO:0043620,regulation of DNA-templated transcriptio...,8,0,0.02,1.0000
+GO:0043632,modification-dependent macromolecule cat...,3,0,0.01,1.0000
+GO:0043903,regulation of biological process involve...,1,0,0,1.0000
+GO:0043933,protein-containing complex subunit organ...,54,0,0.15,1.0000
+GO:0043966,histone H3 acetylation,10,0,0.03,1.0000
+GO:0043970,histone H3-K9 acetylation,2,0,0.01,1.0000
+GO:0043974,histone H3-K27 acetylation,8,0,0.02,1.0000
+GO:0044003,modulation by symbiont of host process,3,0,0.01,1.0000
+GO:0044042,glucan metabolic process,4,0,0.01,1.0000
+GO:0044060,regulation of endocrine process,2,0,0.01,1.0000
+GO:0044070,regulation of anion transport,8,0,0.02,1.0000
+GO:0044087,regulation of cellular component biogene...,10,0,0.03,1.0000
+GO:0044089,positive regulation of cellular componen...,3,0,0.01,1.0000
+GO:0044092,negative regulation of molecular functio...,47,0,0.13,1.0000
+GO:0044242,cellular lipid catabolic process,5,0,0.01,1.0000
+GO:0044247,cellular polysaccharide catabolic proces...,4,0,0.01,1.0000
+GO:0044248,cellular catabolic process,21,0,0.06,1.0000
+GO:0044255,cellular lipid metabolic process,7,0,0.02,1.0000
+GO:0044257,cellular protein catabolic process,3,0,0.01,1.0000
+GO:0044262,cellular carbohydrate metabolic process,14,0,0.04,1.0000
+GO:0044264,cellular polysaccharide metabolic proces...,4,0,0.01,1.0000
+GO:0044265,cellular macromolecule catabolic process,14,0,0.04,1.0000
+GO:0044270,cellular nitrogen compound catabolic pro...,10,0,0.03,1.0000
+GO:0044272,sulfur compound biosynthetic process,4,0,0.01,1.0000
+GO:0044275,cellular carbohydrate catabolic process,4,0,0.01,1.0000
+GO:0044281,small molecule metabolic process,22,0,0.06,1.0000
+GO:0044283,small molecule biosynthetic process,2,0,0.01,1.0000
+GO:0044331,cell-cell adhesion mediated by cadherin,1,0,0,1.0000
+GO:0044403,biological process involved in symbiotic...,7,0,0.02,1.0000
+GO:0044703,multi-organism reproductive process,31,0,0.09,1.0000
+GO:0044766,multi-organism transport,3,0,0.01,1.0000
+GO:0044770,cell cycle phase transition,45,0,0.13,1.0000
+GO:0044772,mitotic cell cycle phase transition,45,0,0.13,1.0000
+GO:0044774,mitotic DNA integrity checkpoint,2,0,0.01,1.0000
+GO:0044782,cilium organization,34,0,0.09,1.0000
+GO:0044804,autophagy of nucleus,2,0,0.01,1.0000
+GO:0044818,mitotic G2/M transition checkpoint,2,0,0.01,1.0000
+GO:0044839,cell cycle G2/M phase transition,45,0,0.13,1.0000
+GO:0045055,regulated exocytosis,6,0,0.02,1.0000
+GO:0045069,regulation of viral genome replication,1,0,0,1.0000
+GO:0045071,negative regulation of viral genome repl...,1,0,0,1.0000
+GO:0045087,innate immune response,16,0,0.04,1.0000
+GO:0045088,regulation of innate immune response,13,0,0.04,1.0000
+GO:0045089,positive regulation of innate immune res...,13,0,0.04,1.0000
+GO:0045137,development of primary sexual characteri...,2,0,0.01,1.0000
+GO:0045165,cell fate commitment,2,0,0.01,1.0000
+GO:0045184,establishment of protein localization,32,0,0.09,1.0000
+GO:0045185,maintenance of protein location,12,0,0.03,1.0000
+GO:0045197,establishment or maintenance of epitheli...,1,0,0,1.0000
+GO:0045198,establishment of epithelial cell apical/...,1,0,0,1.0000
+GO:0045216,cell-cell junction organization,3,0,0.01,1.0000
+GO:0045229,external encapsulating structure organiz...,3,0,0.01,1.0000
+GO:0045317,equator specification,1,0,0,1.0000
+GO:0045321,leukocyte activation,9,0,0.03,1.0000
+GO:0045332,phospholipid translocation,5,0,0.01,1.0000
+GO:0045333,cellular respiration,1,0,0,1.0000
+GO:0045428,regulation of nitric oxide biosynthetic ...,3,0,0.01,1.0000
+GO:0045429,positive regulation of nitric oxide bios...,3,0,0.01,1.0000
+GO:0045444,fat cell differentiation,5,0,0.01,1.0000
+GO:0045446,endothelial cell differentiation,2,0,0.01,1.0000
+GO:0045570,regulation of imaginal disc growth,1,0,0,1.0000
+GO:0045571,negative regulation of imaginal disc gro...,1,0,0,1.0000
+GO:0045595,regulation of cell differentiation,7,0,0.02,1.0000
+GO:0045596,negative regulation of cell differentiat...,5,0,0.01,1.0000
+GO:0045597,positive regulation of cell differentiat...,7,0,0.02,1.0000
+GO:0045598,regulation of fat cell differentiation,3,0,0.01,1.0000
+GO:0045599,negative regulation of fat cell differen...,3,0,0.01,1.0000
+GO:0045667,regulation of osteoblast differentiation,3,0,0.01,1.0000
+GO:0045668,negative regulation of osteoblast differ...,3,0,0.01,1.0000
+GO:0045727,positive regulation of translation,1,0,0,1.0000
+GO:0045732,positive regulation of protein catabolic...,1,0,0,1.0000
+GO:0045740,positive regulation of DNA replication,3,0,0.01,1.0000
+GO:0045747,positive regulation of Notch signaling p...,10,0,0.03,1.0000
+GO:0045761,regulation of adenylate cyclase activity,34,0,0.09,1.0000
+GO:0045773,positive regulation of axon extension,2,0,0.01,1.0000
+GO:0045778,positive regulation of ossification,3,0,0.01,1.0000
+GO:0045786,negative regulation of cell cycle,7,0,0.02,1.0000
+GO:0045787,positive regulation of cell cycle,8,0,0.02,1.0000
+GO:0045814,negative regulation of gene expression, ...,10,0,0.03,1.0000
+GO:0045819,positive regulation of glycogen cataboli...,4,0,0.01,1.0000
+GO:0045833,negative regulation of lipid metabolic p...,2,0,0.01,1.0000
+GO:0045834,positive regulation of lipid metabolic p...,5,0,0.01,1.0000
+GO:0045859,regulation of protein kinase activity,7,0,0.02,1.0000
+GO:0045860,positive regulation of protein kinase ac...,7,0,0.02,1.0000
+GO:0045861,negative regulation of proteolysis,1,0,0,1.0000
+GO:0045892,negative regulation of transcription, DN...,16,0,0.04,1.0000
+GO:0045893,positive regulation of transcription, DN...,13,0,0.04,1.0000
+GO:0045913,positive regulation of carbohydrate meta...,4,0,0.01,1.0000
+GO:0045926,negative regulation of growth,6,0,0.02,1.0000
+GO:0045927,positive regulation of growth,3,0,0.01,1.0000
+GO:0045930,negative regulation of mitotic cell cycl...,6,0,0.02,1.0000
+GO:0045931,positive regulation of mitotic cell cycl...,8,0,0.02,1.0000
+GO:0045934,negative regulation of nucleobase-contai...,16,0,0.04,1.0000
+GO:0045935,positive regulation of nucleobase-contai...,18,0,0.05,1.0000
+GO:0045936,negative regulation of phosphate metabol...,11,0,0.03,1.0000
+GO:0045944,positive regulation of transcription by ...,13,0,0.04,1.0000
+GO:0046031,ADP metabolic process,4,0,0.01,1.0000
+GO:0046034,ATP metabolic process,4,0,0.01,1.0000
+GO:0046209,nitric oxide metabolic process,3,0,0.01,1.0000
+GO:0046364,monosaccharide biosynthetic process,1,0,0,1.0000
+GO:0046390,ribose phosphate biosynthetic process,4,0,0.01,1.0000
+GO:0046434,organophosphate catabolic process,5,0,0.01,1.0000
+GO:0046466,membrane lipid catabolic process,5,0,0.01,1.0000
+GO:0046467,membrane lipid biosynthetic process,5,0,0.01,1.0000
+GO:0046477,glycosylceramide catabolic process,5,0,0.01,1.0000
+GO:0046479,glycosphingolipid catabolic process,5,0,0.01,1.0000
+GO:0046513,ceramide biosynthetic process,5,0,0.01,1.0000
+GO:0046514,ceramide catabolic process,5,0,0.01,1.0000
+GO:0046545,development of primary female sexual cha...,2,0,0.01,1.0000
+GO:0046546,development of primary male sexual chara...,2,0,0.01,1.0000
+GO:0046620,regulation of organ growth,1,0,0,1.0000
+GO:0046621,negative regulation of organ growth,1,0,0,1.0000
+GO:0046626,regulation of insulin receptor signaling...,5,0,0.01,1.0000
+GO:0046627,negative regulation of insulin receptor ...,5,0,0.01,1.0000
+GO:0046649,lymphocyte activation,8,0,0.02,1.0000
+GO:0046651,lymphocyte proliferation,5,0,0.01,1.0000
+GO:0046660,female sex differentiation,2,0,0.01,1.0000
+GO:0046661,male sex differentiation,2,0,0.01,1.0000
+GO:0046683,response to organophosphorus,34,0,0.09,1.0000
+GO:0046700,heterocycle catabolic process,10,0,0.03,1.0000
+GO:0046717,acid secretion,5,0,0.01,1.0000
+GO:0046777,protein autophosphorylation,1,0,0,1.0000
+GO:0046785,microtubule polymerization,34,0,0.09,1.0000
+GO:0046794,transport of virus,3,0,0.01,1.0000
+GO:0046822,regulation of nucleocytoplasmic transpor...,8,0,0.02,1.0000
+GO:0046824,positive regulation of nucleocytoplasmic...,5,0,0.01,1.0000
+GO:0046847,filopodium assembly,5,0,0.01,1.0000
+GO:0046879,hormone secretion,2,0,0.01,1.0000
+GO:0046880,regulation of follicle-stimulating hormo...,2,0,0.01,1.0000
+GO:0046881,positive regulation of follicle-stimulat...,2,0,0.01,1.0000
+GO:0046883,regulation of hormone secretion,2,0,0.01,1.0000
+GO:0046884,follicle-stimulating hormone secretion,2,0,0.01,1.0000
+GO:0046887,positive regulation of hormone secretion,2,0,0.01,1.0000
+GO:0046889,positive regulation of lipid biosyntheti...,5,0,0.01,1.0000
+GO:0046890,regulation of lipid biosynthetic process,5,0,0.01,1.0000
+GO:0046902,regulation of mitochondrial membrane per...,4,0,0.01,1.0000
+GO:0046903,secretion,13,0,0.04,1.0000
+GO:0046907,intracellular transport,51,0,0.14,1.0000
+GO:0046916,cellular transition metal ion homeostasi...,2,0,0.01,1.0000
+GO:0046939,nucleotide phosphorylation,4,0,0.01,1.0000
+GO:0047497,mitochondrion transport along microtubul...,4,0,0.01,1.0000
+GO:0048008,platelet-derived growth factor receptor ...,1,0,0,1.0000
+GO:0048015,phosphatidylinositol-mediated signaling,1,0,0,1.0000
+GO:0048017,inositol lipid-mediated signaling,1,0,0,1.0000
+GO:0048024,regulation of mRNA splicing, via spliceo...,10,0,0.03,1.0000
+GO:0048041,focal adhesion assembly,3,0,0.01,1.0000
+GO:0048104,establishment of body hair or bristle pl...,1,0,0,1.0000
+GO:0048105,establishment of body hair planar orient...,1,0,0,1.0000
+GO:0048232,male gamete generation,15,0,0.04,1.0000
+GO:0048285,organelle fission,3,0,0.01,1.0000
+GO:0048332,mesoderm morphogenesis,3,0,0.01,1.0000
+GO:0048339,paraxial mesoderm development,3,0,0.01,1.0000
+GO:0048340,paraxial mesoderm morphogenesis,3,0,0.01,1.0000
+GO:0048477,oogenesis,10,0,0.03,1.0000
+GO:0048511,rhythmic process,8,0,0.02,1.0000
+GO:0048525,negative regulation of viral process,1,0,0,1.0000
+GO:0048534,hematopoietic or lymphoid organ developm...,20,0,0.06,1.0000
+GO:0048546,digestive tract morphogenesis,3,0,0.01,1.0000
+GO:0048562,embryonic organ morphogenesis,5,0,0.01,1.0000
+GO:0048563,post-embryonic animal organ morphogenesi...,1,0,0,1.0000
+GO:0048565,digestive tract development,5,0,0.01,1.0000
+GO:0048568,embryonic organ development,5,0,0.01,1.0000
+GO:0048569,post-embryonic animal organ development,1,0,0,1.0000
+GO:0048583,regulation of response to stimulus,55,0,0.15,1.0000
+GO:0048584,positive regulation of response to stimu...,32,0,0.09,1.0000
+GO:0048585,negative regulation of response to stimu...,19,0,0.05,1.0000
+GO:0048588,developmental cell growth,2,0,0.01,1.0000
+GO:0048589,developmental growth,9,0,0.03,1.0000
+GO:0048598,embryonic morphogenesis,7,0,0.02,1.0000
+GO:0048608,reproductive structure development,2,0,0.01,1.0000
+GO:0048609,multicellular organismal reproductive pr...,25,0,0.07,1.0000
+GO:0048617,embryonic foregut morphogenesis,3,0,0.01,1.0000
+GO:0048634,regulation of muscle organ development,3,0,0.01,1.0000
+GO:0048638,regulation of developmental growth,4,0,0.01,1.0000
+GO:0048639,positive regulation of developmental gro...,3,0,0.01,1.0000
+GO:0048640,negative regulation of developmental gro...,1,0,0,1.0000
+GO:0048644,muscle organ morphogenesis,2,0,0.01,1.0000
+GO:0048663,neuron fate commitment,2,0,0.01,1.0000
+GO:0048675,axon extension,2,0,0.01,1.0000
+GO:0048678,response to axon injury,1,0,0,1.0000
+GO:0048679,regulation of axon regeneration,1,0,0,1.0000
+GO:0048681,negative regulation of axon regeneration,1,0,0,1.0000
+GO:0048701,embryonic cranial skeleton morphogenesis,3,0,0.01,1.0000
+GO:0048704,embryonic skeletal system morphogenesis,5,0,0.01,1.0000
+GO:0048705,skeletal system morphogenesis,5,0,0.01,1.0000
+GO:0048706,embryonic skeletal system development,5,0,0.01,1.0000
+GO:0048707,instar larval or pupal morphogenesis,1,0,0,1.0000
+GO:0048729,tissue morphogenesis,17,0,0.05,1.0000
+GO:0048732,gland development,5,0,0.01,1.0000
+GO:0048733,sebaceous gland development,2,0,0.01,1.0000
+GO:0048736,appendage development,5,0,0.01,1.0000
+GO:0048737,imaginal disc-derived appendage developm...,1,0,0,1.0000
+GO:0048738,cardiac muscle tissue development,2,0,0.01,1.0000
+GO:0048749,compound eye development,1,0,0,1.0000
+GO:0048754,branching morphogenesis of an epithelial...,2,0,0.01,1.0000
+GO:0048762,mesenchymal cell differentiation,5,0,0.01,1.0000
+GO:0048813,dendrite morphogenesis,10,0,0.03,1.0000
+GO:0048839,inner ear development,5,0,0.01,1.0000
+GO:0048841,regulation of axon extension involved in...,2,0,0.01,1.0000
+GO:0048842,positive regulation of axon extension in...,2,0,0.01,1.0000
+GO:0048846,axon extension involved in axon guidance,2,0,0.01,1.0000
+GO:0048859,formation of anatomical boundary,3,0,0.01,1.0000
+GO:0048863,stem cell differentiation,2,0,0.01,1.0000
+GO:0050657,nucleic acid transport,3,0,0.01,1.0000
+GO:0050658,RNA transport,3,0,0.01,1.0000
+GO:0050684,regulation of mRNA processing,10,0,0.03,1.0000
+GO:0050688,regulation of defense response to virus,8,0,0.02,1.0000
+GO:0050691,regulation of defense response to virus ...,8,0,0.02,1.0000
+GO:0050727,regulation of inflammatory response,8,0,0.02,1.0000
+GO:0050728,negative regulation of inflammatory resp...,8,0,0.02,1.0000
+GO:0050730,regulation of peptidyl-tyrosine phosphor...,5,0,0.01,1.0000
+GO:0050732,negative regulation of peptidyl-tyrosine...,5,0,0.01,1.0000
+GO:0050767,regulation of neurogenesis,2,0,0.01,1.0000
+GO:0050769,positive regulation of neurogenesis,2,0,0.01,1.0000
+GO:0050770,regulation of axonogenesis,2,0,0.01,1.0000
+GO:0050772,positive regulation of axonogenesis,2,0,0.01,1.0000
+GO:0050776,regulation of immune response,16,0,0.04,1.0000
+GO:0050778,positive regulation of immune response,13,0,0.04,1.0000
+GO:0050792,regulation of viral process,1,0,0,1.0000
+GO:0050817,coagulation,7,0,0.02,1.0000
+GO:0050818,regulation of coagulation,6,0,0.02,1.0000
+GO:0050819,negative regulation of coagulation,5,0,0.01,1.0000
+GO:0050820,positive regulation of coagulation,1,0,0,1.0000
+GO:0050821,protein stabilization,8,0,0.02,1.0000
+GO:0050865,regulation of cell activation,5,0,0.01,1.0000
+GO:0050866,negative regulation of cell activation,5,0,0.01,1.0000
+GO:0050878,regulation of body fluid levels,7,0,0.02,1.0000
+GO:0050886,endocrine process,2,0,0.01,1.0000
+GO:0050890,cognition,3,0,0.01,1.0000
+GO:0050892,intestinal absorption,5,0,0.01,1.0000
+GO:0050918,positive chemotaxis,3,0,0.01,1.0000
+GO:0050920,regulation of chemotaxis,5,0,0.01,1.0000
+GO:0050921,positive regulation of chemotaxis,5,0,0.01,1.0000
+GO:0050926,regulation of positive chemotaxis,3,0,0.01,1.0000
+GO:0050927,positive regulation of positive chemotax...,3,0,0.01,1.0000
+GO:0050994,regulation of lipid catabolic process,7,0,0.02,1.0000
+GO:0050995,negative regulation of lipid catabolic p...,2,0,0.01,1.0000
+GO:0050996,positive regulation of lipid catabolic p...,5,0,0.01,1.0000
+GO:0051028,mRNA transport,3,0,0.01,1.0000
+GO:0051031,tRNA transport,3,0,0.01,1.0000
+GO:0051043,regulation of membrane protein ectodomai...,1,0,0,1.0000
+GO:0051045,negative regulation of membrane protein ...,1,0,0,1.0000
+GO:0051046,regulation of secretion,7,0,0.02,1.0000
+GO:0051047,positive regulation of secretion,2,0,0.01,1.0000
+GO:0051050,positive regulation of transport,47,0,0.13,1.0000
+GO:0051052,regulation of DNA metabolic process,5,0,0.01,1.0000
+GO:0051054,positive regulation of DNA metabolic pro...,5,0,0.01,1.0000
+GO:0051056,regulation of small GTPase mediated sign...,10,0,0.03,1.0000
+GO:0051081,nuclear envelope disassembly,3,0,0.01,1.0000
+GO:0051094,positive regulation of developmental pro...,9,0,0.03,1.0000
+GO:0051098,regulation of binding,18,0,0.05,1.0000
+GO:0051100,negative regulation of binding,13,0,0.04,1.0000
+GO:0051101,regulation of DNA binding,8,0,0.02,1.0000
+GO:0051128,regulation of cellular component organiz...,26,0,0.07,1.0000
+GO:0051129,negative regulation of cellular componen...,17,0,0.05,1.0000
+GO:0051130,positive regulation of cellular componen...,15,0,0.04,1.0000
+GO:0051146,striated muscle cell differentiation,2,0,0.01,1.0000
+GO:0051147,regulation of muscle cell differentiatio...,2,0,0.01,1.0000
+GO:0051148,negative regulation of muscle cell diffe...,2,0,0.01,1.0000
+GO:0051153,regulation of striated muscle cell diffe...,2,0,0.01,1.0000
+GO:0051154,negative regulation of striated muscle c...,2,0,0.01,1.0000
+GO:0051168,nuclear export,3,0,0.01,1.0000
+GO:0051169,nuclear transport,9,0,0.03,1.0000
+GO:0051170,import into nucleus,6,0,0.02,1.0000
+GO:0051172,negative regulation of nitrogen compound...,29,0,0.08,1.0000
+GO:0051216,cartilage development,3,0,0.01,1.0000
+GO:0051222,positive regulation of protein transport,5,0,0.01,1.0000
+GO:0051223,regulation of protein transport,5,0,0.01,1.0000
+GO:0051235,maintenance of location,61,0,0.17,1.0000
+GO:0051236,establishment of RNA localization,3,0,0.01,1.0000
+GO:0051248,negative regulation of protein metabolic...,24,0,0.07,1.0000
+GO:0051253,negative regulation of RNA metabolic pro...,16,0,0.04,1.0000
+GO:0051254,positive regulation of RNA metabolic pro...,13,0,0.04,1.0000
+GO:0051258,protein polymerization,39,0,0.11,1.0000
+GO:0051259,protein complex oligomerization,2,0,0.01,1.0000
+GO:0051260,protein homooligomerization,2,0,0.01,1.0000
+GO:0051276,chromosome organization,32,0,0.09,1.0000
+GO:0051301,cell division,4,0,0.01,1.0000
+GO:0051338,regulation of transferase activity,7,0,0.02,1.0000
+GO:0051339,regulation of lyase activity,34,0,0.09,1.0000
+GO:0051347,positive regulation of transferase activ...,7,0,0.02,1.0000
+GO:0051348,negative regulation of transferase activ...,5,0,0.01,1.0000
+GO:0051350,negative regulation of lyase activity,34,0,0.09,1.0000
+GO:0051457,maintenance of protein location in nucle...,12,0,0.03,1.0000
+GO:0051481,negative regulation of cytosolic calcium...,3,0,0.01,1.0000
+GO:0051489,regulation of filopodium assembly,5,0,0.01,1.0000
+GO:0051490,negative regulation of filopodium assemb...,5,0,0.01,1.0000
+GO:0051492,regulation of stress fiber assembly,3,0,0.01,1.0000
+GO:0051493,regulation of cytoskeleton organization,10,0,0.03,1.0000
+GO:0051494,negative regulation of cytoskeleton orga...,7,0,0.02,1.0000
+GO:0051495,positive regulation of cytoskeleton orga...,3,0,0.01,1.0000
+GO:0051496,positive regulation of stress fiber asse...,3,0,0.01,1.0000
+GO:0051510,regulation of unidimensional cell growth,1,0,0,1.0000
+GO:0051512,positive regulation of unidimensional ce...,1,0,0,1.0000
+GO:0051516,regulation of bipolar cell growth,1,0,0,1.0000
+GO:0051518,positive regulation of bipolar cell grow...,1,0,0,1.0000
+GO:0051519,activation of bipolar cell growth,1,0,0,1.0000
+GO:0051568,histone H3-K4 methylation,2,0,0.01,1.0000
+GO:0051569,regulation of histone H3-K4 methylation,2,0,0.01,1.0000
+GO:0051571,positive regulation of histone H3-K4 met...,2,0,0.01,1.0000
+GO:0051591,response to cAMP,34,0,0.09,1.0000
+GO:0051595,response to methylglyoxal,8,0,0.02,1.0000
+GO:0051602,response to electrical stimulus,34,0,0.09,1.0000
+GO:0051603,proteolysis involved in cellular protein...,3,0,0.01,1.0000
+GO:0051607,defense response to virus,9,0,0.03,1.0000
+GO:0051640,organelle localization,76,0,0.21,1.0000
+GO:0051642,centrosome localization,34,0,0.09,1.0000
+GO:0051645,Golgi localization,13,0,0.04,1.0000
+GO:0051646,mitochondrion localization,4,0,0.01,1.0000
+GO:0051651,maintenance of location in cell,59,0,0.16,1.0000
+GO:0051654,establishment of mitochondrion localizat...,4,0,0.01,1.0000
+GO:0051656,establishment of organelle localization,42,0,0.12,1.0000
+GO:0051657,maintenance of organelle location,47,0,0.13,1.0000
+GO:0051661,maintenance of centrosome location,34,0,0.09,1.0000
+GO:0051683,establishment of Golgi localization,13,0,0.04,1.0000
+GO:0051684,maintenance of Golgi location,13,0,0.04,1.0000
+GO:0051701,biological process involved in interacti...,3,0,0.01,1.0000
+GO:0051704,multi-organism process,31,0,0.09,1.0000
+GO:0051726,regulation of cell cycle,15,0,0.04,1.0000
+GO:0051797,regulation of hair follicle development,3,0,0.01,1.0000
+GO:0051798,positive regulation of hair follicle dev...,1,0,0,1.0000
+GO:0051817,modulation of process of other organism ...,3,0,0.01,1.0000
+GO:0051893,regulation of focal adhesion assembly,3,0,0.01,1.0000
+GO:0051894,positive regulation of focal adhesion as...,3,0,0.01,1.0000
+GO:0051896,regulation of protein kinase B signaling,1,0,0,1.0000
+GO:0051897,positive regulation of protein kinase B ...,1,0,0,1.0000
+GO:0051960,regulation of nervous system development,2,0,0.01,1.0000
+GO:0051962,positive regulation of nervous system de...,2,0,0.01,1.0000
+GO:0052173,response to defenses of other organism,3,0,0.01,1.0000
+GO:0052200,response to host defenses,3,0,0.01,1.0000
+GO:0055001,muscle cell development,2,0,0.01,1.0000
+GO:0055002,striated muscle cell development,2,0,0.01,1.0000
+GO:0055003,cardiac myofibril assembly,2,0,0.01,1.0000
+GO:0055006,cardiac cell development,2,0,0.01,1.0000
+GO:0055007,cardiac muscle cell differentiation,2,0,0.01,1.0000
+GO:0055008,cardiac muscle tissue morphogenesis,2,0,0.01,1.0000
+GO:0055010,ventricular cardiac muscle tissue morpho...,2,0,0.01,1.0000
+GO:0055013,cardiac muscle cell development,2,0,0.01,1.0000
+GO:0055072,iron ion homeostasis,2,0,0.01,1.0000
+GO:0055076,transition metal ion homeostasis,2,0,0.01,1.0000
+GO:0055086,nucleobase-containing small molecule met...,5,0,0.01,1.0000
+GO:0055117,regulation of cardiac muscle contraction,34,0,0.09,1.0000
+GO:0055123,digestive system development,5,0,0.01,1.0000
+GO:0060012,synaptic transmission, glycinergic,4,0,0.01,1.0000
+GO:0060021,roof of mouth development,2,0,0.01,1.0000
+GO:0060039,pericardium development,3,0,0.01,1.0000
+GO:0060047,heart contraction,34,0,0.09,1.0000
+GO:0060048,cardiac muscle contraction,34,0,0.09,1.0000
+GO:0060055,angiogenesis involved in wound healing,1,0,0,1.0000
+GO:0060065,uterus development,2,0,0.01,1.0000
+GO:0060070,canonical Wnt signaling pathway,3,0,0.01,1.0000
+GO:0060147,regulation of posttranscriptional gene s...,13,0,0.04,1.0000
+GO:0060148,positive regulation of posttranscription...,10,0,0.03,1.0000
+GO:0060173,limb development,4,0,0.01,1.0000
+GO:0060191,regulation of lipase activity,5,0,0.01,1.0000
+GO:0060193,positive regulation of lipase activity,5,0,0.01,1.0000
+GO:0060271,cilium assembly,34,0,0.09,1.0000
+GO:0060284,regulation of cell development,4,0,0.01,1.0000
+GO:0060290,transdifferentiation,3,0,0.01,1.0000
+GO:0060306,regulation of membrane repolarization,34,0,0.09,1.0000
+GO:0060307,regulation of ventricular cardiac muscle...,34,0,0.09,1.0000
+GO:0060317,cardiac epithelial to mesenchymal transi...,2,0,0.01,1.0000
+GO:0060322,head development,2,0,0.01,1.0000
+GO:0060326,cell chemotaxis,5,0,0.01,1.0000
+GO:0060333,interferon-gamma-mediated signaling path...,5,0,0.01,1.0000
+GO:0060341,regulation of cellular localization,18,0,0.05,1.0000
+GO:0060384,innervation,1,0,0,1.0000
+GO:0060389,pathway-restricted SMAD protein phosphor...,2,0,0.01,1.0000
+GO:0060390,regulation of SMAD protein signal transd...,2,0,0.01,1.0000
+GO:0060391,positive regulation of SMAD protein sign...,2,0,0.01,1.0000
+GO:0060393,regulation of pathway-restricted SMAD pr...,2,0,0.01,1.0000
+GO:0060395,SMAD protein signal transduction,5,0,0.01,1.0000
+GO:0060411,cardiac septum morphogenesis,2,0,0.01,1.0000
+GO:0060412,ventricular septum morphogenesis,2,0,0.01,1.0000
+GO:0060415,muscle tissue morphogenesis,2,0,0.01,1.0000
+GO:0060429,epithelium development,28,0,0.08,1.0000
+GO:0060453,regulation of gastric acid secretion,5,0,0.01,1.0000
+GO:0060485,mesenchyme development,5,0,0.01,1.0000
+GO:0060491,regulation of cell projection assembly,5,0,0.01,1.0000
+GO:0060537,muscle tissue development,5,0,0.01,1.0000
+GO:0060538,skeletal muscle organ development,4,0,0.01,1.0000
+GO:0060539,diaphragm development,4,0,0.01,1.0000
+GO:0060541,respiratory system development,5,0,0.01,1.0000
+GO:0060548,negative regulation of cell death,19,0,0.05,1.0000
+GO:0060560,developmental growth involved in morphog...,3,0,0.01,1.0000
+GO:0060562,epithelial tube morphogenesis,17,0,0.05,1.0000
+GO:0060627,regulation of vesicle-mediated transport,3,0,0.01,1.0000
+GO:0060675,ureteric bud morphogenesis,2,0,0.01,1.0000
+GO:0060696,regulation of phospholipid catabolic pro...,5,0,0.01,1.0000
+GO:0060697,positive regulation of phospholipid cata...,5,0,0.01,1.0000
+GO:0060956,endocardial cell differentiation,2,0,0.01,1.0000
+GO:0060964,regulation of gene silencing by miRNA,13,0,0.04,1.0000
+GO:0060966,regulation of gene silencing by RNA,13,0,0.04,1.0000
+GO:0060968,regulation of gene silencing,21,0,0.06,1.0000
+GO:0060971,embryonic heart tube left/right pattern ...,2,0,0.01,1.0000
+GO:0060972,left/right pattern formation,2,0,0.01,1.0000
+GO:0060986,endocrine hormone secretion,2,0,0.01,1.0000
+GO:0060993,kidney morphogenesis,2,0,0.01,1.0000
+GO:0061008,hepaticobiliary system development,3,0,0.01,1.0000
+GO:0061013,regulation of mRNA catabolic process,5,0,0.01,1.0000
+GO:0061024,membrane organization,12,0,0.03,1.0000
+GO:0061035,regulation of cartilage development,3,0,0.01,1.0000
+GO:0061036,positive regulation of cartilage develop...,3,0,0.01,1.0000
+GO:0061040,female gonad morphogenesis,2,0,0.01,1.0000
+GO:0061041,regulation of wound healing,9,0,0.03,1.0000
+GO:0061042,vascular wound healing,1,0,0,1.0000
+GO:0061045,negative regulation of wound healing,8,0,0.02,1.0000
+GO:0061053,somite development,5,0,0.01,1.0000
+GO:0061061,muscle structure development,21,0,0.06,1.0000
+GO:0061091,regulation of phospholipid translocation,5,0,0.01,1.0000
+GO:0061136,regulation of proteasomal protein catabo...,1,0,0,1.0000
+GO:0061138,morphogenesis of a branching epithelium,2,0,0.01,1.0000
+GO:0061154,endothelial tube morphogenesis,9,0,0.03,1.0000
+GO:0061159,establishment of bipolar cell polarity i...,1,0,0,1.0000
+GO:0061162,establishment of monopolar cell polarity,1,0,0,1.0000
+GO:0061171,establishment of bipolar cell polarity,1,0,0,1.0000
+GO:0061245,establishment or maintenance of bipolar ...,1,0,0,1.0000
+GO:0061323,cell proliferation involved in heart mor...,2,0,0.01,1.0000
+GO:0061326,renal tubule development,2,0,0.01,1.0000
+GO:0061333,renal tubule morphogenesis,2,0,0.01,1.0000
+GO:0061337,cardiac conduction,34,0,0.09,1.0000
+GO:0061339,establishment or maintenance of monopola...,1,0,0,1.0000
+GO:0061351,neural precursor cell proliferation,4,0,0.01,1.0000
+GO:0061371,determination of heart left/right asymme...,5,0,0.01,1.0000
+GO:0061387,regulation of extent of cell growth,2,0,0.01,1.0000
+GO:0061448,connective tissue development,3,0,0.01,1.0000
+GO:0061458,reproductive system development,2,0,0.01,1.0000
+GO:0061614,pri-miRNA transcription by RNA polymeras...,3,0,0.01,1.0000
+GO:0061640,cytoskeleton-dependent cytokinesis,1,0,0,1.0000
+GO:0061647,histone H3-K9 modification,2,0,0.01,1.0000
+GO:0061723,glycophagy,4,0,0.01,1.0000
+GO:0061726,mitochondrion disassembly,2,0,0.01,1.0000
+GO:0061732,mitochondrial acetyl-CoA biosynthetic pr...,1,0,0,1.0000
+GO:0061767,negative regulation of lung blood pressu...,3,0,0.01,1.0000
+GO:0061842,microtubule organizing center localizati...,34,0,0.09,1.0000
+GO:0061912,selective autophagy,4,0,0.01,1.0000
+GO:0061919,process utilizing autophagic mechanism,6,0,0.02,1.0000
+GO:0062012,regulation of small molecule metabolic p...,14,0,0.04,1.0000
+GO:0062013,positive regulation of small molecule me...,4,0,0.01,1.0000
+GO:0062197,cellular response to chemical stress,13,0,0.04,1.0000
+GO:0065003,protein-containing complex assembly,44,0,0.12,1.0000
+GO:0070102,interleukin-6-mediated signaling pathway,2,0,0.01,1.0000
+GO:0070167,regulation of biomineral tissue developm...,3,0,0.01,1.0000
+GO:0070169,positive regulation of biomineral tissue...,3,0,0.01,1.0000
+GO:0070201,regulation of establishment of protein l...,5,0,0.01,1.0000
+GO:0070206,protein trimerization,2,0,0.01,1.0000
+GO:0070207,protein homotrimerization,2,0,0.01,1.0000
+GO:0070252,actin-mediated cell contraction,34,0,0.09,1.0000
+GO:0070293,renal absorption,5,0,0.01,1.0000
+GO:0070301,cellular response to hydrogen peroxide,5,0,0.01,1.0000
+GO:0070306,lens fiber cell differentiation,3,0,0.01,1.0000
+GO:0070371,ERK1 and ERK2 cascade,8,0,0.02,1.0000
+GO:0070372,regulation of ERK1 and ERK2 cascade,8,0,0.02,1.0000
+GO:0070373,negative regulation of ERK1 and ERK2 cas...,8,0,0.02,1.0000
+GO:0070482,response to oxygen levels,5,0,0.01,1.0000
+GO:0070527,platelet aggregation,5,0,0.01,1.0000
+GO:0070570,regulation of neuron projection regenera...,1,0,0,1.0000
+GO:0070571,negative regulation of neuron projection...,1,0,0,1.0000
+GO:0070646,protein modification by small protein re...,4,0,0.01,1.0000
+GO:0070647,protein modification by small protein co...,27,0,0.08,1.0000
+GO:0070650,actin filament bundle distribution,1,0,0,1.0000
+GO:0070661,leukocyte proliferation,5,0,0.01,1.0000
+GO:0070670,response to interleukin-4,3,0,0.01,1.0000
+GO:0070727,cellular macromolecule localization,31,0,0.09,1.0000
+GO:0070741,response to interleukin-6,2,0,0.01,1.0000
+GO:0070828,heterochromatin organization,11,0,0.03,1.0000
+GO:0070848,response to growth factor,10,0,0.03,1.0000
+GO:0070873,regulation of glycogen metabolic process,4,0,0.01,1.0000
+GO:0070875,positive regulation of glycogen metaboli...,4,0,0.01,1.0000
+GO:0070925,organelle assembly,38,0,0.11,1.0000
+GO:0070979,protein K11-linked ubiquitination,2,0,0.01,1.0000
+GO:0070983,dendrite guidance,10,0,0.03,1.0000
+GO:0071103,DNA conformation change,12,0,0.03,1.0000
+GO:0071166,ribonucleoprotein complex localization,3,0,0.01,1.0000
+GO:0071216,cellular response to biotic stimulus,3,0,0.01,1.0000
+GO:0071219,cellular response to molecule of bacteri...,3,0,0.01,1.0000
+GO:0071222,cellular response to lipopolysaccharide,3,0,0.01,1.0000
+GO:0071320,cellular response to cAMP,34,0,0.09,1.0000
+GO:0071322,cellular response to carbohydrate stimul...,12,0,0.03,1.0000
+GO:0071324,cellular response to disaccharide stimul...,4,0,0.01,1.0000
+GO:0071326,cellular response to monosaccharide stim...,8,0,0.02,1.0000
+GO:0071329,cellular response to sucrose stimulus,4,0,0.01,1.0000
+GO:0071331,cellular response to hexose stimulus,8,0,0.02,1.0000
+GO:0071333,cellular response to glucose stimulus,8,0,0.02,1.0000
+GO:0071346,cellular response to interferon-gamma,8,0,0.02,1.0000
+GO:0071353,cellular response to interleukin-4,3,0,0.01,1.0000
+GO:0071354,cellular response to interleukin-6,2,0,0.01,1.0000
+GO:0071363,cellular response to growth factor stimu...,10,0,0.03,1.0000
+GO:0071375,cellular response to peptide hormone sti...,6,0,0.02,1.0000
+GO:0071417,cellular response to organonitrogen comp...,48,0,0.13,1.0000
+GO:0071426,ribonucleoprotein complex export from nu...,3,0,0.01,1.0000
+GO:0071427,mRNA-containing ribonucleoprotein comple...,3,0,0.01,1.0000
+GO:0071431,tRNA-containing ribonucleoprotein comple...,3,0,0.01,1.0000
+GO:0071447,cellular response to hydroperoxide,5,0,0.01,1.0000
+GO:0071559,response to transforming growth factor b...,8,0,0.02,1.0000
+GO:0071560,cellular response to transforming growth...,8,0,0.02,1.0000
+GO:0071574,protein localization to medial cortex,1,0,0,1.0000
+GO:0071604,transforming growth factor beta producti...,5,0,0.01,1.0000
+GO:0071616,acyl-CoA biosynthetic process,4,0,0.01,1.0000
+GO:0071634,regulation of transforming growth factor...,5,0,0.01,1.0000
+GO:0071636,positive regulation of transforming grow...,3,0,0.01,1.0000
+GO:0071702,organic substance transport,39,0,0.11,1.0000
+GO:0071705,nitrogen compound transport,39,0,0.11,1.0000
+GO:0071772,response to BMP,4,0,0.01,1.0000
+GO:0071773,cellular response to BMP stimulus,4,0,0.01,1.0000
+GO:0071805,potassium ion transmembrane transport,34,0,0.09,1.0000
+GO:0071824,protein-DNA complex subunit organization,10,0,0.03,1.0000
+GO:0071867,response to monoamine,8,0,0.02,1.0000
+GO:0071868,cellular response to monoamine stimulus,8,0,0.02,1.0000
+GO:0071869,response to catecholamine,8,0,0.02,1.0000
+GO:0071870,cellular response to catecholamine stimu...,8,0,0.02,1.0000
+GO:0071900,regulation of protein serine/threonine k...,5,0,0.01,1.0000
+GO:0071901,negative regulation of protein serine/th...,5,0,0.01,1.0000
+GO:0071907,determination of digestive tract left/ri...,2,0,0.01,1.0000
+GO:0071963,establishment or maintenance of cell pol...,1,0,0,1.0000
+GO:0072001,renal system development,5,0,0.01,1.0000
+GO:0072006,nephron development,2,0,0.01,1.0000
+GO:0072009,nephron epithelium development,2,0,0.01,1.0000
+GO:0072028,nephron morphogenesis,2,0,0.01,1.0000
+GO:0072073,kidney epithelium development,5,0,0.01,1.0000
+GO:0072074,kidney mesenchyme development,2,0,0.01,1.0000
+GO:0072075,metanephric mesenchyme development,2,0,0.01,1.0000
+GO:0072076,nephrogenic mesenchyme development,2,0,0.01,1.0000
+GO:0072078,nephron tubule morphogenesis,2,0,0.01,1.0000
+GO:0072080,nephron tubule development,2,0,0.01,1.0000
+GO:0072088,nephron epithelium morphogenesis,2,0,0.01,1.0000
+GO:0072131,kidney mesenchyme morphogenesis,2,0,0.01,1.0000
+GO:0072132,mesenchyme morphogenesis,5,0,0.01,1.0000
+GO:0072133,metanephric mesenchyme morphogenesis,2,0,0.01,1.0000
+GO:0072134,nephrogenic mesenchyme morphogenesis,2,0,0.01,1.0000
+GO:0072163,mesonephric epithelium development,5,0,0.01,1.0000
+GO:0072164,mesonephric tubule development,5,0,0.01,1.0000
+GO:0072171,mesonephric tubule morphogenesis,2,0,0.01,1.0000
+GO:0072337,modified amino acid transport,3,0,0.01,1.0000
+GO:0072348,sulfur compound transport,3,0,0.01,1.0000
+GO:0072384,organelle transport along microtubule,42,0,0.12,1.0000
+GO:0072520,seminiferous tubule development,2,0,0.01,1.0000
+GO:0072521,purine-containing compound metabolic pro...,5,0,0.01,1.0000
+GO:0072522,purine-containing compound biosynthetic ...,4,0,0.01,1.0000
+GO:0072593,reactive oxygen species metabolic proces...,8,0,0.02,1.0000
+GO:0072594,establishment of protein localization to...,6,0,0.02,1.0000
+GO:0072595,maintenance of protein localization in o...,12,0,0.03,1.0000
+GO:0072657,protein localization to membrane,1,0,0,1.0000
+GO:0072659,protein localization to plasma membrane,1,0,0,1.0000
+GO:0072697,protein localization to cell cortex,1,0,0,1.0000
+GO:0072741,protein localization to cell division si...,1,0,0,1.0000
+GO:0075136,response to host,3,0,0.01,1.0000
+GO:0075733,intracellular transport of virus,3,0,0.01,1.0000
+GO:0080134,regulation of response to stress,21,0,0.06,1.0000
+GO:0080135,regulation of cellular response to stres...,9,0,0.03,1.0000
+GO:0080164,regulation of nitric oxide metabolic pro...,3,0,0.01,1.0000
+GO:0085029,extracellular matrix assembly,3,0,0.01,1.0000
+GO:0086001,cardiac muscle cell action potential,34,0,0.09,1.0000
+GO:0086003,cardiac muscle cell contraction,34,0,0.09,1.0000
+GO:0086004,regulation of cardiac muscle cell contra...,34,0,0.09,1.0000
+GO:0086009,membrane repolarization,39,0,0.11,1.0000
+GO:0086091,regulation of heart rate by cardiac cond...,34,0,0.09,1.0000
+GO:0090049,regulation of cell migration involved in...,9,0,0.03,1.0000
+GO:0090051,negative regulation of cell migration in...,9,0,0.03,1.0000
+GO:0090066,regulation of anatomical structure size,9,0,0.03,1.0000
+GO:0090068,positive regulation of cell cycle proces...,8,0,0.02,1.0000
+GO:0090087,regulation of peptide transport,5,0,0.01,1.0000
+GO:0090092,regulation of transmembrane receptor pro...,5,0,0.01,1.0000
+GO:0090100,positive regulation of transmembrane rec...,2,0,0.01,1.0000
+GO:0090109,regulation of cell-substrate junction as...,3,0,0.01,1.0000
+GO:0090153,regulation of sphingolipid biosynthetic ...,5,0,0.01,1.0000
+GO:0090154,positive regulation of sphingolipid bios...,5,0,0.01,1.0000
+GO:0090162,establishment of epithelial cell polarit...,1,0,0,1.0000
+GO:0090176,microtubule cytoskeleton organization in...,1,0,0,1.0000
+GO:0090287,regulation of cellular response to growt...,5,0,0.01,1.0000
+GO:0090292,nuclear matrix anchoring at nuclear memb...,12,0,0.03,1.0000
+GO:0090303,positive regulation of wound healing,1,0,0,1.0000
+GO:0090305,nucleic acid phosphodiester bond hydroly...,1,0,0,1.0000
+GO:0090316,positive regulation of intracellular pro...,5,0,0.01,1.0000
+GO:0090322,regulation of superoxide metabolic proce...,5,0,0.01,1.0000
+GO:0090330,regulation of platelet aggregation,5,0,0.01,1.0000
+GO:0090331,negative regulation of platelet aggregat...,5,0,0.01,1.0000
+GO:0090398,cellular senescence,5,0,0.01,1.0000
+GO:0090407,organophosphate biosynthetic process,4,0,0.01,1.0000
+GO:0090501,RNA phosphodiester bond hydrolysis,1,0,0,1.0000
+GO:0090502,RNA phosphodiester bond hydrolysis, endo...,1,0,0,1.0000
+GO:0090559,regulation of membrane permeability,4,0,0.01,1.0000
+GO:0097035,regulation of membrane lipid distributio...,5,0,0.01,1.0000
+GO:0097064,ncRNA export from nucleus,3,0,0.01,1.0000
+GO:0097155,fasciculation of sensory neuron axon,2,0,0.01,1.0000
+GO:0097190,apoptotic signaling pathway,13,0,0.04,1.0000
+GO:0097191,extrinsic apoptotic signaling pathway,4,0,0.01,1.0000
+GO:0097192,extrinsic apoptotic signaling pathway in...,1,0,0,1.0000
+GO:0097193,intrinsic apoptotic signaling pathway,5,0,0.01,1.0000
+GO:0097194,execution phase of apoptosis,7,0,0.02,1.0000
+GO:0097296,activation of cysteine-type endopeptidas...,3,0,0.01,1.0000
+GO:0097345,mitochondrial outer membrane permeabiliz...,4,0,0.01,1.0000
+GO:0097498,endothelial tube lumen extension,9,0,0.03,1.0000
+GO:0097549,chromatin organization involved in negat...,11,0,0.03,1.0000
+GO:0097711,ciliary basal body-plasma membrane docki...,34,0,0.09,1.0000
+GO:0098542,defense response to other organism,17,0,0.05,1.0000
+GO:0098656,anion transmembrane transport,6,0,0.02,1.0000
+GO:0098727,maintenance of cell number,12,0,0.03,1.0000
+GO:0098732,macromolecule deacylation,8,0,0.02,1.0000
+GO:0098773,skin epidermis development,3,0,0.01,1.0000
+GO:0098901,regulation of cardiac muscle cell action...,34,0,0.09,1.0000
+GO:0098909,regulation of cardiac muscle cell action...,34,0,0.09,1.0000
+GO:0098916,anterograde trans-synaptic signaling,41,0,0.11,1.0000
+GO:0099111,microtubule-based transport,42,0,0.12,1.0000
+GO:0099536,synaptic signaling,41,0,0.11,1.0000
+GO:0099537,trans-synaptic signaling,41,0,0.11,1.0000
+GO:0099622,cardiac muscle cell membrane repolarizat...,34,0,0.09,1.0000
+GO:0099623,regulation of cardiac muscle cell membra...,34,0,0.09,1.0000
+GO:0099625,ventricular cardiac muscle cell membrane...,34,0,0.09,1.0000
+GO:0106030,neuron projection fasciculation,2,0,0.01,1.0000
+GO:0110020,regulation of actomyosin structure organ...,5,0,0.01,1.0000
+GO:0110053,regulation of actin filament organizatio...,8,0,0.02,1.0000
+GO:0110112,regulation of lipid transporter activity,5,0,0.01,1.0000
+GO:0110113,positive regulation of lipid transporter...,5,0,0.01,1.0000
+GO:0110148,biomineralization,3,0,0.01,1.0000
+GO:0110149,regulation of biomineralization,3,0,0.01,1.0000
+GO:0110151,positive regulation of biomineralization,3,0,0.01,1.0000
+GO:0120031,plasma membrane bounded cell projection ...,39,0,0.11,1.0000
+GO:0120032,regulation of plasma membrane bounded ce...,5,0,0.01,1.0000
+GO:0120033,negative regulation of plasma membrane b...,5,0,0.01,1.0000
+GO:0120035,regulation of plasma membrane bounded ce...,8,0,0.02,1.0000
+GO:0120254,olefinic compound metabolic process,2,0,0.01,1.0000
+GO:0140014,mitotic nuclear division,3,0,0.01,1.0000
+GO:0140056,organelle localization by membrane tethe...,34,0,0.09,1.0000
+GO:0140352,export from cell,8,0,0.02,1.0000
+GO:0140448,signaling receptor ligand precursor proc...,4,0,0.01,1.0000
+GO:0140546,defense response to symbiont,9,0,0.03,1.0000
+GO:0150115,cell-substrate junction organization,3,0,0.01,1.0000
+GO:0150116,regulation of cell-substrate junction or...,3,0,0.01,1.0000
+GO:0150117,positive regulation of cell-substrate ju...,3,0,0.01,1.0000
+GO:0198738,cell-cell signaling by wnt,4,0,0.01,1.0000
+GO:1900034,regulation of cellular response to heat,3,0,0.01,1.0000
+GO:1900046,regulation of hemostasis,6,0,0.02,1.0000
+GO:1900047,negative regulation of hemostasis,5,0,0.01,1.0000
+GO:1900048,positive regulation of hemostasis,1,0,0,1.0000
+GO:1900076,regulation of cellular response to insul...,5,0,0.01,1.0000
+GO:1900077,negative regulation of cellular response...,5,0,0.01,1.0000
+GO:1900161,regulation of phospholipid scramblase ac...,5,0,0.01,1.0000
+GO:1900163,positive regulation of phospholipid scra...,5,0,0.01,1.0000
+GO:1900180,regulation of protein localization to nu...,13,0,0.04,1.0000
+GO:1900181,negative regulation of protein localizat...,8,0,0.02,1.0000
+GO:1900182,positive regulation of protein localizat...,5,0,0.01,1.0000
+GO:1900274,regulation of phospholipase C activity,5,0,0.01,1.0000
+GO:1901004,ubiquinone-6 metabolic process,1,0,0,1.0000
+GO:1901006,ubiquinone-6 biosynthetic process,1,0,0,1.0000
+GO:1901016,regulation of potassium ion transmembran...,34,0,0.09,1.0000
+GO:1901018,positive regulation of potassium ion tra...,34,0,0.09,1.0000
+GO:1901099,negative regulation of signal transducti...,1,0,0,1.0000
+GO:1901135,carbohydrate derivative metabolic proces...,11,0,0.03,1.0000
+GO:1901136,carbohydrate derivative catabolic proces...,6,0,0.02,1.0000
+GO:1901137,carbohydrate derivative biosynthetic pro...,4,0,0.01,1.0000
+GO:1901201,regulation of extracellular matrix assem...,3,0,0.01,1.0000
+GO:1901203,positive regulation of extracellular mat...,3,0,0.01,1.0000
+GO:1901215,negative regulation of neuron death,1,0,0,1.0000
+GO:1901293,nucleoside phosphate biosynthetic proces...,4,0,0.01,1.0000
+GO:1901361,organic cyclic compound catabolic proces...,10,0,0.03,1.0000
+GO:1901379,regulation of potassium ion transmembran...,34,0,0.09,1.0000
+GO:1901381,positive regulation of potassium ion tra...,34,0,0.09,1.0000
+GO:1901522,positive regulation of transcription fro...,2,0,0.01,1.0000
+GO:1901565,organonitrogen compound catabolic proces...,13,0,0.04,1.0000
+GO:1901566,organonitrogen compound biosynthetic pro...,10,0,0.03,1.0000
+GO:1901575,organic substance catabolic process,30,0,0.08,1.0000
+GO:1901652,response to peptide,6,0,0.02,1.0000
+GO:1901653,cellular response to peptide,6,0,0.02,1.0000
+GO:1901654,response to ketone,8,0,0.02,1.0000
+GO:1901661,quinone metabolic process,1,0,0,1.0000
+GO:1901663,quinone biosynthetic process,1,0,0,1.0000
+GO:1901674,regulation of histone H3-K27 acetylation,8,0,0.02,1.0000
+GO:1901675,negative regulation of histone H3-K27 ac...,8,0,0.02,1.0000
+GO:1901698,response to nitrogen compound,48,0,0.13,1.0000
+GO:1901699,cellular response to nitrogen compound,48,0,0.13,1.0000
+GO:1901800,positive regulation of proteasomal prote...,1,0,0,1.0000
+GO:1901861,regulation of muscle tissue development,3,0,0.01,1.0000
+GO:1901888,regulation of cell junction assembly,3,0,0.01,1.0000
+GO:1901890,positive regulation of cell junction ass...,3,0,0.01,1.0000
+GO:1901983,regulation of protein acetylation,11,0,0.03,1.0000
+GO:1901984,negative regulation of protein acetylati...,9,0,0.03,1.0000
+GO:1901985,positive regulation of protein acetylati...,2,0,0.01,1.0000
+GO:1901987,regulation of cell cycle phase transitio...,11,0,0.03,1.0000
+GO:1901988,negative regulation of cell cycle phase ...,3,0,0.01,1.0000
+GO:1901989,positive regulation of cell cycle phase ...,8,0,0.02,1.0000
+GO:1901990,regulation of mitotic cell cycle phase t...,11,0,0.03,1.0000
+GO:1901991,negative regulation of mitotic cell cycl...,3,0,0.01,1.0000
+GO:1901992,positive regulation of mitotic cell cycl...,8,0,0.02,1.0000
+GO:1902108,regulation of mitochondrial membrane per...,4,0,0.01,1.0000
+GO:1902110,positive regulation of mitochondrial mem...,4,0,0.01,1.0000
+GO:1902115,regulation of organelle assembly,2,0,0.01,1.0000
+GO:1902116,negative regulation of organelle assembl...,2,0,0.01,1.0000
+GO:1902275,regulation of chromatin organization,11,0,0.03,1.0000
+GO:1902284,neuron projection extension involved in ...,2,0,0.01,1.0000
+GO:1902305,regulation of sodium ion transmembrane t...,6,0,0.02,1.0000
+GO:1902307,positive regulation of sodium ion transm...,6,0,0.02,1.0000
+GO:1902405,mitotic actomyosin contractile ring loca...,1,0,0,1.0000
+GO:1902410,mitotic cytokinetic process,1,0,0,1.0000
+GO:1902531,regulation of intracellular signal trans...,25,0,0.07,1.0000
+GO:1902532,negative regulation of intracellular sig...,13,0,0.04,1.0000
+GO:1902533,positive regulation of intracellular sig...,2,0,0.01,1.0000
+GO:1902579,multi-organism localization,3,0,0.01,1.0000
+GO:1902679,negative regulation of RNA biosynthetic ...,16,0,0.04,1.0000
+GO:1902680,positive regulation of RNA biosynthetic ...,13,0,0.04,1.0000
+GO:1902686,mitochondrial outer membrane permeabiliz...,4,0,0.01,1.0000
+GO:1902749,regulation of cell cycle G2/M phase tran...,11,0,0.03,1.0000
+GO:1902750,negative regulation of cell cycle G2/M p...,3,0,0.01,1.0000
+GO:1902751,positive regulation of cell cycle G2/M p...,8,0,0.02,1.0000
+GO:1902850,microtubule cytoskeleton organization in...,2,0,0.01,1.0000
+GO:1902893,regulation of pri-miRNA transcription by...,3,0,0.01,1.0000
+GO:1902895,positive regulation of pri-miRNA transcr...,3,0,0.01,1.0000
+GO:1902903,regulation of supramolecular fiber organ...,10,0,0.03,1.0000
+GO:1902904,negative regulation of supramolecular fi...,7,0,0.02,1.0000
+GO:1902905,positive regulation of supramolecular fi...,3,0,0.01,1.0000
+GO:1903008,organelle disassembly,2,0,0.01,1.0000
+GO:1903034,regulation of response to wounding,10,0,0.03,1.0000
+GO:1903035,negative regulation of response to wound...,9,0,0.03,1.0000
+GO:1903036,positive regulation of response to wound...,1,0,0,1.0000
+GO:1903047,mitotic cell cycle process,50,0,0.14,1.0000
+GO:1903050,regulation of proteolysis involved in ce...,1,0,0,1.0000
+GO:1903052,positive regulation of proteolysis invol...,1,0,0,1.0000
+GO:1903053,regulation of extracellular matrix organ...,3,0,0.01,1.0000
+GO:1903055,positive regulation of extracellular mat...,3,0,0.01,1.0000
+GO:1903076,regulation of protein localization to pl...,1,0,0,1.0000
+GO:1903077,negative regulation of protein localizat...,1,0,0,1.0000
+GO:1903115,regulation of actin filament-based movem...,34,0,0.09,1.0000
+GO:1903242,regulation of cardiac muscle hypertrophy...,3,0,0.01,1.0000
+GO:1903243,negative regulation of cardiac muscle hy...,3,0,0.01,1.0000
+GO:1903311,regulation of mRNA metabolic process,15,0,0.04,1.0000
+GO:1903350,response to dopamine,8,0,0.02,1.0000
+GO:1903351,cellular response to dopamine,8,0,0.02,1.0000
+GO:1903362,regulation of cellular protein catabolic...,1,0,0,1.0000
+GO:1903364,positive regulation of cellular protein ...,1,0,0,1.0000
+GO:1903409,reactive oxygen species biosynthetic pro...,3,0,0.01,1.0000
+GO:1903426,regulation of reactive oxygen species bi...,3,0,0.01,1.0000
+GO:1903428,positive regulation of reactive oxygen s...,3,0,0.01,1.0000
+GO:1903486,establishment of mitotic actomyosin cont...,1,0,0,1.0000
+GO:1903507,negative regulation of nucleic acid-temp...,16,0,0.04,1.0000
+GO:1903508,positive regulation of nucleic acid-temp...,13,0,0.04,1.0000
+GO:1903509,liposaccharide metabolic process,5,0,0.01,1.0000
+GO:1903522,regulation of blood circulation,34,0,0.09,1.0000
+GO:1903530,regulation of secretion by cell,2,0,0.01,1.0000
+GO:1903532,positive regulation of secretion by cell,2,0,0.01,1.0000
+GO:1903670,regulation of sprouting angiogenesis,9,0,0.03,1.0000
+GO:1903671,negative regulation of sprouting angioge...,9,0,0.03,1.0000
+GO:1903725,regulation of phospholipid metabolic pro...,5,0,0.01,1.0000
+GO:1903727,positive regulation of phospholipid meta...,5,0,0.01,1.0000
+GO:1903729,regulation of plasma membrane organizati...,5,0,0.01,1.0000
+GO:1903793,positive regulation of anion transport,5,0,0.01,1.0000
+GO:1903827,regulation of cellular protein localizat...,15,0,0.04,1.0000
+GO:1903828,negative regulation of cellular protein ...,9,0,0.03,1.0000
+GO:1903829,positive regulation of cellular protein ...,6,0,0.02,1.0000
+GO:1903844,regulation of cellular response to trans...,5,0,0.01,1.0000
+GO:1903846,positive regulation of cellular response...,2,0,0.01,1.0000
+GO:1903900,regulation of viral life cycle,1,0,0,1.0000
+GO:1903959,regulation of anion transmembrane transp...,3,0,0.01,1.0000
+GO:1904062,regulation of cation transmembrane trans...,40,0,0.11,1.0000
+GO:1904064,positive regulation of cation transmembr...,40,0,0.11,1.0000
+GO:1904375,regulation of protein localization to ce...,1,0,0,1.0000
+GO:1904376,negative regulation of protein localizat...,1,0,0,1.0000
+GO:1904385,cellular response to angiotensin,5,0,0.01,1.0000
+GO:1904407,positive regulation of nitric oxide meta...,3,0,0.01,1.0000
+GO:1904589,regulation of protein import,5,0,0.01,1.0000
+GO:1904591,positive regulation of protein import,5,0,0.01,1.0000
+GO:1904659,glucose transmembrane transport,3,0,0.01,1.0000
+GO:1904776,regulation of protein localization to ce...,1,0,0,1.0000
+GO:1904888,cranial skeletal system development,3,0,0.01,1.0000
+GO:1904951,positive regulation of establishment of ...,5,0,0.01,1.0000
+GO:1905037,autophagosome organization,2,0,0.01,1.0000
+GO:1905038,regulation of membrane lipid metabolic p...,5,0,0.01,1.0000
+GO:1905114,cell surface receptor signaling pathway ...,4,0,0.01,1.0000
+GO:1905207,regulation of cardiocyte differentiation,2,0,0.01,1.0000
+GO:1905208,negative regulation of cardiocyte differ...,2,0,0.01,1.0000
+GO:1905268,negative regulation of chromatin organiz...,9,0,0.03,1.0000
+GO:1905269,positive regulation of chromatin organiz...,10,0,0.03,1.0000
+GO:1905304,regulation of cardiac myofibril assembly,2,0,0.01,1.0000
+GO:1905305,negative regulation of cardiac myofibril...,2,0,0.01,1.0000
+GO:1905475,regulation of protein localization to me...,1,0,0,1.0000
+GO:1905476,negative regulation of protein localizat...,1,0,0,1.0000
+GO:1905710,positive regulation of membrane permeabi...,4,0,0.01,1.0000
+GO:1905952,regulation of lipid localization,5,0,0.01,1.0000
+GO:1905954,positive regulation of lipid localizatio...,5,0,0.01,1.0000
+GO:1990138,neuron projection extension,2,0,0.01,1.0000
+GO:1990776,response to angiotensin,5,0,0.01,1.0000
+GO:1990778,protein localization to cell periphery,1,0,0,1.0000
+GO:2000008,regulation of protein localization to ce...,1,0,0,1.0000
+GO:2000010,positive regulation of protein localizat...,1,0,0,1.0000
+GO:2000058,regulation of ubiquitin-dependent protei...,1,0,0,1.0000
+GO:2000060,positive regulation of ubiquitin-depende...,1,0,0,1.0000
+GO:2000113,negative regulation of cellular macromol...,16,0,0.04,1.0000
+GO:2000136,regulation of cell proliferation involve...,2,0,0.01,1.0000
+GO:2000138,positive regulation of cell proliferatio...,2,0,0.01,1.0000
+GO:2000303,regulation of ceramide biosynthetic proc...,5,0,0.01,1.0000
+GO:2000304,positive regulation of ceramide biosynth...,5,0,0.01,1.0000
+GO:2000377,regulation of reactive oxygen species me...,8,0,0.02,1.0000
+GO:2000379,positive regulation of reactive oxygen s...,8,0,0.02,1.0000
+GO:2000615,regulation of histone H3-K9 acetylation,2,0,0.01,1.0000
+GO:2000617,positive regulation of histone H3-K9 ace...,2,0,0.01,1.0000
+GO:2000637,positive regulation of gene silencing by...,10,0,0.03,1.0000
+GO:2000649,regulation of sodium ion transmembrane t...,6,0,0.02,1.0000
+GO:2000651,positive regulation of sodium ion transm...,6,0,0.02,1.0000
+GO:2000677,regulation of transcription regulatory r...,8,0,0.02,1.0000
+GO:2000678,negative regulation of transcription reg...,8,0,0.02,1.0000
+GO:2000725,regulation of cardiac muscle cell differ...,2,0,0.01,1.0000
+GO:2000726,negative regulation of cardiac muscle ce...,2,0,0.01,1.0000
+GO:2000752,regulation of glucosylceramide catabolic...,5,0,0.01,1.0000
+GO:2000753,positive regulation of glucosylceramide ...,5,0,0.01,1.0000
+GO:2000754,regulation of sphingomyelin catabolic pr...,5,0,0.01,1.0000
+GO:2000755,positive regulation of sphingomyelin cat...,5,0,0.01,1.0000
+GO:2000756,regulation of peptidyl-lysine acetylatio...,11,0,0.03,1.0000
+GO:2000757,negative regulation of peptidyl-lysine a...,9,0,0.03,1.0000
+GO:2000758,positive regulation of peptidyl-lysine a...,2,0,0.01,1.0000
+GO:2000769,regulation of establishment or maintenan...,1,0,0,1.0000
+GO:2000793,cell proliferation involved in heart val...,2,0,0.01,1.0000
+GO:2001020,regulation of response to DNA damage sti...,5,0,0.01,1.0000
+GO:2001022,positive regulation of response to DNA d...,5,0,0.01,1.0000
+GO:2001057,reactive nitrogen species metabolic proc...,3,0,0.01,1.0000
+GO:2001138,regulation of phospholipid transport,5,0,0.01,1.0000
+GO:2001222,regulation of neuron migration,1,0,0,1.0000
+GO:2001233,regulation of apoptotic signaling pathwa...,6,0,0.02,1.0000
+GO:2001234,negative regulation of apoptotic signali...,1,0,0,1.0000
+GO:2001235,positive regulation of apoptotic signali...,5,0,0.01,1.0000
+GO:2001236,regulation of extrinsic apoptotic signal...,1,0,0,1.0000
+GO:2001237,negative regulation of extrinsic apoptot...,1,0,0,1.0000
+GO:2001239,regulation of extrinsic apoptotic signal...,1,0,0,1.0000
+GO:2001240,negative regulation of extrinsic apoptot...,1,0,0,1.0000
+GO:2001252,positive regulation of chromosome organi...,10,0,0.03,1.0000
+GO:2001267,regulation of cysteine-type endopeptidas...,3,0,0.01,1.0000
+GO:2001269,positive regulation of cysteine-type end...,3,0,0.01,1.0000
