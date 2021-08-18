@@ -11,7 +11,7 @@ In this script, I'll get preliminary methylation information from diploid and tr
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") #Set root directory
+knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") #Set root directory
 ```
 
 # Install packages
@@ -29,10 +29,12 @@ require(dplyr) #Load dplyr
 #install.packages("vegan")
 #install.packages("gplots")
 #install.packages("dichromat")
+#install.packages("scales")
 
 require(vegan)
 require(gplots)
 require(dichromat)
+require(scales)
 ```
 
 # Obtain session information
@@ -307,7 +309,8 @@ write.csv(diffMethStatsTreatment75, "DML/DML-pH-75-Cov5.csv", quote = FALSE) #Sa
 # Figures
 
 ```{r}
-plotColors <- rev(RColorBrewer::brewer.pal(8, "PuRd")) #Create a color palette for the barplots. Reverse the order so the darkest shade is used first.
+plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
+                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70") #Create a color palette for the barplots
 ```
 
 ## Coverage plots
@@ -325,9 +328,9 @@ sum(as.numeric(as.character(ploidyCoverage$diploid)) >= as.numeric(as.character(
 ```
 
 ```{r}
-#pdf("../../analyses/Haws_04-methylKit/figures/diploid-coverage-distribution.pdf", width = 11, height = 8.5)
+#pdf("figures/diploid-coverage-distribution.pdf", width = 11, height = 8.5)
 
-hist(x = as.numeric(as.character(ploidyCoverage$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 14e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyCoverage$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[7], xaxs = "i", yaxs = "i", ylim = c(0, 14e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 5200, by = 1300), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Average Coverage", line = 3, cex = 1.5) #Add x-axis label
@@ -339,9 +342,9 @@ mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-a
 ```
 
 ```{r}
-#pdf("../../analyses/Haws_04-methylKit/figures/triploid-coverage-distribution.pdf", width = 11, height = 8.5)
+#pdf("figures/triploid-coverage-distribution.pdf", width = 11, height = 8.5)
 
-hist(x = as.numeric(as.character(ploidyCoverage$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[4], xaxs = "i", yaxs = "i") #Create base plot
+hist(x = as.numeric(as.character(ploidyCoverage$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i") #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 5200, by = 1300), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Average Coverage", line = 3, cex = 1.5) #Add x-axis label
@@ -369,7 +372,7 @@ sum(as.numeric(as.character(ploidyMethylation$diploid)) >= as.numeric(as.charact
 ```{r}
 #pdf("figures/diploid-frequency-distribution.pdf", width = 11, height = 8.5)
 
-hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[7], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
@@ -383,7 +386,7 @@ mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-a
 ```{r}
 #pdf("figures/triploid-frequency-distribution.pdf", width = 11, height = 8.5)
 
-hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[4], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i", ylim = c(0, 8e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
@@ -393,6 +396,7 @@ mtext(side = 2, text = "Frequency (x1,000,000)", line = 2.5, cex = 1.5) #Add y-a
 
 #dev.off()
 ```
+
 ## Principal Components Analysis
 
 ```{r}
@@ -407,7 +411,7 @@ par(mar = c(5, 5, 1, 1)) #Specify inner and outer margins
 
 fig.allDataPCA <- ordiplot(allDataPCA, choices = c(1, 2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
 
-points(fig.allDataPCA, "sites", col = c(rep(alpha(plotColors[5], 0.5), times = 12), rep(alpha(plotColors[4], 0.5), times = 12)), pch = c(rep(16, times = 6), rep(17, times = 6), rep(16, times = 6), rep(17, times = 6)), cex = 3) #Add each sample. Purple = diploid, pink = triploid, 16 = high pH, 17 = low pH
+points(fig.allDataPCA, "sites", col = c(rep(alpha(plotColors[7], 0.7), times = 12), rep(alpha(plotColors[2], 0.7), times = 12)), pch = c(rep(16, times = 6), rep(17, times = 6), rep(16, times = 6), rep(17, times = 6)), cex = 3) #Add each sample. Purple = diploid, pink = triploid, 16 = high pH, 17 = low pH
 
 #Add multiple white boxes on top of the default black box to manually change the color
 box(col = "white")
@@ -421,11 +425,11 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 
-ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "0", col = plotColors[5]) #Add confidence ellipse around diploids
-ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "1", col = plotColors[4]) #Add confidence ellipse around triploids
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "0", col = plotColors[7]) #Add confidence ellipse around diploids
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "1", col = plotColors[2]) #Add confidence ellipse around triploids
 
-ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "0", col = plotColors[5], lty = 2) #Add confidence ellipse around the samples in high pH
-ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "1", col = plotColors[2], lty = 2) #Add confidence ellipse around the samples in low pH
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "0", col = plotColors[6], lty = 2) #Add confidence ellipse around the samples in high pH
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "1", col = plotColors[3], lty = 2) #Add confidence ellipse around the samples in low pH
 
 axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.7) #Add x-axis
 mtext(side = 1, text = "PC 1 (11.0%)", line = 3, cex = 1.5) #Add x-axis label
@@ -436,12 +440,11 @@ mtext(side = 2, text = "PC 2 (6.63%)", line = 3, cex = 1.5) #Add y-axis label
 legend("bottomright", 
        pch = c(15, 15, 16, 17), 
        legend = c("Diploid", "Triploid", "High pH", "Low pH"), 
-       col = c(plotColors[5], plotColors[4], "grey20", "grey20"), 
+       col = c(plotColors[7], plotColors[2], "grey20", "grey20"), 
        cex = 1.7, bty = "n") #Add a legend with information about ambient and elevated samples
 
 #dev.off()
 ```
-
 
 ## Multipanel plot
 
@@ -460,7 +463,7 @@ layout(mat = plotMatrix, width = c(30, 30, 13, 60))
 
 #Diploid coverage
 
-hist(x = as.numeric(as.character(ploidyCoverage$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 15e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyCoverage$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[7], xaxs = "i", yaxs = "i", ylim = c(0, 15e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 5200, by = 1300), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Average Coverage", line = 3, at = 5500, cex = 1.5) #Add x-axis label
@@ -472,7 +475,7 @@ mtext(side = 3, text = "A) Diploid coverage", adj = 0)
 
 #Triploid coverage
 
-hist(x = as.numeric(as.character(ploidyCoverage$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[4], xaxs = "i", yaxs = "i", ylim = c(0, 15e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyCoverage$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i", ylim = c(0, 15e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 5200, by = 1300), cex.axis = 1.2) #Add x-axis
 
@@ -480,7 +483,7 @@ mtext(side = 3, text = "B) Triploid coverage", adj = 0)
 
 #Diploid methylation
 
-hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[5], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$diploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, at = 110, cex = 1.5) #Add x-axis label
@@ -492,7 +495,7 @@ mtext(side = 3, text = "C) Diploid methylation", adj = 0)
 
 #Triploid methylation
 
-hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[4], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
+hist(x = as.numeric(as.character(ploidyMethylation$triploid)), axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i", ylim = c(0, 9e+06)) #Create base plot
 
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 
@@ -500,9 +503,11 @@ mtext(side = 3, text = "D) Triploid methylation", adj = 0)
 
 #PCA
 
+par(mar = c(5, 5, 1, 1)) #Specify inner and outer margins
+
 fig.allDataPCA <- ordiplot(allDataPCA, choices = c(1, 2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
 
-points(fig.allDataPCA, "sites", col = c(rep(alpha(plotColors[5], 0.5), times = 12), rep(alpha(plotColors[4], 0.5), times = 12)), pch = c(rep(16, times = 6), rep(17, times = 6), rep(16, times = 6), rep(17, times = 6)), cex = 3) #Add each sample. Purple = diploid, pink = triploid, 16 = high pH, 17 = low pH
+points(fig.allDataPCA, "sites", col = c(rep(alpha(plotColors[7], 0.7), times = 12), rep(alpha(plotColors[2], 0.7), times = 12)), pch = c(rep(16, times = 6), rep(17, times = 6), rep(16, times = 6), rep(17, times = 6)), cex = 3) #Add each sample. Purple = diploid, pink = triploid, 16 = high pH, 17 = low pH
 
 #Add multiple white boxes on top of the default black box to manually change the color
 box(col = "white")
@@ -516,11 +521,11 @@ box(col = "white")
 box(col = "white")
 box(col = "white")
 
-ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "0", col = plotColors[5]) #Add confidence ellipse around diploids
-ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "1", col = plotColors[4]) #Add confidence ellipse around triploids
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "0", col = plotColors[7]) #Add confidence ellipse around diploids
+ordiellipse(allDataPCA, sampleMetadata$ploidyTreatment, show.groups = "1", col = plotColors[2]) #Add confidence ellipse around triploids
 
-ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "0", col = plotColors[5], lty = 2) #Add confidence ellipse around the samples in high pH
-ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "1", col = plotColors[2], lty = 2) #Add confidence ellipse around the samples in low pH
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "0", col = plotColors[6], lty = 2) #Add confidence ellipse around the samples in high pH
+ordiellipse(allDataPCA, sampleMetadata$pHTreatment, show.groups = "1", col = plotColors[3], lty = 2) #Add confidence ellipse around the samples in low pH
 
 axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.7) #Add x-axis
 mtext(side = 1, text = "PC 1 (11.0%)", line = 3, cex = 1.5) #Add x-axis label
@@ -531,7 +536,7 @@ mtext(side = 2, text = "PC 2 (6.63%)", line = 3, cex = 1.5) #Add y-axis label
 legend("bottomright", 
        pch = c(15, 15, 16, 17), 
        legend = c("Diploid", "Triploid", "High pH", "Low pH"), 
-       col = c(plotColors[5], plotColors[4], "grey20", "grey20"), 
+       col = c(plotColors[7], plotColors[2], "grey20", "grey20"), 
        cex = 1.7, bty = "n") #Add a legend with information about ambient and elevated samples
 
 mtext(side = 3, text = "E) PCA", adj = 0)
