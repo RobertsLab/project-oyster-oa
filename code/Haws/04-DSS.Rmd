@@ -249,7 +249,7 @@ heatmap.2(t(t(ploidy.DML.pos.meth)), col = rev(plotColors), scale = "none", marg
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
           key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
-          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
 
 #dev.off()
 ```
@@ -290,7 +290,7 @@ heatmap.2(t(t(pH.DML.pos.meth)), col = rev(plotColors), scale = "none", margins 
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
           key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
-          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
 
 #dev.off()
 ```
@@ -331,7 +331,7 @@ heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors), scale = "none", ma
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
           key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
-          key.par = list(cex.lab = 2.0, cex.axis = 1.5)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) ploidypH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) ploidypH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
 
 #dev.off()
 ```
