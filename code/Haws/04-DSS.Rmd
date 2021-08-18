@@ -7,7 +7,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaamini/Documents/project-oyster-oa/analyses/Haws_04-DSS/") #Set root directory
+knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_04-DSS/") #Set root directory
 ```
 
 # Load packages
@@ -175,7 +175,8 @@ save.image("DSS.Rdata") #Save R data
 # Figures
 
 ```{r}
-plotColors2 <- rev(RColorBrewer::brewer.pal(5, "PuRd"))
+plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
+                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70")
 ```
 
 ## Load data
@@ -243,7 +244,7 @@ head(ploidy.DML.pos.meth)
 
 par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
 
-heatmap.2(t(t(ploidy.DML.pos.meth)), col = rev(plotColors2), scale = "none", margins = c(1,1),
+heatmap.2(t(t(ploidy.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
           trace = "none", tracecol = "black", Colv = FALSE,
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
@@ -284,7 +285,7 @@ head(pH.DML.pos.meth)
 
 par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
 
-heatmap.2(t(t(pH.DML.pos.meth)), col = rev(plotColors2), scale = "none", margins = c(1,1),
+heatmap.2(t(t(pH.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
           trace = "none", tracecol = "black", Colv = FALSE,
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
@@ -325,7 +326,7 @@ head(ploidypH.DML.pos.meth)
 
 par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
 
-heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors2), scale = "none", margins = c(1,1),
+heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
           trace = "none", tracecol = "black", Colv = FALSE,
           labRow = FALSE, labCol = FALSE, 
           ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
@@ -334,6 +335,7 @@ heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors2), scale = "none", m
 
 #dev.off()
 ```
+
 # Chromosome distribution
 
 ```{r}
