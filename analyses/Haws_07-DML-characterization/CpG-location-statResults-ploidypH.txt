@@ -1,9 +1,9 @@
 ,statistic,p.value,parameter,method,GenomeFeature,p.adj
-1,2.96943514438774e-23,0.999999999995652,1,Pearson's Chi-squared test with Yates' continuity correction,exonUTR,0.999999999995652
-2,11.5299348446905,0.000684844142656974,1,Pearson's Chi-squared test with Yates' continuity correction,CDS,0.00547875314125579
-3,8.23868037454767,0.00410069357554453,1,Pearson's Chi-squared test with Yates' continuity correction,intron,0.0164027743021781
-4,4.25700935693214e-20,0.999999999835376,1,Pearson's Chi-squared test with Yates' continuity correction,upstream,0.999999999995652
-5,0.404694819738388,0.524674562348377,1,Pearson's Chi-squared test with Yates' continuity correction,downstream,0.87659309991194
-6,0.361145597405035,0.547870687444962,1,Pearson's Chi-squared test with Yates' continuity correction,lncRNA,0.87659309991194
-7,0.193553251877404,0.659975585379892,1,Pearson's Chi-squared test with Yates' continuity correction,TE,0.87996744717319
-8,4.47902896712448,0.0343132111479584,1,Pearson's Chi-squared test with Yates' continuity correction,intergenic,0.0915018963945556
+1,4.07180105203793e-20,0.999999999838997,1,Pearson's Chi-squared test with Yates' continuity correction,exonUTR,0.999999999983348
+2,1.15956981100296e-19,0.999999999728301,1,Pearson's Chi-squared test with Yates' continuity correction,CDS,0.999999999983348
+3,31.9016426647763,1.62179946117181e-08,1,Pearson's Chi-squared test with Yates' continuity correction,intron,1.29743956893745e-07
+4,1.34893455797744,0.245464465191813,1,Pearson's Chi-squared test with Yates' continuity correction,upstream,0.440188144757577
+5,1.19105134312755,0.275117590473485,1,Pearson's Chi-squared test with Yates' continuity correction,downstream,0.440188144757577
+6,4.35579967127386e-22,0.999999999983348,1,Pearson's Chi-squared test with Yates' continuity correction,lncRNA,0.999999999983348
+7,2.15409404567173,0.142190289765284,1,Pearson's Chi-squared test with Yates' continuity correction,TE,0.379174106040758
+8,10.9230397640102,0.000949756430839348,1,Pearson's Chi-squared test with Yates' continuity correction,intergenic,0.00379902572335739
