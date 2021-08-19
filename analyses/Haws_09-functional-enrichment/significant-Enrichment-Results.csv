@@ -1,0 +1,22 @@
+DML,GO Category,GO ID,GO Term,Annotated Genes,Genes with DML,P-value
+ploidy,BP,GO:0006470,protein dephosphorylation,10,2,0.0087
+ploidy,BP,GO:0098609,cell-cell adhesion,11,2,0.0105
+ploidy,BP,GO:0016311,dephosphorylation,13,2,0.0146
+pH,BP,GO:0043523,regulation of neuron apoptotic process,17,2,0.00062
+pH,BP,GO:0051402,neuron apoptotic process,17,2,0.00062
+pH,BP,GO:0070997,neuron death,20,2,0.00086
+pH,BP,GO:1901214,regulation of neuron death,20,2,0.00086
+pH,BP,GO:0042981,regulation of apoptotic process,37,2,0.00297
+pH,BP,GO:0043067,regulation of programmed cell death,40,2,0.00346
+pH,BP,GO:0006915,apoptotic process,41,2,0.00364
+pH,BP,GO:0010941,regulation of cell death,42,2,0.00382
+pH,BP,GO:0012501,programmed cell death,44,2,0.00418
+pH,BP,GO:0008219,cell death,46,2,0.00456
+pH,MF,GO:0017022,myosin binding,8,2,0.00021
+pH,MF,GO:0061630,ubiquitin protein ligase activity,22,2,0.00173
+pH,MF,GO:0061659,ubiquitin-like protein ligase activity,22,2,0.00173
+pH,MF,GO:0008092,cytoskeletal protein binding,37,2,0.00488
+pH,MF,GO:0004842,ubiquitin-protein transferase activity,41,2,0.00597
+pH,MF,GO:0008270,zinc ion binding,41,2,0.00597
+pH,MF,GO:0019787,ubiquitin-like protein transferase activ...,41,2,0.00597
+pH,MF,GO:0046914,transition metal ion binding,41,2,0.00597
