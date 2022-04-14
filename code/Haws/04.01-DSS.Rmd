@@ -1,0 +1,470 @@
+---
+title: "04-DSS.Rmd"
+output: github_document
+---
+
+# Set up R Markdown document
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_04-DSS/") #Set root directory
+```
+
+# Load packages
+
+```{r}
+require(tidyverse)
+require(dplyr)
+require(bsseq) #Dependency for DSS
+require(DSS)
+```
+
+```{r}
+#Packages for visualization
+#install.packages("gplots")
+#install.packages("dichromat")
+
+require(gplots)
+require(dichromat)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Load data
+
+## Modify Bismark output for DSS
+
+I'll need to create a BSseq class object, which will then be used to conduct a general model. Columns for imported files should be: chr, pos, N (read coverage), and X (reads methylated).
+
+```{bash}
+for f in *cov
+do
+  awk '{print $1"\t"$2"\t"$5+$6"\t"$5}' ${f} \
+  > ${f}.txt
+done
+```
+
+```{bash}
+for f in *txt
+do
+  sed  -i '1i chr\tpos\tN\tX' ${f}
+done
+```
+
+```{bash}
+for f in *txt
+do
+   [ -f ${f} ] || continue
+    mv "${f}" "${f//_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov/}"
+done
+```
+
+## Import data
+
+```{r}
+coverageFiles <- list.files(pattern = "*txt") #Create a file list for all 24 files to import
+list2env(lapply(setNames(coverageFiles,
+                         make.names(gsub("", "", coverageFiles))), read.table, header = TRUE),
+         envir = .GlobalEnv) #Import all coverage files into R global environment, using first line as header
+```
+
+```{r}
+BSobj <- makeBSseqData(dat = list(zr3644_1.txt, zr3644_2.txt, zr3644_3.txt, zr3644_4.txt, zr3644_5.txt, zr3644_6.txt,
+                                  zr3644_7.txt, zr3644_8.txt, zr3644_9.txt, zr3644_10.txt, zr3644_11.txt, zr3644_12.txt,
+                                  zr3644_13.txt, zr3644_14.txt, zr3644_15.txt, zr3644_16.txt, zr3644_17.txt, zr3644_18.txt,
+                                  zr3644_19.txt, zr3644_20.txt, zr3644_21.txt, zr3644_22.txt, zr3644_23.txt, zr3644_24.txt),
+                       sampleNames = c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                                       "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                                       "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                                       "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6")) #Make BSseq object. dat = list of dataframes with coverage information. sampleNames = sample names.
+BSobj #Check BSobj was created
+```
+
+```{r}
+save.image("DSS.Rdata") #Save R data
+```
+
+# Set up general experimental design
+
+```{r}
+design <- data.frame("ploidy" = c(rep("D", times = 12),
+                                  rep("T", times = 12)),
+                     "pH" = c(rep("H", times = 6),
+                               rep("L", times = 6),
+                               rep("H", times = 6),
+                               rep("L", times = 6))) #Create dataframe with experimental design information
+row.names(design) <- c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+                       "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                       "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
+                       "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6") #Set sampleID as rownames
+head(design) #Check format
+```
+
+# Fit a general linear model
+
+The model only needs to be fit once, then the parameters can be tested based on model fitting results.
+
+```{r}
+DMLfit <- DMLfit.multiFactor(BSobj, design = design, formula = ~ploidy + pH + ploidy:pH) #Formula: intercept, additive effect of ploidy and pH, and interaction
+colnames(DMLfit$X) #Column names of the design matrix (ploidyT = ploidy triploid, pHL = pH low, ploidyT:pHL = interaction)
+```
+
+```{r}
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for ploidy
+
+```{r}
+DMLtest.ploidy <- DMLtest.multiFactor(DMLfit, coef = "ploidyT") #Test the ploidy effect
+head(DMLtest.ploidy) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+ploidy.DML <- subset(DMLtest.ploidy, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(ploidy.DML) #Check output
+length(ploidy.DML$chr) #178 DML
+```
+
+```{r}
+write.csv(ploidy.DML, "DML/DML-ploidy-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for pH
+
+```{r}
+DMLtest.pH <- DMLtest.multiFactor(DMLfit, coef = "pHL") #Test the pH effect
+head(DMLtest.pH) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+pH.DML <- subset(DMLtest.pH, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(pH.DML) #Check output
+length(pH.DML$chr) #154 DML
+```
+
+```{r}
+write.csv(pH.DML, "DML/DML-pH-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
+
+## DML model for ploidy:pH
+
+```{r}
+DMLtest.ploidypH <- DMLtest.multiFactor(DMLfit, coef = "ploidyT:pHL") #Test the ploidy-pH interaction
+head(DMLtest.ploidypH) #Output is chr, pos, test statistic, p-value from normal distribution, and FDR.
+```
+
+```{r}
+ploidypH.DML <- subset(DMLtest.ploidypH, subset = pvals < 0.05 & fdrs < 0.01) #Obtain loci with p-value < 0.05 and FDR < 0.01
+head(ploidypH.DML) #Check output
+length(ploidypH.DML$chr) #53 DML
+```
+
+```{r}
+write.csv(ploidypH.DML, "DML/DML-ploidypH-DSS.csv", quote = FALSE) #Save table as .csv
+
+save.image("DSS.Rdata") #Save R data
+```
+
+# Figures
+
+```{r}
+plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
+                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70")
+```
+
+## Load data
+
+```{r}
+#load("../../project-oyster-oa.RData") #Load plotting data
+```
+
+```{r}
+#Import DML lists
+
+ploidy.DML <- read.csv("DML/DML-ploidy-DSS.csv")
+ploidy.DML <- ploidy.DML[,-1] #Drop first column
+colnames(ploidy.DML)[2] <- "start" #Rename second column (pos to start)
+ploidy.DML$end <- ploidy.DML$start + 2 #Add end position information
+head(ploidy.DML)
+
+pH.DML <- read.csv("DML/DML-pH-DSS.csv")
+pH.DML <- pH.DML[,-1] #Drop first column
+colnames(pH.DML)[2] <- "start" #Rename second column (pos to start)
+pH.DML$end <- pH.DML$start + 2 #Add end position information
+head(pH.DML)
+
+ploidypH.DML <- read.csv("DML/DML-ploidypH-DSS.csv")
+ploidypH.DML <- ploidypH.DML[,-1] #Drop first column
+colnames(ploidypH.DML)[2] <- "start" #Rename second column (pos to start)
+ploidypH.DML$end <- ploidypH.DML$start + 2 #Add end position information
+head(ploidypH.DML)
+```
+
+```{r}
+union_1x <- read.table("../Haws_06-methylation-landscape/union_1x.bedgraph", sep = "\t", header = TRUE) #Import union 1x bedgraph
+colnames(union_1x)[1] <- "chr"
+head(union_1x) #Confirm import
+```
+
+## ploidy DML
+
+```{r}
+ploidy.DML.pos <- ploidy.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(ploidy.DML.pos) #Confirm reduction
+```
+
+```{r}
+ploidy.DML.pos.meth <- merge(x = ploidy.DML.pos, y = union_1x, by = c("chr", "start", "end")) #Match with 1x union information
+length(ploidy.DML.pos.meth$chr) == length(ploidy.DML.pos$chr) #Check that lengths match
+head(ploidy.DML.pos.meth) #Confirm merge
+```
+
+```{r}
+rownames(ploidy.DML.pos.meth) <- paste(ploidy.DML.pos.meth$chr, ploidy.DML.pos.meth$start, ploidy.DML.pos.meth$end, sep = ".") #Paste chr, start, end information to make row names
+ploidy.DML.pos.meth <- ploidy.DML.pos.meth[,-c(1:3)] #Drop chr, start, end columns
+head(ploidy.DML.pos.meth) #Confirm formatting
+```
+
+```{r}
+for (i in 1:length(ploidy.DML.pos.meth$X1)) {
+  ploidy.DML.pos.meth[,i] <- as.numeric(as.character(ploidy.DML.pos.meth[,i]))
+} #Convert all columns to numeric format
+head(ploidy.DML.pos.meth)
+```
+
+```{r}
+#pdf("figures/ploidy-heatmap.pdf", width = 11, height = 8.5)
+
+par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
+
+heatmap.2(t(t(ploidy.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
+          trace = "none", tracecol = "black", Colv = FALSE,
+          labRow = FALSE, labCol = FALSE, 
+          ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
+          key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+
+#dev.off()
+```
+
+## pH DML
+
+```{r}
+pH.DML.pos <- pH.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(pH.DML.pos) #Confirm reduction
+```
+
+```{r}
+pH.DML.pos.meth <- merge(x = pH.DML.pos, y = union_1x, by = c("chr", "start", "end")) #Match with 1x union information
+length(pH.DML.pos.meth$chr) == length(pH.DML.pos$chr) #Check that lengths match
+head(pH.DML.pos.meth) #Confirm merge
+```
+
+```{r}
+rownames(pH.DML.pos.meth) <- paste(pH.DML.pos.meth$chr, pH.DML.pos.meth$start, pH.DML.pos.meth$end, sep = ".") #Paste chr, start, end information to make row names
+pH.DML.pos.meth <- pH.DML.pos.meth[,-c(1:3)] #Drop chr, start, end columns
+head(pH.DML.pos.meth) #Confirm formatting
+```
+
+```{r}
+for (i in 1:length(pH.DML.pos.meth$X1)) {
+  pH.DML.pos.meth[,i] <- as.numeric(as.character(pH.DML.pos.meth[,i]))
+} #Convert all columns to numeric format
+head(pH.DML.pos.meth)
+```
+
+```{r}
+#pdf("figures/pH-heatmap.pdf", width = 11, height = 8.5)
+
+par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
+
+heatmap.2(t(t(pH.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
+          trace = "none", tracecol = "black", Colv = FALSE,
+          labRow = FALSE, labCol = FALSE, 
+          ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
+          key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) pH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+
+#dev.off()
+```
+
+## ploidy:pH DML
+
+```{r}
+ploidypH.DML.pos <- ploidypH.DML[,c(1,2,6)] #Reduce dataframe to only include chr, start, end
+head(ploidypH.DML.pos) #Confirm reduction
+```
+
+```{r}
+ploidypH.DML.pos.meth <- merge(x = ploidypH.DML.pos, y = union_1x, by = c("chr", "start", "end")) #Match with 1x union information
+length(ploidypH.DML.pos.meth$chr) == length(ploidypH.DML.pos$chr) #Check that lengths match
+head(ploidypH.DML.pos.meth) #Confirm merge
+```
+
+```{r}
+rownames(ploidypH.DML.pos.meth) <- paste(ploidypH.DML.pos.meth$chr, ploidypH.DML.pos.meth$start, ploidypH.DML.pos.meth$end, sep = ".") #Paste chr, start, end information to make row names
+ploidypH.DML.pos.meth <- ploidypH.DML.pos.meth[,-c(1:3)] #Drop chr, start, end columns
+head(ploidypH.DML.pos.meth) #Confirm formatting
+```
+
+```{r}
+for (i in 1:length(ploidypH.DML.pos.meth$X1)) {
+  ploidypH.DML.pos.meth[,i] <- as.numeric(as.character(ploidypH.DML.pos.meth[,i]))
+} #Convert all columns to numeric format
+head(ploidypH.DML.pos.meth)
+```
+
+```{r}
+#pdf("figures/ploidypH-heatmap.pdf", width = 11, height = 8.5)
+
+par(mar = c(5, 12, 1, 1)) #Specify inner and outer margins
+
+heatmap.2(t(t(ploidypH.DML.pos.meth)), col = rev(plotColors), scale = "none", margins = c(1,1),
+          trace = "none", tracecol = "black", Colv = FALSE,
+          labRow = FALSE, labCol = FALSE, 
+          ColSideColors = c(rep("grey80", times = 6), rep("grey60", times = 6), rep("grey40", times = 6), rep("grey20", times = 6)),
+          key = TRUE, keysize = 1.8, density.info = "density", key.title = "", key.xlab = "% Methylation", key.ylab = "",
+          key.par = list(cex.lab = 2.5, cex.axis = 2)) #Create heatmap using heatmap.2 from gplots package using percMethDML data. Use plotColors but do not scale data, label rows, or cluster/label columns. Use ColSideColors to indicate colors for 2H (lightest) and 3L (darkest) ploidypH samples. Add a legend using key, and adjust keysize. Have key display density data with density.info. Do not add a key title or y-axis label, and label x axis with key.xlab.
+
+#dev.off()
+```
+
+# Chromosome distribution
+
+```{r}
+geneGFF <- read.table("/Volumes/web-1/halfshell/genomic-databank/cgigas_uk_roslin_v1_gene.gff", sep = "\t") #Import gene gff file
+genechrCounts <-as.data.frame(table(geneGFF$V1)) #Count the number of genes/chromosome
+colnames(genechrCounts) <- c("chr", "geneCount") #Rename columns
+nrow(genechrCounts) #There are 10 chromosomes + extra scaffolds that were not placed into chromosomes
+```
+
+```{r}
+CGmotifs <- read.table("../../../project-gigas-oa-meth/genome-feature-files/cgigas_uk_roslin_v1_fuzznuc_CGmotif.gff", sep = "\t") #Import CG motif file
+CGmotifsCounts <-as.data.frame(table(CGmotifs$V1)) #Count the number of CpGs/chromosome
+colnames(CGmotifsCounts) <- c("chr", "chrCpGCounts") #Rename columns
+nrow(CGmotifsCounts) #There are 10 chromosomes + extra scaffolds that were not placed into chromosomes
+head(CGmotifsCounts)
+```
+
+## ploidy DML
+
+```{r}
+DMLchrCountsploidy <-as.data.frame(table(ploidy.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountsploidy) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountsploidy) #Confirm formatting
+```
+
+```{r}
+DMLchrCountsploidy <- merge(x = DMLchrCountsploidy, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountsploidy <- merge(x = DMLchrCountsploidy, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountsploidy$DMLbyChrCpG <- (DMLchrCountsploidy$DMLCount / DMLchrCountsploidy$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountsploidy, "DML/ploidy-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountsploidy <- DMLchrCountsploidy[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## pH DML
+
+```{r}
+DMLchrCountspH <-as.data.frame(table(pH.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountspH) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountspH) #Confirm formatting
+```
+
+```{r}
+DMLchrCountspH <- merge(x = DMLchrCountspH, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountspH <- merge(x = DMLchrCountspH, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountspH$DMLbyChrCpG <- (DMLchrCountspH$DMLCount / DMLchrCountspH$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountspH, "DML/pH-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountspH <- DMLchrCountspH[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## ploidy:pH DML
+
+```{r}
+DMLchrCountsploidypH <-as.data.frame(table(ploidypH.DML$chr)) #Count the number of DML/chromosome
+colnames(DMLchrCountsploidypH) <- c("chr", "DMLCount") #Rename columns
+head(DMLchrCountsploidypH) #Confirm formatting
+```
+
+```{r}
+DMLchrCountsploidypH <- merge(x = DMLchrCountsploidypH, y = genechrCounts, by = "chr") #Merge by chr to get gene counts for each chr with DML
+DMLchrCountsploidypH <- merge(x = DMLchrCountsploidypH, y = CGmotifsCounts, by = "chr") #Merge by chr to get CpG counts for each chr with DML
+DMLchrCountsploidypH$DMLbyChrCpG <- (DMLchrCountsploidypH$DMLCount / DMLchrCountsploidypH$chrCpGCounts) #Normalize DML counts by number of CpGs in each chromosome
+write.csv(DMLchrCountsploidypH, "DML/ploidypH-DML-by-chr.csv", row.names = TRUE, quote = FALSE) #Save file
+```
+
+```{r}
+DMLchrCountsploidypH <- DMLchrCountsploidypH[1:10,] #Retain the first 10 linkage groups, since this is the data in chrosomomes and not unplaced scaffolds
+```
+
+## Plot
+
+```{r}
+DMLchrCounts <- cbind(DMLchrCountsploidy, DMLchrCountspH, DMLchrCountsploidypH) #Combine columns
+DMLchrCounts <- DMLchrCounts[,c(1, 5, 10, 15)] #Only keep chr and DML/CpG for each DML list
+colnames(DMLchrCounts) <- c("chr", "DMLbyChrCpGploidy", "DMLbyChrCpGpH", "DMLbyChrCpGploidypH") #Rename columns
+rownames(DMLchrCounts) <- DMLchrCounts$chr #Set first column as rownames
+DMLchrCounts <- DMLchrCounts[,-1] #Remove chr column
+tail(DMLchrCounts) #Confirm formatting
+```
+
+```{r}
+max(DMLchrCounts$DMLbyChrCpGploidy)
+max(DMLchrCounts$DMLbyChrCpGpH)
+max(DMLchrCounts$DMLbyChrCpGploidypH)
+```
+
+
+```{r}
+#pdf("figures/DML-chr-distribution.pdf", width = 11, height = 8.5)
+
+par(mar = c(5,7,2,10)) #Change figure boundaries
+
+DMLbarplot <- barplot(as.matrix(t(DMLchrCounts)),
+                      axes = FALSE,
+                      names.arg = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
+                      xlim = c(0.7,11.5),
+                      ylim = c(0,10e-5),
+                      cex.names = 1.5,
+                      col = c(plotColors[2], plotColors[7], "white")) #Create a barplot and save as a new object. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis. The object contains x coordinates for bars, so xlim is set at 11.5
+mtext(side = 1, "Chromosome", line = 3, cex = 2) #Add x-axis label
+axis(side = 2, line = 1.5, at = seq(0, 10e-05, by = 2e-05), labels = seq(0, 10, by = 2), las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis for DML counts
+mtext(side = 2, "Number DML per 10,000 CpGs", line = 5, cex = 2) #Add y-axis label for DML counts
+
+par(new = TRUE) #Create a new plot
+plot(x = DMLbarplot,
+     y = DMLchrCountsploidy$geneCount,
+     type = "b",
+     axes = FALSE, xlab = "", ylab = "", xaxs = "i", yaxs = "i",
+     pch = 16, col = "black",
+     xlim = c(0,12), ylim = c(0,4500)) #Plot points and lines (type = "b") for gene count by chromosome. Use the coordinates from DMLbarplotInd (x = DMLbarplotInd) and set xlim = (0,12) so plots are lined up. Use axes = FALSE to remove both axes. Remove x and y lables (xlab = ""; ylab = ""). Set ylim = (0,4500) to account for max y-values. Use xaxs and yxaxs to remove space between axes.
+axis(side = 4, line = 1.5, at = seq(0, 6500, by = 500), las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis for gene sequence counts
+mtext(side = 4, "Number of Genes", line = 7, cex = 2) #Add y-axis label for gene sequence counts
+
+legend("left", 
+       legend = c("Ploidy", "pH", "Interaction"), 
+       bty = "n", cex = 2,
+       pch = c(22, 22, 22), 
+        col = "black",
+        pt.bg = c(plotColors[2], plotColors[7], "white")) #Add a legend with information about DML list
+
+#dev.off()
+```
+
+```{r}
+save.image("../../project-oyster-oa.RData") #Save R data
+```
+
