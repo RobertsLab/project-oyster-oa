@@ -128,3 +128,7 @@ analyses/Haws_09-functional-enrichment/functional-enrichment.RData
 analyses/Haws_08-GOterm-annotation/cgigas_uk_roslin_v1_rna_from_genomic_annot.transcript.tab
 analyses/Haws_08-GOterm-annotation/cgigas_uk_roslin_v1_rna_from_genomic_transcript.tab
 Yaminni MS_Rajan_10Nov2021.docx
+genome-feature-files/cgigas_uk_roslin_v1_CDS.gff
+genome-feature-files/cgigas_uk_roslin_v1_exon.gff
+genome-feature-files/cgigas_uk_roslin_v1_fuzznuc_CGmotif.gff
+genome-feature-files/cgigas_uk_roslin_v1_genomic-mito.fa
