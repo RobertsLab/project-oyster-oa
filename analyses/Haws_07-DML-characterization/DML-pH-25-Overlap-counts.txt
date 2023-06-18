@@ -1,0 +1,10 @@
+3	DML-pH-25-Cov5-CDS.bed
+31	DML-pH-25-Cov5-Gene-wb.bed
+28	DML-pH-25-Cov5-Gene.bed
+15	DML-pH-25-Cov5-TE.bed
+4	DML-pH-25-Cov5-downstream.bed
+5	DML-pH-25-Cov5-exonUTR.bed
+2	DML-pH-25-Cov5-intergenic.bed
+20	DML-pH-25-Cov5-intron.bed
+3	DML-pH-25-Cov5-lncRNA.bed
+0	DML-pH-25-Cov5-upstream.bed

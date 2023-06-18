@@ -1,0 +1,11 @@
+1	DML-Cov5-Overlaps-CDS.bed
+1	DML-Cov5-Overlaps-Gene-wb.bed
+1	DML-Cov5-Overlaps-Gene.bed
+0	DML-Cov5-Overlaps-TE.bed
+0	DML-Cov5-Overlaps-counts.txt
+0	DML-Cov5-Overlaps-downstream.bed
+0	DML-Cov5-Overlaps-exonUTR.bed
+0	DML-Cov5-Overlaps-intergenic.bed
+0	DML-Cov5-Overlaps-intron.bed
+0	DML-Cov5-Overlaps-lncRNA.bed
+0	DML-Cov5-Overlaps-upstream.bed
