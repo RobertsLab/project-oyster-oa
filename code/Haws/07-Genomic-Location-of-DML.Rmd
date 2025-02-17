@@ -112,8 +112,8 @@ write.csv(CpGLocationallDMLploidy, "CpG-location-statResults-ploidy.txt", quote 
 ## Import file counts
 
 ```{r}
-cpgFeatureOverlapspH <- read.table("DML-pH-DSS-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("pHDML", "filename")) #Import line counts
-cpgFeatureOverlapspH <- cpgFeatureOverlapspH[-c(2, 3, 10),] #Drop extra lines
+cpgFeatureOverlapspH <- read.table("DML-pH-25-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("pHDML", "filename")) %>%
+  slice(-c(2, 3))  #Import line counts
 cpgFeatureOverlapspH <- cpgFeatureOverlapspH[c(4, 1, 6, 8, 3, 7, 2, 5),] #Reorganize rows to match order: exon UTR, CDS, intron, upstream, downstream, lncRNA, TE, intergenic
 head(cpgFeatureOverlapspH) #Confirm import
 ```

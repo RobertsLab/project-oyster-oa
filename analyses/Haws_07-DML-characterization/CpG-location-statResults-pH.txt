@@ -1,9 +1,9 @@
 ,statistic,p.value,parameter,method,GenomeFeature,p.adj
-1,2.25928642052961,0.132815247735847,1,Pearson's Chi-squared test with Yates' continuity correction,exonUTR,0.17708699698113
-2,0.805855719285162,0.369348352188904,1,Pearson's Chi-squared test with Yates' continuity correction,CDS,0.422112402501605
-3,28.4907177397084,9.41487742407133e-08,1,Pearson's Chi-squared test with Yates' continuity correction,intron,7.53190193925706e-07
-4,3.47396312703563,0.0623417807048094,1,Pearson's Chi-squared test with Yates' continuity correction,upstream,0.124683561409619
-5,2.96932556824386,0.0848572248434536,1,Pearson's Chi-squared test with Yates' continuity correction,downstream,0.135771559749526
-6,0.28923922225537,0.590708467437997,1,Pearson's Chi-squared test with Yates' continuity correction,lncRNA,0.590708467437997
-7,5.52376810044887,0.0187598079781456,1,Pearson's Chi-squared test with Yates' continuity correction,TE,0.0500261546083882
-8,23.5184770485206,1.23719892295607e-06,1,Pearson's Chi-squared test with Yates' continuity correction,intergenic,4.94879569182428e-06
+1,3.70611012029947,0.0542135968120432,1,Pearson's Chi-squared test with Yates' continuity correction,exonUTR,0.190932434232148
+2,0.0981553183799843,0.754054655527685,1,Pearson's Chi-squared test with Yates' continuity correction,CDS,0.861776749174497
+3,2.77969718286052,0.0954662171160739,1,Pearson's Chi-squared test with Yates' continuity correction,intron,0.190932434232148
+4,0.786267412745241,0.375231169631813,1,Pearson's Chi-squared test with Yates' continuity correction,upstream,0.500308226175751
+5,2.79278364459233,0.0946896120424633,1,Pearson's Chi-squared test with Yates' continuity correction,downstream,0.190932434232148
+6,1.33916026600901,0.247182111281098,1,Pearson's Chi-squared test with Yates' continuity correction,lncRNA,0.395491378049756
+7,4.66715629917939e-20,0.999999999827628,1,Pearson's Chi-squared test with Yates' continuity correction,TE,0.999999999827628
+8,11.0233272903917,0.00089972429290405,1,Pearson's Chi-squared test with Yates' continuity correction,intergenic,0.0071977943432324
