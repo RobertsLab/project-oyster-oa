@@ -13,16 +13,20 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_06-methylation-landscape/") #Set root directory
 ```
 
+```{r}
+getwd()
+```
+
 # Install packages
 
 ```{r}
-#Packages for visualization
-
-#install.packages("dichromat")
 #install.packages("broom")
+#install.packages("RColorBrewer")
+#install.packages("tidyverse")
 
-require(dichromat)
 require(broom)
+require(RColorBrewer)
+require(tidyverse)
 ```
 
 # Obtain session information
@@ -34,8 +38,8 @@ sessionInfo()
 # Establish color scheme
 
 ```{r}
-plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
-                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70") #Create a color palette for the barplots.
+display.brewer.all()
+plotColors <- brewer.pal(8, "Purples") #Create a color scheme
 ```
 
 # Genomic location of methylated CpGs
@@ -73,6 +77,7 @@ downstreamOverlaps <- read.table("zr3644_5x-downstreamFlanks-counts.txt", header
 downstreamOverlaps <- downstreamOverlaps[73:75,] #Retain final rows
 head(downstreamOverlaps) #Confirm import
 ```
+
 ```{r}
 lncRNAOverlaps <- read.table("zr3644_5x-lncRNA-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 lncRNAOverlaps <- lncRNAOverlaps[73:75,] #Retain final rows
@@ -179,7 +184,7 @@ head(cpgFeatureOverlapsPercents) #Check calculations
 ```
 
 ```{r}
-#pdf("figures/CpG-feature-overlaps.pdf", width = 11, height = 8.5)
+pdf("figures/CpG-feature-overlaps.pdf", width = 11, height = 8.5)
 
 par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
 
@@ -212,7 +217,7 @@ legend(x = 0.57, y = 0.87,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
-#dev.off()
+dev.off()
 ```
 
 ```{r}
