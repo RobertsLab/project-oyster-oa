@@ -20,7 +20,7 @@ knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oy
 #For methylation analysis
 
 require(methylKit) #Load methylKit
-require(dplyr) #Load dplyr
+require(tidyverse) #Load dplyr
 ```
 
 ```{r}
