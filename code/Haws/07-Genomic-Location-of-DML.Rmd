@@ -38,7 +38,7 @@ sessionInfo()
 # Establish color scheme
 
 ```{r}
-plotColors <- c(8, "Purples") #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer.
+plotColors <- brewer.pal(8, "Purples") #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer.
 ```
 
 # Import data
@@ -184,18 +184,9 @@ head(cpgFeatureOverlapsPercentspH) #Check calculations
 ```
 
 ```{r}
-cpgFeatureOverlapsPercentsploidypH <- cpgFeatureOverlapsploidypH #Duplicate dataframe
-for (i in 1:length(cpgFeatureOverlapsploidypH)) {
-  cpgFeatureOverlapsPercentsploidypH[,i] <- (cpgFeatureOverlapsPercentsploidypH[,i] / (sum(cpgFeatureOverlapsPercentsploidypH[,i]))) * 100
-} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
-head(cpgFeatureOverlapsPercentsploidypH) #Check calculations
-```
-
-```{r}
 cpgFeatureOverlapsPercentsBind <- cbind(cpgFeatureOverlapsPercentsploidy, 
-                                        cpgFeatureOverlapsPercentspH,
-                                        cpgFeatureOverlapsPercentsploidypH) #Combine dataframes
-cpgFeatureOverlapsPercentsBind <- cpgFeatureOverlapsPercentsBind[,c(1,2,4,6)] #Reorganize and drop columns
+                                        cpgFeatureOverlapsPercentspH) #Combine dataframes
+cpgFeatureOverlapsPercentsBind <- cpgFeatureOverlapsPercentsBind[,c(1,2,4)] #Reorganize and drop columns
 head(cpgFeatureOverlapsPercentsBind)
 ```
 
@@ -204,10 +195,10 @@ head(cpgFeatureOverlapsPercentsBind)
 
 par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
 
-barplot(t(t(cpgFeatureOverlapsPercentsBind[,c(1:4)])), 
+barplot(t(t(cpgFeatureOverlapsPercentsBind[,c(1:3)])), 
         col= rev(plotColors), 
         axes = FALSE, 
-        names.arg = c("All 5x CpGs", "Ploidy", "pH", "Interaction"), cex.names = 1.5,
+        names.arg = c("All 5x CpGs", "Ploidy", "pH"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
