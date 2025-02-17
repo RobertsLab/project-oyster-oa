@@ -13,15 +13,19 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_07-DML-characterization/") #Set root directory
 ```
 
+```{r}
+getwd()
+```
+
 # Install packages
 
 ```{r}
-#Packages for visualization
-
-#install.packages("dichromat")
+#install.packages("tidyverse")
+#install.packages("RColorBrewer")
 #install.packages("broom")
 
-require(dichromat)
+require(tidyverse)
+require(RColorBrewer)
 require(broom)
 ```
 
@@ -34,30 +38,29 @@ sessionInfo()
 # Establish color scheme
 
 ```{r}
-plotColors <- c("#B54E00", "#E38100", "#FFA801", "#FFCB5E",
-                 "#A9DDFF", "#21ADFA", "#0A72AB", "#004B70") #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer.
+plotColors <- c(8, "Purples") #Create a color palette for the barplots. Use 5 purple shades from RColorBrewer.
 ```
 
 # Import data
 
 ```{r}
-#save.image("../../project-oyster-oa.Rdata")
-#load("../../project-oyster-oa.Rdata") #Load R Data if not already loaded
+attach("../../project-oyster-oa.Rdata") #Attach R Data if not already loaded
+cpgFeatureOverlaps <- cpgFeatureOverlaps
+detach("file:../../project-oyster-oa.Rdata")
 ```
 
-I will look at genomic locations of each sex-specific DML list, then create a plot for visualization.
+I will look at genomic locations of each condition-specific DML list, then create a plot for visualization.
 
 # ploidy-DML
 
 ## Import file counts
 
 ```{r}
-cpgFeatureOverlapsploidy <- read.table("DML-ploidy-DSS-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("ploidyDML", "filename")) #Import line counts
-cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[-c(2, 3, 10),] #Drop extra lines
+cpgFeatureOverlapsploidy <- read.table("DML-ploidy-25-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("ploidyDML", "filename")) %>%
+  slice(-c(2, 3)) #Import line counts and drop gene overlap information
 cpgFeatureOverlapsploidy <- cpgFeatureOverlapsploidy[c(4, 1, 6, 8, 3, 7, 2, 5),] #Reorganize rows to match order: exon UTR, CDS, intron, upstream, downstream, lncRNA, TE, intergenic
-head(cpgFeatureOverlapsploidy) #Confirm import
+cpgFeatureOverlapsploidy #Confirm import
 ```
-
 ```{r}
 cpgFeatureOverlapsploidy$allCpGs <- cpgFeatureOverlaps$allCpGs #Add all 5x CpG information
 rownames(cpgFeatureOverlapsploidy) <- row.names(cpgFeatureOverlaps) #Add rowname information
@@ -160,64 +163,6 @@ head(CpGLocationallDMLpH) #Confirm changes
 
 ```{r}
 write.csv(CpGLocationallDMLpH, "CpG-location-statResults-pH.txt", quote = FALSE, row.names = TRUE) #Save statistical output
-```
-
-# ploidy:pH-DML
-
-## Import file counts
-
-```{r}
-cpgFeatureOverlapsploidypH <- read.table("DML-ploidypH-DSS-Overlap-counts.txt", header = FALSE, sep = "\t", col.names = c("ploidypHDML", "filename")) #Import line counts
-cpgFeatureOverlapsploidypH <- cpgFeatureOverlapsploidypH[-c(2, 3, 10),] #Drop extra lines
-cpgFeatureOverlapsploidypH <- cpgFeatureOverlapsploidypH[c(4, 1, 6, 8, 3, 7, 2, 5),] #Reorganize rows to match order: exon UTR, CDS, intron, upstream, downstream, lncRNA, TE, intergenic
-head(cpgFeatureOverlapsploidypH) #Confirm import
-```
-
-```{r}
-cpgFeatureOverlapsploidypH$allCpGs <- cpgFeatureOverlaps$allCpGs #Add methylated CpG information
-rownames(cpgFeatureOverlapsploidypH) <- row.names(cpgFeatureOverlaps) #Add rowname information
-cpgFeatureOverlapsploidypH <- cpgFeatureOverlapsploidypH[,-2] #Drop filename column
-cpgFeatureOverlapsploidypH <- cpgFeatureOverlapsploidypH[,c(2,1)] #Reorder columns
-head(cpgFeatureOverlapsploidypH)
-```
-
-## Contingency test
-
-```{r}
-cpgLocationStatTestploidypH <- data.frame(t(cpgFeatureOverlapsploidypH)) #Transpose for statistical testing
-head(cpgLocationStatTestploidypH) #Confirm formatting
-```
-
-```{r}
-CpGLocationallDMLploidypH <- data.frame() #Create empty dataframe to store chi-squared results
-
-for(i in 1:ncol(cpgLocationStatTestploidypH)) { #For each genome feature
-  allFeature <- cpgLocationStatTestploidypH[1,i] #Variable for # genome feature overlaps for all CpGs
-  ploidypHFeature <- cpgLocationStatTestploidypH[2,i] #Variable for # genome feature overlaps for ploidypH DML
-  allNotFeature <- sum(cpgLocationStatTestploidypH[1,-i]) #Variable for # other CpG types for all CpGs
-  ploidypHNotFeature <- sum(cpgLocationStatTestploidypH[2,-i]) #Variable for # other CpG types for ploidypH DML
-  ct <- matrix(c(allFeature, ploidypHFeature, allNotFeature, ploidypHNotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(cpgLocationStatTestploidypH[i])), paste0("Not", colnames(cpgLocationStatTestploidypH[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(cpgLocationStatTestploidypH)[c(1,2)])) #Assign row names: all CpGs, ploidypH DML
-  print(ct) #Confirm table is correct
-  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(cpgLocationStatTestploidypH)[i]) #Add CpG type to results
-  CpGLocationallDMLploidypH <- rbind(CpGLocationallDMLploidypH, ctResults) #Add test statistics to master table
-}
-```
-
-```{r}
-head(CpGLocationallDMLploidypH)
-```
-
-```{r}
-CpGLocationallDMLploidypH$p.adj <- p.adjust(CpGLocationallDMLploidypH$p.value, method = "fdr") #Correct p-value using FDR
-range(CpGLocationallDMLploidypH$p.adj) #Look at range of p-values
-head(CpGLocationallDMLploidypH) #Confirm changes
-```
-
-```{r}
-write.csv(CpGLocationallDMLploidypH, "CpG-location-statResults-ploidypH.txt", quote = FALSE, row.names = TRUE) #Save statistical output
 ```
 
 # Create stacked barplot
