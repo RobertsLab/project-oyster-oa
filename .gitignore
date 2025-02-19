@@ -131,3 +131,7 @@ genome-feature-files/cgigas_uk_roslin_v1_CDS.gff
 genome-feature-files/cgigas_uk_roslin_v1_exon.gff
 genome-feature-files/cgigas_uk_roslin_v1_fuzznuc_CGmotif.gff
 genome-feature-files/cgigas_uk_roslin_v1_genomic-mito.fa
+genome-feature-files/cgigas_uk_roslin_v1_intergenic.bed
+genome-feature-files/cgigas_uk_roslin_v1_intron.bed
+genome-feature-files/cgigas_uk_roslin_v1_nonCDS.bed
+genome-feature-files/cgigas_uk_roslin_v1_rm.te.bed
