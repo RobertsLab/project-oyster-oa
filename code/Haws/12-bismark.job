@@ -1,16 +1,16 @@
 #!/bin/sh
 
-#SBATCH --job-name=04-cea-bis          # Job name
+#SBATCH --job-name=bismark_array          # Job name
 #SBATCH --output=%x_%A_%a.slurm.out             # Standard output and error log
 #SBATCH --error=%x_%A_%a.slurm.err              # Error log
 #SBATCH --account=srlab
 #SBATCH --partition=ckpt #update this line - use hyakalloc to find partitions you can use
 #SBATCH --time=10-02:00:00
+#SBATCH --array=0-35                      # Array range (adjust based on the number of samples)
 #SBATCH --ntasks=1                        # Run a single task
-#SBATCH --cpus-per-task=30                # Number of CPU cores per task
-#SBATCH --array=0-31                      # Array range (adjust based on the number of samples)
+#SBATCH --cpus-per-task=24                # Number of CPU cores per task
 #SBATCH --mem=100G                         # Memory per node
-#SBATCH --chdir=/gscratch/scrubbed/sr320/github/ceasmallr/output/04.2-bismark-align
+#SBATCH --chdir=/gscratch/srlab/sr320/github/project-oyster-oa/analyses/Haws_12-bismark
 
 
 
@@ -22,5 +22,6 @@ apptainer exec \
 --home "$PWD" \
 --bind /mmfs1/home/ \
 --bind /mmfs1/gscratch/ \
-/gscratch/srlab/sr320/srlab-bioinformatics-container-586bf21.sif \
-../../code/04.1.sh
+--bind /gscratch/ \
+/gscratch/srlab/sr320/srlab-R4.4-bioinformatics-container-703094b.sif \
+../../code/Haws/12.1.sh
