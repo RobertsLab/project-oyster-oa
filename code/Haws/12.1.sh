@@ -1,7 +1,7 @@
 #!/bin/bash
 # Set directories and files
-reads_dir="/gscratch/srlab/sr320/github/project-oyster-oa/data/Haws-11"
-genome_folder="/gscratch/srlab/sr320/github/project-oyster-oa/data/Haws-11"
+reads_dir="/gscratch/srlab/sr320/github/project-oyster-oa/data/Haws-11/"
+genome_folder="/gscratch/srlab/sr320/github/project-oyster-oa/data/Haws-11/"
 output_dir="."
 checkpoint_file="completed_samples.log"
 read_suffix="_R1_val_1_val_1_val_1.fq.gz"
