@@ -39,28 +39,25 @@ https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-
 ```{bash}
 wget -r \
 --no-directories --no-parent \
--P ../../data/Haws-11 \
+-P ../../data/Haws-10 \
 -A "*.fq.gz" \
 https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/
 ```
 
-```{bash}
-cd ../../data/Haws-11
-curl -O https://gannet.fish.washington.edu/seashell/bu-github/project-oyster-oa/data/Haws-10/GCF_963853765.1_xbMagGiga1.1_genomic.fa
-```
 
 
 # Genome Prep
 
 ```{bash}
 # Directories and programs
-bismark_dir=""
-bowtie2_dir=""
-genome_folder="../../data/Haws-11/"
+bismark_dir="/home/shared/Bismark-0.24.0/"
+bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
+genome_folder="../data/"
 
-${bismark_dir}bismark_genome_preparation \
+${bismark_dir}/bismark_genome_preparation \
 --verbose \
 --parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
 ${genome_folder}
 ```
 
