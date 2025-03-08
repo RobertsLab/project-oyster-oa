@@ -57,25 +57,39 @@ unzip ../../data/Haws-10/ncbi_dataset.zip
 
 
 
+-P ../../data/Haws-11 \
+-A "*.fq.gz" \
+https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/
+```
+
+```{bash}
+cd ../../data/Haws-11
+curl -O https://gannet.fish.washington.edu/seashell/bu-github/project-oyster-oa/data/Haws-10/GCF_963853765.1_xbMagGiga1.1_genomic.fa
+```
 
 
 # Genome Prep
 
 ```{bash}
 # Directories and programs
+<<<<<<< HEAD
 bismark_dir="/home/shared/Bismark-0.24.0/"
 bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
 genome_folder="../../data/Haws-10/"
+bismark_dir=""
+bowtie2_dir=""
+genome_folder="../../data/Haws-11/"
+```
 
-${bismark_dir}/bismark_genome_preparation \
+```
+${bismark_dir}bismark_genome_preparation \
 --verbose \
 --parallel 12 \
 --path_to_aligner ${bowtie2_dir} \
+--parallel 28 \
 ${genome_folder}
 ```
 
-
-# Checking alignment min scores
 
 ```{bash}
 
@@ -263,3 +277,8 @@ xargs -I{} /home/shared/samtools-1.12/samtools \
 sort --threads 48 {}.bam \
 -o {}.sorted.bam
 ```
+=======
+ls ../../data/Haws-11/*_R1_val_1_val_1.fq.gz | wc -l
+```
+
+>>>>>>> b31f7267d4a4f350f3a88722fcec18a2e2ffa650
