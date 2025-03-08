@@ -40,9 +40,22 @@ https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-
 wget -r \
 --no-directories --no-parent \
 -P ../../data/Haws-10 \
--A "*.fq.gz" \
+-A "*fq.gz" \
 https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/
 ```
+
+# Download new genome
+
+```{r, engine='bash'}
+cd ../../data/Haws-10
+/home/shared/datasets download genome accession GCF_963853765.1 --include gff3,rna,cds,protein,genome,seq-report
+```
+
+```{r, engine='bash'}
+unzip ../../data/Haws-10/ncbi_dataset.zip
+```
+
+
 
 
 
@@ -52,11 +65,11 @@ https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-
 # Directories and programs
 bismark_dir="/home/shared/Bismark-0.24.0/"
 bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
-genome_folder="../data/"
+genome_folder="../../data/Haws-10/"
 
 ${bismark_dir}/bismark_genome_preparation \
 --verbose \
---parallel 28 \
+--parallel 12 \
 --path_to_aligner ${bowtie2_dir} \
 ${genome_folder}
 ```
@@ -65,11 +78,17 @@ ${genome_folder}
 # Checking alignment min scores
 
 ```{bash}
+
+ls ../../data/Haws-10/
+```
+
+
+```{bash}
 # Set directories and files
-reads_dir="../data/22-Apul-meth/"
-genome_folder="../data/"
-output_dir="../output/22-Apul-methylation"
-checkpoint_file="../output/22-Apul-methylation/completed_samples.log"
+reads_dir="../../data/Haws-10/"
+genome_folder="../../data/Haws-10/"
+output_dir="../../analyses/Haws-10/"
+checkpoint_file="../../analyses/Haws-10/completed_samples.log"
 bismark_dir="/home/shared/Bismark-0.24.0/"
 bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
 
@@ -77,8 +96,8 @@ bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
 touch ${checkpoint_file}
 
 # Get the list of sample files and corresponding sample names
-for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
-    sample_name=$(basename "$file" "_R1.fastp-trim.fq.gz")
+for file in ${reads_dir}*_R2_val_2_val_2_val_2.fq.gz; do
+    sample_name=$(basename "$file" "_R2_val_2_val_2_val_2.fq.gz")
 
     # Check if the sample has already been processed
     if grep -q "^${sample_name}$" ${checkpoint_file}; then
@@ -115,8 +134,8 @@ for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
             -score_min ${score_min} \
             --non_directional \
             --path_to_bowtie ${bowtie2_dir} \
-            -1 ${reads_dir}${sample_name}_R1.fastp-trim.fq.gz \
-            -2 ${reads_dir}${sample_name}_R2.fastp-trim.fq.gz \
+            -1 ${reads_dir}${sample_name}_R1_val_1_val_1_val_1.fq.gz \
+            -2 ${reads_dir}${sample_name}_R2_val_2_val_2_val_2.fq.gz \
             -o ${param_output_dir} \
             --basename ${sample_name}_${score_min//,/} \
             2> "${param_output_dir}/${sample_name}-bismark_summary.txt"
@@ -165,18 +184,18 @@ done
 ```
 
 
-full alignment
+# full alignment
 
 ```{bash}
 # Set variables
-reads_dir="../data/22-Apul-meth/"
-genome_folder="../data/"
-output_dir="../output/22-Apul-methylation"
-score_min="L,0,-1.0"  # Single value for score_min
+reads_dir="../../data/Haws-10/"
+genome_folder="../../data/Haws-10/"
+output_dir="../../analyses/Haws-10/"
+score_min="L,0,-0.8"  # Single value for score_min
 
 # Get the list of sample files and corresponding sample names
-for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
-    sample_name=$(basename "$file" "_R1.fastp-trim.fq.gz")
+for file in ${reads_dir}*_R2_val_2_val_2_val_2.fq.gz; do
+    sample_name=$(basename "$file" "_R2_val_2_val_2_val_2.fq.gz")
     
     echo "Running Bismark for sample ${sample_name} with score_min ${score_min}"
 
@@ -185,12 +204,62 @@ for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
     /home/shared/Bismark-0.24.0/bismark \
         --path_to_bowtie2 /home/shared/bowtie2-2.4.4-linux-x86_64 \
         -genome ${genome_folder} \
-        -p 10 \
+        -p 8 \
         -score_min ${score_min} \
-        -1 ${reads_dir}${sample_name}_R1.fastp-trim.fq.gz \
-        -2 ${reads_dir}${sample_name}_R2.fastp-trim.fq.gz \
+        -1 ${reads_dir}${sample_name}_R1_val_1_val_1_val_1.fq.gz \
+        -2 ${reads_dir}${sample_name}_R2_val_2_val_2_val_2.fq.gz \
+        --non_directional \
         -o ${output_dir} \
         --basename ${sample_name} \
         2> "${output_dir}/${sample_name}-bismark_summary.txt"
 done
+```
+
+# Deduplication
+
+```{r, engine=}
+find ../../analyses/Haws-10/*.bam | \
+xargs -n 1 basename -s .bam | \
+parallel -j 8 /home/shared/Bismark-0.24.0/deduplicate_bismark \
+--bam \
+--paired \
+--output_dir ../../analyses/Haws-10 \
+../../analyses/Haws-10/{}.bam
+```
+
+
+
+# Methylation extraction
+
+```{bash}
+find ../../analyses/Haws-10/*deduplicated.bam | xargs -n 1 -I{} /home/shared/Bismark-0.24.0/bismark_methylation_extractor --bedGraph --counts --comprehensive --merge_non_CpG --multicore 24 --buffer_size 75% --output ../output/09-meth-quant {} 
+```
+
+
+# Methylation call
+
+```bash
+find ../output/09-meth-quant/*deduplicated.bismark.cov.gz | \
+xargs -n 1 basename -s _pe.deduplicated.bismark.cov.gz | \
+parallel -j 48 /home/shared/Bismark-0.24.0/coverage2cytosine \
+--genome_folder ../data/ \
+-o ../output/09-meth-quant/{} \
+--merge_CpG \
+--zero_based \
+../output/09-meth-quant/{}_pe.deduplicated.bismark.cov.gz
+```
+
+This resulted in CpG_report.merged_CpG_evidence.cov files..
+
+
+# Sorted bams
+
+deduplicated sorted bams were also sorted..
+
+``` bash
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} /home/shared/samtools-1.12/samtools \
+sort --threads 48 {}.bam \
+-o {}.sorted.bam
 ```
