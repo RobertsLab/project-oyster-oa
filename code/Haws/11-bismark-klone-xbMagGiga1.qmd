@@ -1,0 +1,196 @@
+---
+title: "10-bismark-xbMagGiga1.1"
+author: Steven Roberts
+date: "`r format(Sys.time(), '%d %B, %Y')`"  
+output: 
+  html_document:
+    theme: readable
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tidyverse)
+knitr::opts_chunk$set(
+  echo = TRUE,         # Display code chunks
+  eval = FALSE,         # Evaluate code chunks
+  warning = FALSE,     # Hide warnings
+  message = FALSE,     # Hide messages
+  fig.width = 6,       # Set plot width in inches
+  fig.height = 4,      # Set plot height in inches
+  fig.align = "center" # Align plots to the center
+)
+```
+
+
+Methylation files at https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/
+
+https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/zr3644_1_R1_val_1_val_1.fq.gz
+
+
+
+# Download Reads
+
+```{bash}
+wget -r \
+--no-directories --no-parent \
+-P ../../data/Haws-10 \
+-A "*.fq.gz" \
+https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/trimmed-data-2/
+```
+
+
+
+# Genome Prep
+
+```{bash}
+# Directories and programs
+bismark_dir="/home/shared/Bismark-0.24.0/"
+bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
+genome_folder="../data/"
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+${genome_folder}
+```
+
+
+# Checking alignment min scores
+
+```{bash}
+# Set directories and files
+reads_dir="../data/22-Apul-meth/"
+genome_folder="../data/"
+output_dir="../output/22-Apul-methylation"
+checkpoint_file="../output/22-Apul-methylation/completed_samples.log"
+bismark_dir="/home/shared/Bismark-0.24.0/"
+bowtie2_dir="/home/shared/bowtie2-2.4.4-linux-x86_64/"
+
+# Create the checkpoint file if it doesn't exist
+touch ${checkpoint_file}
+
+# Get the list of sample files and corresponding sample names
+for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
+    sample_name=$(basename "$file" "_R1.fastp-trim.fq.gz")
+
+    # Check if the sample has already been processed
+    if grep -q "^${sample_name}$" ${checkpoint_file}; then
+        echo "Sample ${sample_name} already processed. Skipping..."
+        continue
+    fi
+
+    # Define log files for stdout and stderr
+    stdout_log="${output_dir}/${sample_name}_stdout.log"
+    stderr_log="${output_dir}/${sample_name}_stderr.log"
+
+    # Define the array of score_min parameters to test
+    score_min_params=(
+        "L,0,-0.4"
+        "L,0,-0.6"
+        "L,0,-0.8"
+        "L,0,-1.0"
+        "L,-1,-0.6"
+    )
+
+    # Loop through each score_min parameter
+    for score_min in "${score_min_params[@]}"; do
+        echo "Running Bismark for sample ${sample_name} with score_min ${score_min}"
+        
+        # Create a subdirectory for this parameter
+        param_output_dir="${output_dir}/${sample_name}_score_${score_min//,/}"
+        mkdir -p ${param_output_dir}
+
+        # Run Bismark alignment
+        ${bismark_dir}bismark \
+            -genome ${genome_folder} \
+            -p 16 \
+            -u 25000 \
+            -score_min ${score_min} \
+            --non_directional \
+            --path_to_bowtie ${bowtie2_dir} \
+            -1 ${reads_dir}${sample_name}_R1.fastp-trim.fq.gz \
+            -2 ${reads_dir}${sample_name}_R2.fastp-trim.fq.gz \
+            -o ${param_output_dir} \
+            --basename ${sample_name}_${score_min//,/} \
+            2> "${param_output_dir}/${sample_name}-bismark_summary.txt"
+
+        # Check if the command was successful
+        if [ $? -eq 0 ]; then
+            echo "Sample ${sample_name} with score_min ${score_min} processed successfully."
+        else
+            echo "Sample ${sample_name} with score_min ${score_min} failed. Check ${stderr_log} for details."
+        fi
+    done
+
+    # Mark the sample as completed in the checkpoint file
+    if [ $? -eq 0 ]; then
+        echo ${sample_name} >> ${checkpoint_file}
+        echo "All tests for sample ${sample_name} completed."
+    else
+        echo "Sample ${sample_name} encountered errors. Check logs for details."
+    fi
+done
+
+# Define summary file
+summary_file="${output_dir}/parameter_comparison_summary.csv"
+
+# Initialize summary file
+echo "Sample,Score_Min,Alignment_Rate" > ${summary_file}
+
+# Loop through parameter output directories
+for dir in ${output_dir}/*_score_*; do
+    if [ -d "$dir" ]; then
+        # Extract sample name and score_min parameter from directory name
+        sample_name=$(basename "$dir" | cut -d'_' -f1)
+        score_min=$(basename "$dir" | grep -o "score_.*" | sed 's/score_//; s/_/,/g')
+
+        # Locate the summary file
+        summary_file_path="${dir}/${sample_name}_${score_min}_PE_report.txt"
+
+        # Extract metrics
+        if [ -f "$summary_file_path" ]; then
+            mapping=$(grep "Mapping efficiency:" ${summary_file_path} | awk '{print "mapping efficiency ", $3}')
+            echo "${sample_name},${score_min},${mapping}" >> ${summary_file}
+        fi
+    fi
+done
+
+```
+
+
+full alignment
+
+```{bash}
+# Set variables
+reads_dir="../data/22-Apul-meth/"
+genome_folder="../data/"
+output_dir="../output/22-Apul-methylation"
+score_min="L,0,-1.0"  # Single value for score_min
+
+# Get the list of sample files and corresponding sample names
+for file in ${reads_dir}*_R1.fastp-trim.fq.gz; do
+    sample_name=$(basename "$file" "_R1.fastp-trim.fq.gz")
+    
+    echo "Running Bismark for sample ${sample_name} with score_min ${score_min}"
+
+    
+    # Run Bismark alignment
+    /home/shared/Bismark-0.24.0/bismark \
+        --path_to_bowtie2 /home/shared/bowtie2-2.4.4-linux-x86_64 \
+        -genome ${genome_folder} \
+        -p 10 \
+        -score_min ${score_min} \
+        -1 ${reads_dir}${sample_name}_R1.fastp-trim.fq.gz \
+        -2 ${reads_dir}${sample_name}_R2.fastp-trim.fq.gz \
+        -o ${output_dir} \
+        --basename ${sample_name} \
+        2> "${output_dir}/${sample_name}-bismark_summary.txt"
+done
+```
