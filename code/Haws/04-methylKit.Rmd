@@ -21,37 +21,24 @@ getwd()
 # Install packages
 
 ```{r}
-install.packages("tidyverse")
-install.packages("devtools")
-install.packages("BiocManager")
+# install.packages("tidyverse")
+# install.packages("devtools")
+# install.packages("BiocManager")
+# install.packages("vegan")
+# install.packages("scales")
+# install.packages("RColorBrewer")
+# install.packages("pheatmap")
 ```
 
-
 ```{r}
+require(tidyverse)
 require(devtools)
 require(BiocManager)
-install_github("al2na/methylKit", build_vignettes=FALSE, 
-  repos=BiocManager::repositories(), ref = "development",
-  type = "source",
-  dependencies=TRUE)
-```
-
-```{r}
-#For methylation analysis
-
+BiocManager::install("methylKit")
 require(methylKit) #Load methylKit
-require(tidyverse) #Load dplyr
-```
-
-```{r}
-#For visualization
-
-#install.packages("vegan")
-#install.packages("scales")
-#install.packages("pheatmap")
-
 require(vegan)
 require(scales)
+require(RColorBrewer)
 require(pheatmap)
 ```
 
