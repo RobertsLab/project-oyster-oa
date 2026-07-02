@@ -11,7 +11,7 @@ In this script, I'll get preliminary methylation information from diploid and tr
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_04-methylKit/") #Set root directory
+knitr::opts_knit$set(root.dir = "../../analyses/Haws_04-methylKit/") #Set root directory
 ```
 
 ```{r}
