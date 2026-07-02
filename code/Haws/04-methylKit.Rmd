@@ -11,7 +11,7 @@ In this script, I'll get preliminary methylation information from diploid and tr
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "../../analyses/Haws_04-methylKit/") #Set root directory
+knitr::opts_knit$set(root.dir = normalizePath("../../analyses/Haws_04-methylKit/")) #Set root directory
 ```
 
 ```{r}
@@ -46,6 +46,19 @@ require(pheatmap)
 
 ```{r}
 sessionInfo()
+```
+# Import information from existing .RData file
+
+This step is used to avoid repeating the computationally intensive `methylKit` steps below.
+
+```{r}
+attach("methylKit.RData") #Attach methylKit RData
+
+processedFiles <- processedFiles #Save files with minimum coverage = 2
+processedFilteredFilesCov5 <- processedFilteredFilesCov5 #Save data for minimum coverage = 5
+methylationInformationFilteredCov5 <- methylationInformationFilteredCov5 #Save transposed data used for PLSDA
+
+detach("file:methylKit.RData") #Detach methylKit RData
 ```
 
 # Process methylation data
