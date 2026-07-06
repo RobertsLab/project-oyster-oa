@@ -31,6 +31,15 @@ getwd()
 ```
 
 ```{r}
+install.packages("devtools")
+require(devtools)
+install_github("al2na/methylKit", build_vignettes=FALSE, 
+  repos=BiocManager::repositories(),
+  dependencies=TRUE)
+```
+
+
+```{r}
 require(tidyverse)
 require(devtools)
 require(BiocManager)
