@@ -260,8 +260,7 @@ write.csv(diffMethStatsPloidyCovar75, "DML/DML-ploidy-75-Covar-Cov5.csv", quote 
 
 ```{r}
 differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
-                                                                   overdispersion = "MN", test = "Chisq",
-                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH informatoin into a dataframe. Use 40 cores.
+                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Use 40 cores. Do not correct for overdispersion.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
