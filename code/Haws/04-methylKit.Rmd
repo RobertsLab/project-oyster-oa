@@ -20,12 +20,12 @@ getwd()
 
 # Install packages
 
-```{r}
+```{r, include = FALSE}
 # install.packages("tidyverse")
 # install.packages("data.table") #Personal computer
-# install.packages("https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.16.4.tar.gz", 
-#                  repos = NULL, 
-#                  type = "source", 
+# install.packages("https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.16.4.tar.gz",
+#                  repos = NULL,
+#                  type = "source",
 #                  lib = "/home/shared/8TB_HDD_02/yaaminiv/R/x86_64-pc-linux-gnu-library/4.2") # R Studio server: need legacy data.table in order to install legacy methylKit
 # install.packages("devtools")
 # install.packages("BiocManager")
@@ -35,11 +35,11 @@ getwd()
 # install.packages("pheatmap")
 ```
 
-```{r}
+```{r, include = FALSE}
 require(tidyverse)
 require(data.table)
 require(BiocManager)
-BiocManager::install("methylKit") #Install methylKit
+# BiocManager::install("methylKit") #Install methylKit
 require(methylKit) #Load methylKit
 require(vegan)
 require(scales)
@@ -83,16 +83,18 @@ analysisFiles <- list("../../data/Haws/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2
 ```
 
 ```{r}
-sampleMetadata <- data.frame("sampleID" = c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
+sampleMetadata <- read.csv("../../data/Haws/sample_metadata.csv") %>%
+  dplyr::select(-c(1)) %>%
+  arrange(sample_number) %>%
+  mutate("sampleID" = c("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
                                             "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
                                             "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
-                                            "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
-                             "ploidyTreatment" = c(rep(0, times = 12),
-                                                   rep(1, times = 12)),
-                             "pHTreatment" = c(rep(0, times = 6),
-                                               rep(1, times = 6),
-                                               rep(0, times = 6),
-                                               rep(1, times = 6))) #Create dataframe with metadata
+                                            "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6")) %>%
+  dplyr::rename(pH = ph) %>%
+  mutate(ploidyTreatment = case_when(ploidy == "3N" ~ 1,
+                                     ploidy == "2N" ~ 0)) %>%
+  mutate(pHTreatment = case_when(pH == "high" ~ 0,
+                                 pH == "low" ~ 0)) #Import metadata and modify for use with methylKit
 head(sampleMetadata) #Confirm dataframe creation
 ```
 
@@ -127,7 +129,7 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ## Sample-specific descriptive statistics
 
 ```{r}
-nFiles <- 24 #Count number of samples
+nFiles <- length(analysisFiles) #Count number of samples
 fileName <- data.frame("nameBase" = rep("general-stats/percent-CpG-methylation", times = nFiles),
                        "nameBase2" = rep("general-stats/percent-CpG-coverage", times = nFiles),
                        "sample.ID" = 1:24) #Create new dataframe for filenames
@@ -162,7 +164,8 @@ for(i in 1:nFiles) { #For each data file
 
 ```{r}
 methylationInformationFilteredCov5 <- methylKit::unite(processedFilteredFilesCov5,
-                                                       destrand = FALSE) #Combine all processed files into a single table. Use destrand = TRUE to not destrand. By default only bases with data in all samples will be kept
+                                                       destrand = FALSE,
+                                                       mc.cores = 2) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5) #Confirm unite
 ```
 
@@ -210,27 +213,60 @@ I will examine ploidy and treatment differences separately, using the other vari
 
 ## Ploidy differences
 
-### Create covariate matrix
+### Identify DML
+
+I will identify DML with and without covariates to determine if adding the covariate impacts DML identification.
+
+#### With covariates
 
 ```{r}
-covariatepH <- data.frame("pH" = c(rep("H", times = 6),
-                                   rep("L", times = 6),
-                                   rep("H", times = 6),
-                                   rep("L", times = 6))) #Create dataframe with pH covariate information
-head(covariatepH) #Check dataframe format
+differentialMethylationStatsPloidyCovar <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
+                                                                   covariates = as.data.frame(sampleMetadata$pH),
+                                                                   overdispersion = "MN", test = "Chisq",
+                                                                   mc.cores = 2) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH informatoin into a dataframe. Use 40 cores.
+head(differentialMethylationStatsPloidyCovar) #Look at differential methylation statistics
 ```
 
-### Identify DML
+```{r}
+diffMethStatsPloidyCovar25 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsPloidyCovar25$chr) #Count the number of DML
+head(diffMethStatsPloidyCovar25) #Confirm creation
+```
+
+```{r}
+diffMethStatsPloidyCovar50 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
+length(diffMethStatsPloidyCovar50$chr) #Count the number of DML
+head(diffMethStatsPloidyCovar50) #Confirm creation
+```
+
+```{r}
+diffMethStatsPloidyCovar75 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+length(diffMethStatsPloidyCovar75$chr) #Count the number of DML
+head(diffMethStatsPloidyCovar75) #Confirm creation
+```
+
+```{r}
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
+```
+
+```{r}
+write.csv(diffMethStatsPloidyCovar25, "DML/DML-ploidy-25-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsPloidyCovar50, "DML/DML-ploidy-50-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatsPloidyCovar75, "DML/DML-ploidy-75-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
+```
+
+#### Without covariates
 
 ```{r}
 differentialMethylationStatsPloidy <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
-                                                                   covariates = covariatepH,
-                                                                   overdispersion = "MN", test = "Chisq") #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
+                                                                   overdispersion = "MN", test = "Chisq",
+                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH informatoin into a dataframe. Use 40 cores.
 head(differentialMethylationStatsPloidy) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidy25 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
+diffMethStatsPloidy25 <- methylKit::getMethylDiff(differentialMethylationStatsPloidy, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
 length(diffMethStatsPloidy25$chr) #Count the number of DML
 head(diffMethStatsPloidy25) #Confirm creation
 ```
