@@ -211,10 +211,32 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 
 I will perform a beta-dispersion test with the methylation data to determine if there are differences in dispersion between ploidy conditions and pH treatments. If there are dispersion differences, I will need to apply an overdispersion correction to the data when identifying DML.
 
+```{r}
+head(sampleMetadata)
+```
 
 
 ```{r}
-dissim.meth <- vegdist(scale(methylationInformationFilteredCov5[c(5:601)]), "euclidean") #Create euclidean dissimilarity matrix to use for perMANOVA and PERMDISP
+#Code generated with assistance from Gemini
+
+methInfoDisp <- getData(methylationInformationFilteredCov5) %>% #Use methylKit convenience function to get data of of methylBase object
+  tidyr::unite(., "chr_start_end", chr:end, remove = TRUE) %>% #Combine chr, start, and end information to one columns
+  dplyr::select(-strand) %>% #Remove strand column
+  pivot_longer(
+    cols = -chr_start_end,
+    names_to = c(".value", "sample_number"),
+    names_pattern = "(coverage|numCs|numTs)(\\d+)") %>% #Pivot into a long format to separate the metric types from the sample numbers. The names_pattern regex splits your column names (like coverage1 or numCs24) into two pieces. The (coverage|numCs|numTs) part matches the text and sends it to .value (telling R these should remain as separate columns). The (\\d+) part captures the digits and places them into a new sample_id column.
+  pivot_wider(
+    names_from = chr_start_end,
+    values_from = c(coverage, numCs, numTs),
+    names_glue = "{.value}_{chr_start_end}") %>% #Pivot wider so that samples become rows and positions become columns. This takes your chr_start_end positions and spreads them out into columns. By passing coverage, numCs, numTs to values_from, it automatically pairs each position with each metric.
+  mutate(sample_number = as.numeric(sample_number)) %>% #Convert character column to numeric
+  right_join(x = (sampleMetadata %>% dplyr::select(c(sample_number:sampleID))) , y = ., by = "sample_number") #Join with sample metadata to get sampleID as well as treatment information in the dataframe
+head(methInfoDisp) #Confirm dataframe creation
+```
+
+```{r}
+dissim.meth <- vegdist(scale(methInfoDisp[c(5:5953594)]), "euclidean") #Create euclidean dissimilarity matrix to use for perMANOVA and PERMDISP
 ```
 
 ```{r}
