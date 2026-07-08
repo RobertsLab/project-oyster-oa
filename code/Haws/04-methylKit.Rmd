@@ -207,6 +207,57 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 #load("methylKit.RData") #Load R Data
 ```
 
+### Beta-dispersion test
+
+I will perform a beta-dispersion test with the methylation data to determine if there are differences in dispersion between ploidy conditions and pH treatments. If there are dispersion differences, I will need to apply an overdispersion correction to the data when identifying DML.
+
+
+
+```{r}
+dissim.meth <- vegdist(scale(methylationInformationFilteredCov5[c(5:601)]), "euclidean") #Create euclidean dissimilarity matrix to use for perMANOVA and PERMDISP
+```
+
+```{r}
+permanova.meth <- adonis2(dissim.meth ~ as.factor(ploidy)*as.factor(pH), data = methylationInformationFilteredCov5, method = 'eu', by = "terms") #Conduct global PERMANOVA to assess significance of trends in PCA. Scale metabolomics data and assess influence of ploidy, pH, and their interaction on methylation. Include "by = "terms"" to ensure test assesses significance for each term.
+permanova.meth #Significant influence of all factors
+```
+
+```{r}
+broom::tidy(permanova.meth) %>%
+  write.csv(., "PERMANOVA-results.csv", quote = FALSE) #Save PERMANOVA output
+```
+
+```{r}
+disp.meth.ploidy <- betadisper(dissim.meth, group = as.factor(methylationInformationFilteredCov5$treatment), type = 'centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
+plot(disp.meth.ploidy) #Dispersion differences exist
+boxplot(disp.meth.ploidy) #Show distance to group centroids, can clearly see dispersion differences between 30 and the other two
+anova(disp.meth.ploidy) #Variance is different between groups. Temperature significance is due to centroid and dispersion differences!
+```
+
+```{r}
+disp.meth.pH <- betadisper(dissim.meth, group = as.factor(methylationInformationFilteredCov5$day), type = 'centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
+plot(disp.meth.pH) #Similar dispersion, but some clear outliers for day 22
+boxplot(disp.meth.pH) #Similar dispersion differences, outliers seen more easily
+anova(disp.meth.pH) #Variance is the same between groups. pH significance is due to centroid differences!
+```
+
+```{r}
+disp.meth.ploidypH <- betadisper(dissim.meth, group = as.factor(methylationInformationFilteredCov5$treatment_pH), type = 'centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
+plot(disp.meth.ploidypH) #Dispersion differences exist, especially with 30_22
+boxplot(disp.meth.ploidypH) #Very clear dispersion differences for each unique treatment!
+anova(disp.meth.ploidypH) #Variance is different between groups. Interaction significance is due to centroid and dispersion differences!
+```
+
+```{r}
+rbind(broom::tidy(anova(disp.meth.ploidy)) %>%
+        mutate(var = "ploidy"),
+      broom::tidy(anova(disp.meth.pH)) %>%
+        mutate(var = "pH"),
+      broom::tidy(anova(disp.meth.ploidypH)) %>%
+        mutate(var = "interaction")) %>%
+  write.csv("PERMDISP-results.csv", quote = FALSE, row.names = FALSE) #Combine PERMDISP output for each variable and add specifics for which variable was tested. Save output
+```
+
 # Differentially methylated loci
 
 I will examine ploidy and treatment differences separately, using the other variable as a covariate.
@@ -222,8 +273,7 @@ I will identify DML with and without covariates to determine if adding the covar
 ```{r}
 differentialMethylationStatsPloidyCovar <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5,
                                                                    covariates = as.data.frame(sampleMetadata$pH),
-                                                                   overdispersion = "MN", test = "Chisq",
-                                                                   mc.cores = 2) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH informatoin into a dataframe. Use 40 cores.
+                                                                   mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
 head(differentialMethylationStatsPloidyCovar) #Look at differential methylation statistics
 ```
 
