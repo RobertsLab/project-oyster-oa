@@ -500,7 +500,154 @@ write_delim(diffMethStatspHCovar258, "DML/DML-pH-25-Covar-Cov5-8.bed", delim = "
 write_delim(diffMethStatspHCovar508, "DML/DML-pH-50-Covar-Cov5-8.bed", delim = "\t", quote = "none") #Save table a BED file
 ```
 
-## Summary table
+# Outlier removal testing
+
+Samples 3 and 14 are likely outliers. I will determine how outlier removal impacts DML identification. I will do this using all samples with no `min.per.group` modification.
+
+## Remove outliers from data
+
+```{r}
+analysisFilesOutRM <- list("../../data/Haws/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
+                           "../../data/Haws/zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov") #Put all .cov files into a list for analysis.
+```
+
+```{r}
+processedFilesOutRM <- methylKit::methRead(analysisFilesOutRM,
+                                           sample.id = list("2H-1", "2H-2", "2H-4", "2H-5", "2H-6",
+                                                            "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
+                                                            "3H-1", "3H-3", "3H-4", "3H-5", "3H-6",
+                                                            "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
+                                           assembly = "roslin",
+                                           treatment = sampleMetadata$ploidyTreatment[-c(3,14)],
+                                           pipeline = "bismarkCoverage",
+                                           mincov = 2) #Process files. Treatment specified based on ploidy status. Use mincov = 2 to quickly process reads.
+```
+
+```{r}
+processedFilesOutRMCov5 <- methylKit::filterByCoverage(processedFilesOutRM,
+                                                       lo.count = 5, lo.perc = NULL,
+                                                       high.count = NULL, high.perc = 99.9) %>%
+  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
+```
+
+```{r}
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
+```
+
+## Remake clustering and PCA
+
+```{r}
+methylationInformationFilteredRMCov5 <- methylKit::unite(processedFilesOutRMCov5,
+                                                         destrand = FALSE,
+                                                         mc.cores = 2) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+head(methylationInformationFilteredRMCov5) #Confirm unite
+```
+
+```{r}
+jpeg(filename = "general-stats/Full-Sample-Pearson-Correlation-Plot-FilteredCov5Destrand-OutRM.jpeg", height = 1000, width = 1000) #Save file with designated name
+methylKit::getCorrelation(methylationInformationFilteredRMCov5, plot = TRUE) #Understand correlation between methylation patterns in different samples
+dev.off()
+```
+
+```{r}
+jpeg(filename = "general-stats/Full-Sample-CpG-Methylation-Clustering-FilteredCov5Destrand-OutRM.jpeg", height = 1000, width = 1000) #Save file with designated name
+methylKit::clusterSamples(methylationInformationFilteredRMCov5, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
+dev.off()
+```
+
+```{r}
+jpeg(filename = "general-stats/Full-Sample-Methylation-PCA-FilteredCov5Destrand-OutRM.jpeg", height = 1000, width = 1000) #Save file with designated name
+methylKit::PCASamples(methylationInformationFilteredRMCov5) #Run a PCA analysis on percent methylation for all samples
+dev.off() #Turn off plotting device
+```
+
+```{r}
+jpeg(filename = "general-stats/Full-Sample-Methylation-Screeplot-FilteredCov5Destrand-OutRM.jpeg", height = 1000, width = 1000) #Save file with designated name
+methylKit::PCASamples(methylationInformationFilteredRMCov5, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
+dev.off()
+```
+
+```{r}
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
+```
+
+## Identify differentially methylated loci
+
+### Ploidy DML
+
+```{r}
+differentialMethylationStatsPloidyCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
+                                                                                covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
+                                                                                mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+head(differentialMethylationStatsPloidyCovarOutRMAll) #Look at differential methylation statistics
+```
+
+```{r}
+diffMethStatsPloidyCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatsPloidyCovar25RMAll$chr) #Count the number of DML
+head(diffMethStatsPloidyCovar25RMAll) #Confirm creation
+```
+
+```{r}
+diffMethStatsPloidyCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
+length(diffMethStatsPloidyCovar50RMAll$chr) #Count the number of DML
+head(diffMethStatsPloidyCovar50RMAll) #Confirm creation
+```
+
+```{r}
+write_delim(diffMethStatsPloidyCovar25RMAll, "DML/DML-ploidy-25-Covar-Cov5-All-OutRM.bed", delim = "\t", quote = "none") #Save table a BED file
+write_delim(diffMethStatsPloidyCovar50RMAll, "DML/DML-ploidy-50-Covar-Cov5-All-OutRM.bed", delim = "\t", quote = "none") #Save table a BED file
+```
+
+### pH DML
+
+```{r}
+differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
+                                                                                covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
+                                                                                mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+head(differentialMethylationStatspHCovarOutRMAll) #Look at differential methylation statistics
+```
+
+```{r}
+diffMethStatspHCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatspHCovar25RMAll$chr) #Count the number of DML
+head(diffMethStatspHCovar25RMAll) #Confirm creation
+```
+
+```{r}
+diffMethStatspHCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
+length(diffMethStatspHCovar50RMAll$chr) #Count the number of DML
+head(diffMethStatspHCovar50RMAll) #Confirm creation
+```
+
+```{r}
+write_delim(diffMethStatspHCovar25RMAll, "DML/DML-pH-25-Covar-Cov5-All-OutRM.bed", delim = "\t", quote = "none") #Save table a BED file
+write_delim(diffMethStatspHCovar50RMAll, "DML/DML-pH-50-Covar-Cov5-All-OutRM.bed", delim = "\t", quote = "none") #Save table a BED file
+```
+
+# Summary table
 
 ```{r}
 summaryDML <- data.frame("min.per.group" = rev(8:12),
