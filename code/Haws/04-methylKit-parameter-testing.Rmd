@@ -650,27 +650,31 @@ write_delim(diffMethStatspHCovar50RMAll, "DML/DML-pH-50-Covar-Cov5-All-OutRM.bed
 # Summary table
 
 ```{r}
-summaryDML <- data.frame("min.per.group" = rev(8:12),
+summaryDML <- data.frame("min.per.group" = c(rev(8:12), 12),
                          "ploidy-DML-25" = c(length(diffMethStatsPloidyCovar25All),
                                              length(diffMethStatsPloidyCovar2511),
                                              length(diffMethStatsPloidyCovar2510),
                                              length(diffMethStatsPloidyCovar259),
-                                             length(diffMethStatsPloidyCovar258)),
+                                             length(diffMethStatsPloidyCovar258),
+                                             length(diffMethStatsPloidyCovar25RMAll)),
                          "ploidy-DML-50" = c(length(diffMethStatsPloidyCovar50All),
                                              length(diffMethStatsPloidyCovar5011),
                                              length(diffMethStatsPloidyCovar5010),
                                              length(diffMethStatsPloidyCovar509),
-                                             length(diffMethStatsPloidyCovar508)),
+                                             length(diffMethStatsPloidyCovar508),
+                                             length(diffMethStatsPloidyCovar50RMAll)),
                          "pH-DML-25" = c(length(diffMethStatspHCovar25All),
                                          length(diffMethStatspHCovar2511),
                                          length(diffMethStatspHCovar2510),
                                          length(diffMethStatspHCovar259),
-                                         length(diffMethStatspHCovar258)),
+                                         length(diffMethStatspHCovar258),
+                                         length(diffMethStatspHCovar25RMAll)),
                          "pH-DML-50" = c(length(diffMethStatspHCovar50All),
                                          length(diffMethStatspHCovar5011),
                                          length(diffMethStatspHCovar5010),
                                          length(diffMethStatspHCovar509),
-                                         length(diffMethStatspHCovar508))) #Create table with number of DML from each 
+                                         length(diffMethStatspHCovar508),
+                                         length(diffMethStatspHCovar50RMAll))) #Create table with number of DML from each 
 ```
 
 
