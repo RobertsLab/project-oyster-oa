@@ -196,6 +196,8 @@ methylKit::PCASamples(methylationInformationFilteredCov5) #Run a PCA analysis on
 dev.off() #Turn off plotting device
 ```
 
+Looking at the PCA, samples 3H-2 (14) and 2H-3 (3) are likely outliers, with samples 2H-1 (1) and 3H-3 (15) also looking like potential outliers. Samples 3 and 14 had 36-39 M sequences, which were the two lowest number of sequences out of all the samples. There were no sequencing or trimming criteria that flagged me to remove samples 1 and 15.
+
 ```{r}
 jpeg(filename = "general-stats/Full-Sample-Methylation-Screeplot-FilteredCov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
 methylKit::PCASamples(methylationInformationFilteredCov5, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
