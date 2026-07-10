@@ -94,7 +94,7 @@ sampleMetadata <- read.csv("../../data/Haws/sample_metadata.csv") %>%
   mutate(ploidyTreatment = case_when(ploidy == "3N" ~ 1,
                                      ploidy == "2N" ~ 0)) %>%
   mutate(pHTreatment = case_when(pH == "high" ~ 0,
-                                 pH == "low" ~ 0)) #Import metadata and modify for use with methylKit
+                                 pH == "low" ~ 1)) #Import metadata and modify for use with methylKit
 head(sampleMetadata) #Confirm dataframe creation
 ```
 
@@ -346,46 +346,37 @@ write.csv(diffMethStatsPloidy75, "DML/DML-ploidy-75-Cov5.csv", quote = FALSE) #S
 ### Assign treatment information
 
 ```{r}
-methylationInformationFilteredCov5T <- methylKit::reorganize(methylationInformationFilteredCov5,
+methylationInformationFilteredCov5pH <- methylKit::reorganize(methylationInformationFilteredCov5,
                                                              sample.id = sampleMetadata$sampleID,
-                                                             treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification.
-head(methylationInformationFilteredCov5T) #Confirm unite
-```
-
-### Create covariate matrix
-
-```{r}
-covariatePloidy <- data.frame("ploidy" = c(rep("2N", times = 12),
-                                           rep("3N", times = 12))) #Create dataframe with ploidy covariate information
-head(covariatePloidy) #Check dataframe format
+                                                             treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification. This is possible because loci with 5x coverage in all samples were retained. Modifying min.per.group would mean that another unite would have to be done.
+head(methylationInformationFilteredCov5pH) #Confirm unite
 ```
 
 ### Identify DML
 
 ```{r}
-differentialMethylationStatsTreatment <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5T,
-                                                                      covariates = covariatePloidy,
-                                                                      overdispersion = "MN", test = "Chisq",
+differentialMethylationStatspHCovar <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH,
+                                                                      covariates = as.data.frame(sampleMetadata$ploidy),
                                                                       mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate. Use 40 cores.
-head(differentialMethylationStatsTreatment) #Look at differential methylation statistics
+head(differentialMethylationStatspHCovar) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsTreatment25 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 25, qvalue = 0.01) #Identify loci that are at least 75% different
-length(diffMethStatsTreatment25$chr) #Count the number of DML
-head(diffMethStatsTreatment25) #Confirm creation
+diffMethStatspHCovar25 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar, difference = 25, qvalue = 0.01) #Identify loci that are at least 75% different
+length(differentialMethylationStatspHCovar$chr) #Count the number of DML
+head(differentialMethylationStatspHCovar) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsTreatment50 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsTreatment50$chr) #Count the number of DML
-head(diffMethStatsTreatment50) #Confirm creation
+diffMethStatspHCovar50 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+length(diffMethStatspHCovar50$chr) #Count the number of DML
+head(diffMethStatspHCovar50) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsTreatment75 <- methylKit::getMethylDiff(differentialMethylationStatsTreatment, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
-length(diffMethStatsTreatment75$chr) #Count the number of DML
-head(diffMethStatsTreatment75) #Confirm creation
+diffMethStatspHCovar75 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar, difference = 75, qvalue = 0.01) #Identify loci that are at least 75% different
+length(diffMethStatspHCovar75$chr) #Count the number of DML
+head(diffMethStatspHCovar75) #Confirm creation
 ```
 
 ```{r}
@@ -394,9 +385,9 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ```
 
 ```{r}
-write.csv(diffMethStatsTreatment25, "DML/DML-pH-25-Cov5.csv", quote = FALSE) #Save table as .csv
-write.csv(diffMethStatsTreatment50, "DML/DML-pH-50-Cov5.csv", quote = FALSE) #Save table as .csv
-write.csv(diffMethStatsTreatment75, "DML/DML-pH-75-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatspHCovar25, "DML/DML-pH-25-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatspHCovar50, "DML/DML-pH-50-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
+write.csv(diffMethStatspHCovar75, "DML/DML-pH-75-Covar-Cov5.csv", quote = FALSE) #Save table as .csv
 ```
 
 # Figures
