@@ -94,7 +94,7 @@ sampleMetadata <- read.csv("../../data/Haws/sample_metadata.csv") %>%
   mutate(ploidyTreatment = case_when(ploidy == "3N" ~ 1,
                                      ploidy == "2N" ~ 0)) %>%
   mutate(pHTreatment = case_when(pH == "high" ~ 0,
-                                 pH == "low" ~ 0)) #Import metadata and modify for use with methylKit
+                                 pH == "low" ~ 1)) #Import metadata and modify for use with methylKit
 head(sampleMetadata) #Confirm dataframe creation
 ```
 
