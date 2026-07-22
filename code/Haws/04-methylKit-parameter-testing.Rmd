@@ -185,7 +185,7 @@ head(methylationInformationFilteredCov5Ploidy8) #Confirm unite
 ## pH
 
 ```{r}
-methylationInformationFilteredCov5pHAll <- methylKit::reorganize(methylationInformationFilteredCov5,
+methylationInformationFilteredCov5pHAll <- methylKit::reorganize(methylationInformationFilteredCov5PloidyAll,
                                                                  sample.id = sampleMetadata$sampleID,
                                                                  treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification (can use only when not modifying min.per.group)
 head(methylationInformationFilteredCov5pHAll) #Confirm unite
