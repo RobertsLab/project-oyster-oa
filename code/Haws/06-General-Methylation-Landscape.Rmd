@@ -184,41 +184,37 @@ head(cpgFeatureOverlapsPercents) #Check calculations
 ```
 
 ```{r}
-pdf("figures/CpG-feature-overlaps.pdf", width = 11, height = 8.5)
-
-par(mar = c(1,5,0,1), oma = c(3, 1, 1, 11)) #Change figure boundaries
-
-barplot(t(t(cpgFeatureOverlapsPercents[,c(1:4)])), 
-        col= rev(plotColors), 
-        axes = FALSE, 
-        names.arg = c("All 5x CpGs", "High", "Moderate", "Low"), cex.names = 1.5,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-
-par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
-plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.57, y = 0.87, 
-       xpd = TRUE,
-       legend = c("Exon UTR", 
-                  "CDS", 
-                  "Introns", 
-                  "Upstream Flank", 
-                  "Downstream Flank", 
-                  "lncRNA", 
-                  "TE", 
-                  "Intergenic"),
-       pch = 22, 
-        col = "black", 
-        pt.bg = rev(plotColors),
-       bty = "n",
-       cex = 1.5, 
-       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
-
-dev.off()
+cpgFeatureOverlapsPercents %>% #Take dataframe
+  rownames_to_column("genomeFeature") %>% #Make rownames into a genomeFeature column
+  mutate(genomeFeatureOrdered = case_when(genomeFeature == "exonUTR" ~ "1exonUTR",
+                                          genomeFeature == "CDS" ~ "2CDS",
+                                          genomeFeature == "intron" ~ "3intron",
+                                          genomeFeature == "upstream" ~ "4upstream",
+                                          genomeFeature == "downstream" ~ "5downstream",
+                                          genomeFeature ==  "lncRNA" ~ "6lncRNA",
+                                          genomeFeature == "TE" ~ "7TE",
+                                          genomeFeature == "intergenic" ~ "8intergenic")) %>% #Add numbers to the genomeFeature names so they are ordered correctly in the legend
+  pivot_longer(., cols = 2:5, names_to = "category") %>% #Pivot CpG percent columns so that the dataframe is in long format
+  ggplot(., aes(x = category, y = value, fill = genomeFeatureOrdered)) + #Create a plot with methylation category on the x-axis, percent CpGs on the y-axis, and color indicated by genome feature
+  geom_bar(stat = "identity", color = "grey10") + #Stacked barplot with black outlines around the bars
+  scale_x_discrete(name = "",
+                   labels = c("All CpGs", "High", "Moderate", "Low")) + #Modiy x-axis
+  scale_y_continuous(name = "% CpGs",
+                     breaks = seq(0, 100, 10)) + #Modify y-axis
+  scale_fill_manual(name = "Genome Feature",
+                    values = plotColors,
+                    labels = c("Exon UTR",
+                               "CDS",
+                               "Intron",
+                               "Upstream Flanks",
+                               "Downstream Flanks",
+                               "lncRNA",
+                               "TE",
+                               "Intergenic")) + #Modify legend
+  theme_classic(base_size = 15) #Classic theme with minimum font size specified
+ggsave("figures/CpG-feature-overlaps.pdf", width = 11, height = 8.5)
 ```
+
 
 ```{r}
 save.image("../../project-oyster-oa.RData") #Save RData
