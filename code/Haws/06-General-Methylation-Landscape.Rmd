@@ -10,7 +10,7 @@ In this script, I'll create summary tables for genomic location information, run
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "/Users/yaaminivenkataraman/Documents/project-oyster-oa/analyses/Haws_06-methylation-landscape/") #Set root directory
+knitr::opts_knit$set(root.dir = normalizePath("../../analyses/Haws_06-methylation-landscape/")) #Set root directory
 ```
 
 ```{r}
@@ -24,9 +24,9 @@ getwd()
 #install.packages("RColorBrewer")
 #install.packages("tidyverse")
 
-require(broom)
-require(RColorBrewer)
-require(tidyverse)
+library(broom)
+library(RColorBrewer)
+library(tidyverse)
 ```
 
 # Obtain session information
@@ -39,7 +39,7 @@ sessionInfo()
 
 ```{r}
 display.brewer.all()
-plotColors <- brewer.pal(8, "Purples") #Create a color scheme
+plotColors <- brewer.pal(8, "Greys") #Create a color scheme
 ```
 
 # Genomic location of methylated CpGs
@@ -49,49 +49,49 @@ My goal is to 1) understand statistical differences between distribution of CG m
 ## Import file counts
 
 ```{r}
-exonUTROverlaps <- read.table("zr3644_5x-exonUTR-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+exonUTROverlaps <- read.table("zr3644_5x-NO-SNPs-exonUTR-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 exonUTROverlaps <- exonUTROverlaps[73:75,] #Retain final rows
 head(exonUTROverlaps) #Confirm import
 ```
 
 ```{r}
-CDSOverlaps <- read.table("zr3644_5x-CDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+CDSOverlaps <- read.table("zr3644_5x-NO-SNPs-CDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 CDSOverlaps <- CDSOverlaps[73:75,] #Retain final rows
 head(CDSOverlaps) #Confirm import
 ```
 
 ```{r}
-intronOverlaps <- read.table("zr3644_5x-intron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+intronOverlaps <- read.table("zr3644_5x-NO-SNPs-intron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 intronOverlaps <- intronOverlaps[73:75,] #Retain final rows
 head(intronOverlaps) #Confirm import
 ```
 
 ```{r}
-upstreamOverlaps <- read.table("zr3644_5x-upstreamFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+upstreamOverlaps <- read.table("zr3644_5x-NO-SNPs-upstreamFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 upstreamOverlaps <- upstreamOverlaps[73:75,] #Retain final rows
 head(upstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-downstreamOverlaps <- read.table("zr3644_5x-downstreamFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+downstreamOverlaps <- read.table("zr3644_5x-NO-SNPs-downstreamFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 downstreamOverlaps <- downstreamOverlaps[73:75,] #Retain final rows
 head(downstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-lncRNAOverlaps <- read.table("zr3644_5x-lncRNA-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+lncRNAOverlaps <- read.table("zr3644_5x-NO-SNPs-lncRNA-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 lncRNAOverlaps <- lncRNAOverlaps[73:75,] #Retain final rows
 head(lncRNAOverlaps) #Confirm import
 ```
 
 ```{r}
-TEOverlaps <- read.table("zr3644_5x-TE-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+TEOverlaps <- read.table("zr3644_5x-NO-SNPs-TE-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 TEOverlaps <- TEOverlaps[73:75,] #Retain final rows
 head(TEOverlaps) #Confirm import
 ```
 
 ```{r}
-intergenicOverlaps <- read.table("zr3644_5x-intergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
+intergenicOverlaps <- read.table("zr3644_5x-NO-SNPs-intergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file overlaps
 intergenicOverlaps <- intergenicOverlaps[73:75,] #Retain final rows
 head(intergenicOverlaps) #Confirm import
 ```
