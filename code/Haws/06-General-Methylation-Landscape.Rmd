@@ -215,8 +215,27 @@ cpgFeatureOverlapsPercents %>% #Take dataframe
 ggsave("figures/CpG-feature-overlaps.pdf", width = 11, height = 8.5)
 ```
 
+# Compare methylation between diploids and triploids
 
 ```{r}
-save.image("../../project-oyster-oa.RData") #Save RData
+diploidTriploidAverages <- read.delim("/Volumes/web/spartina/project-oyster-oa/Haws/methylation-landscape/ploidy-methylation-averages.bedgraph", sep = "\t", header = FALSE, col.names = c("diploidMeth", "triploidMeth")) #Import average methylation in diploids and triploids and assign column names
+head(diploidTriploidAverages) #Confirm file import
 ```
+
+```{r}
+sum(diploidTriploidAverages$diploidMeth > diploidTriploidAverages$triploidMeth) #3321186 loci with higher methylation in diploids than triploids
+sum(diploidTriploidAverages$diploidMeth == diploidTriploidAverages$triploidMeth) #3597325 loci with equal methylation in diploids and triploids
+sum(diploidTriploidAverages$diploidMeth < diploidTriploidAverages$triploidMeth) #3295477 loci with lower methylation in diploids than triploids
+```
+
+
+
+
+
+
+
+
+
+
+
 
