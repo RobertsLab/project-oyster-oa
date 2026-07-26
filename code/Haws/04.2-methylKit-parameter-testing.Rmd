@@ -11,12 +11,17 @@ In this script, I will assess different parameters for DML identification.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+dir.create("../../analyses/Haws_04.2-methylKit/DML", recursive = TRUE, showWarnings = FALSE) #Create output directories if they do not exist. normalizePath() below silently returns an unresolved relative path if the target is missing, which breaks every relative output path in this script
+dir.create("../../analyses/Haws_04.2-methylKit/general-stats", recursive = TRUE, showWarnings = FALSE)
 knitr::opts_knit$set(root.dir = normalizePath("../../analyses/Haws_04.2-methylKit/")) #Set root directory
 ```
 
 ```{r}
 getwd()
 ```
+
+
+
 
 # Install packages
 
@@ -141,7 +146,7 @@ head(methylationInformationFilteredCov5PloidyAll) #Confirm unite
 methylationInformationFilteredCov5Ploidy11 <- methylKit::unite(processedFilteredFilesCov5,
                                                                destrand = FALSE,
                                                                mc.cores = 2,
-                                                               min.per.group = 11) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                               min.per.group = 11L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5Ploidy11) #Confirm unite
 ```
 
@@ -149,7 +154,7 @@ head(methylationInformationFilteredCov5Ploidy11) #Confirm unite
 methylationInformationFilteredCov5Ploidy10 <- methylKit::unite(processedFilteredFilesCov5,
                                                                destrand = FALSE,
                                                                mc.cores = 2,
-                                                               min.per.group = 10) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                               min.per.group = 10L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5Ploidy10) #Confirm unite
 ```
 
@@ -157,7 +162,7 @@ head(methylationInformationFilteredCov5Ploidy10) #Confirm unite
 methylationInformationFilteredCov5Ploidy9 <- methylKit::unite(processedFilteredFilesCov5,
                                                               destrand = FALSE,
                                                               mc.cores = 2,
-                                                              min.per.group = 9) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                              min.per.group = 9L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5Ploidy9) #Confirm unite
 ```
 
@@ -165,16 +170,16 @@ head(methylationInformationFilteredCov5Ploidy9) #Confirm unite
 methylationInformationFilteredCov5Ploidy8 <- methylKit::unite(processedFilteredFilesCov5,
                                                               destrand = FALSE,
                                                               mc.cores = 2,
-                                                              min.per.group = 8) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                              min.per.group = 8L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5Ploidy8) #Confirm unite
 ```
 
 ## pH
 
 ```{r}
-methylationInformationFilteredCov5pHAll <- methylKit::reorganize(methylationInformationFilteredCov5,
+methylationInformationFilteredCov5pHAll <- methylKit::reorganize(methylationInformationFilteredCov5PloidyAll,
                                                                  sample.id = sampleMetadata$sampleID,
-                                                                 treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5 to provide pH treatment specification (can use only when not modifying min.per.group)
+                                                                 treatment = sampleMetadata$pHTreatment) #Reorganize methylationInformationFilteredCov5PloidyAll to provide pH treatment specification (can use only when not modifying min.per.group)
 head(methylationInformationFilteredCov5pHAll) #Confirm unite
 ```
 
@@ -191,7 +196,7 @@ processedFilespH <- methylKit::methRead(analysisFiles,
 ```
 
 ```{r}
-processedFilteredFilesCov5pH <- methylKit::filterByCoverage(processedFiles,
+processedFilteredFilesCov5pH <- methylKit::filterByCoverage(processedFilespH,
                                                             lo.count = 5, lo.perc = NULL,
                                                             high.count = NULL, high.perc = 99.9) %>%
   methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
@@ -201,7 +206,7 @@ processedFilteredFilesCov5pH <- methylKit::filterByCoverage(processedFiles,
 methylationInformationFilteredCov5pH11 <- methylKit::unite(processedFilteredFilesCov5pH,
                                                            destrand = FALSE,
                                                            mc.cores = 2,
-                                                           min.per.group = 11) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                           min.per.group = 11L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5pH11) #Confirm unite
 ```
 
@@ -209,7 +214,7 @@ head(methylationInformationFilteredCov5pH11) #Confirm unite
 methylationInformationFilteredCov5pH10 <- methylKit::unite(processedFilteredFilesCov5pH,
                                                            destrand = FALSE,
                                                            mc.cores = 2,
-                                                           min.per.group = 10) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                           min.per.group = 10L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5pH10) #Confirm unite
 ```
 
@@ -217,7 +222,7 @@ head(methylationInformationFilteredCov5pH10) #Confirm unite
 methylationInformationFilteredCov5pH9 <- methylKit::unite(processedFilteredFilesCov5pH,
                                                           destrand = FALSE,
                                                           mc.cores = 2,
-                                                          min.per.group = 9) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                          min.per.group = 9L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5pH9) #Confirm unite
 ```
 
@@ -225,7 +230,7 @@ head(methylationInformationFilteredCov5pH9) #Confirm unite
 methylationInformationFilteredCov5pH8 <- methylKit::unite(processedFilteredFilesCov5pH,
                                                           destrand = FALSE,
                                                           mc.cores = 2,
-                                                          min.per.group = 8) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
+                                                          min.per.group = 8L) #Combine all processed files into a single table. Use destrand = FALSE to not destrand. By default only bases with data in all samples will be kept
 head(methylationInformationFilteredCov5pH8) #Confirm unite
 ```
 
@@ -255,6 +260,7 @@ head(diffMethStatsPloidyCovar50All) #Confirm creation
 ```
 
 ```{r}
+
 write_delim(diffMethStatsPloidyCovar25All, "DML/DML-ploidy-25-Covar-Cov5-All.bed", delim = "\t", quote = "none") #Save table a BED file
 write_delim(diffMethStatsPloidyCovar50All, "DML/DML-ploidy-50-Covar-Cov5-All.bed", delim = "\t", quote = "none") #Save table a BED file
 ```
@@ -364,8 +370,8 @@ write_delim(diffMethStatsPloidyCovar508, "DML/DML-ploidy-50-Covar-Cov5-8.bed", d
 ```
 
 ```{r}
-save.image("methylKit.RData") #Save R Data in case R crashes
-#load("methylKit.RData") #Load R Data
+#save.image("methylKit.RData") #Save R Data in case R crashes
+load("methylKit.RData") #Load R Data
 ```
 
 ## pH differences

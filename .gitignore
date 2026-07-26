@@ -137,3 +137,6 @@ genome-feature-files/cgigas_uk_roslin_v1_nonCDS.bed
 genome-feature-files/cgigas_uk_roslin_v1_rm.te.bed
 analyses/Haws_03-bismark-xbMagGiga1/multiqc_data/.DS_Store
 analyses/.DS_Store
+
+# Files >99MB (added 2026-07-26)
+code/Haws/methylKit.RData
