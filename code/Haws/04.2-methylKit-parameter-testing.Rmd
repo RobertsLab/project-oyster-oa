@@ -11,6 +11,8 @@ In this script, I will assess different parameters for DML identification.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+dir.create("../../analyses/Haws_04.2-methylKit/DML", recursive = TRUE, showWarnings = FALSE) #Create output directories if they do not exist. normalizePath() below silently returns an unresolved relative path if the target is missing, which breaks every relative output path in this script
+dir.create("../../analyses/Haws_04.2-methylKit/general-stats", recursive = TRUE, showWarnings = FALSE)
 knitr::opts_knit$set(root.dir = normalizePath("../../analyses/Haws_04.2-methylKit/")) #Set root directory
 ```
 
