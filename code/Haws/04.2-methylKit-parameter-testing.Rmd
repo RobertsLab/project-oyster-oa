@@ -18,6 +18,9 @@ knitr::opts_knit$set(root.dir = normalizePath("../../analyses/Haws_04.2-methylKi
 getwd()
 ```
 
+
+
+
 # Install packages
 
 ```{r, include = FALSE}
@@ -255,6 +258,7 @@ head(diffMethStatsPloidyCovar50All) #Confirm creation
 ```
 
 ```{r}
+
 write_delim(diffMethStatsPloidyCovar25All, "DML/DML-ploidy-25-Covar-Cov5-All.bed", delim = "\t", quote = "none") #Save table a BED file
 write_delim(diffMethStatsPloidyCovar50All, "DML/DML-ploidy-50-Covar-Cov5-All.bed", delim = "\t", quote = "none") #Save table a BED file
 ```
