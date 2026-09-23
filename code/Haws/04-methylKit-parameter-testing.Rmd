@@ -423,8 +423,10 @@ ploidyParameterTable <- data.frame("meth.dif" = rep(c(25, 50), times = 5), #Add 
                                       nrow(diffMethStatsPloidyCovar259), nrow(diffMethStatsPloidyCovar509),
                                       NA, NA) #Add number of DML (number of rows in table)
 )
-ploidyParameterTable #Confirm dataframe creation
+ploidyParameterTable #View dataframe
 ```
+
+Using `meth.diff` = 25 and `min.per.group` = 12 provides the best balance between rigor (high `min.per.group`) and a less conservative methylation threshold (`meth.diff`). Depending on the pH output, it may make sense to use `meth.diff` = 50 with a lower `min.per.group`.
 
 ## pH differences
 
