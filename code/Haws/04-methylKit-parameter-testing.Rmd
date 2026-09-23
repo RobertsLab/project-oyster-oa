@@ -779,6 +779,7 @@ summaryDML <- data.frame("min.per.group" = c(rev(8:12), 12),
                                          length(diffMethStatspHCovar509),
                                          length(diffMethStatspHCovar508),
                                          length(diffMethStatspHCovar50RMAll))) #Create table with number of DML from each 
+write.csv(summaryDML, "DML/DML-parameter-summary-table.csv", quote = FALSE, row.names = FALSE) #Save datatable
 ```
 
 
