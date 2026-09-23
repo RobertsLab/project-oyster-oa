@@ -382,6 +382,50 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 #load("methylKit.RData") #Load R Data
 ```
 
+### Compare output
+
+```{r}
+# Import saved BED files (only needed if starting with a clean environment)
+
+# All samples used
+diffMethStatsPloidyCovar25All <- read_delim("DML/DML-ploidy-25-Covar-Cov5-All.bed", delim = "\t")
+diffMethStatsPloidyCovar50All <- read_delim("DML/DML-ploidy-50-Covar-Cov5-All.bed", delim = "\t")
+
+#min.per.group = 11
+diffMethStatsPloidyCovar2511 <- read_delim("DML/DML-ploidy-25-Covar-Cov5-11.bed", delim = "\t")
+diffMethStatsPloidyCovar5011 <- read_delim("DML/DML-ploidy-50-Covar-Cov5-11.bed", delim = "\t")
+
+#min.per.group = 10
+diffMethStatsPloidyCovar2510 <- read_delim("DML/DML-ploidy-25-Covar-Cov5-10.bed", delim = "\t")
+diffMethStatsPloidyCovar5010 <- read_delim("DML/DML-ploidy-50-Covar-Cov5-10.bed", delim = "\t")
+
+#min.per.group = 9
+diffMethStatsPloidyCovar259 <- read_delim("DML/DML-ploidy-25-Covar-Cov5-9.bed", delim = "\t")
+diffMethStatsPloidyCovar509 <- read_delim("DML/DML-ploidy-50-Covar-Cov5-9.bed", delim = "\t")
+
+#min.per.group = 8
+# diffMethStatsPloidyCovar258 <- read_delim("DML/DML-ploidy-25-Covar-Cov5-8.bed", delim = "\t")
+# diffMethStatsPloidyCovar508 <- read_delim("DML/DML-ploidy-50-Covar-Cov5-8.bed", delim = "\t")
+```
+
+```{r}
+#Create a table: meth.diff, min.per.group, number of DML
+
+ploidyParameterTable <- data.frame("meth.dif" = rep(c(25, 50), times = 5), #Add meth.diff information
+                                      "min.per.group" = c(12, 12,
+                                                        11, 11,
+                                                        10, 10,
+                                                        9, 9,
+                                                        8, 8), #Add min.per.group information
+                                      "DML" = c(nrow(diffMethStatsPloidyCovar25All), nrow(diffMethStatsPloidyCovar50All),
+                                      nrow(diffMethStatsPloidyCovar2511), nrow(diffMethStatsPloidyCovar5011),
+                                      nrow(diffMethStatsPloidyCovar2510), nrow(diffMethStatsPloidyCovar5010),
+                                      nrow(diffMethStatsPloidyCovar259), nrow(diffMethStatsPloidyCovar509),
+                                      NA, NA) #Add number of DML (number of rows in table)
+)
+ploidyParameterTable #Confirm dataframe creation
+```
+
 ## pH differences
 
 ### All samples
@@ -514,6 +558,50 @@ write_delim(diffMethStatspHCovar258, "DML/DML-pH-25-Covar-Cov5-8.bed", delim = "
 write_delim(diffMethStatspHCovar508, "DML/DML-pH-50-Covar-Cov5-8.bed", delim = "\t", quote = "none") #Save table a BED file
 ```
 
+### Compare output
+
+```{r}
+# Import saved BED files (only needed if starting with a clean environment)
+
+# All samples used
+diffMethStatspHCovar25All <- read_delim("DML/DML-pH-25-Covar-Cov5-All.bed", delim = "\t")
+diffMethStatspHCovar50All <- read_delim("DML/DML-pH-50-Covar-Cov5-All.bed", delim = "\t")
+
+#min.per.group = 11
+diffMethStatspHCovar2511 <- read_delim("DML/DML-pH-25-Covar-Cov5-11.bed", delim = "\t")
+diffMethStatspHCovar5011 <- read_delim("DML/DML-pH-50-Covar-Cov5-11.bed", delim = "\t")
+
+#min.per.group = 10
+diffMethStatspHCovar2510 <- read_delim("DML/DML-pH-25-Covar-Cov5-10.bed", delim = "\t")
+diffMethStatspHCovar5010 <- read_delim("DML/DML-pH-50-Covar-Cov5-10.bed", delim = "\t")
+
+#min.per.group = 9
+diffMethStatspHCovar259 <- read_delim("DML/DML-pH-25-Covar-Cov5-9.bed", delim = "\t")
+diffMethStatspHCovar509 <- read_delim("DML/DML-pH-50-Covar-Cov5-9.bed", delim = "\t")
+
+#min.per.group = 8
+# diffMethStatspHCovar258 <- read_delim("DML/DML-pH-25-Covar-Cov5-8.bed", delim = "\t")
+# diffMethStatspHCovar508 <- read_delim("DML/DML-pH-50-Covar-Cov5-8.bed", delim = "\t")
+```
+
+```{r}
+#Create a table: meth.diff, min.per.group, number of DML
+
+pHParameterTable <- data.frame("meth.dif" = rep(c(25, 50), times = 5), #Add meth.diff information
+                                      "min.per.group" = c(12, 12,
+                                                        11, 11,
+                                                        10, 10,
+                                                        9, 9,
+                                                        8, 8), #Add min.per.group information
+                                      "DML" = c(nrow(diffMethStatspHCovar25All), nrow(diffMethStatspHCovar50All),
+                                      nrow(diffMethStatspHCovar2511), nrow(diffMethStatspHCovar5011),
+                                      nrow(diffMethStatspHCovar2510), nrow(diffMethStatspHCovar5010),
+                                      nrow(diffMethStatspHCovar259), nrow(diffMethStatspHCovar509),
+                                      NA, NA) #Add number of DML (number of rows in table)
+)
+pHParameterTable #Confirm dataframe creation
+```
+
 # Outlier removal testing
 
 Samples 3 and 14 are likely outliers. I will determine how outlier removal impacts DML identification. I will do this using all samples with no `min.per.group` modification.
@@ -639,8 +727,8 @@ write_delim(diffMethStatsPloidyCovar50RMAll, "DML/DML-ploidy-50-Covar-Cov5-All-O
 
 ```{r}
 differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
-                                                                                covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
-                                                                                mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                            covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
+                                                                            mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
 head(differentialMethylationStatspHCovarOutRMAll) #Look at differential methylation statistics
 ```
 
