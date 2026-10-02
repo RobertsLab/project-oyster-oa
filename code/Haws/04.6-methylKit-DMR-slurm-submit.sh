@@ -42,24 +42,31 @@ rmOut="${outDir}/downloads/GCF_902806645.1_cgigas_uk_roslin_v1_rm.out.gz"
 common=(--parsable --requeue --account="$ACCOUNT" --partition="$PARTITION" --chdir="$outDir")
 job="${CODE_DIR}/04.6-methylKit-DMR-slurm.job"
 afterok() { [ $# -gt 0 ] && echo "--dependency=afterok:$(IFS=:; echo "$*")"; return 0; }
+# ID of a queued or running job with this name. Lets a second submission wait for prep, regions, segments, or count jobs from
+# an earlier submission instead of running them again. Job names include the settings that change their output
+queued() { squeue -h -u "$USER" -n "$1" -t PENDING,CONFIGURING,RUNNING,REQUEUED -o %i | head -1; }
 
 # prep: skipped if already finished for this HI_PERC
 prepIDs=()
+prepName="04.6-prep-hiperc${HI_PERC}"
 if [ -f "${outDir}/prep-hiperc${HI_PERC}/prep-complete" ]; then
   echo "prep already complete for HI_PERC=${HI_PERC}, skipping"
+elif [ -n "$(queued "$prepName")" ]; then
+  prepIDs=($(queued "$prepName"))
+  echo "prep: waiting for queued job ${prepIDs[0]}"
 else
-  prepIDs=($(sbatch "${common[@]}" --job-name=04.6-prep --cpus-per-task=4 --mem=120G --time=6:00:00 \
+  prepIDs=($(sbatch "${common[@]}" --job-name="$prepName" --cpus-per-task=4 --mem=120G --time=6:00:00 \
     --output=logs/%x_%j.out "$job" prep))
   echo "prep: ${prepIDs[0]}"
 fi
 
 # regions and segments: only submitted if a requested region set needs them
-regionIDs=()
-segmentIDs=()
+regionIDs=($(queued 04.6-regions))
+segmentIDs=($(queued "04.6-segments-hiperc${HI_PERC}"))
 for r in "${regionSets[@]}"; do
   if [[ "$r" == segments ]]; then
     if [ ! -f "${outDir}/segments-hiperc${HI_PERC}/segments-complete" ] && [ ${#segmentIDs[@]} -eq 0 ]; then
-      segmentIDs=($(sbatch "${common[@]}" $(afterok "${prepIDs[@]}") --job-name=04.6-segments --cpus-per-task=4 --mem=200G \
+      segmentIDs=($(sbatch "${common[@]}" $(afterok "${prepIDs[@]}") --job-name="04.6-segments-hiperc${HI_PERC}" --cpus-per-task=4 --mem=200G \
         --time=1-00:00:00 --output=logs/%x_%j.out "$job" segments))
       echo "segments: ${segmentIDs[0]}"
     fi
@@ -76,13 +83,17 @@ done
 dmrIDs=()
 for r in "${regionSets[@]}"; do
   countIDs=()
+  countName="04.6-count-hiperc${HI_PERC}-${r}-cb${COV_BASES}"
   if [ -f "${outDir}/count-hiperc${HI_PERC}-${r}-cb${COV_BASES}/count-complete" ]; then
     echo "count already complete for ${r}, COV_BASES=${COV_BASES}, skipping"
+  elif [ -n "$(queued "$countName")" ]; then
+    countIDs=($(queued "$countName"))
+    echo "count ${r}: waiting for queued job ${countIDs[0]}"
   else
     if [[ "$r" == segments ]]; then upstream=("${prepIDs[@]}" "${segmentIDs[@]}")
     elif [[ "$r" == tile* ]]; then upstream=("${prepIDs[@]}")
     else upstream=("${prepIDs[@]}" "${regionIDs[@]}"); fi
-    countIDs=($(REGIONS="$r" sbatch "${common[@]}" $(afterok "${upstream[@]}") --job-name=04.6-count-${r} --cpus-per-task=4 \
+    countIDs=($(REGIONS="$r" sbatch "${common[@]}" $(afterok "${upstream[@]}") --job-name="$countName" --cpus-per-task=4 \
       --mem="$COUNT_MEM" --time=12:00:00 --output=logs/%x_%j.out "$job" count))
     echo "count ${r}: ${countIDs[0]}"
   fi
