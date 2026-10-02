@@ -60,6 +60,14 @@ sessionInfo()
 
 # Process methylation data
 
+```{bash}
+#Download coverage files from gannet directly into the data folder. Use --no-clobber to skip files that already exist
+wget -r \
+--no-check-certificate --no-directories --no-parent --no-clobber --reject "index.html*" \
+-P ../../data/Haws \
+-A "*CpG_report.merged_CpG_evidence.cov" https://gannet.fish.washington.edu/spartina/project-oyster-oa/Haws/bismark-2/
+```
+
 ```{r}
 analysisFiles <- list("../../data/Haws/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
                       "../../data/Haws/zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
@@ -370,8 +378,8 @@ write_delim(diffMethStatsPloidyCovar508, "DML/DML-ploidy-50-Covar-Cov5-8.bed", d
 ```
 
 ```{r}
-#save.image("methylKit.RData") #Save R Data in case R crashes
-load("methylKit.RData") #Load R Data
+save.image("methylKit.RData") #Save R Data in case R crashes
+#load("methylKit.RData") #Load R Data
 ```
 
 ## pH differences
@@ -630,9 +638,16 @@ write_delim(diffMethStatsPloidyCovar50RMAll, "DML/DML-ploidy-50-Covar-Cov5-All-O
 ### pH DML
 
 ```{r}
-differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
-                                                                                covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
-                                                                                mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+methylationInformationFilteredRMCov5pH <- methylKit::reorganize(methylationInformationFilteredRMCov5,
+                                                                sample.id = sampleMetadata$sampleID[-c(3,14)],
+                                                                treatment = sampleMetadata$pHTreatment[-c(3,14)]) #Reorganize methylationInformationFilteredRMCov5 to provide pH treatment specification
+head(methylationInformationFilteredRMCov5pH) #Confirm reorganize
+```
+
+```{r}
+differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5pH,
+                                                                                covariates = as.data.frame(sampleMetadata$ploidy[-c(3,14)]),
+                                                                                mc.cores = 40) #Calculate differential methylation statistics based on pH treatment from reorganize. Include ploidy as a covariate by converting column with ploidy information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
 head(differentialMethylationStatspHCovarOutRMAll) #Look at differential methylation statistics
 ```
 
@@ -657,30 +672,30 @@ write_delim(diffMethStatspHCovar50RMAll, "DML/DML-pH-50-Covar-Cov5-All-OutRM.bed
 
 ```{r}
 summaryDML <- data.frame("min.per.group" = c(rev(8:12), 12),
-                         "ploidy-DML-25" = c(length(diffMethStatsPloidyCovar25All),
-                                             length(diffMethStatsPloidyCovar2511),
-                                             length(diffMethStatsPloidyCovar2510),
-                                             length(diffMethStatsPloidyCovar259),
-                                             length(diffMethStatsPloidyCovar258),
-                                             length(diffMethStatsPloidyCovar25RMAll)),
-                         "ploidy-DML-50" = c(length(diffMethStatsPloidyCovar50All),
-                                             length(diffMethStatsPloidyCovar5011),
-                                             length(diffMethStatsPloidyCovar5010),
-                                             length(diffMethStatsPloidyCovar509),
-                                             length(diffMethStatsPloidyCovar508),
-                                             length(diffMethStatsPloidyCovar50RMAll)),
-                         "pH-DML-25" = c(length(diffMethStatspHCovar25All),
-                                         length(diffMethStatspHCovar2511),
-                                         length(diffMethStatspHCovar2510),
-                                         length(diffMethStatspHCovar259),
-                                         length(diffMethStatspHCovar258),
-                                         length(diffMethStatspHCovar25RMAll)),
-                         "pH-DML-50" = c(length(diffMethStatspHCovar50All),
-                                         length(diffMethStatspHCovar5011),
-                                         length(diffMethStatspHCovar5010),
-                                         length(diffMethStatspHCovar509),
-                                         length(diffMethStatspHCovar508),
-                                         length(diffMethStatspHCovar50RMAll))) #Create table with number of DML from each 
+                         "ploidy-DML-25" = c(nrow(diffMethStatsPloidyCovar25All),
+                                             nrow(diffMethStatsPloidyCovar2511),
+                                             nrow(diffMethStatsPloidyCovar2510),
+                                             nrow(diffMethStatsPloidyCovar259),
+                                             nrow(diffMethStatsPloidyCovar258),
+                                             nrow(diffMethStatsPloidyCovar25RMAll)),
+                         "ploidy-DML-50" = c(nrow(diffMethStatsPloidyCovar50All),
+                                             nrow(diffMethStatsPloidyCovar5011),
+                                             nrow(diffMethStatsPloidyCovar5010),
+                                             nrow(diffMethStatsPloidyCovar509),
+                                             nrow(diffMethStatsPloidyCovar508),
+                                             nrow(diffMethStatsPloidyCovar50RMAll)),
+                         "pH-DML-25" = c(nrow(diffMethStatspHCovar25All),
+                                         nrow(diffMethStatspHCovar2511),
+                                         nrow(diffMethStatspHCovar2510),
+                                         nrow(diffMethStatspHCovar259),
+                                         nrow(diffMethStatspHCovar258),
+                                         nrow(diffMethStatspHCovar25RMAll)),
+                         "pH-DML-50" = c(nrow(diffMethStatspHCovar50All),
+                                         nrow(diffMethStatspHCovar5011),
+                                         nrow(diffMethStatspHCovar5010),
+                                         nrow(diffMethStatspHCovar509),
+                                         nrow(diffMethStatspHCovar508),
+                                         nrow(diffMethStatspHCovar50RMAll))) #Create table with number of DML from each 
 ```
 
 
