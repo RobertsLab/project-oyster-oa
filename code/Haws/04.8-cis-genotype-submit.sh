@@ -6,7 +6,7 @@
 ## Usage:
 ##   bash 04.8-cis-genotype-submit.sh
 ## Settings (defaults in brackets; see 04.8-cis-genotype.R):
-##   SAMPLE_SETS ["All DropGeno4"]  GENO_K [3]  MAX_DIST [50000]  MIN_CARRIERS [3]  NNULL [20]
+##   SAMPLE_SETS ["All DropGeno4"]  GENO_K [3]  MAX_DIST [50000]  MIN_CARRIERS [3]  NNULL [20]  FAR_DIST [1000000]
 ## Resources:
 ##   OUT_DIR [../../analyses/Haws_04.8-cis-genotype]  ACCOUNT [coenv]  PARTITION [ckpt-all]  MEM [48G]  TIME [6:00:00]
 

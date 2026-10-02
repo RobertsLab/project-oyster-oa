@@ -16,9 +16,12 @@
 # Covariates: "treatment" (effect-coded ploidy, pH, ploidy x pH, as in 04.4) and "treatment + genotype PCs" (genome-wide PCs
 # 1..GENO_K from the same SNPs, recomputed per sample set, as in 04.7). The second asks whether local genotype matters beyond
 # genome-wide relatedness.
-# Null ("trans"): the same SNPs paired with features drawn at random from other chromosomes, NNULL times. Keeps each SNP's
-# genotype and the genome-wide structure, and breaks only the physical link. Enrichment = observed / trans-null share of
-# pairs at p < 0.001, and pi1 = 1 - pi0 (Storey, lambda = 0.5)
+# Nulls: the same SNPs paired with features drawn at random, NNULL times, either
+#   "other chromosome": from other chromosomes. Keeps each SNP's genotype and the genome-wide structure, and breaks the
+#   physical link, but also breaks any relatedness that runs along a chromosome (shared haplotype stretches in families)
+#   "same chromosome, far": from the same chromosome, more than FAR_DIST bp away. Keeps chromosome-scale relatedness, so
+#   enrichment over this null is the part that is local
+# Enrichment = observed / null share of pairs at p < 0.001, and pi1 = 1 - pi0 (Storey, lambda = 0.5)
 #
 # Environment variables (defaults in brackets):
 #   SAMPLE_SETS   [All DropGeno4]
@@ -26,6 +29,7 @@
 #   MAX_DIST      [50000]
 #   MIN_CARRIERS  [3]
 #   NNULL         [20]
+#   FAR_DIST      [1000000]
 
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -38,6 +42,8 @@ genoK <- as.integer(Sys.getenv("GENO_K", "3"))
 maxDist <- as.integer(Sys.getenv("MAX_DIST", "50000"))
 minCarriers <- as.integer(Sys.getenv("MIN_CARRIERS", "3"))
 nNull <- as.integer(Sys.getenv("NNULL", "20"))
+farDist <- as.integer(Sys.getenv("FAR_DIST", "1000000"))
+nullTypes <- c("other chromosome", "same chromosome, far")
 dropSets <- list(All = integer(0), DropGeno4 = c(1, 2, 14, 17))
 stopifnot(all(sampleSets %in% names(dropSets)))
 distBreaks <- unique(c(c(0, 250, 500, 1000, 2000, 5000, 10000, 20000)[c(0, 250, 500, 1000, 2000, 5000, 10000, 20000) < maxDist], maxDist))
@@ -91,7 +97,7 @@ pairTest <- function(A, B, i, j, df) {
   list(r = r, p = 2 * pt(-abs(t), df))
 }
 pi1 <- function(p) 1 - min(1, mean(p > 0.5) / 0.5)
-summarizeP <- function(p) c(pairs = length(p), fracP001 = mean(p < 0.001), fracP01 = mean(p < 0.01), pi1 = pi1(p))
+summarizeP <- function(p) { p <- p[!is.na(p)]; c(pairs = length(p), fracP001 = mean(p < 0.001), fracP01 = mean(p < 0.01), pi1 = pi1(p)) } #NA if a residualized genotype or feature is constant
 
 cisResults <- list(); geneResults <- list(); snpCounts <- list()
 for (s in sampleSets) {
@@ -110,8 +116,10 @@ for (s in sampleSets) {
 
   # Features with data in every oyster of the set
   cpgUse <- which(rowSums(is.na(cpgBeta[, ids])) == 0 & cpgInfo$chr != mitoChr)
+  cpgUse <- cpgUse[matrixStats::rowVars(cpgBeta[cpgUse, ids]) > 0] #Constant features have no correlation
   Y <- cpgBeta[cpgUse, ids]; yInfo <- cpgInfo[cpgUse]
   geneUse <- which(rowSums(is.na(geneBeta[, ids])) == 0 & geneInfo$chr != mitoChr)
+  geneUse <- geneUse[matrixStats::rowVars(geneBeta[geneUse, ids]) > 0]
   Z <- geneBeta[geneUse, ids]; zInfo <- geneInfo[geneUse]
 
   # Physical pairs. CpG pairs within maxDist (the noSNP CpG set already excludes every CpG with a SNP)
@@ -153,39 +161,61 @@ for (s in sampleSets) {
               file.path("rds", paste0("cis-CpG-pairs-", s, ".rds")))
     gobs <- pairTest(Gr, Zr, genePairs$snp, genePairs$feature, df)
 
-    # Trans null: replace each pair's feature with a random feature on another chromosome
-    yChr <- yInfo$chr; zChr <- zInfo$chr
+    # Nulls: replace each pair's feature with a random feature on another chromosome, or on the same chromosome far away
     drawOther <- function(featureChr, snpChr) {
       out <- sample(length(featureChr), length(snpChr), replace = TRUE)
       bad <- featureChr[out] == snpChr
       while (any(bad)) { out[bad] <- sample(length(featureChr), sum(bad), replace = TRUE); bad <- featureChr[out] == snpChr }
       out
     }
+    drawSameFar <- function(featureChr, featurePos, snpChr, snpPos) {
+      out <- integer(length(snpChr))
+      byChr <- split(seq_along(featureChr), featureChr)
+      for (ch in unique(snpChr)) {
+        i <- which(snpChr == ch); cand <- byChr[[ch]]
+        if (is.null(cand)) { out[i] <- NA; next }
+        draw <- cand[sample.int(length(cand), length(i), replace = TRUE)]
+        bad <- abs(featurePos[draw] - snpPos[i]) <= farDist
+        tries <- 0
+        while (any(bad) && tries < 100) {
+          draw[bad] <- cand[sample.int(length(cand), sum(bad), replace = TRUE)]
+          bad <- abs(featurePos[draw] - snpPos[i]) <= farDist; tries <- tries + 1
+        }
+        draw[bad] <- NA #No feature far enough away on this chromosome
+        out[i] <- draw
+      }
+      out
+    }
+    geneMid <- (zInfo$start + zInfo$end) / 2
+    pairNull <- function(A, B, snp, feature, df) { ok <- !is.na(feature); p <- rep(NA_real_, length(snp)); p[ok] <- pairTest(A, B, snp[ok], feature[ok], df)$p; p }
     nullCpG <- list(); nullGene <- list()
-    for (k in seq_len(nNull)) {
-      set.seed(k)
-      nf <- drawOther(yChr, snpInfo$chr[cpgPairs$snp])
-      nullCpG[[k]] <- data.table(bin = cpgPairs$bin, p = pairTest(Gr, Yr, cpgPairs$snp, nf, df)$p, null = k)
-      nf <- drawOther(zChr, snpInfo$chr[genePairs$snp])
-      nullGene[[k]] <- data.table(p = pairTest(Gr, Zr, genePairs$snp, nf, df)$p, null = k)
+    for (nt in nullTypes) for (k in seq_len(nNull)) {
+      set.seed(k + ifelse(nt == nullTypes[1], 0, 1000))
+      nf <- if (nt == nullTypes[1]) drawOther(yInfo$chr, snpInfo$chr[cpgPairs$snp]) else
+        drawSameFar(yInfo$chr, yInfo$pos, snpInfo$chr[cpgPairs$snp], snpInfo$pos[cpgPairs$snp])
+      nullCpG[[length(nullCpG) + 1]] <- data.table(nullType = nt, bin = cpgPairs$bin, p = pairNull(Gr, Yr, cpgPairs$snp, nf, df), null = k)
+      nf <- if (nt == nullTypes[1]) drawOther(zInfo$chr, snpInfo$chr[genePairs$snp]) else
+        drawSameFar(zInfo$chr, geneMid, snpInfo$chr[genePairs$snp], snpInfo$pos[genePairs$snp])
+      nullGene[[length(nullGene) + 1]] <- data.table(nullType = nt, p = pairNull(Gr, Zr, genePairs$snp, nf, df), null = k)
     }
     nullCpG <- rbindlist(nullCpG); nullGene <- rbindlist(nullGene)
 
     binObs <- cpgPairs[, as.list(summarizeP(p)), by = bin]
-    binNull <- nullCpG[, as.list(summarizeP(p)), by = .(bin, null)][
-      , .(nullFracP001 = mean(fracP001), nullFracP001_95 = quantile(fracP001, 0.95), nullPi1 = mean(pi1), nullPi1_95 = quantile(pi1, 0.95)), by = bin]
+    nullStats <- function(d) d[, .(nullFracP001 = mean(fracP001), nullFracP001_95 = quantile(fracP001, 0.95, names = FALSE),
+                                   nullPi1 = mean(pi1), nullPi1_95 = quantile(pi1, 0.95, names = FALSE)), by = nullType]
+    binNull <- nullCpG[, as.list(summarizeP(p)), by = .(nullType, bin, null)][
+      , .(nullFracP001 = mean(fracP001), nullFracP001_95 = quantile(fracP001, 0.95, names = FALSE),
+          nullPi1 = mean(pi1), nullPi1_95 = quantile(pi1, 0.95, names = FALSE)), by = .(nullType, bin)]
     allObs <- as.list(summarizeP(cpgPairs$p))
-    allNull <- nullCpG[, as.list(summarizeP(p)), by = null][, .(nullFracP001 = mean(fracP001), nullFracP001_95 = quantile(fracP001, 0.95), nullPi1 = mean(pi1), nullPi1_95 = quantile(pi1, 0.95))]
+    allNull <- nullStats(nullCpG[, as.list(summarizeP(p)), by = .(nullType, null)])
     cisResults[[length(cisResults) + 1]] <- bind_rows(
       as_tibble(merge(binObs, binNull, by = "bin")) %>% mutate(bin = as.character(bin)),
-      bind_cols(tibble(bin = paste0("all (<= ", maxDist, ")")), as_tibble(allObs), as_tibble(allNull))) %>%
+      as_tibble(allNull) %>% mutate(bin = paste0("all (<= ", maxDist, ")"), !!!allObs)) %>%
       mutate(sampleSet = s, covariates = covSet, df = df, enrichmentP001 = fracP001 / nullFracP001, .before = 1)
 
-    gNull <- nullGene[, as.list(summarizeP(p)), by = null]
-    geneResults[[length(geneResults) + 1]] <- bind_cols(
-      tibble(sampleSet = s, covariates = covSet, df = df), as_tibble(as.list(summarizeP(gobs$p))),
-      tibble(nullFracP001 = mean(gNull$fracP001), nullFracP001_95 = quantile(gNull$fracP001, 0.95, names = FALSE),
-             nullPi1 = mean(gNull$pi1), nullPi1_95 = quantile(gNull$pi1, 0.95, names = FALSE))) %>%
+    gNull <- nullStats(nullGene[, as.list(summarizeP(p)), by = .(nullType, null)])
+    geneResults[[length(geneResults) + 1]] <- as_tibble(gNull) %>%
+      mutate(sampleSet = s, covariates = covSet, df = df, !!!as.list(summarizeP(gobs$p)), .before = 1) %>%
       mutate(enrichmentP001 = fracP001 / nullFracP001)
     if (covSet == "treatment + genotype PCs") {
       write_csv(tibble(snpChr = snpInfo$chr[genePairs$snp], snpPos = snpInfo$pos[genePairs$snp],
@@ -193,7 +223,8 @@ for (s in sampleSets) {
                        carriers = snpInfo$carriers[genePairs$snp], r = gobs$r, p = gobs$p) %>% arrange(p),
                 file.path("tables", paste0("cis-gene-pairs-", s, ".csv")))
       qq <- bind_rows(tibble(type = "cis (observed)", p = sort(cpgPairs$p)),
-                      tibble(type = "trans null (pooled)", p = sort(sample(nullCpG$p, min(nrow(nullCpG), nrow(cpgPairs)))))) %>%
+                      map_dfr(nullTypes, function(nt) { np <- nullCpG[nullType == nt & !is.na(p), p]
+                        tibble(type = paste0("null: ", nt), p = sort(sample(np, min(length(np), nrow(cpgPairs))))) })) %>%
         group_by(type) %>% mutate(expected = -log10(ppoints(n())), observed = -log10(p)) %>% ungroup()
       pq <- ggplot(qq, aes(expected, observed, color = type)) + geom_point(size = 0.4) + geom_abline(linetype = 2) +
         labs(x = "Expected -log10 p", y = "Observed -log10 p", color = NULL,
@@ -211,12 +242,12 @@ write_csv(geneResults, file.path("tables", "cis-gene.csv"))
 
 p <- cisResults %>% filter(!startsWith(bin, "all")) %>%
   mutate(bin = factor(bin, levels = unique(bin))) %>%
-  ggplot(aes(bin, enrichmentP001, color = covariates, group = covariates)) +
-  geom_hline(yintercept = 1, linetype = 2) + geom_line() + geom_point() +
+  ggplot(aes(bin, enrichmentP001, color = covariates, linetype = nullType, group = interaction(covariates, nullType))) +
+  geom_hline(yintercept = 1, linetype = 3) + geom_line() + geom_point() +
   facet_wrap(~ sampleSet) +
-  labs(x = "Distance from SNP (bp)", y = "Share of pairs at p < 0.001, cis / trans null", color = NULL) +
-  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
-ggsave(file.path("figures", "cis-enrichment-by-distance.png"), p, width = 8, height = 4.5, dpi = 150)
+  labs(x = "Distance from SNP (bp)", y = "p < 0.001 share, observed / null", color = NULL, linetype = "Null") +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom", legend.box = "vertical")
+ggsave(file.path("figures", "cis-enrichment-by-distance.png"), p, width = 8, height = 5, dpi = 150)
 
 print(as.data.frame(bind_rows(snpCounts)))
 print(as.data.frame(cisResults))

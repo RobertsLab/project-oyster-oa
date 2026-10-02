@@ -15,7 +15,7 @@ set -euo pipefail
 export APPTAINERENV_R_LIBS_USER=/mmfs1/gscratch/srlab/sr320/R_libs_apptainer
 
 # Settings read by 04.8-cis-genotype.R
-for v in SAMPLE_SETS GENO_K MAX_DIST MIN_CARRIERS NNULL; do
+for v in SAMPLE_SETS GENO_K MAX_DIST MIN_CARRIERS NNULL FAR_DIST; do
   [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
 done
 
