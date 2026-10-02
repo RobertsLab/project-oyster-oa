@@ -128,7 +128,7 @@ processedFiles <- methylKit::methRead(analysisFiles,
 ```{r}
 processedFilteredFilesCov5 <- methylKit::filterByCoverage(processedFiles,
                                                           lo.count = 5, lo.perc = NULL,
-                                                          high.count = NULL, high.perc = 99.9) %>%
+                                                          hi.count = NULL, hi.perc = 99.9) %>%
   methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
@@ -206,7 +206,7 @@ processedFilespH <- methylKit::methRead(analysisFiles,
 ```{r}
 processedFilteredFilesCov5pH <- methylKit::filterByCoverage(processedFilespH,
                                                             lo.count = 5, lo.perc = NULL,
-                                                            high.count = NULL, high.perc = 99.9) %>%
+                                                            hi.count = NULL, hi.perc = 99.9) %>%
   methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
@@ -560,7 +560,7 @@ processedFilesOutRM <- methylKit::methRead(analysisFilesOutRM,
 ```{r}
 processedFilesOutRMCov5 <- methylKit::filterByCoverage(processedFilesOutRM,
                                                        lo.count = 5, lo.perc = NULL,
-                                                       high.count = NULL, high.perc = 99.9) %>%
+                                                       hi.count = NULL, hi.perc = 99.9) %>%
   methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
