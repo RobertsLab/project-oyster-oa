@@ -13,12 +13,12 @@
 ## Settings (defaults in brackets; see 04.6-methylKit-DMR-slurm.R). REGIONS, OVERDISPERSION, and PERM take space-separated lists:
 ##   REGIONS ["tile250 tile1000"]  COV_BASES [3]  LO_COUNT [10]  HI_PERC [99.9]  SAMPLES [All]  OVERDISPERSION [MN]  PERM [0]
 ## Resources:
-##   ACCOUNT [coenv]  PARTITION [cpu-g2]  COUNT_MEM [200G]  DMR_CPUS [16]  DMR_MEM [64G]  DMR_TIME [12:00:00]
+##   ACCOUNT [coenv]  PARTITION [ckpt-all]  COUNT_MEM [200G]  DMR_CPUS [16]  DMR_MEM [64G]  DMR_TIME [12:00:00]
 
 set -euo pipefail
 
 ACCOUNT="${ACCOUNT:-coenv}"
-PARTITION="${PARTITION:-cpu-g2}"
+PARTITION="${PARTITION:-ckpt-all}" #Checkpoint nodes, so the shared coenv nodes stay free. Jobs use --requeue, so preempted ones restart
 COUNT_MEM="${COUNT_MEM:-200G}"
 DMR_CPUS="${DMR_CPUS:-16}"
 DMR_MEM="${DMR_MEM:-64G}"
