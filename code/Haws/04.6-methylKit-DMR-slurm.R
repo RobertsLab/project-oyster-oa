@@ -333,6 +333,9 @@ if (mode == "dmr") {
       transmute("#chr" = chr, start = start - 1L, end, across(any_of("regionID")), meth.diff, pvalue, qvalue, qvalueBH) %>% #0-based BED. Header starts with # so bedtools skips it
       arrange(`#chr`, start)
     write_tsv(dmr, file.path(runDir, paste0("DMR-", taskTag, "-q", primaryQ, "-diff", primaryDiff, ".bed")))
+  } else if (!grepl("^tile", regionSet)) { #Per-region results for permuted labels, for enrichment tests against the same permutations. Tiles are too large to keep
+    saveRDS(dplyr::select(results, chr, start, end, any_of("regionID"), meth.diff, pvalue),
+            file.path(runDir, "rds", paste0("diffMeth-", taskTag, ".rds")))
   }
 }
 
