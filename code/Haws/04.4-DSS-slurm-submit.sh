@@ -13,12 +13,13 @@
 ##   bash 04.4-DSS-slurm-submit.sh snp-summary #SNP enrichment among DML; genotype PCA
 ##
 ## Settings (defaults in brackets; see 04.4-DSS-slurm.R):
-##   LO_COV [5]  HI_PERC [99.9]  PRESENCE [cell5]  MIN_METH [10]  SNP_FILTER [none]  SAMPLES [All]  MODEL [interaction]  PERM [0]  NCHUNK [1]
+##   LO_COV [5]  HI_PERC [99.9]  PRESENCE [cell5]  MIN_METH [10]  SNP_FILTER [none]  SAMPLES [All]  MODEL [interaction]  GENO_PCS [0]  PERM [0]  NCHUNK [1]
 ## Resources:
 ##   ACCOUNT [coenv]  PARTITION [cpu-g2]  FIT_MEM [64G]  FIT_TIME [4:00:00]
 ## Examples:
 ##   for s in Drop3H2 DropPC2 OutRM; do SAMPLES=$s bash 04.4-DSS-slurm-submit.sh; done   #Sample-set sensitivity checks
 ##   MODEL=additive bash 04.4-DSS-slurm-submit.sh
+##   GENO_PCS=1 bash 04.4-DSS-slurm-submit.sh      #Genotype PC1 as a covariate (needs snp-summary)
 ##   for s in $(seq 1 20); do PERM=$s bash 04.4-DSS-slurm-submit.sh; done; bash 04.4-DSS-slurm-submit.sh permsummary
 
 set -euo pipefail
@@ -31,7 +32,7 @@ PARTITION="${PARTITION:-cpu-g2}"
 FIT_MEM="${FIT_MEM:-64G}"
 FIT_TIME="${FIT_TIME:-4:00:00}"
 export LO_COV="${LO_COV:-5}" HI_PERC="${HI_PERC:-99.9}" PRESENCE="${PRESENCE:-cell5}" MIN_METH="${MIN_METH:-10}" SNP_FILTER="${SNP_FILTER:-none}" SAMPLES="${SAMPLES:-All}"
-export MODEL="${MODEL:-interaction}" PERM="${PERM:-0}" NCHUNK="${NCHUNK:-1}"
+export MODEL="${MODEL:-interaction}" GENO_PCS="${GENO_PCS:-0}" PERM="${PERM:-0}" NCHUNK="${NCHUNK:-1}"
 
 export CODE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 outDir="$(realpath -m "${CODE_DIR}/../../analyses/Haws_04.4-DSS")"
@@ -83,7 +84,7 @@ else
   echo "prep ${setting}: ${prepID}"
 fi
 
-run="${setting}-${MODEL}$([ "$PERM" = "0" ] || echo "-perm${PERM}")"
+run="${setting}-${MODEL}$([ "$GENO_PCS" = "0" ] || echo "-genoPC${GENO_PCS}")$([ "$PERM" = "0" ] || echo "-perm${PERM}")"
 fitID=$(sbatch "${common[@]}" "${prepDependency[@]}" --job-name=04.4-fit --array=1-${NCHUNK} \
   --cpus-per-task=1 --mem="$FIT_MEM" --time="$FIT_TIME" \
   --output=logs/%x_%A_%a.out "$job" fit)

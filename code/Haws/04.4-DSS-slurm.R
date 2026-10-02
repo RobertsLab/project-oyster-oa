@@ -29,6 +29,10 @@
 #                      "Drop3H2" (PC1 outlier, lowest correlation with other samples), "DropPC2" (2H-1, 2H-2, 3H-5, which
 #                      separate on PC2), and "OutRM" (2H-3 and 3H-2, the pair removed in 04.2/04.3, for comparison with methylKit)
 #   MODEL     [interaction]  "interaction" = ~ ploidy * pH (primary); "additive" = ~ ploidy + pH (sensitivity)
+#   GENO_PCS  [0]      Add genotype PCs 1..GENO_PCS (1-3) as covariates, from the bisulfite-safe genotype PCA
+#                      (SNP-check/genotype-PCA-scores-nonBS.csv, made by snp-summary), scaled to mean 0 and SD 1. Genetic
+#                      background tracks methylation similarity between oysters (rho = 0.86). A genotype PC belongs to the
+#                      oyster, so permutations shuffle ploidy and pH but keep each oyster's genotype PCs
 #   PERM      [0]      0 = observed labels. Any other value is the seed for a label permutation (null check)
 #   NCHUNK    [1]      Number of CpG blocks for the fit array. The fit is fast (~0.5 s per 7k CpGs x 24 samples), so 1 block
 #                      (dispersion prior estimated from all CpGs) is the default
@@ -49,6 +53,7 @@ minMethSetting <- Sys.getenv("MIN_METH", "10")
 snpFilter <- Sys.getenv("SNP_FILTER", "none")
 samples <- Sys.getenv("SAMPLES", "All")
 model <- Sys.getenv("MODEL", "interaction")
+genoPCs <- as.integer(Sys.getenv("GENO_PCS", "0"))
 perm <- as.integer(Sys.getenv("PERM", "0"))
 nChunk <- as.integer(Sys.getenv("NCHUNK", "1"))
 stopifnot(loCov >= 1,
@@ -57,7 +62,8 @@ stopifnot(loCov >= 1,
           snpFilter %in% c("none", "any"),
           minMethSetting == "none" || (!is.na(as.numeric(minMethSetting)) && as.numeric(minMethSetting) < 50),
           samples %in% c("All", "Drop3H2", "DropPC2", "OutRM"),
-          model %in% c("interaction", "additive"))
+          model %in% c("interaction", "additive"),
+          genoPCs %in% 0:3)
 
 dataDir <- "../../data/Haws"
 mitoChr <- "NC_001276.1"
@@ -71,7 +77,8 @@ filterTag <- paste0("cov", loCov, "-hiperc", hiPercSetting, "-", presence, ifels
                     ifelse(snpFilter == "none", "", "-noSNP"))
 settingTag <- paste0(filterTag, "-", samples)
 prepDir <- paste0("prep-", settingTag)
-runDir <- paste0("DSS-", settingTag, "-", model, ifelse(perm == 0, "", paste0("-perm", perm)))
+modelTag <- paste0(model, ifelse(genoPCs == 0, "", paste0("-genoPC", genoPCs))) #Run folders and summary files are named by model + covariates
+runDir <- paste0("DSS-", settingTag, "-", modelTag, ifelse(perm == 0, "", paste0("-perm", perm)))
 
 # Sample metadata, as in 04.2
 
@@ -360,7 +367,17 @@ if (mode == "fit") {
                         M = filtered$M[rows, ], Cov = filtered$Cov[rows, ],
                         sampleNames = rownames(design))
   formula <- if (model == "interaction") ~ ploidyEffect * pHEffect else ~ ploidyEffect + pHEffect
-  DMLfit <- DMLfit.multiFactor(BSobj, design = design[, c("ploidyEffect", "pHEffect")], formula = formula)
+  fitDesign <- design[, c("ploidyEffect", "pHEffect")]
+  if (genoPCs > 0) {
+    genoScores <- read_csv("SNP-check/genotype-PCA-scores-nonBS.csv", show_col_types = FALSE)
+    pcNames <- paste0("genoPC", seq_len(genoPCs))
+    covariates <- genoScores[match(rownames(design), genoScores$sampleID), pcNames] #By oyster, so labels can be permuted independently
+    stopifnot(!anyNA(covariates))
+    fitDesign <- cbind(fitDesign, as.data.frame(scale(covariates)))
+    formula <- update(formula, as.formula(paste("~ . +", paste(pcNames, collapse = " + "))))
+  }
+  message("Model: ", deparse(formula))
+  DMLfit <- DMLfit.multiFactor(BSobj, design = fitDesign, formula = formula)
   stopifnot(all(modelTerms %in% colnames(DMLfit$X)))
 
   result <- data.frame(chr = filtered$chr[rows], pos = filtered$pos[rows],
@@ -424,7 +441,7 @@ if (mode == "summary") {
   }
   saveRDS(results, file.path(runDir, "rds", "all-CpG-results.rds"), compress = FALSE) #Every CpG tested, for other thresholds and the concordance step
 
-  counts <- bind_rows(counts) %>% mutate(setting = settingTag, model = model, perm = perm, .before = 1)
+  counts <- bind_rows(counts) %>% mutate(setting = settingTag, model = modelTag, perm = perm, .before = 1)
   write_csv(counts, file.path(runDir, "DSS-counts-long.csv"))
 
   if ("interaction" %in% names(modelTerms)) { #How many main-effect DML also have a strong interaction (diagnostic)
@@ -449,7 +466,7 @@ if (mode == "summary") {
 # many CpGs were tested in each sensitivity run, are DML at the same thresholds, or have p < 0.05 with the same sign
 
 if (mode == "compare") {
-  runFor <- function(s) paste0("DSS-", filterTag, "-", s, "-", model)
+  runFor <- function(s) paste0("DSS-", filterTag, "-", s, "-", modelTag)
   readResults <- function(s) readRDS(file.path(runFor(s), "rds", "all-CpG-results.rds"))
   primary <- readResults("All")
   diffColumn <- c(ploidy = "diffPloidy", pH = "diffpH")
@@ -474,7 +491,7 @@ if (mode == "compare") {
       })
     })
   })
-  outFile <- paste0("sample-set-sensitivity-", filterTag, "-", model, ".csv")
+  outFile <- paste0("sample-set-sensitivity-", filterTag, "-", modelTag, ".csv")
   write_csv(comparison, outFile)
   print(as.data.frame(comparison))
 }
@@ -483,14 +500,14 @@ if (mode == "compare") {
 # Mean permuted count / observed count estimates the fraction of observed DML that are false
 
 if (mode == "permsummary") {
-  observedDir <- paste0("DSS-", settingTag, "-", model)
+  observedDir <- paste0("DSS-", settingTag, "-", modelTag)
   permDirs <- list.files(".", pattern = paste0("^", gsub("\\.", "\\\\.", observedDir), "-perm[0-9]+$"))
   permDirs <- permDirs[file.exists(file.path(permDirs, "DSS-counts-long.csv"))]
   message(length(permDirs), " permutations with results")
   readCounts <- function(d) read_csv(file.path(d, "DSS-counts-long.csv"), show_col_types = FALSE) %>% filter(!is.na(fdr))
   observed <- readCounts(observedDir) %>% dplyr::select(term, fdr, minDiff, observed = DML)
   permuted <- map_dfr(permDirs, readCounts) %>% dplyr::select(perm, term, fdr, minDiff, DML)
-  write_csv(permuted, paste0("permutation-counts-", settingTag, "-", model, ".csv"))
+  write_csv(permuted, paste0("permutation-counts-", settingTag, "-", modelTag, ".csv"))
 
   permSummary <- permuted %>%
     group_by(term, fdr, minDiff) %>%
@@ -502,7 +519,7 @@ if (mode == "permsummary") {
     mutate(empiricalFDR = ifelse(observed > 0, pmin(1, permMean / observed), NA),
            empiricalP = (nPermAtLeastObserved + 1) / (nPerm + 1)) %>% #Chance of a permutation giving at least as many DML
     arrange(factor(term, levels = c("ploidy", "pH", "interaction")), desc(fdr), minDiff)
-  write_csv(permSummary, paste0("permutation-summary-", settingTag, "-", model, ".csv"))
+  write_csv(permSummary, paste0("permutation-summary-", settingTag, "-", modelTag, ".csv"))
   print(as.data.frame(permSummary))
 }
 
@@ -568,7 +585,7 @@ if (mode == "snp-summary") {
   rm(raw); invisible(gc())
 
   # 1. Are DML more often at SNP CpGs than the CpGs tested? Observed and each permutation
-  runDirs <- list.files(".", pattern = "^DSS-.*-interaction(-perm[0-9]+)?$")
+  runDirs <- list.files(".", pattern = "^DSS-.*-interaction(-genoPC[0-9])?(-perm[0-9]+)?$")
   runDirs <- runDirs[file.exists(file.path(runDirs, "rds", "all-CpG-results.rds"))]
   enrichment <- map_dfr(runDirs, function(d) {
     results <- readRDS(file.path(d, "rds", "all-CpG-results.rds"))
@@ -576,7 +593,8 @@ if (mode == "snp-summary") {
     map_dfr(c("ploidy", "pH", "interaction"), function(term) {
       fdr <- results[[paste0("fdr.", term)]]
       p <- results[[paste0("p.", term)]]
-      tibble(run = d, setting = sub("-interaction(-perm[0-9]+)?$", "", sub("^DSS-", "", d)),
+      tibble(run = d, setting = sub("-interaction(-genoPC[0-9])?(-perm[0-9]+)?$", "", sub("^DSS-", "", d)),
+             model = sub("^.*-(interaction(-genoPC[0-9])?)(-perm[0-9]+)?$", "\\1", d),
              perm = as.integer(ifelse(grepl("-perm", d), sub(".*-perm", "", d), "0")), term = term,
              CpGsTested = length(snp), fractionSNPTested = mean(snp),
              DMLfdr0.05 = sum(fdr < 0.05), fractionSNPDML = mean(snp[fdr < 0.05]),
