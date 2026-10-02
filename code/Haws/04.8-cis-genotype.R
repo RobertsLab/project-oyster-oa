@@ -23,6 +23,10 @@
 #   enrichment over this null is the part that is local
 # Enrichment = observed / null share of pairs at p < 0.001, and pi1 = 1 - pi0 (Storey, lambda = 0.5)
 #
+# LD decay: r2 between the genotypes of every pair of these SNPs on the same chromosome, binned by distance, against random
+# pairs on different chromosomes. Raw genotypes and genotypes with the genome-wide PCs removed (as in the cis test). Shows
+# whether shared haplotypes (linkage) extend far enough to explain enrichment that stays flat out to 50 kb
+#
 # Environment variables (defaults in brackets):
 #   SAMPLE_SETS   [All DropGeno4]
 #   GENO_K        [3]
@@ -99,7 +103,8 @@ pairTest <- function(A, B, i, j, df) {
 pi1 <- function(p) 1 - min(1, mean(p > 0.5) / 0.5)
 summarizeP <- function(p) { p <- p[!is.na(p)]; c(pairs = length(p), fracP001 = mean(p < 0.001), fracP01 = mean(p < 0.01), pi1 = pi1(p)) } #NA if a residualized genotype or feature is constant
 
-cisResults <- list(); geneResults <- list(); snpCounts <- list()
+cisResults <- list(); geneResults <- list(); snpCounts <- list(); ldResults <- list()
+ldBreaks <- c(0, 1e3, 5e3, 1e4, 2e4, 5e4, 1e5, 5e5, 1e6, 5e6, 1e7, Inf)
 for (s in sampleSets) {
   keep <- setdiff(1:24, dropSets[[s]])
   meta <- sampleMetadata[keep, ]
@@ -113,6 +118,31 @@ for (s in sampleSets) {
   snpInfo <- data.table(chr = geno$chr[use], pos = geno$pos[use], carriers = carriers[use])
   pcs <- prcomp(t(G), center = TRUE, scale. = FALSE)$x[, 1:genoK, drop = FALSE]
   message(s, ": ", nrow(G), " SNPs")
+
+  # LD decay
+  for (adj in c("none", "genotype PCs")) {
+    Gx <- if (adj == "none") G else residualize(G, cbind(1, scale(pcs)))
+    Gs <- t(scale(t(Gx))) / sqrt(n - 1) #Rows with unit length, so a cross product is a correlation
+    chrSNPs <- split(seq_len(nrow(Gs)), geno$chr[use])
+    within <- rbindlist(lapply(chrSNPs[lengths(chrSNPs) >= 2], function(i) {
+      R <- tcrossprod(Gs[i, , drop = FALSE])
+      pos <- geno$pos[use][i]
+      ut <- which(upper.tri(R), arr.ind = TRUE)
+      data.table(distance = abs(pos[ut[, 1]] - pos[ut[, 2]]), r2 = R[ut]^2)
+    }))
+    within[, bin := cut(distance, ldBreaks, include.lowest = TRUE, dig.lab = 10)]
+    set.seed(1)
+    a <- sample(nrow(Gs), 4e5, replace = TRUE); b <- sample(nrow(Gs), 4e5, replace = TRUE)
+    other <- geno$chr[use][a] != geno$chr[use][b]
+    a <- head(a[other], 2e5); b <- head(b[other], 2e5)
+    otherR2 <- rowSums(Gs[a, , drop = FALSE] * Gs[b, , drop = FALSE])^2
+    ldResults[[length(ldResults) + 1]] <- bind_rows(
+      as_tibble(within[, .(pairs = .N, meanR2 = mean(r2), medianR2 = median(r2), fracR2above0.5 = mean(r2 > 0.5)), by = bin][order(bin)]) %>%
+        mutate(bin = as.character(bin)),
+      tibble(bin = "other chromosome", pairs = length(otherR2), meanR2 = mean(otherR2), medianR2 = median(otherR2), fracR2above0.5 = mean(otherR2 > 0.5))) %>%
+      mutate(sampleSet = s, genotypeAdjustment = adj, oysters = n, .before = 1)
+    rm(within); invisible(gc())
+  }
 
   # Features with data in every oyster of the set
   cpgUse <- which(rowSums(is.na(cpgBeta[, ids])) == 0 & cpgInfo$chr != mitoChr)
@@ -239,6 +269,17 @@ cisResults <- bind_rows(cisResults); geneResults <- bind_rows(geneResults)
 write_csv(bind_rows(snpCounts), file.path("tables", "SNP-and-pair-counts.csv"))
 write_csv(cisResults, file.path("tables", "cis-CpG-by-distance.csv"))
 write_csv(geneResults, file.path("tables", "cis-gene.csv"))
+ldResults <- bind_rows(ldResults)
+write_csv(ldResults, file.path("tables", "LD-decay.csv"))
+pl <- ldResults %>% filter(bin != "other chromosome") %>%
+  mutate(bin = factor(bin, levels = unique(bin))) %>%
+  ggplot(aes(bin, meanR2, color = genotypeAdjustment, group = genotypeAdjustment)) +
+  geom_line() + geom_point() +
+  geom_hline(data = ldResults %>% filter(bin == "other chromosome"), aes(yintercept = meanR2, color = genotypeAdjustment), linetype = 2) +
+  facet_wrap(~ sampleSet) +
+  labs(x = "Distance between SNPs (bp)", y = "Mean r2 (dashed: other chromosome)", color = "Genotype PCs removed") +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+ggsave(file.path("figures", "LD-decay.png"), pl, width = 8, height = 4.5, dpi = 150)
 
 p <- cisResults %>% filter(!startsWith(bin, "all")) %>%
   mutate(bin = factor(bin, levels = unique(bin))) %>%
@@ -252,4 +293,5 @@ ggsave(file.path("figures", "cis-enrichment-by-distance.png"), p, width = 8, hei
 print(as.data.frame(bind_rows(snpCounts)))
 print(as.data.frame(cisResults))
 print(as.data.frame(geneResults))
+print(as.data.frame(ldResults))
 sessionInfo()
