@@ -8,6 +8,7 @@
 #   Rscript 04.6-methylKit-DMR-slurm.R dmr        #One test per array task: ploidy or pH x min.per.group All/10/8, from SLURM_ARRAY_TASK_ID
 #   Rscript 04.6-methylKit-DMR-slurm.R summary    #Combine counts from every run, and compare observed counts with permutations
 #   Rscript 04.6-methylKit-DMR-slurm.R enrich     #GO gene-set enrichment (GSEA) of gene-level results, tested against the label permutations
+#   Rscript 04.6-methylKit-DMR-slurm.R simsummary #Region-level power simulation: detection of spiked-in effects (needs SIM_DELTA > 0 runs and permutations)
 #
 # Environment variables (defaults in brackets):
 #   HI_PERC         [99.9]      Per-sample upper coverage percentile, calculated on nuclear CpGs only. Mito CpGs are exempt,
@@ -25,6 +26,12 @@
 #   PERM_SCHEME     [free]      "free" = shuffle all oysters (above). "fixGeno4" = the four genetic outliers keep their real
 #                               labels and only the other oysters are shuffled. All four outliers are high-pH oysters, so
 #                               this keeps the real link between genotype and pH in every permutation
+#   SIM_DELTA       [0]         Region-level power simulation (plan: 04.6-methylKit-DMR-power-simulation.md). > 0 = before the
+#                               coverage filter, spike a difference of SIM_DELTA percentage points into SIM_N regions for ploidy and
+#                               another SIM_N for pH, using the real labels and the real region counts (binomial thinning of the
+#                               summed reads, coverage unchanged; same method as 04.4-DSS-slurm.R). Up to 30
+#   SIM_N           [1000]      Number of spiked regions per term
+#   SIM_REP         [1]         Replicate; the seed for which regions are spiked and their direction (same regions for every SIM_DELTA)
 #
 # DMR threshold (fixed in the plan before any results): methylKit q < 0.05 and |meth.diff| >= 10%.
 # Counts at q < 0.01 and |meth.diff| >= 15/25% are written as sensitivity checks only. difference = 0 is a q-only tier (any
@@ -42,7 +49,7 @@ options(warn = 1) #Print warnings as they happen, so they show up in the Slurm l
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
-stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary", "enrich"))
+stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary", "enrich", "simsummary"))
 
 nCores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1")) #Use all cores allocated by Slurm
 hiPercSetting <- Sys.getenv("HI_PERC", "99.9")
@@ -53,6 +60,9 @@ samples <- Sys.getenv("SAMPLES", "All")
 overdispersion <- Sys.getenv("OVERDISPERSION", "MN")
 perm <- as.integer(Sys.getenv("PERM", "0"))
 permScheme <- Sys.getenv("PERM_SCHEME", "free")
+simDelta <- as.integer(Sys.getenv("SIM_DELTA", "0"))
+simN <- as.integer(Sys.getenv("SIM_N", "1000"))
+simRep <- as.integer(Sys.getenv("SIM_REP", "1"))
 
 annotationSets <- c("gene", "exonUTR", "intron", "upstream", "downstream", "lncRNA",
                     "TE", "TE-DNA", "TE-RC", "TE-LINE", "TE-LTR", "repeat-unknown", "repeat-simple", "mito")
@@ -62,7 +72,9 @@ stopifnot(hiPercSetting == "none" || !is.na(as.numeric(hiPercSetting)),
           samples %in% c("All", "Drop3H2", "DropPC2", "DropGeno4", "OutRM"),
           permScheme %in% c("free", "fixGeno4"),
           permScheme == "free" || samples == "All", #fixGeno4 is for the all-24 analysis, where all four outliers are present
-          overdispersion %in% c("none", "MN", "shrinkMN"))
+          overdispersion %in% c("none", "MN", "shrinkMN"),
+          simDelta >= 0, simDelta <= 30, simN >= 1, simRep >= 1,
+          simDelta == 0 || perm == 0) #Spike-ins use the real labels
 
 dataDir <- "../../data/Haws"
 featureDir <- "../../genome-feature-files"
@@ -86,7 +98,8 @@ segmentDir <- paste0("segments-hiperc", hiPercSetting)
 countDir <- paste0("count-hiperc", hiPercSetting, "-", regionSet, "-cb", covBases)
 runTag <- paste0(regionSet, "-cb", covBases, "-lo", loCount, "-hiperc", hiPercSetting, "-", samples, "-", overdispersion)
 permTag <- ifelse(permScheme == "free", "", paste0("-", permScheme)) #Only used for permuted runs
-runDir <- paste0("DMR-", runTag, ifelse(perm == 0, "", paste0(permTag, "-perm", perm)))
+runDir <- paste0("DMR-", runTag, ifelse(perm == 0, "", paste0(permTag, "-perm", perm)),
+                 ifelse(simDelta == 0, "", paste0("-simD", simDelta, "-n", simN, "-rep", simRep)))
 
 tasks <- expand.grid(min.per.group = presenceSettings, test = c("ploidy", "pH"),
                      stringsAsFactors = FALSE)[, c("test", "min.per.group")] #Tasks 1-3 are ploidy, 4-6 are pH
@@ -117,6 +130,53 @@ permuteLabels <- function(metadata, perm, scheme = "free") {
   fixed <- metadata$sampleID %in% geneticOutliers #fixGeno4: outliers keep their labels; the rest are shuffled the same way
   metadata[!fixed, ] <- shuffle(metadata[!fixed, ])
   metadata
+}
+
+# Region-level power simulation. Same binomial thinning as spikeIn() in 04.4-DSS-slurm.R, applied to each region's
+# reads summed over its CpGs: for a spiked region with pooled methylation m (all samples, ignoring labels), oysters on the
+# "up" side have each unmethylated read switched to methylated with probability (delta / 2) / (1 - m), and oysters on the
+# "down" side have each methylated read switched with probability (delta / 2) / m. Coverage is unchanged. Regions are
+# chosen with the SIM_REP seed from nuclear regions with at least LO_COUNT reads in every sample (so they pass the
+# coverage filter and are tested with min.per.group = All) and pooled methylation of 15-85% (so both probabilities are at
+# most 1 for delta up to 30). The other seed depends only on SIM_REP and SIM_DELTA, so every array task gets the same data
+simPool <- c(0.15, 0.85)
+
+setColumn <- function(x, column, value) { #Replace one column of a methylRaw (an S4 object that extends data.frame)
+  x@.Data[[match(column, x@names)]] <- value
+  x
+}
+
+spikeRegions <- function(regionCounts, metadata, delta, nSpike, rep, minReads) {
+  data <- lapply(regionCounts, methylKit::getData)
+  keys <- lapply(data, function(d) paste(d$chr, d$start, d$end))
+  pool <- Reduce(intersect, lapply(seq_along(data), function(j) keys[[j]][data[[j]]$coverage >= minReads & data[[j]]$chr != mitoChr]))
+  rows <- lapply(keys, function(k) match(pool, k))
+  m <- Reduce(`+`, lapply(seq_along(data), function(j) data[[j]]$numCs[rows[[j]]])) /
+       Reduce(`+`, lapply(seq_along(data), function(j) data[[j]]$coverage[rows[[j]]]))
+  inRange <- m >= simPool[1] & m <= simPool[2]
+  pool <- pool[inRange]
+  m <- m[inRange]
+  stopifnot(length(pool) >= 2 * nSpike)
+  set.seed(rep)
+  chosen <- sample(length(pool), 2 * nSpike)
+  spikeM <- m[chosen]
+  spikes <- tibble(key = pool[chosen], meanMeth = 100 * spikeM,
+                   term = rep(c("ploidy", "pH"), each = nSpike),
+                   direction = sample(c(-1L, 1L), 2 * nSpike, replace = TRUE)) %>% #+1 = higher in triploids / at low pH
+    separate(key, c("chr", "start", "end"), sep = " ", convert = TRUE, remove = FALSE)
+  groupSign <- list(ploidy = ifelse(metadata$ploidy == "3N", 1L, -1L), pH = ifelse(metadata$pH == "low", 1L, -1L))
+  set.seed(1000 * rep + delta)
+  for (j in seq_along(data)) {
+    r <- match(spikes$key, keys[[j]])
+    up <- spikes$direction * ifelse(spikes$term == "ploidy", groupSign$ploidy[j], groupSign$pH[j]) > 0
+    numCs <- data[[j]]$numCs
+    numTs <- data[[j]]$numTs
+    gained <- rbinom(length(r), numTs[r], (delta / 200) / (1 - spikeM))
+    lost <- rbinom(length(r), numCs[r], (delta / 200) / spikeM)
+    numCs[r] <- numCs[r] + ifelse(up, gained, -lost)
+    regionCounts[[j]] <- setColumn(setColumn(regionCounts[[j]], "numCs", numCs), "numTs", data[[j]]$coverage - numCs)
+  }
+  list(regionCounts = regionCounts, spikes = dplyr::select(spikes, -key))
 }
 
 # Read a GFF from genome-feature-files as GRanges (1-based, as in the GFF), with the ID attribute as the name
@@ -306,7 +366,15 @@ if (mode == "dmr") {
   covariates <- if (test == "ploidy") data.frame(pH = metadata$pH) else data.frame(ploidy = metadata$ploidy) #Other factor is the covariate
 
   regionCounts <- readRDS(file.path(countDir, "region-counts.rds")) %>%
-    methylKit::reorganize(sample.ids = metadata$sampleID, treatment = treatment) %>%
+    methylKit::reorganize(sample.ids = metadata$sampleID, treatment = treatment)
+  if (simDelta > 0) {
+    stopifnot(presence == "All")
+    sim <- spikeRegions(regionCounts, metadata, simDelta, simN, simRep, loCount)
+    regionCounts <- sim$regionCounts
+    write_csv(sim$spikes, file.path(runDir, "spiked-regions.csv"))
+    message("Spiked ", simDelta, "% into ", simN, " regions per term (replicate ", simRep, ")")
+  }
+  regionCounts <- regionCounts %>%
     methylKit::filterByCoverage(lo.count = loCount) %>%
     methylKit::normalizeCoverage() #Median normalization over the samples in this test
 
@@ -352,7 +420,10 @@ if (mode == "dmr") {
   pBins <- cut(results$pvalue, breaks = seq(0, 1, by = 0.05), include.lowest = TRUE)
   write_tsv(as_tibble(table(bin = pBins)), file.path(runDir, "pvalue-histograms", paste0(taskTag, ".tsv"))) #Calibration check (plan E1)
 
-  if (perm == 0) { #Only keep full results and BED files for the observed labels
+  if (simDelta > 0) { #Power simulation: per-region results only
+    saveRDS(dplyr::select(results, chr, start, end, meth.diff, pvalue, qvalue),
+            file.path(runDir, "rds", paste0("diffMeth-", taskTag, ".rds")), compress = FALSE)
+  } else if (perm == 0) { #Only keep full results and BED files for the observed labels
     saveRDS(results, file.path(runDir, "rds", paste0("diffMeth-", taskTag, ".rds")), compress = FALSE)
     dmr <- results %>%
       filter(qvalue < primaryQ, abs(meth.diff) >= primaryDiff) %>%
@@ -362,6 +433,8 @@ if (mode == "dmr") {
   } else if (!grepl("^tile", regionSet)) { #Per-region results for permuted labels, for enrichment tests against the same permutations. Tiles are too large to keep
     saveRDS(dplyr::select(results, chr, start, end, any_of("regionID"), meth.diff, pvalue),
             file.path(runDir, "rds", paste0("diffMeth-", taskTag, ".rds")))
+  } else { #Tiles: p-values only, as the null for the power simulation's empirical FDR
+    saveRDS(sort(results$pvalue), file.path(runDir, "rds", paste0("pvalues-", taskTag, ".rds")))
   }
 }
 
@@ -370,7 +443,8 @@ if (mode == "dmr") {
 
 if (mode == "summary") {
   countFiles <- list.files(".", pattern = "\\.tsv$", recursive = TRUE, full.names = TRUE) %>%
-    str_subset("^\\./DMR-[^/]+/counts/")
+    str_subset("^\\./DMR-[^/]+/counts/") %>%
+    str_subset("-simD[0-9]+-n[0-9]+-rep[0-9]+/", negate = TRUE) #Power-simulation runs are summarized by simsummary
   stopifnot(length(countFiles) > 0)
   counts <- map_dfr(countFiles, read_tsv, col_types = cols(.default = "c", perm = "i", cov.bases = "i", lo.count = "i",
                                                            regions.tested = "i", regions.tested.mito = "i",
@@ -544,6 +618,109 @@ if (mode == "enrich") {
             ", max ", max(calibration$FDR.05[-1]), " / ", max(calibration$FDR.25[-1]))
     print(head(as.data.frame(dplyr::select(result, GO, term, ontology, size, NES, nominalP, FDR, meanMethDiff)), 15))
   }
+}
+
+# Stage 8: region-level power simulation. For each SIM_DELTA > 0 run of this setting (REGIONS, SAMPLES = All, coverage in
+# all samples), how many spiked regions are found, and would the experiment as a whole have looked different from the
+# label-permutation null (free scheme, same setting)? Detection rules, as in the 04.4 DSS simulation:
+#   1. DMR: methylKit q < 0.05 and |meth.diff| >= 10 (the fixed DMR definition); also q < 0.05 at any |meth.diff|
+#   2. Empirical FDR < 0.05: the largest p-value cutoff at which (mean permuted count below it) / (simulated count below
+#      it) is at most 0.05
+#   3. Experiment-level: the run's DMR count (rule 1) is above the 95th percentile of the permuted counts; also for the
+#      q-only count
+
+if (mode == "simsummary") {
+  stopifnot(samples == "All", perm == 0)
+  escaped <- gsub("\\.", "\\\\.", paste0("DMR-", runTag))
+  simDirs <- list.files(".", pattern = paste0("^", escaped, "-simD[0-9]+-n[0-9]+-rep[0-9]+$"))
+  permDirs <- list.files(".", pattern = paste0("^", escaped, "-perm[0-9]+$"))
+  terms <- c("ploidy", "pH")
+  readPerm <- function(d, t) { #Sorted p-values of one permuted run, or NULL
+    f <- file.path(d, "rds", paste0(c("pvalues-", "diffMeth-"), t, "-All.rds"))
+    if (file.exists(f[1])) return(readRDS(f[1]))
+    if (file.exists(f[2])) return(sort(readRDS(f[2])$pvalue))
+    NULL
+  }
+  pGrid <- 10^seq(-12, -1, by = 0.02)
+  permNull <- map(setNames(terms, terms), function(t) {
+    ps <- compact(map(permDirs, readPerm, t = t))
+    counts <- map_dfr(permDirs, function(d) {
+      f <- file.path(d, "counts", paste0(t, "-All.tsv"))
+      if (file.exists(f)) read_tsv(f, show_col_types = FALSE) else NULL
+    })
+    list(meanBelow = colMeans(do.call(rbind, map(ps, ~ findInterval(pGrid, .x, left.open = TRUE)))),
+         nP = length(ps),
+         dmr = counts %>% filter(qvalue == 0.05, difference == primaryDiff) %>% pull(DMR),
+         qOnly = counts %>% filter(qvalue == 0.05, difference == 0) %>% pull(DMR))
+  })
+  message(length(simDirs), " simulation runs; permutations with p-values: ",
+          paste(terms, map_int(permNull, "nP"), collapse = ", "), "; with counts: ", paste(terms, map_int(permNull, ~ length(.x$dmr)), collapse = ", "))
+  stopifnot(length(simDirs) > 0, all(map_int(permNull, "nP") >= 20))
+
+  runs <- map_dfr(simDirs, function(d) {
+    spikes <- read_csv(file.path(d, "spiked-regions.csv"), show_col_types = FALSE)
+    map_dfr(terms, function(t) {
+      f <- file.path(d, "rds", paste0("diffMeth-", t, "-All.rds"))
+      if (!file.exists(f)) return(NULL)
+      r <- readRDS(f)
+      s <- spikes %>% filter(term == t)
+      idx <- match(paste(s$chr, s$start, s$end), paste(r$chr, r$start, r$end))
+      found <- !is.na(idx)
+      isSpike <- seq_len(nrow(r)) %in% idx
+      dmr <- r$qvalue < primaryQ & abs(r$meth.diff) >= primaryDiff
+      qHit <- r$qvalue < primaryQ
+      simBelow <- findInterval(pGrid, sort(r$pvalue), left.open = TRUE)
+      nul <- permNull[[t]]
+      ok <- simBelow > 0 & nul$meanBelow / pmax(simBelow, 1) <= 0.05
+      cutoff <- if (any(ok)) max(pGrid[ok]) else 0
+      tibble(run = d,
+             delta = as.integer(sub(".*-simD([0-9]+)-.*", "\\1", d)),
+             nSpiked = as.integer(sub(".*-n([0-9]+)-rep.*", "\\1", d)),
+             rep = as.integer(sub(".*-rep([0-9]+)$", "\\1", d)),
+             term = t, regionsTested = nrow(r), spikedTested = mean(found),
+             realizedDelta = mean(s$direction[found] * r$meth.diff[idx[found]]),
+             powerDMR = sum(dmr[idx[found]]) / nrow(s),
+             powerQ = sum(qHit[idx[found]]) / nrow(s),
+             correctSign = mean(sign(r$meth.diff[idx[found]][qHit[idx[found]]]) == s$direction[found][qHit[idx[found]]]),
+             falseDMR = sum(dmr & !isSpike),
+             empiricalCutoff = cutoff,
+             powerEmpiricalFDR = sum(r$pvalue[idx[found]] < cutoff) / nrow(s),
+             totalDMR = sum(dmr), permDMR95 = quantile(nul$dmr, 0.95, names = FALSE),
+             experimentDetectedDMR = sum(dmr) > quantile(nul$dmr, 0.95, names = FALSE),
+             totalQ = sum(qHit), permQ95 = quantile(nul$qOnly, 0.95, names = FALSE),
+             experimentDetectedQ = sum(qHit) > quantile(nul$qOnly, 0.95, names = FALSE))
+    })
+  })
+
+  powerSummary <- runs %>%
+    group_by(nSpiked, delta, term) %>%
+    summarize(reps = n(), realizedDelta = mean(realizedDelta), spikedTested = mean(spikedTested),
+              across(c(powerDMR, powerQ, powerEmpiricalFDR, correctSign, falseDMR, totalDMR, totalQ), ~ mean(.x, na.rm = TRUE)),
+              fractionExperimentDetectedDMR = mean(experimentDetectedDMR), fractionExperimentDetectedQ = mean(experimentDetectedQ),
+              permDMR95 = first(permDMR95), permQ95 = first(permQ95), .groups = "drop") %>%
+    mutate(regions = regionSet, .before = 1) %>%
+    arrange(nSpiked, factor(term, levels = terms), delta)
+  simDir <- "power-simulation"
+  dir.create(simDir, showWarnings = FALSE)
+  write_csv(runs, file.path(simDir, paste0("power-runs-", runTag, ".csv")))
+  write_csv(powerSummary, file.path(simDir, paste0("power-summary-", runTag, ".csv")))
+
+  p <- runs %>%
+    transmute(nSpiked, delta, term,
+              `DMR (q < 0.05, |diff| >= 10%)` = powerDMR, `q < 0.05, any |diff|` = powerQ, `Empirical FDR < 0.05` = powerEmpiricalFDR,
+              `Experiment-level, DMR count > permutation 95th pct` = as.numeric(experimentDetectedDMR),
+              `Experiment-level, q-only count > permutation 95th pct` = as.numeric(experimentDetectedQ)) %>%
+    pivot_longer(-c(nSpiked, delta, term), names_to = "rule", values_to = "power") %>%
+    group_by(nSpiked, delta, term, rule) %>% summarize(power = mean(power), .groups = "drop") %>%
+    ggplot(aes(delta, power, color = rule)) +
+    geom_line() + geom_point() +
+    facet_grid(rows = vars(paste(nSpiked, "spiked regions")), cols = vars(term)) +
+    scale_y_continuous(limits = c(0, 1)) +
+    labs(x = "Spiked difference (percentage points)", y = "Power (fraction of spiked regions found, or of replicates detected)",
+         color = NULL, subtitle = paste0(runTag, "; null from ", permNull$ploidy$nP, " permutations")) +
+    theme_bw() + theme(legend.position = "bottom", legend.direction = "vertical")
+  ggsave(file.path(simDir, paste0("power-curves-", runTag, ".png")), p, width = 8, height = 6.5, dpi = 150)
+  print(as.data.frame(powerSummary))
 }
 
 sessionInfo()
