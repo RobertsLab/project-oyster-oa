@@ -251,7 +251,7 @@ head(methylationInformationFilteredCov5pH8) #Confirm unite
 ```{r}
 differentialMethylationStatsPloidyCovarAll <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5PloidyAll,
                                                                            covariates = as.data.frame(sampleMetadata$pH),
-                                                                           mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                           mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovarAll) #Look at differential methylation statistics
 ```
 
@@ -278,7 +278,7 @@ write_delim(diffMethStatsPloidyCovar50All, "DML/DML-ploidy-50-Covar-Cov5-All.bed
 ```{r}
 differentialMethylationStatsPloidyCovar11 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy11,
                                                                           covariates = as.data.frame(sampleMetadata$pH),
-                                                                          mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                          mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovar11) #Look at differential methylation statistics
 ```
 
@@ -304,7 +304,7 @@ write_delim(diffMethStatsPloidyCovar5011, "DML/DML-ploidy-50-Covar-Cov5-11.bed",
 ```{r}
 differentialMethylationStatsPloidyCovar10 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy10,
                                                                           covariates = as.data.frame(sampleMetadata$pH),
-                                                                          mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                          mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovar10) #Look at differential methylation statistics
 ```
 
@@ -330,7 +330,7 @@ write_delim(diffMethStatsPloidyCovar5010, "DML/DML-ploidy-50-Covar-Cov5-10.bed",
 ```{r}
 differentialMethylationStatsPloidyCovar9 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy9,
                                                                          covariates = as.data.frame(sampleMetadata$pH),
-                                                                         mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                         mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovar9) #Look at differential methylation statistics
 ```
 
@@ -356,7 +356,7 @@ write_delim(diffMethStatsPloidyCovar509, "DML/DML-ploidy-50-Covar-Cov5-9.bed", d
 ```{r}
 differentialMethylationStatsPloidyCovar8 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy8,
                                                                          covariates = as.data.frame(sampleMetadata$pH),
-                                                                         mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                         mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovar8) #Look at differential methylation statistics
 ```
 
@@ -389,7 +389,7 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ```{r}
 methylationInformationFilteredCov5pHAll <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pHAll,
                                                                         covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                        mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                        mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(methylationInformationFilteredCov5pHAll) #Look at differential methylation statistics
 ```
 
@@ -415,7 +415,7 @@ write_delim(diffMethStatspHCovar50All, "DML/DML-pH-50-Covar-Cov5-All.bed", delim
 ```{r}
 methylationInformationFilteredCov5pH11 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH11,
                                                                        covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                       mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                       mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(methylationInformationFilteredCov5pH11) #Look at differential methylation statistics
 ```
 
@@ -441,7 +441,7 @@ write_delim(diffMethStatspHCovar5011, "DML/DML-pH-50-Covar-Cov5-11.bed", delim =
 ```{r}
 methylationInformationFilteredCov5pH10 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH10,
                                                                        covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                       mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                       mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(methylationInformationFilteredCov5pH10) #Look at differential methylation statistics
 ```
 
@@ -467,7 +467,7 @@ write_delim(diffMethStatspHCovar5010, "DML/DML-pH-50-Covar-Cov5-10.bed", delim =
 ```{r}
 methylationInformationFilteredCov5pH9 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH9,
                                                                       covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                      mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                      mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(methylationInformationFilteredCov5pH9) #Look at differential methylation statistics
 ```
 
@@ -493,7 +493,7 @@ write_delim(diffMethStatspHCovar509, "DML/DML-pH-50-Covar-Cov5-9.bed", delim = "
 ```{r}
 methylationInformationFilteredCov5pH8 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH8,
                                                                       covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                      mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                      mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(methylationInformationFilteredCov5pH8) #Look at differential methylation statistics
 ```
 
@@ -614,7 +614,7 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ```{r}
 differentialMethylationStatsPloidyCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
                                                                                 covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
-                                                                                mc.cores = 40) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                                mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatsPloidyCovarOutRMAll) #Look at differential methylation statistics
 ```
 
@@ -647,7 +647,7 @@ head(methylationInformationFilteredRMCov5pH) #Confirm reorganize
 ```{r}
 differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5pH,
                                                                                 covariates = as.data.frame(sampleMetadata$ploidy[-c(3,14)]),
-                                                                                mc.cores = 40) #Calculate differential methylation statistics based on pH treatment from reorganize. Include ploidy as a covariate by converting column with ploidy information into a dataframe. Use an overdispersion correction with the F-test (default). Use 40 cores.
+                                                                                mc.cores = 28) #Calculate differential methylation statistics based on pH treatment from reorganize. Include ploidy as a covariate by converting column with ploidy information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
 head(differentialMethylationStatspHCovarOutRMAll) #Look at differential methylation statistics
 ```
 
@@ -671,7 +671,8 @@ write_delim(diffMethStatspHCovar50RMAll, "DML/DML-pH-50-Covar-Cov5-All-OutRM.bed
 # Summary table
 
 ```{r}
-summaryDML <- data.frame("min.per.group" = c(rev(8:12), 12),
+summaryDML <- data.frame("samples" = c(rep("All", 5), "Outliers removed"),
+                         "min.per.group" = c("All", 11, 10, 9, 8, "All"),
                          "ploidy-DML-25" = c(nrow(diffMethStatsPloidyCovar25All),
                                              nrow(diffMethStatsPloidyCovar2511),
                                              nrow(diffMethStatsPloidyCovar2510),
@@ -695,7 +696,13 @@ summaryDML <- data.frame("min.per.group" = c(rev(8:12), 12),
                                          nrow(diffMethStatspHCovar5010),
                                          nrow(diffMethStatspHCovar509),
                                          nrow(diffMethStatspHCovar508),
-                                         nrow(diffMethStatspHCovar50RMAll))) #Create table with number of DML from each 
+                                         nrow(diffMethStatspHCovar50RMAll)),
+                         check.names = FALSE) #Create table with number of DML from each parameter combination. min.per.group = "All" means CpGs must have data in every sample. Use check.names = FALSE to keep hyphens in column names
+summaryDML #Look at table
+```
+
+```{r}
+write.csv(summaryDML, "DML/DML-summary-table.csv", row.names = FALSE, quote = FALSE) #Save summary table
 ```
 
 
