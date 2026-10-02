@@ -8,14 +8,14 @@
 ##   bash 04.3-methylKit-slurm-submit.sh none MN        #Run both side by side
 ##
 ## Optional environment variables (defaults in brackets):
-##   ACCOUNT [coenv]  PARTITION [cpu-g2]  DML_CPUS [32]  DML_MEM [150G]  DML_TIME [1-00:00:00]
+##   ACCOUNT [coenv]  PARTITION [ckpt-all]  DML_CPUS [32]  DML_MEM [150G]  DML_TIME [1-00:00:00]
 ##   HI_PERC [99.9]   Upper coverage percentile filter; "none" reproduces 04.2 as written (no upper filter)
 ## Example: HI_PERC=none PARTITION=ckpt bash 04.3-methylKit-slurm-submit.sh none MN
 
 set -euo pipefail
 
 ACCOUNT="${ACCOUNT:-coenv}"
-PARTITION="${PARTITION:-cpu-g2}"
+PARTITION="${PARTITION:-ckpt-all}" #Checkpoint nodes, so the shared coenv nodes stay free. Jobs use --requeue, so preempted ones restart
 DML_CPUS="${DML_CPUS:-32}"
 DML_MEM="${DML_MEM:-150G}"
 DML_TIME="${DML_TIME:-1-00:00:00}"
