@@ -13,6 +13,8 @@
 ##
 ## Settings (defaults in brackets; see 04.6-methylKit-DMR-slurm.R). REGIONS, OVERDISPERSION, and PERM take space-separated lists:
 ##   REGIONS ["tile250 tile1000"]  COV_BASES [3]  LO_COUNT [10]  HI_PERC [99.9]  SAMPLES [All]  OVERDISPERSION [MN]  PERM [0]
+##   PERM_SCHEME [free]  ("fixGeno4" keeps the four genetic outliers' real labels in every permutation; SAMPLES=All only)
+## Example: SAMPLES=DropGeno4 REGIONS="tile1000 gene" PERM="$(seq 0 20)" bash 04.6-methylKit-DMR-slurm-submit.sh
 ## Resources:
 ##   ACCOUNT [coenv]  PARTITION [ckpt-all]  COUNT_MEM [200G]  DMR_CPUS [16]  DMR_MEM [64G]  DMR_TIME [12:00:00]
 
@@ -28,6 +30,7 @@ regionSets=(${REGIONS:-tile250 tile1000})
 overdispersionSettings=(${OVERDISPERSION:-MN})
 permSettings=(${PERM:-0})
 export COV_BASES="${COV_BASES:-3}" LO_COUNT="${LO_COUNT:-10}" HI_PERC="${HI_PERC:-99.9}" SAMPLES="${SAMPLES:-All}"
+export PERM_SCHEME="${PERM_SCHEME:-free}"
 unset REGIONS OVERDISPERSION PERM #Set for each job below
 
 export CODE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -117,7 +120,7 @@ for r in "${regionSets[@]}"; do
   for od in "${overdispersionSettings[@]}"; do
     for p in "${permSettings[@]}"; do
       id=$(REGIONS="$r" OVERDISPERSION="$od" PERM="$p" sbatch "${common[@]}" $(afterok "${countIDs[@]}") \
-        --job-name=04.6-dmr-${r}-${od}-perm${p} --array=1-6 --cpus-per-task="$DMR_CPUS" --mem="$DMR_MEM" --time="$DMR_TIME" \
+        --job-name=04.6-dmr-${r}-${od}-${SAMPLES}-${PERM_SCHEME}-perm${p} --array=1-6 --cpus-per-task="$DMR_CPUS" --mem="$DMR_MEM" --time="$DMR_TIME" \
         --output=logs/%x_%A_%a.out "$job" dmr)
       dmrIDs+=("$id")
       echo "dmr ${r} ${od} perm ${p}: ${id}"
