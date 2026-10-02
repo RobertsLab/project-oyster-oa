@@ -27,6 +27,14 @@
 # pairs on different chromosomes. Raw genotypes and genotypes with the genome-wide PCs removed (as in the cis test). Shows
 # whether shared haplotypes (linkage) extend far enough to explain enrichment that stays flat out to 50 kb
 #
+# Methylation correlation decay (treatment + genotype PCs removed): correlation between the methylation of pairs of CpGs by
+# distance (20,000 random anchor CpGs, each with every CpG within 100 kb), against CpGs on the same chromosome > FAR_DIST
+# away and on other chromosomes. Shows whether methylation varies in regional blocks.
+# Conditioning test: for SNPs with CpGs within 1 kb, SNP-CpG pairs 1-50 kb apart are retested with the mean methylation of
+# the CpGs within 1 kb of the SNP as an extra covariate, and compared with the same-chromosome-far null treated the same
+# way. If the flat cis enrichment beyond 1 kb is a local effect spreading through a methylation domain, conditioning on
+# the local methylation should remove most of it
+#
 # Environment variables (defaults in brackets):
 #   SAMPLE_SETS   [All DropGeno4]
 #   GENO_K        [3]
@@ -103,7 +111,9 @@ pairTest <- function(A, B, i, j, df) {
 pi1 <- function(p) 1 - min(1, mean(p > 0.5) / 0.5)
 summarizeP <- function(p) { p <- p[!is.na(p)]; c(pairs = length(p), fracP001 = mean(p < 0.001), fracP01 = mean(p < 0.01), pi1 = pi1(p)) } #NA if a residualized genotype or feature is constant
 
-cisResults <- list(); geneResults <- list(); snpCounts <- list(); ldResults <- list()
+cisResults <- list(); geneResults <- list(); snpCounts <- list(); ldResults <- list(); corDecay <- list(); conditioned <- list()
+corBreaks <- c(0, 250, 500, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5)
+unitRows <- function(X) X / sqrt(rowSums(X^2)) #Residualized rows have mean 0, so dot products of unit rows are correlations
 ldBreaks <- c(0, 1e3, 5e3, 1e4, 2e4, 5e4, 1e5, 5e5, 1e6, 5e6, 1e7, Inf)
 for (s in sampleSets) {
   keep <- setdiff(1:24, dropSets[[s]])
@@ -248,6 +258,64 @@ for (s in sampleSets) {
       mutate(sampleSet = s, covariates = covSet, df = df, !!!as.list(summarizeP(gobs$p)), .before = 1) %>%
       mutate(enrichmentP001 = fracP001 / nullFracP001)
     if (covSet == "treatment + genotype PCs") {
+      # Methylation correlation decay
+      Yu <- unitRows(Yr)
+      set.seed(2)
+      anchors <- sort(sample(nrow(Yu), min(20000, nrow(Yu))))
+      near <- rbindlist(lapply(split(anchors, yInfo$chr[anchors]), function(a) {
+        cp <- yInfo[chr == yInfo$chr[a[1]]]
+        lo <- findInterval(yInfo$pos[a] - 1e5 - 1, cp$pos) + 1
+        hi <- findInterval(yInfo$pos[a] + 1e5, cp$pos)
+        data.table(anchor = rep(a, hi - lo + 1), other = cp$idx[unlist(mapply(seq, lo, hi, SIMPLIFY = FALSE))])
+      }))[anchor != other]
+      near[, distance := abs(yInfo$pos[anchor] - yInfo$pos[other])]
+      near[, r := rowSums(Yu[anchor, , drop = FALSE] * Yu[other, , drop = FALSE])]
+      near[, bin := cut(distance, corBreaks, include.lowest = TRUE, dig.lab = 10)]
+      set.seed(3)
+      a <- sample(anchors, 2e5, replace = TRUE)
+      far <- drawSameFar(yInfo$chr, yInfo$pos, yInfo$chr[a], yInfo$pos[a]); okFar <- !is.na(far)
+      oth <- drawOther(yInfo$chr, yInfo$chr[a])
+      rFar <- rowSums(Yu[a[okFar], , drop = FALSE] * Yu[far[okFar], , drop = FALSE])
+      rOth <- rowSums(Yu[a, , drop = FALSE] * Yu[oth, , drop = FALSE])
+      corDecay[[length(corDecay) + 1]] <- bind_rows(
+        as_tibble(near[, .(pairs = .N, meanR = mean(r), meanR2 = mean(r^2)), by = bin][order(bin)]) %>% mutate(bin = as.character(bin)),
+        tibble(bin = paste0("same chromosome, > ", format(farDist, big.mark = ",", scientific = FALSE)), pairs = length(rFar), meanR = mean(rFar), meanR2 = mean(rFar^2)),
+        tibble(bin = "other chromosome", pairs = length(rOth), meanR = mean(rOth), meanR2 = mean(rOth^2))) %>%
+        mutate(sampleSet = s, oysters = n, .before = 1)
+      rm(near); invisible(gc())
+
+      # Conditioning on methylation within 1 kb of the SNP
+      local <- cpgPairs[distance <= 1000]
+      Mloc <- rowsum(Yr[local$feature, , drop = FALSE], local$snp) / as.vector(table(local$snp)[as.character(sort(unique(local$snp)))])
+      locSNP <- as.integer(rownames(Mloc))
+      Mu <- unitRows(Mloc)
+      Gu <- unitRows(Gr)
+      testPairs <- cpgPairs[distance > 1000 & distance <= 5e4 & snp %in% locSNP]
+      condTest <- function(snp, feature) {
+        m <- match(snp, locSNP)
+        rgy <- rowSums(Gu[snp, , drop = FALSE] * Yu[feature, , drop = FALSE])
+        rgm <- rowSums(Gu[snp, , drop = FALSE] * Mu[m, , drop = FALSE])
+        rym <- rowSums(Yu[feature, , drop = FALSE] * Mu[m, , drop = FALSE])
+        rc <- (rgy - rgm * rym) / sqrt(pmax((1 - rgm^2) * (1 - rym^2), 1e-12))
+        pt2 <- function(r, d) 2 * pt(-abs(r * sqrt(d / pmax(1 - r^2, 1e-12))), d)
+        tibble(unconditioned = pt2(rgy, df), conditioned = pt2(rc, df - 1))
+      }
+      obsCond <- condTest(testPairs$snp, testPairs$feature)
+      nullCond <- map_dfr(seq_len(nNull), function(k) {
+        set.seed(5000 + k)
+        nf <- drawSameFar(yInfo$chr, yInfo$pos, snpInfo$chr[testPairs$snp], snpInfo$pos[testPairs$snp]); ok <- !is.na(nf)
+        condTest(testPairs$snp[ok], nf[ok]) %>% summarize(across(everything(), ~ mean(.x < 0.001))) %>% mutate(null = k)
+      })
+      conditioned[[length(conditioned) + 1]] <- tibble(
+        sampleSet = s, SNPsWithLocalCpG = length(locSNP), pairs1to50kb = nrow(testPairs),
+        model = c("unconditioned", "conditioned on methylation within 1 kb"),
+        fracP001 = c(mean(obsCond$unconditioned < 0.001), mean(obsCond$conditioned < 0.001)),
+        nullFracP001 = c(mean(nullCond$unconditioned), mean(nullCond$conditioned)),
+        nullFracP001_95 = c(quantile(nullCond$unconditioned, 0.95, names = FALSE), quantile(nullCond$conditioned, 0.95, names = FALSE))) %>%
+        mutate(enrichmentP001 = fracP001 / nullFracP001)
+    }
+
+    if (covSet == "treatment + genotype PCs") {
       write_csv(tibble(snpChr = snpInfo$chr[genePairs$snp], snpPos = snpInfo$pos[genePairs$snp],
                        gene = paste(zInfo$chr[genePairs$feature], zInfo$start[genePairs$feature], zInfo$end[genePairs$feature]),
                        carriers = snpInfo$carriers[genePairs$snp], r = gobs$r, p = gobs$p) %>% arrange(p),
@@ -269,6 +337,19 @@ cisResults <- bind_rows(cisResults); geneResults <- bind_rows(geneResults)
 write_csv(bind_rows(snpCounts), file.path("tables", "SNP-and-pair-counts.csv"))
 write_csv(cisResults, file.path("tables", "cis-CpG-by-distance.csv"))
 write_csv(geneResults, file.path("tables", "cis-gene.csv"))
+corDecay <- bind_rows(corDecay); conditioned <- bind_rows(conditioned)
+write_csv(corDecay, file.path("tables", "methylation-correlation-decay.csv"))
+write_csv(conditioned, file.path("tables", "cis-conditioned-on-local-methylation.csv"))
+pc <- corDecay %>% filter(!str_detect(bin, "chromosome")) %>%
+  mutate(bin = factor(bin, levels = unique(bin))) %>%
+  ggplot(aes(bin, meanR, color = sampleSet, group = sampleSet)) +
+  geom_line() + geom_point() +
+  geom_hline(data = corDecay %>% filter(str_detect(bin, "same chromosome")), aes(yintercept = meanR, color = sampleSet), linetype = 2) +
+  geom_hline(data = corDecay %>% filter(bin == "other chromosome"), aes(yintercept = meanR, color = sampleSet), linetype = 3) +
+  labs(x = "Distance between CpGs (bp)", y = "Mean correlation of methylation", color = NULL,
+       subtitle = "Treatment + genotype PCs removed\nDashed: same chromosome > 1 Mb; dotted: other chromosome") +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+ggsave(file.path("figures", "methylation-correlation-decay.png"), pc, width = 7, height = 4.5, dpi = 150)
 ldResults <- bind_rows(ldResults)
 write_csv(ldResults, file.path("tables", "LD-decay.csv"))
 pl <- ldResults %>% filter(bin != "other chromosome") %>%
@@ -294,4 +375,6 @@ print(as.data.frame(bind_rows(snpCounts)))
 print(as.data.frame(cisResults))
 print(as.data.frame(geneResults))
 print(as.data.frame(ldResults))
+print(as.data.frame(corDecay))
+print(as.data.frame(conditioned))
 sessionInfo()
