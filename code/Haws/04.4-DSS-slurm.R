@@ -8,6 +8,8 @@
 #   Rscript 04.4-DSS-slurm.R summary    #Combine blocks, recompute FDR over all CpGs, call DML/DMR, count
 #   Rscript 04.4-DSS-slurm.R compare    #Sample-set sensitivity: do the All DML hold up in Drop3H2, DropPC2, OutRM? (needs their summaries)
 #   Rscript 04.4-DSS-slurm.R permsummary #Observed DML counts vs label permutations (needs PERM = 0 and PERM > 0 summaries)
+#   Rscript 04.4-DSS-slurm.R snp-prep    #Mark CpGs with BS-SNPer SNPs (prep-bssnper/*.vcf from gannet; needs prep-raw)
+#   Rscript 04.4-DSS-slurm.R snp-summary #SNP enrichment among observed and permuted DML; genotype PCA vs methylation PCA
 #
 # Environment variables for prep, fit, and summary (defaults in brackets):
 #   LO_COV    [5]      Per-sample minimum coverage. Use 1 for no filter (DSS default)
@@ -21,6 +23,8 @@
 #                      or less. The filter ignores labels, so it does not bias the tests and works the same for permutations.
 #                      Mito CpGs are exempt (~2% methylation in every sample, so the filter would remove all of them).
 #                      "none" skips it (runs before 2026-10-02)
+#   SNP_FILTER [none]  "any" = drop CpGs where any sample has a BS-SNPer PASS SNP at the C or at the G on the other strand
+#                      (either makes the site look unmethylated). Needs snp-prep
 #   SAMPLES   [All]    Sample set. "All" (24 oysters, primary). Sensitivity checks chosen from the sample QC (2026-10-02):
 #                      "Drop3H2" (PC1 outlier, lowest correlation with other samples), "DropPC2" (2H-1, 2H-2, 3H-5, which
 #                      separate on PC2), and "OutRM" (2H-3 and 3H-2, the pair removed in 04.2/04.3, for comparison with methylKit)
@@ -36,12 +40,13 @@ suppressPackageStartupMessages({
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
-stopifnot(mode %in% c("prep-raw", "qc", "prep", "fit", "summary", "compare", "permsummary"))
+stopifnot(mode %in% c("prep-raw", "qc", "prep", "fit", "summary", "compare", "permsummary", "snp-prep", "snp-summary"))
 
 loCov <- as.integer(Sys.getenv("LO_COV", "5"))
 hiPercSetting <- Sys.getenv("HI_PERC", "99.9")
 presence <- Sys.getenv("PRESENCE", "cell5")
 minMethSetting <- Sys.getenv("MIN_METH", "10")
+snpFilter <- Sys.getenv("SNP_FILTER", "none")
 samples <- Sys.getenv("SAMPLES", "All")
 model <- Sys.getenv("MODEL", "interaction")
 perm <- as.integer(Sys.getenv("PERM", "0"))
@@ -49,6 +54,7 @@ nChunk <- as.integer(Sys.getenv("NCHUNK", "1"))
 stopifnot(loCov >= 1,
           hiPercSetting == "none" || !is.na(as.numeric(hiPercSetting)),
           presence == "all" || grepl("^cell[0-9]+$", presence),
+          snpFilter %in% c("none", "any"),
           minMethSetting == "none" || (!is.na(as.numeric(minMethSetting)) && as.numeric(minMethSetting) < 50),
           samples %in% c("All", "Drop3H2", "DropPC2", "OutRM"),
           model %in% c("interaction", "additive"))
@@ -61,7 +67,8 @@ dropSets <- list(All = integer(0),
                  OutRM = c(3, 14)) #2H-3 and 3H-2, as in 04.2/04.3
 outliers <- dropSets$OutRM
 
-filterTag <- paste0("cov", loCov, "-hiperc", hiPercSetting, "-", presence, ifelse(minMethSetting == "none", "", paste0("-meth", minMethSetting)))
+filterTag <- paste0("cov", loCov, "-hiperc", hiPercSetting, "-", presence, ifelse(minMethSetting == "none", "", paste0("-meth", minMethSetting)),
+                    ifelse(snpFilter == "none", "", "-noSNP"))
 settingTag <- paste0(filterTag, "-", samples)
 prepDir <- paste0("prep-", settingTag)
 runDir <- paste0("DSS-", settingTag, "-", model, ifelse(perm == 0, "", paste0("-perm", perm)))
@@ -315,6 +322,14 @@ if (mode == "prep") {
                               tibble(step = paste0("after MIN_METH = ", minMethSetting, " (mean methylation ", minMeth, "-", 100 - minMeth, "%; mito exempt)"),
                                      CpGs = sum(keepRows), mitoCpGs = sum(keepRows & !nuclear)))
   }
+  if (snpFilter == "any") {
+    cpgSNP <- readRDS("prep-bssnper/CpG-SNP-flags.rds")
+    stopifnot(identical(length(cpgSNP$nSamplesSNP), length(raw$pos)))
+    keepRows <- keepRows & cpgSNP$nSamplesSNP == 0
+    filterCounts <- bind_rows(filterCounts,
+                              tibble(step = "after SNP_FILTER = any (no PASS SNP at the C or G in any sample)",
+                                     CpGs = sum(keepRows), mitoCpGs = sum(keepRows & !nuclear)))
+  }
   filtered <- list(chr = raw$chr[keepRows], pos = raw$pos[keepRows], M = M[keepRows, ], Cov = Cov[keepRows, ])
   print(as.data.frame(filterCounts))
   write_tsv(filterCounts, file.path(prepDir, "CpG-filter-counts.tsv"))
@@ -489,6 +504,138 @@ if (mode == "permsummary") {
     arrange(factor(term, levels = c("ploidy", "pH", "interaction")), desc(fdr), minDiff)
   write_csv(permSummary, paste0("permutation-summary-", settingTag, "-", model, ".csv"))
   print(as.data.frame(permSummary))
+}
+
+# Stage 8: BS-SNPer SNPs at CpGs. Uses the per-sample VCFs from the earlier BS-SNPer run (code/Haws/05-BS-SNPer.ipynb;
+# same bismark-2 BAMs and Roslin + mito genome as the coverage files; --mincover 5, other settings default), downloaded to
+# prep-bssnper/. Only PASS calls are used (Low calls are mostly 1-2 reads). A CpG is marked for a sample if that sample has
+# a SNP at the C (pos) or at the G (pos + 1): either makes the site look unmethylated in bisulfite data
+
+vcfFile <- function(i) file.path("prep-bssnper", paste0("zr3644_", i, "_R1_val_1_val_1_val_1_bismark_bt2_pe.SNP-results.vcf"))
+
+if (mode == "snp-prep") {
+  stopifnot(all(file.exists(vcfFile(1:24))))
+  raw <- readRDS("prep-raw/raw-counts.rds")
+  chrLevels <- sort(unique(raw$chr))
+  cpgKey <- match(raw$chr, chrLevels) * 1e9 + raw$pos
+  snpMatrix <- matrix(FALSE, nrow = length(cpgKey), ncol = 24, dimnames = list(NULL, sampleMetadata$sampleID))
+  altFreq <- matrix(0, nrow = length(cpgKey), ncol = 24, dimnames = list(NULL, sampleMetadata$sampleID)) #Alt allele frequency at the C or G (larger of the two)
+  snpNonBS <- snpMatrix #Same, using only SNPs bisulfite conversion cannot mimic: not C>T at the C, not G>A at the G
+  altFreqNonBS <- altFreq
+  perSample <- list()
+  for (i in 1:24) {
+    message("Reading ", basename(vcfFile(i)))
+    vcf <- fread(cmd = paste("grep -v '^##'", shQuote(vcfFile(i))), sep = "\t", header = TRUE,
+                 select = c(1, 2, 4, 5, 7, 10), col.names = c("chr", "pos", "ref", "alt", "filter", "sample"))
+    perSample[[i]] <- tibble(sample_number = i, SNPsAll = nrow(vcf), SNPsPASS = sum(vcf$filter == "PASS"),
+                             CTorGA = sum(vcf$filter == "PASS" & ((vcf$ref == "C" & vcf$alt == "T") | (vcf$ref == "G" & vcf$alt == "A"))),
+                             heterozygous = sum(vcf$filter == "PASS" & startsWith(vcf$sample, "0/1")))
+    vcf <- vcf[filter == "PASS" & chr %in% chrLevels]
+    vcf[, alfr := as.numeric(sub(".*,", "", sub(".*:", "", sample)))] #Last FORMAT field ALFR = "ref,alt"
+    key <- match(vcf$chr, chrLevels) * 1e9 + vcf$pos
+    for (offset in c(0, 1)) { #SNP at the C (pos) or the G (pos + 1)
+      rowIndex <- match(key - offset, cpgKey)
+      hit <- !is.na(rowIndex)
+      snpMatrix[rowIndex[hit], i] <- TRUE
+      altFreq[rowIndex[hit], i] <- pmax(altFreq[rowIndex[hit], i], vcf$alfr[hit])
+      bsLike <- if (offset == 0) vcf$ref == "C" & vcf$alt == "T" else vcf$ref == "G" & vcf$alt == "A"
+      hitNonBS <- hit & !bsLike
+      snpNonBS[rowIndex[hitNonBS], i] <- TRUE
+      altFreqNonBS[rowIndex[hitNonBS], i] <- pmax(altFreqNonBS[rowIndex[hitNonBS], i], vcf$alfr[hitNonBS])
+    }
+  }
+  nSamplesSNP <- rowSums(snpMatrix)
+  saveRDS(list(nSamplesSNP = nSamplesSNP), "prep-bssnper/CpG-SNP-flags.rds", compress = FALSE)
+  snpRows <- which(nSamplesSNP > 0)
+  saveRDS(list(chr = raw$chr[snpRows], pos = raw$pos[snpRows], snp = snpMatrix[snpRows, ], altFreq = altFreq[snpRows, ],
+               snpNonBS = snpNonBS[snpRows, ], altFreqNonBS = altFreqNonBS[snpRows, ], Cov = raw$Cov[snpRows, ]),
+          "prep-bssnper/CpG-SNP-genotypes.rds", compress = FALSE)
+
+  perSample <- bind_rows(perSample) %>%
+    mutate(CpGsWithSNP = colSums(snpMatrix), sampleID = sampleMetadata$sampleID, .after = sample_number)
+  dir.create("SNP-check", showWarnings = FALSE)
+  write_csv(perSample, "SNP-check/SNPs-per-sample.csv")
+  write_csv(tibble(nSamplesWithSNP = 0:24, CpGs = tabulate(nSamplesSNP + 1, nbins = 25)), "SNP-check/CpGs-by-number-of-samples-with-SNP.csv")
+  print(as.data.frame(perSample))
+  message(sum(nSamplesSNP > 0), " of ", length(nSamplesSNP), " covered CpGs have a PASS SNP at the C or G in at least one sample")
+}
+
+if (mode == "snp-summary") {
+  dir.create("SNP-check", showWarnings = FALSE)
+  raw <- readRDS("prep-raw/raw-counts.rds")
+  rawKey <- paste(raw$chr, raw$pos)
+  nSamplesSNP <- readRDS("prep-bssnper/CpG-SNP-flags.rds")$nSamplesSNP
+  rm(raw); invisible(gc())
+
+  # 1. Are DML more often at SNP CpGs than the CpGs tested? Observed and each permutation
+  runDirs <- list.files(".", pattern = "^DSS-.*-interaction(-perm[0-9]+)?$")
+  runDirs <- runDirs[file.exists(file.path(runDirs, "rds", "all-CpG-results.rds"))]
+  enrichment <- map_dfr(runDirs, function(d) {
+    results <- readRDS(file.path(d, "rds", "all-CpG-results.rds"))
+    snp <- nSamplesSNP[match(paste(results$chr, results$pos), rawKey)] > 0
+    map_dfr(c("ploidy", "pH", "interaction"), function(term) {
+      fdr <- results[[paste0("fdr.", term)]]
+      p <- results[[paste0("p.", term)]]
+      tibble(run = d, setting = sub("-interaction(-perm[0-9]+)?$", "", sub("^DSS-", "", d)),
+             perm = as.integer(ifelse(grepl("-perm", d), sub(".*-perm", "", d), "0")), term = term,
+             CpGsTested = length(snp), fractionSNPTested = mean(snp),
+             DMLfdr0.05 = sum(fdr < 0.05), fractionSNPDML = mean(snp[fdr < 0.05]),
+             p0.001 = sum(p < 0.001), fractionSNPp0.001 = mean(snp[p < 0.001]))
+    })
+  })
+  write_csv(enrichment, "SNP-check/SNP-enrichment-among-DML.csv")
+  print(as.data.frame(enrichment %>% group_by(setting, term, observed = perm == 0) %>%
+                        summarize(runs = n(), fractionSNPTested = mean(fractionSNPTested), DMLfdr0.05 = mean(DMLfdr0.05),
+                                  fractionSNPDML = mean(fractionSNPDML, na.rm = TRUE), fractionSNPp0.001 = mean(fractionSNPp0.001, na.rm = TRUE),
+                                  .groups = "drop")))
+
+  # 2. Genetic structure: PCA of alt allele frequency at SNP CpGs covered >= 10x in all samples and variable across samples.
+  # A SNP absent at a well-covered site is treated as reference. Compared with the methylation PCA from the sample QC.
+  # Run twice: all SNPs, and only SNPs bisulfite conversion cannot mimic ("nonBS": not C>T at the C, not G>A at the G).
+  # At C>T / G>A sites the genotype call can carry some methylation signal, so the all-SNP comparison may be partly
+  # circular; the nonBS set is the check
+  geno <- readRDS("prep-bssnper/CpG-SNP-genotypes.rds")
+  qc <- read_csv("sample-QC/sample-QC-table.csv", show_col_types = FALSE)
+  methCor <- as.matrix(read.csv("sample-QC/sample-correlation-matrix.csv", row.names = 1, check.names = FALSE))
+  genotypeStructure <- function(snp, altFreq, label) {
+    suffix <- ifelse(label == "all", "", paste0("-", label))
+    useRows <- rowSums(geno$Cov >= 10) == 24 & rowSums(snp) >= 2 & rowSums(snp) <= 22
+    G <- altFreq[useRows, ]
+    message(label, ": ", nrow(G), " SNP CpGs used for the genotype PCA")
+    genoPCA <- prcomp(t(G), center = TRUE, scale. = FALSE)
+    genoVar <- 100 * genoPCA$sdev^2 / sum(genoPCA$sdev^2)
+    genoCor <- cor(G)
+    genoScores <- tibble(sampleID = colnames(G), genoPC1 = genoPCA$x[, 1], genoPC2 = genoPCA$x[, 2], genoPC3 = genoPCA$x[, 3],
+                         meanGenoCorOthers = (rowSums(genoCor) - 1) / 23) %>%
+      left_join(qc %>% dplyr::select(sampleID, ploidy, pH, methPC1 = PC1, methPC2 = PC2, dedupPairs), by = "sampleID")
+    write_csv(genoScores, paste0("SNP-check/genotype-PCA-scores", suffix, ".csv"))
+    write.csv(genoCor, paste0("SNP-check/genotype-correlation-matrix", suffix, ".csv"))
+    pcCor <- expand_grid(genoPC = paste0("genoPC", 1:3), methPC = c("methPC1", "methPC2")) %>%
+      mutate(spearmanRho = map2_dbl(genoPC, methPC, ~ cor(genoScores[[.x]], genoScores[[.y]], method = "spearman")),
+             p = map2_dbl(genoPC, methPC, ~ suppressWarnings(cor.test(genoScores[[.x]], genoScores[[.y]], method = "spearman"))$p.value),
+             genoPercentVariance = genoVar[as.integer(sub("genoPC", "", genoPC))])
+    write_csv(pcCor, paste0("SNP-check/genotype-vs-methylation-PC-correlations", suffix, ".csv"))
+    pairs <- upper.tri(genoCor) #Is genotype similarity related to methylation similarity across sample pairs?
+    pairRho <- cor(genoCor[pairs], methCor[colnames(G), colnames(G)][pairs], method = "spearman")
+    message(label, ": Spearman correlation of genotype vs methylation similarity across sample pairs: ", round(pairRho, 3))
+    writeLines(paste0("SNPCpGs\t", nrow(G), "\npairs\t", sum(pairs), "\nspearmanRho\t", pairRho),
+               paste0("SNP-check/genotype-vs-methylation-similarity", suffix, ".tsv"))
+    plotData <- genoScores %>% mutate(group = paste0(ploidy, " ", pH, " pH"),
+                                      highlight = sampleID %in% c("3H-2", "2H-1", "2H-2", "3H-5"))
+    p <- ggplot(plotData, aes(genoPC1, genoPC2, color = group)) +
+      geom_point(aes(shape = highlight), size = 3) +
+      geom_text(aes(label = sampleID), vjust = -0.9, size = 3, show.legend = FALSE) +
+      scale_shape_manual(values = c(`FALSE` = 16, `TRUE` = 17), labels = c("", "3H-2 / PC2 group")) +
+      labs(x = sprintf("genotype PC1 (%.1f%%)", genoVar[1]), y = sprintf("genotype PC2 (%.1f%%)", genoVar[2]), color = NULL, shape = NULL,
+           subtitle = paste0(format(nrow(G), big.mark = ","), " SNP CpGs, >= 10x in all samples",
+                             ifelse(label == "nonBS", " (no C>T at C / G>A at G)", ""))) +
+      theme_bw()
+    ggsave(paste0("SNP-check/genotype-PCA", suffix, ".png"), p, width = 7, height = 5.5, dpi = 150)
+    print(as.data.frame(genoScores))
+    print(as.data.frame(pcCor))
+  }
+  genotypeStructure(geno$snp, geno$altFreq, "all")
+  genotypeStructure(geno$snpNonBS, geno$altFreqNonBS, "nonBS")
 }
 
 sessionInfo()
