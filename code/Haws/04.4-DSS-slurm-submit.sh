@@ -9,27 +9,30 @@
 ##   bash 04.4-DSS-slurm-submit.sh all     #qc and the DSS run, sharing one prep-raw job
 ##   bash 04.4-DSS-slurm-submit.sh compare #Sample-set sensitivity table (needs All, Drop3H2, DropPC2, OutRM summaries)
 ##   bash 04.4-DSS-slurm-submit.sh permsummary #Observed vs permuted DML counts (needs PERM = 0 and PERM > 0 runs)
+##   bash 04.4-DSS-slurm-submit.sh snp-prep    #Mark CpGs with BS-SNPer SNPs (VCFs in analyses/Haws_04.4-DSS/prep-bssnper/)
+##   bash 04.4-DSS-slurm-submit.sh snp-summary #SNP enrichment among DML; genotype PCA
 ##
 ## Settings (defaults in brackets; see 04.4-DSS-slurm.R):
-##   LO_COV [5]  HI_PERC [99.9]  PRESENCE [cell5]  MIN_METH [10]  SAMPLES [All]  MODEL [interaction]  PERM [0]  NCHUNK [1]
+##   LO_COV [5]  HI_PERC [99.9]  PRESENCE [cell5]  MIN_METH [10]  SNP_FILTER [none]  SAMPLES [All]  MODEL [interaction]  GENO_PCS [0]  PERM [0]  NCHUNK [1]
 ## Resources:
 ##   ACCOUNT [coenv]  PARTITION [cpu-g2]  FIT_MEM [64G]  FIT_TIME [4:00:00]
 ## Examples:
 ##   for s in Drop3H2 DropPC2 OutRM; do SAMPLES=$s bash 04.4-DSS-slurm-submit.sh; done   #Sample-set sensitivity checks
 ##   MODEL=additive bash 04.4-DSS-slurm-submit.sh
+##   GENO_PCS=1 bash 04.4-DSS-slurm-submit.sh      #Genotype PC1 as a covariate (needs snp-summary)
 ##   for s in $(seq 1 20); do PERM=$s bash 04.4-DSS-slurm-submit.sh; done; bash 04.4-DSS-slurm-submit.sh permsummary
 
 set -euo pipefail
 
 target="${1:-dss}"
-case "$target" in qc|dss|all|compare|permsummary) ;; *) echo "Unknown target: $target (use qc, dss, all, compare, or permsummary)" >&2; exit 1 ;; esac
+case "$target" in qc|dss|all|compare|permsummary|snp-prep|snp-summary) ;; *) echo "Unknown target: $target (use qc, dss, all, compare, permsummary, snp-prep, or snp-summary)" >&2; exit 1 ;; esac
 
 ACCOUNT="${ACCOUNT:-coenv}"
 PARTITION="${PARTITION:-cpu-g2}"
 FIT_MEM="${FIT_MEM:-64G}"
 FIT_TIME="${FIT_TIME:-4:00:00}"
-export LO_COV="${LO_COV:-5}" HI_PERC="${HI_PERC:-99.9}" PRESENCE="${PRESENCE:-cell5}" MIN_METH="${MIN_METH:-10}" SAMPLES="${SAMPLES:-All}"
-export MODEL="${MODEL:-interaction}" PERM="${PERM:-0}" NCHUNK="${NCHUNK:-1}"
+export LO_COV="${LO_COV:-5}" HI_PERC="${HI_PERC:-99.9}" PRESENCE="${PRESENCE:-cell5}" MIN_METH="${MIN_METH:-10}" SNP_FILTER="${SNP_FILTER:-none}" SAMPLES="${SAMPLES:-All}"
+export MODEL="${MODEL:-interaction}" GENO_PCS="${GENO_PCS:-0}" PERM="${PERM:-0}" NCHUNK="${NCHUNK:-1}"
 
 export CODE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 outDir="$(realpath -m "${CODE_DIR}/../../analyses/Haws_04.4-DSS")"
@@ -44,8 +47,8 @@ cp "${CODE_DIR}/04.4-DSS-slurm.R" "$R_SCRIPT"
 common=(--parsable --requeue --account="$ACCOUNT" --partition="$PARTITION" --chdir="$outDir")
 job="${CODE_DIR}/04.4-DSS-slurm.job"
 
-if [ "$target" = "compare" ] || [ "$target" = "permsummary" ]; then
-  id=$(sbatch "${common[@]}" --job-name=04.4-${target} --cpus-per-task=1 --mem=64G --time=1:00:00 \
+if [ "$target" = "compare" ] || [ "$target" = "permsummary" ] || [ "$target" = "snp-prep" ] || [ "$target" = "snp-summary" ]; then
+  id=$(sbatch "${common[@]}" --job-name=04.4-${target} --cpus-per-task=2 --mem=150G --time=3:00:00 \
     --output=logs/%x_%j.out "$job" "$target")
   echo "${target}: ${id}"
   exit 0
@@ -70,7 +73,7 @@ if [ "$target" != "dss" ]; then
 fi
 
 # prep for this filter setting: skipped if already finished
-setting="cov${LO_COV}-hiperc${HI_PERC}-${PRESENCE}$([ "$MIN_METH" = "none" ] || echo "-meth${MIN_METH}")-${SAMPLES}"
+setting="cov${LO_COV}-hiperc${HI_PERC}-${PRESENCE}$([ "$MIN_METH" = "none" ] || echo "-meth${MIN_METH}")$([ "$SNP_FILTER" = "none" ] || echo "-noSNP")-${SAMPLES}"
 prepDependency=("${rawDependency[@]}")
 if [ -f "${outDir}/prep-${setting}/prep-complete" ]; then
   echo "prep already complete for ${setting}, skipping"
@@ -81,7 +84,7 @@ else
   echo "prep ${setting}: ${prepID}"
 fi
 
-run="${setting}-${MODEL}$([ "$PERM" = "0" ] || echo "-perm${PERM}")"
+run="${setting}-${MODEL}$([ "$GENO_PCS" = "0" ] || echo "-genoPC${GENO_PCS}")$([ "$PERM" = "0" ] || echo "-perm${PERM}")"
 fitID=$(sbatch "${common[@]}" "${prepDependency[@]}" --job-name=04.4-fit --array=1-${NCHUNK} \
   --cpus-per-task=1 --mem="$FIT_MEM" --time="$FIT_TIME" \
   --output=logs/%x_%A_%a.out "$job" fit)
