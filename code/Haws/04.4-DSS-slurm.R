@@ -10,6 +10,7 @@
 #   Rscript 04.4-DSS-slurm.R permsummary #Observed DML counts vs label permutations (needs PERM = 0 and PERM > 0 summaries)
 #   Rscript 04.4-DSS-slurm.R snp-prep    #Mark CpGs with BS-SNPer SNPs (prep-bssnper/*.vcf from gannet; needs prep-raw)
 #   Rscript 04.4-DSS-slurm.R snp-summary #SNP enrichment among observed and permuted DML; genotype PCA vs methylation PCA
+#   Rscript 04.4-DSS-slurm.R simsummary  #Power simulation: detection of spiked-in effects (needs SIM_DELTA > 0 runs and permutations)
 #
 # Environment variables for prep, fit, and summary (defaults in brackets):
 #   LO_COV    [5]      Per-sample minimum coverage. Use 1 for no filter (DSS default)
@@ -36,6 +37,12 @@
 #   PERM      [0]      0 = observed labels. Any other value is the seed for a label permutation (null check)
 #   NCHUNK    [1]      Number of CpG blocks for the fit array. The fit is fast (~0.5 s per 7k CpGs x 24 samples), so 1 block
 #                      (dispersion prior estimated from all CpGs) is the default
+#   SIM_DELTA [0]      Power simulation (plan: 04.4-DSS-power-simulation.md). > 0 = before fitting, spike a known difference of
+#                      SIM_DELTA percentage points into SIM_N nuclear CpGs for ploidy and another SIM_N for pH, using the real
+#                      labels and the real counts, so each oyster's own variation is kept. Reads are moved between methylated and
+#                      unmethylated (binomial thinning); coverage is unchanged. Up to 40
+#   SIM_N     [1000]   Number of spiked CpGs per term
+#   SIM_REP   [1]      Replicate; the seed for which CpGs are spiked and their direction (same CpGs for every SIM_DELTA in a replicate)
 
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -44,7 +51,7 @@ suppressPackageStartupMessages({
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
-stopifnot(mode %in% c("prep-raw", "qc", "prep", "fit", "summary", "compare", "permsummary", "snp-prep", "snp-summary"))
+stopifnot(mode %in% c("prep-raw", "qc", "prep", "fit", "summary", "compare", "permsummary", "snp-prep", "snp-summary", "simsummary"))
 
 loCov <- as.integer(Sys.getenv("LO_COV", "5"))
 hiPercSetting <- Sys.getenv("HI_PERC", "99.9")
@@ -56,6 +63,11 @@ model <- Sys.getenv("MODEL", "interaction")
 genoPCs <- as.integer(Sys.getenv("GENO_PCS", "0"))
 perm <- as.integer(Sys.getenv("PERM", "0"))
 nChunk <- as.integer(Sys.getenv("NCHUNK", "1"))
+simDelta <- as.integer(Sys.getenv("SIM_DELTA", "0"))
+simN <- as.integer(Sys.getenv("SIM_N", "1000"))
+simRep <- as.integer(Sys.getenv("SIM_REP", "1"))
+stopifnot(simDelta >= 0, simDelta <= 40, simN >= 1, simRep >= 1,
+          simDelta == 0 || (perm == 0 && nChunk == 1)) #Spike-ins use the real labels and need every CpG in one block
 stopifnot(loCov >= 1,
           hiPercSetting == "none" || !is.na(as.numeric(hiPercSetting)),
           presence == "all" || grepl("^cell[0-9]+$", presence),
@@ -78,7 +90,9 @@ filterTag <- paste0("cov", loCov, "-hiperc", hiPercSetting, "-", presence, ifels
 settingTag <- paste0(filterTag, "-", samples)
 prepDir <- paste0("prep-", settingTag)
 modelTag <- paste0(model, ifelse(genoPCs == 0, "", paste0("-genoPC", genoPCs))) #Run folders and summary files are named by model + covariates
-runDir <- paste0("DSS-", settingTag, "-", modelTag, ifelse(perm == 0, "", paste0("-perm", perm)))
+simTag <- function(delta, n, rep) paste0("-simD", delta, "-n", n, "-rep", rep)
+runDir <- paste0("DSS-", settingTag, "-", modelTag, ifelse(perm == 0, "", paste0("-perm", perm)),
+                 ifelse(simDelta == 0, "", simTag(simDelta, simN, simRep)))
 
 # Sample metadata, as in 04.2
 
@@ -123,6 +137,39 @@ effectSizes <- function(M, Cov, design) {
              diffPloidy = 100 * ((groupMean[, "3N-high"] + groupMean[, "3N-low"]) - (groupMean[, "2N-high"] + groupMean[, "2N-low"])) / 2,
              diffpH = 100 * ((groupMean[, "2N-low"] + groupMean[, "3N-low"]) - (groupMean[, "2N-high"] + groupMean[, "3N-high"])) / 2,
              diffInteraction = 100 * ((groupMean[, "3N-low"] - groupMean[, "2N-low"]) - (groupMean[, "3N-high"] - groupMean[, "2N-high"])))
+}
+
+# Power simulation: spike a known difference into real counts. For a spiked CpG with mean methylation m (all samples,
+# ignoring labels), oysters on the "up" side of the effect have each unmethylated read switched to methylated with
+# probability (delta / 2) / (1 - m), and oysters on the "down" side have each methylated read switched with probability
+# (delta / 2) / m. That moves the two group means apart by delta on average, keeps every oyster's coverage, and keeps
+# its own deviation from the group mean. The CpGs come from those with m between 20% and 80% (so both probabilities are
+# at most 1 for delta up to 40), chosen with the SIM_REP seed, so every SIM_DELTA in a replicate spikes the same CpGs
+simPool <- c(0.2, 0.8)
+
+spikeIn <- function(filtered, design, delta, nSpike, rep) {
+  beta <- filtered$M / filtered$Cov
+  beta[filtered$Cov == 0] <- NA
+  meanMeth <- rowMeans(beta, na.rm = TRUE)
+  rm(beta)
+  pool <- which(filtered$chr != mitoChr & meanMeth >= simPool[1] & meanMeth <= simPool[2])
+  stopifnot(length(pool) >= 2 * nSpike)
+  set.seed(rep)
+  spikes <- tibble(row = sample(pool, 2 * nSpike),
+                   term = rep(c("ploidy", "pH"), each = nSpike),
+                   direction = sample(c(-1L, 1L), 2 * nSpike, replace = TRUE)) %>% #+1 = higher in triploids / at low pH
+    mutate(chr = filtered$chr[row], pos = filtered$pos[row], meanMeth = 100 * meanMeth[row])
+
+  groupSign <- list(ploidy = sign(design$ploidyEffect), pH = sign(design$pHEffect))
+  up <- t(sapply(seq_len(nrow(spikes)), function(i) spikes$direction[i] * groupSign[[spikes$term[i]]] > 0))
+  M <- filtered$M[spikes$row, ]
+  U <- filtered$Cov[spikes$row, ] - M
+  m <- meanMeth[spikes$row]
+  set.seed(1000 * rep + delta)
+  gained <- matrix(rbinom(length(U), U, (delta / 200) / (1 - m)), nrow = nrow(U)) #prob vector recycles by row
+  lost <- matrix(rbinom(length(M), M, (delta / 200) / m), nrow = nrow(M))
+  filtered$M[spikes$row, ] <- M + ifelse(up, gained, -lost)
+  list(filtered = filtered, spikes = spikes)
 }
 
 # Stage 1: read coverage files into count matrices (union of CpGs covered in any sample)
@@ -362,6 +409,12 @@ if (mode == "fit") {
     which(cut(seq_along(filtered$pos), nChunk, labels = FALSE) == taskID) #Contiguous blocks in genome order. cut() needs at least 2 intervals
   design <- makeDesign(sampleMetadata[keep, ], perm)
   message("Task ", taskID, " of ", nChunk, ": ", length(rows), " CpGs, ", runDir)
+  if (simDelta > 0) {
+    sim <- spikeIn(filtered, design, simDelta, simN, simRep)
+    filtered <- sim$filtered
+    write_csv(sim$spikes, file.path(runDir, "spiked-CpGs.csv"))
+    message("Spiked ", simDelta, "% into ", simN, " CpGs per term (replicate ", simRep, ")")
+  }
 
   BSobj <- bsseq::BSseq(chr = filtered$chr[rows], pos = filtered$pos[rows],
                         M = filtered$M[rows, ], Cov = filtered$Cov[rows, ],
@@ -654,6 +707,102 @@ if (mode == "snp-summary") {
   }
   genotypeStructure(geno$snp, geno$altFreq, "all")
   genotypeStructure(geno$snpNonBS, geno$altFreqNonBS, "nonBS")
+}
+
+# Stage 9: power simulation. For each SIM_DELTA > 0 run of this setting, how many spiked CpGs are found, and would the
+# experiment as a whole have looked different from the permutation null? Three detection rules:
+#   1. DSS FDR < 0.05 (nominal; too optimistic for this data, see permutations)
+#   2. Empirical FDR < 0.05: the largest p-value cutoff at which (mean permuted count below it) / (simulated count below it)
+#      is at most 0.05, using the label-permutation runs of the same setting as the null
+#   3. Experiment-level: the run's total count at DSS FDR < 0.05 is above the 95th percentile of the permuted counts
+# The base data use the real labels, so real-label "DML" (within the null) are counted as false hits along with any other
+# non-spiked CpGs
+
+if (mode == "simsummary") {
+  baseDir <- paste0("DSS-", settingTag, "-", modelTag)
+  escaped <- gsub("\\.", "\\\\.", baseDir)
+  simDirs <- list.files(".", pattern = paste0("^", escaped, "-simD[0-9]+-n[0-9]+-rep[0-9]+$"))
+  simDirs <- simDirs[file.exists(file.path(simDirs, "rds", "all-CpG-results.rds")) & file.exists(file.path(simDirs, "spiked-CpGs.csv"))]
+  permDirs <- list.files(".", pattern = paste0("^", escaped, "-perm[0-9]+$"))
+  permDirs <- permDirs[file.exists(file.path(permDirs, "rds", "all-CpG-results.rds"))]
+  message(length(simDirs), " simulation runs, ", length(permDirs), " permutations")
+  stopifnot(length(simDirs) > 0, length(permDirs) >= 20)
+
+  terms <- c("ploidy", "pH")
+  diffColumn <- c(ploidy = "diffPloidy", pH = "diffpH")
+  pGrid <- 10^seq(-12, -1, by = 0.02) #p-value cutoffs for the empirical FDR
+  permBelow <- setNames(lapply(terms, function(t) matrix(0, length(permDirs), length(pGrid))), terms)
+  permFDRCount <- setNames(lapply(terms, function(t) numeric(length(permDirs))), terms)
+  for (k in seq_along(permDirs)) {
+    r <- readRDS(file.path(permDirs[k], "rds", "all-CpG-results.rds"))
+    for (t in terms) {
+      p <- sort(r[[paste0("p.", t)]])
+      permBelow[[t]][k, ] <- findInterval(pGrid, p, left.open = TRUE) #Number of p-values < each cutoff
+      permFDRCount[[t]][k] <- sum(r[[paste0("fdr.", t)]] < 0.05, na.rm = TRUE)
+    }
+  }
+  permMeanBelow <- lapply(permBelow, colMeans)
+
+  runs <- map_dfr(simDirs, function(d) {
+    r <- readRDS(file.path(d, "rds", "all-CpG-results.rds"))
+    spikes <- read_csv(file.path(d, "spiked-CpGs.csv"), show_col_types = FALSE)
+    key <- paste(r$chr, r$pos)
+    map_dfr(terms, function(t) {
+      s <- spikes %>% filter(term == t)
+      idx <- match(paste(s$chr, s$pos), key)
+      stopifnot(!anyNA(idx))
+      p <- r[[paste0("p.", t)]]
+      fdr <- r[[paste0("fdr.", t)]]
+      diff <- r[[diffColumn[[t]]]]
+      isSpike <- seq_along(p) %in% idx
+      simBelow <- findInterval(pGrid, sort(p), left.open = TRUE)
+      ok <- simBelow > 0 & permMeanBelow[[t]] / pmax(simBelow, 1) <= 0.05
+      cutoff <- if (any(ok)) max(pGrid[ok]) else 0
+      hits <- !is.na(fdr) & fdr < 0.05
+      tibble(run = d,
+             delta = as.integer(sub(".*-simD([0-9]+)-.*", "\\1", d)),
+             nSpiked = as.integer(sub(".*-n([0-9]+)-rep.*", "\\1", d)),
+             rep = as.integer(sub(".*-rep([0-9]+)$", "\\1", d)),
+             term = t,
+             realizedDelta = mean(s$direction * diff[idx], na.rm = TRUE), #Signed toward the spiked direction
+             powerFDR = mean(hits[idx]),
+             powerFDRdiff10 = mean(hits[idx] & abs(diff[idx]) >= 10),
+             powerFDRdiff25 = mean(hits[idx] & abs(diff[idx]) >= 25),
+             correctSign = mean(sign(diff[idx][hits[idx]]) == s$direction[hits[idx]]),
+             falseHitsFDR = sum(hits & !isSpike),
+             empiricalCutoff = cutoff,
+             powerEmpiricalFDR = mean(!is.na(p[idx]) & p[idx] < cutoff),
+             totalHitsFDR = sum(hits),
+             permP95 = unname(quantile(permFDRCount[[t]], 0.95)),
+             experimentEmpiricalP = (sum(permFDRCount[[t]] >= sum(hits)) + 1) / (length(permDirs) + 1),
+             experimentDetected = sum(hits) > quantile(permFDRCount[[t]], 0.95))
+    })
+  })
+
+  powerSummary <- runs %>%
+    group_by(nSpiked, delta, term) %>%
+    summarize(reps = n(), realizedDelta = mean(realizedDelta),
+              across(c(powerFDR, powerFDRdiff10, powerFDRdiff25, powerEmpiricalFDR, correctSign, falseHitsFDR, totalHitsFDR), mean),
+              fractionExperimentDetected = mean(experimentDetected), permP95 = first(permP95), .groups = "drop") %>%
+    arrange(nSpiked, factor(term, levels = terms), delta)
+  dir.create("power-simulation", showWarnings = FALSE)
+  write_csv(runs, file.path("power-simulation", paste0("power-runs-", settingTag, "-", modelTag, ".csv")))
+  write_csv(powerSummary, file.path("power-simulation", paste0("power-summary-", settingTag, "-", modelTag, ".csv")))
+
+  p <- runs %>%
+    dplyr::select(nSpiked, delta, rep, term, `DSS FDR < 0.05` = powerFDR, `DSS FDR < 0.05, |diff| >= 25%` = powerFDRdiff25,
+                  `Empirical FDR < 0.05` = powerEmpiricalFDR, `Experiment-level (count > permutation 95th pct)` = experimentDetected) %>%
+    pivot_longer(-c(nSpiked, delta, rep, term), names_to = "rule", values_to = "power") %>%
+    group_by(nSpiked, delta, term, rule) %>% summarize(power = mean(as.numeric(power)), .groups = "drop") %>%
+    ggplot(aes(delta, power, color = rule)) +
+    geom_line() + geom_point() +
+    facet_grid(rows = vars(paste(nSpiked, "spiked CpGs")), cols = vars(term)) +
+    scale_y_continuous(limits = c(0, 1)) +
+    labs(x = "Spiked difference (percentage points)", y = "Power (fraction of spiked CpGs found, or of replicates detected)",
+         color = NULL, subtitle = paste0(baseDir, "; null from ", length(permDirs), " permutations")) +
+    theme_bw() + theme(legend.position = "bottom", legend.direction = "vertical")
+  ggsave(file.path("power-simulation", paste0("power-curves-", settingTag, "-", modelTag, ".png")), p, width = 8, height = 6, dpi = 150)
+  print(as.data.frame(powerSummary))
 }
 
 sessionInfo()

@@ -15,7 +15,7 @@ set -euo pipefail
 export APPTAINERENV_R_LIBS_USER=/mmfs1/gscratch/srlab/sr320/R_libs_apptainer
 
 # Settings read by 04.6-methylKit-DMR-slurm.R
-for v in HI_PERC REGIONS COV_BASES LO_COUNT SAMPLES OVERDISPERSION PERM PERM_SCHEME; do
+for v in HI_PERC REGIONS COV_BASES LO_COUNT SAMPLES OVERDISPERSION PERM PERM_SCHEME SIM_DELTA SIM_N SIM_REP; do
   [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
 done
 

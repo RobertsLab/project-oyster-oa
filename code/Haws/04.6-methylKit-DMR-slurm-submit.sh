@@ -10,13 +10,17 @@
 ##   PERM="$(seq 1 20)" bash 04.6-methylKit-DMR-slurm-submit.sh            #20 label permutations of the core grid
 ##   OVERDISPERSION="MN none" bash 04.6-methylKit-DMR-slurm-submit.sh      #MN plus the negative control
 ##   bash 04.6-methylKit-DMR-slurm-submit.sh enrich    #GO enrichment of the gene-level run against its permutations (run those first)
+##   REGIONS=tile1000 SIM_DELTA=10 SIM_REP=1 bash 04.6-methylKit-DMR-slurm-submit.sh   #One power-simulation run (04.6-methylKit-DMR-power-simulation.md)
+##   REGIONS=tile1000 bash 04.6-methylKit-DMR-slurm-submit.sh simsummary               #Power-simulation summary for one region set
 ##
 ## Settings (defaults in brackets; see 04.6-methylKit-DMR-slurm.R). REGIONS, OVERDISPERSION, and PERM take space-separated lists:
 ##   REGIONS ["tile250 tile1000"]  COV_BASES [3]  LO_COUNT [10]  HI_PERC [99.9]  SAMPLES [All]  OVERDISPERSION [MN]  PERM [0]
 ##   PERM_SCHEME [free]  ("fixGeno4" keeps the four genetic outliers' real labels in every permutation; SAMPLES=All only)
+##   SIM_DELTA [0]  SIM_N [1000]  SIM_REP [1]   (power simulation; only the min.per.group = All tasks are run)
+##   ARRAY [1-6, or 1,4 for SIM_DELTA > 0]   dmr array tasks: 1-3 ploidy, 4-6 pH, each min.per.group All / 10 / 8
 ## Example: SAMPLES=DropGeno4 REGIONS="tile1000 gene" PERM="$(seq 0 20)" bash 04.6-methylKit-DMR-slurm-submit.sh
 ## Resources:
-##   ACCOUNT [coenv]  PARTITION [ckpt-all]  COUNT_MEM [200G]  DMR_CPUS [16]  DMR_MEM [64G]  DMR_TIME [12:00:00]
+##   OUT_DIR [../../analyses/Haws_04.6-methylKit-DMR]  ACCOUNT [coenv]  PARTITION [ckpt-all]  COUNT_MEM [200G]  DMR_CPUS [16]  DMR_MEM [64G]  DMR_TIME [12:00:00]
 
 set -euo pipefail
 
@@ -31,10 +35,13 @@ overdispersionSettings=(${OVERDISPERSION:-MN})
 permSettings=(${PERM:-0})
 export COV_BASES="${COV_BASES:-3}" LO_COUNT="${LO_COUNT:-10}" HI_PERC="${HI_PERC:-99.9}" SAMPLES="${SAMPLES:-All}"
 export PERM_SCHEME="${PERM_SCHEME:-free}"
+export SIM_DELTA="${SIM_DELTA:-0}" SIM_N="${SIM_N:-1000}" SIM_REP="${SIM_REP:-1}"
+simTag=$([ "$SIM_DELTA" = "0" ] || echo "-simD${SIM_DELTA}-n${SIM_N}-rep${SIM_REP}")
+ARRAY="${ARRAY:-$([ "$SIM_DELTA" = "0" ] && echo 1-6 || echo 1,4)}" #Simulation runs only need coverage in all samples
 unset REGIONS OVERDISPERSION PERM #Set for each job below
 
 export CODE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-outDir="$(realpath -m "${CODE_DIR}/../../analyses/Haws_04.6-methylKit-DMR")"
+outDir="$(realpath -m "${OUT_DIR:-${CODE_DIR}/../../analyses/Haws_04.6-methylKit-DMR}")" #OUT_DIR: run against another checkout's prep files (e.g. from a git worktree)
 mkdir -p "${outDir}/logs" "${outDir}/downloads"
 [ -f "${outDir}/.gitignore" ] || printf "prep-*/\ncount-*/\nsegments-*/*.rds\nDMR-*/rds/\nregions/*.rds\ndownloads/\nlogs/\n" > "${outDir}/.gitignore" #Keep large intermediate files out of git
 
@@ -58,6 +65,13 @@ if [ "${1:-}" = "enrich" ]; then
   enrichID=$(REGIONS=gene OVERDISPERSION="${overdispersionSettings[0]}" sbatch "${common[@]}" --job-name=04.6-enrich \
     --cpus-per-task=1 --mem=32G --time=4:00:00 --output=logs/%x_%j.out "$job" enrich)
   echo "enrich: ${enrichID}"
+  exit 0
+fi
+# simsummary: region-level power simulation for one region set (first entry of REGIONS)
+if [ "${1:-}" = "simsummary" ]; then
+  id=$(REGIONS="${regionSets[0]}" OVERDISPERSION="${overdispersionSettings[0]}" sbatch "${common[@]}" --job-name=04.6-simsummary \
+    --cpus-per-task=1 --mem=32G --time=2:00:00 --output=logs/%x_%j.out "$job" simsummary)
+  echo "simsummary ${regionSets[0]}: ${id}"
   exit 0
 fi
 
@@ -120,7 +134,7 @@ for r in "${regionSets[@]}"; do
   for od in "${overdispersionSettings[@]}"; do
     for p in "${permSettings[@]}"; do
       id=$(REGIONS="$r" OVERDISPERSION="$od" PERM="$p" sbatch "${common[@]}" $(afterok "${countIDs[@]}") \
-        --job-name=04.6-dmr-${r}-${od}-${SAMPLES}-${PERM_SCHEME}-perm${p} --array=1-6 --cpus-per-task="$DMR_CPUS" --mem="$DMR_MEM" --time="$DMR_TIME" \
+        --job-name=04.6-dmr-${r}-${od}-${SAMPLES}-${PERM_SCHEME}-perm${p}${simTag} --array="$ARRAY" --cpus-per-task="$DMR_CPUS" --mem="$DMR_MEM" --time="$DMR_TIME" \
         --output=logs/%x_%A_%a.out "$job" dmr)
       dmrIDs+=("$id")
       echo "dmr ${r} ${od} perm ${p}: ${id}"
@@ -128,7 +142,8 @@ for r in "${regionSets[@]}"; do
   done
 done
 
-# summary: combines every run in the output directory, so it can also be rerun on its own later
+# summary: combines every run in the output directory, so it can also be rerun on its own later. Not needed for simulation runs
+[ "$SIM_DELTA" = "0" ] || exit 0
 summaryID=$(sbatch "${common[@]}" --dependency=afterany:$(IFS=:; echo "${dmrIDs[*]}") --job-name=04.6-summary \
   --cpus-per-task=1 --mem=8G --time=1:00:00 --output=logs/%x_%j.out "$job" summary)
 echo "summary: ${summaryID}"
