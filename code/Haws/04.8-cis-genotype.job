@@ -1,0 +1,28 @@
+#!/bin/bash
+
+## Runs 04.8-cis-genotype.R in the Roberts Lab R container.
+## Submit with 04.8-cis-genotype-submit.sh, which sets account, partition, resources, and working directory.
+## R packages: methylKit 1.32.1 (same R library as 04.6), to read the gene region counts
+
+#SBATCH --job-name=04.8-cis
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=48G
+#SBATCH --time=6:00:00
+
+set -euo pipefail
+
+export APPTAINERENV_R_LIBS_USER=/mmfs1/gscratch/srlab/sr320/R_libs_apptainer
+
+# Settings read by 04.8-cis-genotype.R
+for v in SAMPLE_SETS GENO_K MAX_DIST MIN_CARRIERS NNULL; do
+  [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
+done
+
+apptainer exec \
+--home "$HOME" \
+--bind /mmfs1/home/ \
+--bind /mmfs1/gscratch/ \
+--bind /gscratch/ \
+/gscratch/srlab/containers/srlab-R4.4-bioinformatics-container-46b5d9e.sif \
+Rscript "${R_SCRIPT:-${CODE_DIR}/04.8-cis-genotype.R}"
