@@ -1,0 +1,28 @@
+#!/bin/bash
+
+## Runs one stage of 04.6-methylKit-DMR-slurm.R in the Roberts Lab R container.
+## Submit with 04.6-methylKit-DMR-slurm-submit.sh, which sets account, partition, resources, and working directory.
+## R packages come from the same R library as 04.3 (methylKit 1.32.1)
+
+#SBATCH --job-name=04.6-methylKit-DMR
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=16G
+#SBATCH --time=12:00:00
+
+set -euo pipefail
+
+export APPTAINERENV_R_LIBS_USER=/mmfs1/gscratch/srlab/sr320/R_libs_apptainer
+
+# Settings read by 04.6-methylKit-DMR-slurm.R
+for v in HI_PERC REGIONS COV_BASES LO_COUNT SAMPLES OVERDISPERSION PERM; do
+  [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
+done
+
+apptainer exec \
+--home "$HOME" \
+--bind /mmfs1/home/ \
+--bind /mmfs1/gscratch/ \
+--bind /gscratch/ \
+/gscratch/srlab/containers/srlab-R4.4-bioinformatics-container-46b5d9e.sif \
+Rscript "${CODE_DIR}/04.6-methylKit-DMR-slurm.R" "$@"
