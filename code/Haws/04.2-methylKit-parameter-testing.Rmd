@@ -58,6 +58,14 @@ require(pheatmap)
 sessionInfo()
 ```
 
+# Set overdispersion correction
+
+`calculateDiffMeth` fits a logistic regression at each CpG. With `overdispersion = "none"` (the methylKit default) it assumes read counts only vary binomially between oysters in the same group, and uses a Chisq test. Biological replicates usually vary more than that, which makes p-values too small. `"MN"` estimates an overdispersion factor at each CpG, scales the test by it, and uses an F-test. `"shrinkMN"` does the same but shrinks the per-CpG estimates toward a common value, which is more stable with few replicates.
+
+```{r}
+overdispersionSetting <- "MN" #Overdispersion correction used by every calculateDiffMeth call below. Options: "none", "MN", "shrinkMN"
+```
+
 # Process methylation data
 
 ```{bash}
@@ -128,13 +136,13 @@ processedFiles <- methylKit::methRead(analysisFiles,
 ```{r}
 processedFilteredFilesCov5 <- methylKit::filterByCoverage(processedFiles,
                                                           lo.count = 5, lo.perc = NULL,
-                                                          high.count = NULL, high.perc = 99.9) %>%
-  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
+                                                          hi.count = NULL, hi.perc = 99.9) %>%
+  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove CpGs above the 99.9th percentile of coverage (hi.perc = 99.9), which may reflect PCR duplicates or repetitive regions. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
 ```{r}
-save.image("methylKit.RData") #Save R Data in case R crashes
-#load("methylKit.RData") #Load R Data
+saveRDS(processedFilteredFilesCov5, "processedFilteredFilesCov5.rds", compress = FALSE) #Save filtered data in case R crashes. Saving only this object is much faster than save.image(), which wrote over 70 GB
+#processedFilteredFilesCov5 <- readRDS("processedFilteredFilesCov5.rds") #Load filtered data
 ```
 
 # Testing `min.per.group`
@@ -192,22 +200,9 @@ head(methylationInformationFilteredCov5pHAll) #Confirm unite
 ```
 
 ```{r}
-processedFilespH <- methylKit::methRead(analysisFiles,
-                                        sample.id = list("2H-1", "2H-2", "2H-3", "2H-4", "2H-5", "2H-6",
-                                                         "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
-                                                         "3H-1", "3H-2", "3H-3", "3H-4", "3H-5", "3H-6",
-                                                         "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
-                                        assembly = "oyster_v9",
-                                        treatment = sampleMetadata$pHTreatment,
-                                        pipeline = "bismarkCoverage",
-                                        mincov = 2) #Process files. Treatment specified based on pH status. Use mincov = 2 to quickly process reads.
-```
-
-```{r}
-processedFilteredFilesCov5pH <- methylKit::filterByCoverage(processedFilespH,
-                                                            lo.count = 5, lo.perc = NULL,
-                                                            high.count = NULL, high.perc = 99.9) %>%
-  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
+processedFilteredFilesCov5pH <- methylKit::reorganize(processedFilteredFilesCov5,
+                                                      sample.ids = sampleMetadata$sampleID,
+                                                      treatment = sampleMetadata$pHTreatment) #Reuse the filtered and normalized files with pH treatment specification. Filtering and normalization do not depend on treatment, so this matches reading and filtering the files again
 ```
 
 ```{r}
@@ -251,19 +246,20 @@ head(methylationInformationFilteredCov5pH8) #Confirm unite
 ```{r}
 differentialMethylationStatsPloidyCovarAll <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5PloidyAll,
                                                                            covariates = as.data.frame(sampleMetadata$pH),
-                                                                           mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                           overdispersion = overdispersionSetting,
+                                                                           mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovarAll) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar25All <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar25All$chr) #Count the number of DML
+diffMethStatsPloidyCovar25All <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar25All) #Count the number of DML
 head(diffMethStatsPloidyCovar25All) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar50All <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar50All$chr) #Count the number of DML
+diffMethStatsPloidyCovar50All <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar50All) #Count the number of DML
 head(diffMethStatsPloidyCovar50All) #Confirm creation
 ```
 
@@ -278,19 +274,20 @@ write_delim(diffMethStatsPloidyCovar50All, "DML/DML-ploidy-50-Covar-Cov5-All.bed
 ```{r}
 differentialMethylationStatsPloidyCovar11 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy11,
                                                                           covariates = as.data.frame(sampleMetadata$pH),
-                                                                          mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                          overdispersion = overdispersionSetting,
+                                                                          mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovar11) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar2511 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar11, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar2511$chr) #Count the number of DML
+diffMethStatsPloidyCovar2511 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar11, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar2511) #Count the number of DML
 head(diffMethStatsPloidyCovar2511) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar5011 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar11, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar5011$chr) #Count the number of DML
+diffMethStatsPloidyCovar5011 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar11, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar5011) #Count the number of DML
 head(diffMethStatsPloidyCovar5011) #Confirm creation
 ```
 
@@ -304,19 +301,20 @@ write_delim(diffMethStatsPloidyCovar5011, "DML/DML-ploidy-50-Covar-Cov5-11.bed",
 ```{r}
 differentialMethylationStatsPloidyCovar10 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy10,
                                                                           covariates = as.data.frame(sampleMetadata$pH),
-                                                                          mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                          overdispersion = overdispersionSetting,
+                                                                          mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovar10) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar2510 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar10, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar2510$chr) #Count the number of DML
+diffMethStatsPloidyCovar2510 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar10, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar2510) #Count the number of DML
 head(diffMethStatsPloidyCovar2510) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar5010 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar10, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar5010$chr) #Count the number of DML
+diffMethStatsPloidyCovar5010 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar10, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar5010) #Count the number of DML
 head(diffMethStatsPloidyCovar5010) #Confirm creation
 ```
 
@@ -330,19 +328,20 @@ write_delim(diffMethStatsPloidyCovar5010, "DML/DML-ploidy-50-Covar-Cov5-10.bed",
 ```{r}
 differentialMethylationStatsPloidyCovar9 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy9,
                                                                          covariates = as.data.frame(sampleMetadata$pH),
-                                                                         mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                         overdispersion = overdispersionSetting,
+                                                                         mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovar9) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar259 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar9, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar259$chr) #Count the number of DML
+diffMethStatsPloidyCovar259 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar9, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar259) #Count the number of DML
 head(diffMethStatsPloidyCovar259) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar509 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar9, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar509$chr) #Count the number of DML
+diffMethStatsPloidyCovar509 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar9, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar509) #Count the number of DML
 head(diffMethStatsPloidyCovar509) #Confirm creation
 ```
 
@@ -356,19 +355,20 @@ write_delim(diffMethStatsPloidyCovar509, "DML/DML-ploidy-50-Covar-Cov5-9.bed", d
 ```{r}
 differentialMethylationStatsPloidyCovar8 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5Ploidy8,
                                                                          covariates = as.data.frame(sampleMetadata$pH),
-                                                                         mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                         overdispersion = overdispersionSetting,
+                                                                         mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovar8) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar258 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar8, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar258$chr) #Count the number of DML
+diffMethStatsPloidyCovar258 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar8, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar258) #Count the number of DML
 head(diffMethStatsPloidyCovar258) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar508 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar8, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar508$chr) #Count the number of DML
+diffMethStatsPloidyCovar508 <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovar8, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar508) #Count the number of DML
 head(diffMethStatsPloidyCovar508) #Confirm creation
 ```
 
@@ -378,8 +378,8 @@ write_delim(diffMethStatsPloidyCovar508, "DML/DML-ploidy-50-Covar-Cov5-8.bed", d
 ```
 
 ```{r}
-save.image("methylKit.RData") #Save R Data in case R crashes
-#load("methylKit.RData") #Load R Data
+rm(list = ls(pattern = "^methylationInformationFilteredCov5Ploidy")) #Remove united ploidy objects, which are no longer needed, to free memory. The previous run peaked near the 400 GB job limit
+gc()
 ```
 
 ## pH differences
@@ -387,21 +387,22 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ### All samples
 
 ```{r}
-methylationInformationFilteredCov5pHAll <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pHAll,
+differentialMethylationStatspHCovarAll <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pHAll,
                                                                         covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                        mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
-head(methylationInformationFilteredCov5pHAll) #Look at differential methylation statistics
+                                                                        overdispersion = overdispersionSetting,
+                                                                        mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
+head(differentialMethylationStatspHCovarAll) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar25All <- methylKit::getMethylDiff(methylationInformationFilteredCov5pHAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar25All$chr) #Count the number of DML
+diffMethStatspHCovar25All <- methylKit::getMethylDiff(differentialMethylationStatspHCovarAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar25All) #Count the number of DML
 head(diffMethStatspHCovar25All) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar50All <- methylKit::getMethylDiff(methylationInformationFilteredCov5pHAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar50All$chr) #Count the number of DML
+diffMethStatspHCovar50All <- methylKit::getMethylDiff(differentialMethylationStatspHCovarAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar50All) #Count the number of DML
 head(diffMethStatspHCovar50All) #Confirm creation
 ```
 
@@ -413,21 +414,22 @@ write_delim(diffMethStatspHCovar50All, "DML/DML-pH-50-Covar-Cov5-All.bed", delim
 ### `min.per.group` = 11
 
 ```{r}
-methylationInformationFilteredCov5pH11 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH11,
+differentialMethylationStatspHCovar11 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH11,
                                                                        covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                       mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
-head(methylationInformationFilteredCov5pH11) #Look at differential methylation statistics
+                                                                       overdispersion = overdispersionSetting,
+                                                                       mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
+head(differentialMethylationStatspHCovar11) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar2511 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH11, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar2511$chr) #Count the number of DML
+diffMethStatspHCovar2511 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar11, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar2511) #Count the number of DML
 head(diffMethStatspHCovar2511) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar5011 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH11, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar5011$chr) #Count the number of DML
+diffMethStatspHCovar5011 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar11, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar5011) #Count the number of DML
 head(diffMethStatspHCovar5011) #Confirm creation
 ```
 
@@ -439,21 +441,22 @@ write_delim(diffMethStatspHCovar5011, "DML/DML-pH-50-Covar-Cov5-11.bed", delim =
 ### `min.per.group` = 10
 
 ```{r}
-methylationInformationFilteredCov5pH10 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH10,
+differentialMethylationStatspHCovar10 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH10,
                                                                        covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                       mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
-head(methylationInformationFilteredCov5pH10) #Look at differential methylation statistics
+                                                                       overdispersion = overdispersionSetting,
+                                                                       mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
+head(differentialMethylationStatspHCovar10) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar2510 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH10, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar2510$chr) #Count the number of DML
+diffMethStatspHCovar2510 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar10, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar2510) #Count the number of DML
 head(diffMethStatspHCovar2510) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar5010 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH10, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar5010$chr) #Count the number of DML
+diffMethStatspHCovar5010 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar10, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar5010) #Count the number of DML
 head(diffMethStatspHCovar5010) #Confirm creation
 ```
 
@@ -465,21 +468,22 @@ write_delim(diffMethStatspHCovar5010, "DML/DML-pH-50-Covar-Cov5-10.bed", delim =
 ### `min.per.group` = 9
 
 ```{r}
-methylationInformationFilteredCov5pH9 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH9,
+differentialMethylationStatspHCovar9 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH9,
                                                                       covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                      mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
-head(methylationInformationFilteredCov5pH9) #Look at differential methylation statistics
+                                                                      overdispersion = overdispersionSetting,
+                                                                      mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
+head(differentialMethylationStatspHCovar9) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar259 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH9, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar259$chr) #Count the number of DML
+diffMethStatspHCovar259 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar9, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar259) #Count the number of DML
 head(diffMethStatspHCovar259) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar509 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH9, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar509$chr) #Count the number of DML
+diffMethStatspHCovar509 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar9, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar509) #Count the number of DML
 head(diffMethStatspHCovar509) #Confirm creation
 ```
 
@@ -491,21 +495,22 @@ write_delim(diffMethStatspHCovar509, "DML/DML-pH-50-Covar-Cov5-9.bed", delim = "
 ### `min.per.group` = 8
 
 ```{r}
-methylationInformationFilteredCov5pH8 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH8,
+differentialMethylationStatspHCovar8 <- methylKit::calculateDiffMeth(methylationInformationFilteredCov5pH8,
                                                                       covariates = as.data.frame(sampleMetadata$ploidy),
-                                                                      mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
-head(methylationInformationFilteredCov5pH8) #Look at differential methylation statistics
+                                                                      overdispersion = overdispersionSetting,
+                                                                      mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
+head(differentialMethylationStatspHCovar8) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar258 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH8, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar258$chr) #Count the number of DML
+diffMethStatspHCovar258 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar8, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar258) #Count the number of DML
 head(diffMethStatspHCovar258) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar508 <- methylKit::getMethylDiff(methylationInformationFilteredCov5pH8, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar508$chr) #Count the number of DML
+diffMethStatspHCovar508 <- methylKit::getMethylDiff(differentialMethylationStatspHCovar8, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar508) #Count the number of DML
 head(diffMethStatspHCovar508) #Confirm creation
 ```
 
@@ -521,52 +526,26 @@ Samples 3 and 14 are likely outliers. I will determine how outlier removal impac
 ## Remove outliers from data
 
 ```{r}
-analysisFilesOutRM <- list("../../data/Haws/zr3644_1_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_2_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_4_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_5_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_6_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_7_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_8_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_9_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_10_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_11_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_12_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_13_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_15_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_16_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_17_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_18_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_19_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_20_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_21_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_22_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_23_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov",
-                           "../../data/Haws/zr3644_24_R1_val_1_val_1_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov") #Put all .cov files into a list for analysis.
+rm(list = ls(pattern = "^methylationInformationFilteredCov5pH")) #Remove united pH objects, which are no longer needed, to free memory
+gc()
 ```
 
 ```{r}
-processedFilesOutRM <- methylKit::methRead(analysisFilesOutRM,
-                                           sample.id = list("2H-1", "2H-2", "2H-4", "2H-5", "2H-6",
-                                                            "2L-1", "2L-2", "2L-3", "2L-4", "2L-5", "2L-6",
-                                                            "3H-1", "3H-3", "3H-4", "3H-5", "3H-6",
-                                                            "3L-1", "3L-2", "3L-3", "3L-4", "3L-5", "3L-6"),
-                                           assembly = "roslin",
-                                           treatment = sampleMetadata$ploidyTreatment[-c(3,14)],
-                                           pipeline = "bismarkCoverage",
-                                           mincov = 2) #Process files. Treatment specified based on ploidy status. Use mincov = 2 to quickly process reads.
+processedFilesOutRM <- methylKit::reorganize(processedFiles,
+                                             sample.ids = sampleMetadata$sampleID[-c(3,14)],
+                                             treatment = sampleMetadata$ploidyTreatment[-c(3,14)]) #Remove samples 2H-3 and 3H-2 from the unfiltered files read earlier, instead of reading the files again. Treatment specified based on ploidy status
 ```
 
 ```{r}
 processedFilesOutRMCov5 <- methylKit::filterByCoverage(processedFilesOutRM,
                                                        lo.count = 5, lo.perc = NULL,
-                                                       high.count = NULL, high.perc = 99.9) %>%
-  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove PCR duplicates by excluding data in the 99.9th percentile of coverage with hi.perc = 99.9. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
+                                                       hi.count = NULL, hi.perc = 99.9) %>%
+  methylKit::normalizeCoverage(.) #Filter coverage information for minimum 5x coverage, and remove CpGs above the 99.9th percentile of coverage (hi.perc = 99.9), which may reflect PCR duplicates or repetitive regions. Normalize coverage between samples to avoid over-sampling reads from one sample during statistical testing
 ```
 
 ```{r}
-save.image("methylKit.RData") #Save R Data in case R crashes
-#load("methylKit.RData") #Load R Data
+saveRDS(processedFilesOutRMCov5, "processedFilesOutRMCov5.rds", compress = FALSE) #Save filtered data in case R crashes
+#processedFilesOutRMCov5 <- readRDS("processedFilesOutRMCov5.rds") #Load filtered data
 ```
 
 ## Remake clustering and PCA
@@ -602,11 +581,6 @@ methylKit::PCASamples(methylationInformationFilteredRMCov5, screeplot = TRUE) #R
 dev.off()
 ```
 
-```{r}
-save.image("methylKit.RData") #Save R Data in case R crashes
-#load("methylKit.RData") #Load R Data
-```
-
 ## Identify differentially methylated loci
 
 ### Ploidy DML
@@ -614,19 +588,20 @@ save.image("methylKit.RData") #Save R Data in case R crashes
 ```{r}
 differentialMethylationStatsPloidyCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5,
                                                                                 covariates = as.data.frame(sampleMetadata$pH[-c(3,14)]),
-                                                                                mc.cores = 28) #Calculate differential methylation statistics based on treatment indication from methRead. Include pH as a covariate by converting column with pH information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                                overdispersion = overdispersionSetting,
+                                                                                mc.cores = 28) #Calculate differential methylation statistics for ploidy (treatment from methRead). Include pH as a covariate by converting column with pH information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatsPloidyCovarOutRMAll) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatsPloidyCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatsPloidyCovar25RMAll$chr) #Count the number of DML
+diffMethStatsPloidyCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatsPloidyCovar25RMAll) #Count the number of DML
 head(diffMethStatsPloidyCovar25RMAll) #Confirm creation
 ```
 
 ```{r}
-diffMethStatsPloidyCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatsPloidyCovar50RMAll$chr) #Count the number of DML
+diffMethStatsPloidyCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatsPloidyCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatsPloidyCovar50RMAll) #Count the number of DML
 head(diffMethStatsPloidyCovar50RMAll) #Confirm creation
 ```
 
@@ -647,19 +622,20 @@ head(methylationInformationFilteredRMCov5pH) #Confirm reorganize
 ```{r}
 differentialMethylationStatspHCovarOutRMAll <- methylKit::calculateDiffMeth(methylationInformationFilteredRMCov5pH,
                                                                                 covariates = as.data.frame(sampleMetadata$ploidy[-c(3,14)]),
-                                                                                mc.cores = 28) #Calculate differential methylation statistics based on pH treatment from reorganize. Include ploidy as a covariate by converting column with ploidy information into a dataframe. Use an overdispersion correction with the F-test (default). Use 28 cores.
+                                                                                overdispersion = overdispersionSetting,
+                                                                                mc.cores = 28) #Calculate differential methylation statistics for pH (treatment from reorganize). Include ploidy as a covariate by converting column with ploidy information into a dataframe. Overdispersion correction set by overdispersionSetting. Use 28 cores.
 head(differentialMethylationStatspHCovarOutRMAll) #Look at differential methylation statistics
 ```
 
 ```{r}
-diffMethStatspHCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 50% different
-length(diffMethStatspHCovar25RMAll$chr) #Count the number of DML
+diffMethStatspHCovar25RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 25, qvalue = 0.01) #Identify loci that are at least 25% different
+nrow(diffMethStatspHCovar25RMAll) #Count the number of DML
 head(diffMethStatspHCovar25RMAll) #Confirm creation
 ```
 
 ```{r}
-diffMethStatspHCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 25% different
-length(diffMethStatspHCovar50RMAll$chr) #Count the number of DML
+diffMethStatspHCovar50RMAll <- methylKit::getMethylDiff(differentialMethylationStatspHCovarOutRMAll, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+nrow(diffMethStatspHCovar50RMAll) #Count the number of DML
 head(diffMethStatspHCovar50RMAll) #Confirm creation
 ```
 
@@ -671,7 +647,8 @@ write_delim(diffMethStatspHCovar50RMAll, "DML/DML-pH-50-Covar-Cov5-All-OutRM.bed
 # Summary table
 
 ```{r}
-summaryDML <- data.frame("samples" = c(rep("All", 5), "Outliers removed"),
+summaryDML <- data.frame("overdispersion" = overdispersionSetting,
+                         "samples" = c(rep("All", 5), "Outliers removed"),
                          "min.per.group" = c("All", 11, 10, 9, 8, "All"),
                          "ploidy-DML-25" = c(nrow(diffMethStatsPloidyCovar25All),
                                              nrow(diffMethStatsPloidyCovar2511),
