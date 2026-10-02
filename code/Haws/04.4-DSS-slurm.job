@@ -1,0 +1,26 @@
+#!/bin/bash
+
+## Runs one stage of 04.4-DSS-slurm.R in the Roberts Lab R container.
+## Submit with 04.4-DSS-slurm-submit.sh, which sets account, partition, resources, and working directory.
+## R packages come from R_LIBS_USER in ~/.Renviron (/mmfs1/home/sr320/R_libs_apptainer), which has DSS 2.54.0 and bsseq 1.42.0
+
+#SBATCH --job-name=04.4-DSS
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=16G
+#SBATCH --time=12:00:00
+
+set -euo pipefail
+
+# Settings read by 04.4-DSS-slurm.R
+for v in LO_COV HI_PERC PRESENCE MIN_METH SAMPLES MODEL PERM NCHUNK; do
+  [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
+done
+
+apptainer exec \
+--home "$HOME" \
+--bind /mmfs1/home/ \
+--bind /mmfs1/gscratch/ \
+--bind /gscratch/ \
+/gscratch/srlab/containers/srlab-R4.4-bioinformatics-container-46b5d9e.sif \
+Rscript "${R_SCRIPT:-${CODE_DIR}/04.4-DSS-slurm.R}" "$@"
