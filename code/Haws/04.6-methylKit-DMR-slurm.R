@@ -7,6 +7,7 @@
 #   Rscript 04.6-methylKit-DMR-slurm.R count      #Reads per region for one REGIONS / COV_BASES setting (needs prep, and regions or segments)
 #   Rscript 04.6-methylKit-DMR-slurm.R dmr        #One test per array task: ploidy or pH x min.per.group All/10/8, from SLURM_ARRAY_TASK_ID
 #   Rscript 04.6-methylKit-DMR-slurm.R summary    #Combine counts from every run, and compare observed counts with permutations
+#   Rscript 04.6-methylKit-DMR-slurm.R enrich     #GO gene-set enrichment (GSEA) of gene-level results, tested against the label permutations
 #
 # Environment variables (defaults in brackets):
 #   HI_PERC         [99.9]      Per-sample upper coverage percentile, calculated on nuclear CpGs only. Mito CpGs are exempt,
@@ -15,10 +16,15 @@
 #                               downstream, lncRNA, TE, TE-DNA, TE-RC, TE-LINE, TE-LTR, repeat-unknown, repeat-simple, mito), or segments
 #   COV_BASES       [3]         Minimum CpGs with coverage in a region, per sample
 #   LO_COUNT        [10]        Minimum reads per region (summed over its CpGs), per sample
-#   SAMPLES         [All]       "All" (24 oysters) or "OutRM" (drop 2H-3 and 3H-2)
+#   SAMPLES         [All]       "All" (24 oysters), or a sensitivity set (same sets as 04.4 D4, plus DropGeno4):
+#                               "Drop3H2" (drop 3H-2), "DropPC2" (drop 2H-1, 2H-2, 3H-5), "DropGeno4" (drop all four genetic
+#                               outliers from the 04.4 SNP check: 2H-1, 2H-2, 3H-2, 3H-5), or "OutRM" (drop 2H-3 and 3H-2, as in 04.2/04.3)
 #   OVERDISPERSION  [MN]        "MN" (primary), "shrinkMN", or "none" (negative control only)
 #   PERM            [0]         0 = observed labels. Any other value is the seed for a label permutation. Uses the same shuffle
 #                               as 04.4-DSS-slurm.R, so the same seed gives the same permuted labels in both analyses
+#   PERM_SCHEME     [free]      "free" = shuffle all oysters (above). "fixGeno4" = the four genetic outliers keep their real
+#                               labels and only the other oysters are shuffled. All four outliers are high-pH oysters, so
+#                               this keeps the real link between genotype and pH in every permutation
 #
 # DMR threshold (fixed in the plan before any results): methylKit q < 0.05 and |meth.diff| >= 10%.
 # Counts at q < 0.01 and |meth.diff| >= 15/25% are written as sensitivity checks only. difference = 0 is a q-only tier (any
@@ -36,7 +42,7 @@ options(warn = 1) #Print warnings as they happen, so they show up in the Slurm l
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
-stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary"))
+stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary", "enrich"))
 
 nCores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1")) #Use all cores allocated by Slurm
 hiPercSetting <- Sys.getenv("HI_PERC", "99.9")
@@ -46,20 +52,29 @@ loCount <- as.integer(Sys.getenv("LO_COUNT", "10"))
 samples <- Sys.getenv("SAMPLES", "All")
 overdispersion <- Sys.getenv("OVERDISPERSION", "MN")
 perm <- as.integer(Sys.getenv("PERM", "0"))
+permScheme <- Sys.getenv("PERM_SCHEME", "free")
 
 annotationSets <- c("gene", "exonUTR", "intron", "upstream", "downstream", "lncRNA",
                     "TE", "TE-DNA", "TE-RC", "TE-LINE", "TE-LTR", "repeat-unknown", "repeat-simple", "mito")
 stopifnot(hiPercSetting == "none" || !is.na(as.numeric(hiPercSetting)),
           grepl("^tile[0-9]+$", regionSet) || regionSet %in% c(annotationSets, "segments"),
           covBases >= 1, loCount >= 1,
-          samples %in% c("All", "OutRM"),
+          samples %in% c("All", "Drop3H2", "DropPC2", "DropGeno4", "OutRM"),
+          permScheme %in% c("free", "fixGeno4"),
+          permScheme == "free" || samples == "All", #fixGeno4 is for the all-24 analysis, where all four outliers are present
           overdispersion %in% c("none", "MN", "shrinkMN"))
 
 dataDir <- "../../data/Haws"
 featureDir <- "../../genome-feature-files"
 rmOutFile <- "downloads/GCF_902806645.1_cgigas_uk_roslin_v1_rm.out.gz" #Downloaded by the submit script
+gafFile <- "downloads/GCF_902806645.1_cgigas_uk_roslin_v1_gene_ontology.gaf.gz" #NCBI GO annotation, downloaded by the submit script
 mitoChr <- "NC_001276.1"
-outliers <- c(3, 14) #Samples 2H-3 and 3H-2
+dropSets <- list(All = integer(0),
+                 Drop3H2 = 14,               #3H-2
+                 DropPC2 = c(1, 2, 17),      #2H-1, 2H-2, 3H-5
+                 DropGeno4 = c(1, 2, 14, 17), #2H-1, 2H-2, 3H-2, 3H-5: genetic outliers in the 04.4 SNP check
+                 OutRM = c(3, 14))           #2H-3, 3H-2: the pair removed in 04.2/04.3
+geneticOutliers <- c("2H-1", "2H-2", "3H-2", "3H-5")
 presenceSettings <- c("All", "10", "8")
 qCuts <- c(0.05, 0.01)
 diffCuts <- c(0, 10, 15, 25) #0 = q-only tier
@@ -70,7 +85,8 @@ prepDir <- paste0("prep-hiperc", hiPercSetting)
 segmentDir <- paste0("segments-hiperc", hiPercSetting)
 countDir <- paste0("count-hiperc", hiPercSetting, "-", regionSet, "-cb", covBases)
 runTag <- paste0(regionSet, "-cb", covBases, "-lo", loCount, "-hiperc", hiPercSetting, "-", samples, "-", overdispersion)
-runDir <- paste0("DMR-", runTag, ifelse(perm == 0, "", paste0("-perm", perm)))
+permTag <- ifelse(permScheme == "free", "", paste0("-", permScheme)) #Only used for permuted runs
+runDir <- paste0("DMR-", runTag, ifelse(perm == 0, "", paste0(permTag, "-perm", perm)))
 
 tasks <- expand.grid(min.per.group = presenceSettings, test = c("ploidy", "pH"),
                      stringsAsFactors = FALSE)[, c("test", "min.per.group")] #Tasks 1-3 are ploidy, 4-6 are pH
@@ -87,16 +103,20 @@ sampleMetadata <- read.csv(file.path(dataDir, "sample_metadata.csv")) %>%
   dplyr::rename(pH = ph)
 stopifnot(identical(sampleMetadata$sample_number, 1:24)) #File zr3644_N must match row N
 
-keep <- if (samples == "OutRM") setdiff(1:24, outliers) else 1:24
+keep <- setdiff(1:24, dropSets[[samples]])
 
 # Label permutation, copied from makeDesign() in 04.4-DSS-slurm.R so a seed gives the same labels in both analyses.
 # Shuffles ploidy within pH, then pH within the new ploidy labels. Keeps every group the same size
-permuteLabels <- function(metadata, perm) {
+permuteLabels <- function(metadata, perm, scheme = "free") {
   if (perm == 0) return(metadata)
   set.seed(perm)
-  metadata %>%
+  shuffle <- function(m) m %>%
     group_by(pH) %>% mutate(ploidy = sample(ploidy)) %>% ungroup() %>%
     group_by(ploidy) %>% mutate(pH = sample(pH)) %>% ungroup()
+  if (scheme == "free") return(shuffle(metadata))
+  fixed <- metadata$sampleID %in% geneticOutliers #fixGeno4: outliers keep their labels; the rest are shuffled the same way
+  metadata[!fixed, ] <- shuffle(metadata[!fixed, ])
+  metadata
 }
 
 # Read a GFF from genome-feature-files as GRanges (1-based, as in the GFF), with the ID attribute as the name
@@ -274,9 +294,14 @@ if (mode == "dmr") {
   test <- tasks$test[taskID]
   presence <- tasks$min.per.group[taskID]
   message("Task ", taskID, ": ", test, ", min.per.group = ", presence, ", ", runDir, ", cores = ", nCores)
+  smallestGroup <- min(table(if (test == "ploidy") sampleMetadata$ploidy[keep] else sampleMetadata$pH[keep]))
+  if (presence != "All" && as.integer(presence) > smallestGroup) { #e.g. min.per.group 10 with only 8 high-pH oysters in DropGeno4
+    message("Skipping: min.per.group = ", presence, " but the smallest ", test, " group has ", smallestGroup, " oysters")
+    quit(save = "no", status = 0)
+  }
   for (d in file.path(runDir, c("counts", "rds", "pvalue-histograms"))) dir.create(d, recursive = TRUE, showWarnings = FALSE)
 
-  metadata <- permuteLabels(sampleMetadata[keep, ], perm)
+  metadata <- permuteLabels(sampleMetadata[keep, ], perm, permScheme)
   treatment <- if (test == "ploidy") as.integer(metadata$ploidy == "3N") else as.integer(metadata$pH == "low")
   covariates <- if (test == "ploidy") data.frame(pH = metadata$pH) else data.frame(ploidy = metadata$ploidy) #Other factor is the covariate
 
@@ -316,6 +341,7 @@ if (mode == "dmr") {
            primary = qvalue == primaryQ & difference == primaryDiff)
   counts <- tibble(method = "methylKit", regions = regionSet, cov.bases = covBases, lo.count = loCount,
                    hi.perc = hiPercSetting, samples = samples, overdispersion = overdispersion, perm = perm,
+                   perm.scheme = ifelse(perm == 0, "observed", permScheme),
                    test = test, min.per.group = presence,
                    regions.tested = nrow(results), regions.tested.mito = sum(isMito)) %>%
     bind_cols(counts)
@@ -333,6 +359,9 @@ if (mode == "dmr") {
       transmute("#chr" = chr, start = start - 1L, end, across(any_of("regionID")), meth.diff, pvalue, qvalue, qvalueBH) %>% #0-based BED. Header starts with # so bedtools skips it
       arrange(`#chr`, start)
     write_tsv(dmr, file.path(runDir, paste0("DMR-", taskTag, "-q", primaryQ, "-diff", primaryDiff, ".bed")))
+  } else if (!grepl("^tile", regionSet)) { #Per-region results for permuted labels, for enrichment tests against the same permutations. Tiles are too large to keep
+    saveRDS(dplyr::select(results, chr, start, end, any_of("regionID"), meth.diff, pvalue),
+            file.path(runDir, "rds", paste0("diffMeth-", taskTag, ".rds")))
   }
 }
 
@@ -347,15 +376,17 @@ if (mode == "summary") {
                                                            regions.tested = "i", regions.tested.mito = "i",
                                                            qvalue = "d", difference = "d", DMR = "i", hypermethylated = "i",
                                                            hypomethylated = "i", DMR.mito = "i", DMR.BH = "i", primary = "l")) %>%
-    arrange(regions, cov.bases, lo.count, hi.perc, samples, overdispersion, test, min.per.group, qvalue, difference, perm)
+    mutate(perm.scheme = if ("perm.scheme" %in% names(.)) perm.scheme else NA_character_,
+           perm.scheme = coalesce(perm.scheme, ifelse(perm == 0, "observed", "free"))) %>% #Runs from before PERM_SCHEME existed
+    arrange(regions, cov.bases, lo.count, hi.perc, samples, overdispersion, test, min.per.group, qvalue, difference, perm.scheme, perm)
   write_csv(counts, "DMR-counts-all.csv")
 
   settingColumns <- c("method", "regions", "cov.bases", "lo.count", "hi.perc", "samples", "overdispersion",
                       "test", "min.per.group", "qvalue", "difference", "primary")
   observed <- counts %>% filter(perm == 0) %>% dplyr::select(all_of(settingColumns), regions.tested, DMR)
-  permuted <- counts %>%
+  permuted <- counts %>% #One comparison per permutation scheme
     filter(perm != 0) %>%
-    group_by(across(all_of(settingColumns))) %>%
+    group_by(across(all_of(c(settingColumns, "perm.scheme")))) %>%
     summarize(permutations = n(), perm.median = median(DMR), perm.95 = quantile(DMR, 0.95, names = FALSE),
               perm.DMR = list(DMR), .groups = "drop")
   permSummary <- left_join(observed, permuted, by = settingColumns) %>%
@@ -364,6 +395,155 @@ if (mode == "summary") {
     dplyr::select(-perm.DMR)
   write_csv(permSummary, "DMR-permutation-summary.csv")
   print(as.data.frame(filter(permSummary, primary)))
+}
+
+# Stage 7: GO gene-set enrichment of the gene-level results (plan F), for ploidy and pH with coverage in all samples.
+# Genes are ranked by signed -log10 p (sign of meth.diff: positive = higher methylation in triploids or at low pH),
+# and each GO set gets a GSEA enrichment score (weighted Kolmogorov-Smirnov running sum, weight = |statistic|).
+# Significance comes from the label permutations, not from methylKit p-values, which are anti-conservative here:
+#   NES = ES / mean ES of the same sign over the permutations of the same set (GSEA phenotype-permutation normalization)
+#   nominal p = share of same-sign permutation ES at least as extreme
+#   FDR = share of permutation NES at least as extreme, pooled over all sets, divided by the same share for observed NES
+# Each permutation is also scored against the others, to show how many sets the procedure flags without any real signal
+
+if (mode == "enrich") {
+  stopifnot(regionSet == "gene", file.exists(gafFile))
+  suppressPackageStartupMessages({
+    library(GO.db)
+    library(AnnotationDbi)
+  })
+  enrichDir <- paste0("enrichment-", runTag, permTag)
+  dir.create(enrichDir, showWarnings = FALSE)
+  minSize <- 10
+  maxSize <- 500
+
+  # GO annotation: direct terms from the GAF plus all their ancestors (GO.db), so each gene is in every term above its own
+  gaf <- fread(gafFile, header = FALSE, sep = "\t", quote = "", skip = "NCBIGene", select = c(3, 4, 5, 9),
+               col.names = c("symbol", "qualifier", "GO", "aspect"))
+  gaf <- unique(gaf[!grepl("^NOT", qualifier), .(symbol, GO, aspect)])
+  ancestorMaps <- list(P = as.list(GOBPANCESTOR), F = as.list(GOMFANCESTOR), C = as.list(GOCCANCESTOR))
+  ontologyName <- c(P = "BP", F = "MF", C = "CC")
+  annotation <- rbindlist(lapply(names(ancestorMaps), function(a) {
+    direct <- gaf[aspect == a]
+    known <- direct$GO %in% names(ancestorMaps[[a]]) #Drops terms obsolete in this GO.db release
+    message(ontologyName[a], ": ", sum(!known), " of ", nrow(direct), " annotations use GO IDs not in GO.db, dropped")
+    direct <- direct[known]
+    expanded <- data.table(symbol = rep(direct$symbol, lengths(ancestorMaps[[a]][direct$GO]) + 1L),
+                           GO = unlist(Map(c, direct$GO, ancestorMaps[[a]][direct$GO]), use.names = FALSE))
+    unique(expanded[GO != "all"])[, ontology := ontologyName[a]]
+  }))
+
+  # Signed -log10 p for each gene. Genes with the same coordinates share a region, so each of their IDs gets its result
+  readGeneStats <- function(file) {
+    d <- as.data.table(readRDS(file))[, .(regionID, meth.diff, pvalue)]
+    d <- d[, .(symbol = sub("^gene-", "", unlist(strsplit(regionID, ",")))), by = .(regionID, meth.diff, pvalue)]
+    d[, stat := sign(meth.diff) * -log10(pmax(pvalue, .Machine$double.xmin))]
+    d[, .(symbol, stat)]
+  }
+
+  # GSEA enrichment score for one ranked statistic (sorted decreasing) and the sorted positions of one set's genes
+  enrichmentScore <- function(rankedStat, positions) {
+    n <- length(rankedStat)
+    k <- length(positions)
+    hitWeights <- abs(rankedStat[positions])
+    hitSum <- cumsum(hitWeights) / sum(hitWeights)
+    missSum <- (positions - seq_len(k)) / (n - k) #Misses before each hit
+    top <- max(hitSum - missSum) #Running sum just after each hit
+    bottom <- min(0, c(0, hitSum[-k]) - missSum) #Running sum just before each hit
+    if (top >= -bottom) top else bottom
+  }
+
+  for (test in c("ploidy", "pH")) {
+    taskTag <- paste0(test, "-All")
+    observedFile <- file.path(paste0("DMR-", runTag), "rds", paste0("diffMeth-", taskTag, ".rds"))
+    permFiles <- Sys.glob(file.path(paste0("DMR-", runTag, permTag, "-perm*"), "rds", paste0("diffMeth-", taskTag, ".rds")))
+    permIDs <- as.integer(str_match(permFiles, "-perm([0-9]+)/")[, 2])
+    permFiles <- permFiles[order(permIDs)]
+    message(test, ": ", length(permFiles), " permutations")
+    stopifnot(file.exists(observedFile), length(permFiles) >= 20)
+
+    observed <- readGeneStats(observedFile)
+    universe <- unique(observed$symbol)
+    statList <- c(list(observed), lapply(permFiles, readGeneStats))
+    statMatrix <- sapply(statList, function(d) { #Genes x rankings; column 1 is the observed labels
+      stopifnot(setequal(unique(d$symbol), universe)) #Same genes in every run (presence "All" doesn't depend on labels)
+      d$stat[match(universe, d$symbol)]
+    })
+
+    # GO sets within the tested genes, kept if they have minSize-maxSize genes. Sets with identical genes are tested once
+    sets <- annotation[symbol %in% universe]
+    sets <- sets[, .(genes = list(sort(unique(symbol)))), by = .(GO, ontology)]
+    sets[, size := lengths(genes)]
+    sets <- sets[size >= minSize & size <= maxSize]
+    sets[, geneKey := map_chr(genes, paste, collapse = ",")]
+    sets <- sets[, .(GO = GO[1], ontology = ontology[1], genes = genes[1], size = size[1], sameGenesAs = paste(GO[-1], collapse = ",")), by = geneKey][, geneKey := NULL]
+    message(test, ": ", nrow(sets), " GO sets with ", minSize, "-", maxSize, " genes, from ", length(universe), " ranked genes (",
+            sum(universe %in% annotation$symbol), " with GO terms)")
+
+    # ES for every set and ranking
+    setIndex <- lapply(sets$genes, match, table = universe)
+    es <- matrix(NA_real_, nrow(sets), ncol(statMatrix))
+    for (j in seq_len(ncol(statMatrix))) {
+      ord <- order(statMatrix[, j], decreasing = TRUE)
+      rankPos <- integer(length(universe))
+      rankPos[ord] <- seq_along(ord)
+      ranked <- statMatrix[ord, j]
+      es[, j] <- vapply(setIndex, function(i) enrichmentScore(ranked, sort(rankPos[i])), numeric(1))
+    }
+
+    # Normalize, p, and FDR for one ranking (column) against a set of null columns
+    scoreRanking <- function(j, nullCols) {
+      obsES <- es[, j]
+      nullES <- es[, nullCols, drop = FALSE]
+      posMean <- rowMeans(ifelse(nullES >= 0, nullES, NA), na.rm = TRUE)
+      negMean <- -rowMeans(ifelse(nullES < 0, nullES, NA), na.rm = TRUE)
+      scale <- ifelse(obsES >= 0, posMean, negMean)
+      nes <- obsES / scale
+      nullNES <- ifelse(nullES >= 0, nullES / posMean, nullES / negMean)
+      nominalP <- vapply(seq_along(obsES), function(i) {
+        sameSign <- if (obsES[i] >= 0) nullES[i, nullES[i, ] >= 0] else nullES[i, nullES[i, ] < 0]
+        if (length(sameSign) == 0) NA_real_ else (1 + sum(abs(sameSign) >= abs(obsES[i]))) / (1 + length(sameSign))
+      }, numeric(1))
+      pooledNull <- as.vector(nullNES)
+      pooledNull <- pooledNull[is.finite(pooledNull)]
+      fdr <- vapply(nes, function(x) {
+        if (!is.finite(x)) return(NA_real_)
+        if (x >= 0) {
+          (mean(pooledNull[pooledNull >= 0] >= x)) / mean(nes[nes >= 0 & is.finite(nes)] >= x)
+        } else {
+          (mean(pooledNull[pooledNull < 0] <= x)) / mean(nes[nes < 0 & is.finite(nes)] <= x)
+        }
+      }, numeric(1))
+      tibble(ES = obsES, NES = nes, nominalP = nominalP, FDR = pmin(fdr, 1))
+    }
+
+    nRankings <- ncol(es)
+    result <- bind_cols(as_tibble(sets[, .(GO, ontology, size, sameGenesAs)]), scoreRanking(1, 2:nRankings)) %>%
+      mutate(term = suppressMessages(AnnotationDbi::Term(GO)),
+             meanStat = map_dbl(setIndex, ~ mean(statMatrix[.x, 1]))) #Mean signed -log10 p of the set's genes
+    observedDiff <- as.data.table(readRDS(observedFile))[, .(symbol = sub("^gene-", "", unlist(strsplit(regionID, ",")))), by = .(regionID, meth.diff)]
+    result <- result %>%
+      mutate(meanMethDiff = map_dbl(sets$genes, ~ mean(observedDiff$meth.diff[match(.x, observedDiff$symbol)])),
+             direction = ifelse(NES >= 0, "higher in treatment", "lower in treatment")) %>%
+      relocate(term, .after = GO) %>%
+      arrange(FDR, nominalP)
+    write_csv(result, file.path(enrichDir, paste0("GSEA-GO-", taskTag, ".csv")))
+
+    # Same procedure with each permutation as the "observed" ranking and the other permutations as the null
+    calibration <- map_dfr(2:nRankings, function(j) {
+      s <- scoreRanking(j, setdiff(2:nRankings, j))
+      tibble(ranking = paste0("perm", sort(permIDs)[j - 1]), FDR.05 = sum(s$FDR < 0.05, na.rm = TRUE),
+             FDR.25 = sum(s$FDR < 0.25, na.rm = TRUE), nominalP.01 = sum(s$nominalP < 0.01, na.rm = TRUE))
+    })
+    observedCounts <- tibble(ranking = "observed", FDR.05 = sum(result$FDR < 0.05, na.rm = TRUE),
+                             FDR.25 = sum(result$FDR < 0.25, na.rm = TRUE), nominalP.01 = sum(result$nominalP < 0.01, na.rm = TRUE))
+    calibration <- bind_rows(observedCounts, calibration) %>% mutate(test = test, sets = nrow(sets), .before = 1)
+    write_csv(calibration, file.path(enrichDir, paste0("GSEA-GO-", taskTag, "-calibration.csv")))
+    message(test, ": observed sets at FDR < 0.05 / 0.25 = ", observedCounts$FDR.05, " / ", observedCounts$FDR.25,
+            "; permutations scored the same way: median ", median(calibration$FDR.05[-1]), " / ", median(calibration$FDR.25[-1]),
+            ", max ", max(calibration$FDR.05[-1]), " / ", max(calibration$FDR.25[-1]))
+    print(head(as.data.frame(dplyr::select(result, GO, term, ontology, size, NES, nominalP, FDR, meanMethDiff)), 15))
+  }
 }
 
 sessionInfo()
