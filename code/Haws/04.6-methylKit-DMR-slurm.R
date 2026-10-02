@@ -21,7 +21,9 @@
 #                               as 04.4-DSS-slurm.R, so the same seed gives the same permuted labels in both analyses
 #
 # DMR threshold (fixed in the plan before any results): methylKit q < 0.05 and |meth.diff| >= 10%.
-# Counts at q < 0.01 and |meth.diff| >= 15/25% are written as sensitivity checks only.
+# Counts at q < 0.01 and |meth.diff| >= 15/25% are written as sensitivity checks only. difference = 0 is a q-only tier (any
+# effect size), added after the first results to check with permutations whether regions with small, precisely
+# measured differences pass q < 0.05 more often than by chance. It is exploratory and does not change the DMR definition.
 # meth.diff is treatment minus control: positive = higher methylation in triploids (ploidy) or at low pH (pH)
 
 suppressPackageStartupMessages({
@@ -60,7 +62,7 @@ mitoChr <- "NC_001276.1"
 outliers <- c(3, 14) #Samples 2H-3 and 3H-2
 presenceSettings <- c("All", "10", "8")
 qCuts <- c(0.05, 0.01)
-diffCuts <- c(10, 15, 25)
+diffCuts <- c(0, 10, 15, 25) #0 = q-only tier
 primaryQ <- 0.05
 primaryDiff <- 10
 
