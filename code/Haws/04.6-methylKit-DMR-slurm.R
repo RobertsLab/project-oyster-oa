@@ -697,7 +697,7 @@ if (mode == "simsummary") {
     summarize(reps = n(), realizedDelta = mean(realizedDelta), spikedTested = mean(spikedTested),
               across(c(powerDMR, powerQ, powerEmpiricalFDR, correctSign, falseDMR, totalDMR, totalQ), ~ mean(.x, na.rm = TRUE)),
               fractionExperimentDetectedDMR = mean(experimentDetectedDMR), fractionExperimentDetectedQ = mean(experimentDetectedQ),
-              permDMR95 = first(permDMR95), permQ95 = first(permQ95), .groups = "drop") %>%
+              permDMR95 = dplyr::first(permDMR95), permQ95 = dplyr::first(permQ95), .groups = "drop") %>%
     mutate(regions = regionSet, .before = 1) %>%
     arrange(nSpiked, factor(term, levels = terms), delta)
   simDir <- "power-simulation"
