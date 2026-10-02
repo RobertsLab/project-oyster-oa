@@ -7,6 +7,7 @@
 #   Rscript 04.6-methylKit-DMR-slurm.R count      #Reads per region for one REGIONS / COV_BASES setting (needs prep, and regions or segments)
 #   Rscript 04.6-methylKit-DMR-slurm.R dmr        #One test per array task: ploidy or pH x min.per.group All/10/8, from SLURM_ARRAY_TASK_ID
 #   Rscript 04.6-methylKit-DMR-slurm.R summary    #Combine counts from every run, and compare observed counts with permutations
+#   Rscript 04.6-methylKit-DMR-slurm.R enrich     #GO gene-set enrichment (GSEA) of gene-level results, tested against the label permutations
 #
 # Environment variables (defaults in brackets):
 #   HI_PERC         [99.9]      Per-sample upper coverage percentile, calculated on nuclear CpGs only. Mito CpGs are exempt,
@@ -36,7 +37,7 @@ options(warn = 1) #Print warnings as they happen, so they show up in the Slurm l
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
-stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary"))
+stopifnot(mode %in% c("prep", "regions", "segments", "count", "dmr", "summary", "enrich"))
 
 nCores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1")) #Use all cores allocated by Slurm
 hiPercSetting <- Sys.getenv("HI_PERC", "99.9")
@@ -58,6 +59,7 @@ stopifnot(hiPercSetting == "none" || !is.na(as.numeric(hiPercSetting)),
 dataDir <- "../../data/Haws"
 featureDir <- "../../genome-feature-files"
 rmOutFile <- "downloads/GCF_902806645.1_cgigas_uk_roslin_v1_rm.out.gz" #Downloaded by the submit script
+gafFile <- "downloads/GCF_902806645.1_cgigas_uk_roslin_v1_gene_ontology.gaf.gz" #NCBI GO annotation, downloaded by the submit script
 mitoChr <- "NC_001276.1"
 outliers <- c(3, 14) #Samples 2H-3 and 3H-2
 presenceSettings <- c("All", "10", "8")
@@ -367,6 +369,155 @@ if (mode == "summary") {
     dplyr::select(-perm.DMR)
   write_csv(permSummary, "DMR-permutation-summary.csv")
   print(as.data.frame(filter(permSummary, primary)))
+}
+
+# Stage 7: GO gene-set enrichment of the gene-level results (plan F), for ploidy and pH with coverage in all samples.
+# Genes are ranked by signed -log10 p (sign of meth.diff: positive = higher methylation in triploids or at low pH),
+# and each GO set gets a GSEA enrichment score (weighted Kolmogorov-Smirnov running sum, weight = |statistic|).
+# Significance comes from the label permutations, not from methylKit p-values, which are anti-conservative here:
+#   NES = ES / mean ES of the same sign over the permutations of the same set (GSEA phenotype-permutation normalization)
+#   nominal p = share of same-sign permutation ES at least as extreme
+#   FDR = share of permutation NES at least as extreme, pooled over all sets, divided by the same share for observed NES
+# Each permutation is also scored against the others, to show how many sets the procedure flags without any real signal
+
+if (mode == "enrich") {
+  stopifnot(regionSet == "gene", file.exists(gafFile))
+  suppressPackageStartupMessages({
+    library(GO.db)
+    library(AnnotationDbi)
+  })
+  enrichDir <- paste0("enrichment-", runTag)
+  dir.create(enrichDir, showWarnings = FALSE)
+  minSize <- 10
+  maxSize <- 500
+
+  # GO annotation: direct terms from the GAF plus all their ancestors (GO.db), so each gene is in every term above its own
+  gaf <- fread(gafFile, header = FALSE, sep = "\t", quote = "", skip = "NCBIGene", select = c(3, 4, 5, 9),
+               col.names = c("symbol", "qualifier", "GO", "aspect"))
+  gaf <- unique(gaf[!grepl("^NOT", qualifier), .(symbol, GO, aspect)])
+  ancestorMaps <- list(P = as.list(GOBPANCESTOR), F = as.list(GOMFANCESTOR), C = as.list(GOCCANCESTOR))
+  ontologyName <- c(P = "BP", F = "MF", C = "CC")
+  annotation <- rbindlist(lapply(names(ancestorMaps), function(a) {
+    direct <- gaf[aspect == a]
+    known <- direct$GO %in% names(ancestorMaps[[a]]) #Drops terms obsolete in this GO.db release
+    message(ontologyName[a], ": ", sum(!known), " of ", nrow(direct), " annotations use GO IDs not in GO.db, dropped")
+    direct <- direct[known]
+    expanded <- data.table(symbol = rep(direct$symbol, lengths(ancestorMaps[[a]][direct$GO]) + 1L),
+                           GO = unlist(Map(c, direct$GO, ancestorMaps[[a]][direct$GO]), use.names = FALSE))
+    unique(expanded[GO != "all"])[, ontology := ontologyName[a]]
+  }))
+
+  # Signed -log10 p for each gene. Genes with the same coordinates share a region, so each of their IDs gets its result
+  readGeneStats <- function(file) {
+    d <- as.data.table(readRDS(file))[, .(regionID, meth.diff, pvalue)]
+    d <- d[, .(symbol = sub("^gene-", "", unlist(strsplit(regionID, ",")))), by = .(regionID, meth.diff, pvalue)]
+    d[, stat := sign(meth.diff) * -log10(pmax(pvalue, .Machine$double.xmin))]
+    d[, .(symbol, stat)]
+  }
+
+  # GSEA enrichment score for one ranked statistic (sorted decreasing) and the sorted positions of one set's genes
+  enrichmentScore <- function(rankedStat, positions) {
+    n <- length(rankedStat)
+    k <- length(positions)
+    hitWeights <- abs(rankedStat[positions])
+    hitSum <- cumsum(hitWeights) / sum(hitWeights)
+    missSum <- (positions - seq_len(k)) / (n - k) #Misses before each hit
+    top <- max(hitSum - missSum) #Running sum just after each hit
+    bottom <- min(0, c(0, hitSum[-k]) - missSum) #Running sum just before each hit
+    if (top >= -bottom) top else bottom
+  }
+
+  for (test in c("ploidy", "pH")) {
+    taskTag <- paste0(test, "-All")
+    observedFile <- file.path(paste0("DMR-", runTag), "rds", paste0("diffMeth-", taskTag, ".rds"))
+    permFiles <- Sys.glob(file.path(paste0("DMR-", runTag, "-perm*"), "rds", paste0("diffMeth-", taskTag, ".rds")))
+    permIDs <- as.integer(str_match(permFiles, "-perm([0-9]+)/")[, 2])
+    permFiles <- permFiles[order(permIDs)]
+    message(test, ": ", length(permFiles), " permutations")
+    stopifnot(file.exists(observedFile), length(permFiles) >= 20)
+
+    observed <- readGeneStats(observedFile)
+    universe <- unique(observed$symbol)
+    statList <- c(list(observed), lapply(permFiles, readGeneStats))
+    statMatrix <- sapply(statList, function(d) { #Genes x rankings; column 1 is the observed labels
+      stopifnot(setequal(unique(d$symbol), universe)) #Same genes in every run (presence "All" doesn't depend on labels)
+      d$stat[match(universe, d$symbol)]
+    })
+
+    # GO sets within the tested genes, kept if they have minSize-maxSize genes. Sets with identical genes are tested once
+    sets <- annotation[symbol %in% universe]
+    sets <- sets[, .(genes = list(sort(unique(symbol)))), by = .(GO, ontology)]
+    sets[, size := lengths(genes)]
+    sets <- sets[size >= minSize & size <= maxSize]
+    sets[, geneKey := map_chr(genes, paste, collapse = ",")]
+    sets <- sets[, .(GO = GO[1], ontology = ontology[1], genes = genes[1], size = size[1], sameGenesAs = paste(GO[-1], collapse = ",")), by = geneKey][, geneKey := NULL]
+    message(test, ": ", nrow(sets), " GO sets with ", minSize, "-", maxSize, " genes, from ", length(universe), " ranked genes (",
+            sum(universe %in% annotation$symbol), " with GO terms)")
+
+    # ES for every set and ranking
+    setIndex <- lapply(sets$genes, match, table = universe)
+    es <- matrix(NA_real_, nrow(sets), ncol(statMatrix))
+    for (j in seq_len(ncol(statMatrix))) {
+      ord <- order(statMatrix[, j], decreasing = TRUE)
+      rankPos <- integer(length(universe))
+      rankPos[ord] <- seq_along(ord)
+      ranked <- statMatrix[ord, j]
+      es[, j] <- vapply(setIndex, function(i) enrichmentScore(ranked, sort(rankPos[i])), numeric(1))
+    }
+
+    # Normalize, p, and FDR for one ranking (column) against a set of null columns
+    scoreRanking <- function(j, nullCols) {
+      obsES <- es[, j]
+      nullES <- es[, nullCols, drop = FALSE]
+      posMean <- rowMeans(ifelse(nullES >= 0, nullES, NA), na.rm = TRUE)
+      negMean <- -rowMeans(ifelse(nullES < 0, nullES, NA), na.rm = TRUE)
+      scale <- ifelse(obsES >= 0, posMean, negMean)
+      nes <- obsES / scale
+      nullNES <- ifelse(nullES >= 0, nullES / posMean, nullES / negMean)
+      nominalP <- vapply(seq_along(obsES), function(i) {
+        sameSign <- if (obsES[i] >= 0) nullES[i, nullES[i, ] >= 0] else nullES[i, nullES[i, ] < 0]
+        if (length(sameSign) == 0) NA_real_ else (1 + sum(abs(sameSign) >= abs(obsES[i]))) / (1 + length(sameSign))
+      }, numeric(1))
+      pooledNull <- as.vector(nullNES)
+      pooledNull <- pooledNull[is.finite(pooledNull)]
+      fdr <- vapply(nes, function(x) {
+        if (!is.finite(x)) return(NA_real_)
+        if (x >= 0) {
+          (mean(pooledNull[pooledNull >= 0] >= x)) / mean(nes[nes >= 0 & is.finite(nes)] >= x)
+        } else {
+          (mean(pooledNull[pooledNull < 0] <= x)) / mean(nes[nes < 0 & is.finite(nes)] <= x)
+        }
+      }, numeric(1))
+      tibble(ES = obsES, NES = nes, nominalP = nominalP, FDR = pmin(fdr, 1))
+    }
+
+    nRankings <- ncol(es)
+    result <- bind_cols(as_tibble(sets[, .(GO, ontology, size, sameGenesAs)]), scoreRanking(1, 2:nRankings)) %>%
+      mutate(term = suppressMessages(AnnotationDbi::Term(GO)),
+             meanStat = map_dbl(setIndex, ~ mean(statMatrix[.x, 1]))) #Mean signed -log10 p of the set's genes
+    observedDiff <- as.data.table(readRDS(observedFile))[, .(symbol = sub("^gene-", "", unlist(strsplit(regionID, ",")))), by = .(regionID, meth.diff)]
+    result <- result %>%
+      mutate(meanMethDiff = map_dbl(sets$genes, ~ mean(observedDiff$meth.diff[match(.x, observedDiff$symbol)])),
+             direction = ifelse(NES >= 0, "higher in treatment", "lower in treatment")) %>%
+      relocate(term, .after = GO) %>%
+      arrange(FDR, nominalP)
+    write_csv(result, file.path(enrichDir, paste0("GSEA-GO-", taskTag, ".csv")))
+
+    # Same procedure with each permutation as the "observed" ranking and the other permutations as the null
+    calibration <- map_dfr(2:nRankings, function(j) {
+      s <- scoreRanking(j, setdiff(2:nRankings, j))
+      tibble(ranking = paste0("perm", sort(permIDs)[j - 1]), FDR.05 = sum(s$FDR < 0.05, na.rm = TRUE),
+             FDR.25 = sum(s$FDR < 0.25, na.rm = TRUE), nominalP.01 = sum(s$nominalP < 0.01, na.rm = TRUE))
+    })
+    observedCounts <- tibble(ranking = "observed", FDR.05 = sum(result$FDR < 0.05, na.rm = TRUE),
+                             FDR.25 = sum(result$FDR < 0.25, na.rm = TRUE), nominalP.01 = sum(result$nominalP < 0.01, na.rm = TRUE))
+    calibration <- bind_rows(observedCounts, calibration) %>% mutate(test = test, sets = nrow(sets), .before = 1)
+    write_csv(calibration, file.path(enrichDir, paste0("GSEA-GO-", taskTag, "-calibration.csv")))
+    message(test, ": observed sets at FDR < 0.05 / 0.25 = ", observedCounts$FDR.05, " / ", observedCounts$FDR.25,
+            "; permutations scored the same way: median ", median(calibration$FDR.05[-1]), " / ", median(calibration$FDR.25[-1]),
+            ", max ", max(calibration$FDR.05[-1]), " / ", max(calibration$FDR.25[-1]))
+    print(head(as.data.frame(dplyr::select(result, GO, term, ontology, size, NES, nominalP, FDR, meanMethDiff)), 15))
+  }
 }
 
 sessionInfo()

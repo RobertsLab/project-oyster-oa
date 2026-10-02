@@ -25,4 +25,4 @@ apptainer exec \
 --bind /mmfs1/gscratch/ \
 --bind /gscratch/ \
 /gscratch/srlab/containers/srlab-R4.4-bioinformatics-container-46b5d9e.sif \
-Rscript "${CODE_DIR}/04.6-methylKit-DMR-slurm.R" "$@"
+Rscript "${R_SCRIPT:-${CODE_DIR}/04.6-methylKit-DMR-slurm.R}" "$@" #R_SCRIPT: copy made at submission (see the submit script)
