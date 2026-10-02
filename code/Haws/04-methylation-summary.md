@@ -40,7 +40,7 @@ With 6 oysters per ploidy × pH group, **no ploidy or pH effect on methylation c
 
 **A. Write it up as a solid null with a positive genetics result (recommended).** The paper would say that at this sample size, ploidy and pH have no detectable locus-specific effect on methylation, and that genetic background explains much of the variation between oysters. To make the null convincing:
 
-- **A power simulation:** add known Δ effects into the real data, rerun DSS/MN with permutations, and report the smallest effect that could have been detected.
+- **A power simulation:** add known Δ effects into the real data, rerun DSS/MN with permutations, and report the smallest effect that could have been detected. **Done for DSS per-CpG ([04.4-DSS-power-simulation.md](04.4-DSS-power-simulation.md)):** an effect of about ≥ 20 points at 1,000 CpGs would have been detected against the permutation null; ≤ 15 points would not. Finding the individual CpGs at permutation-calibrated FDR takes about 30–40 points. A region-level version (methylKit 1 kb windows / genes) is the next step.
 - **Variance partitioning:** a whole-methome PERMANOVA or similar on methylation distance, with genotype PCs, ploidy and pH as terms. Pair it with the 06 global-methylation results.
 
 **B. Close out the planned tests, then stop.** The exon, intron, upstream and TE region sets are built but not tested. Run each once against permutations so the region analysis is complete. Don't widen the parameter grid: about 200 settings have already been tried, and more searching mostly adds chances for false positives. Drop shrinkMN, DSS smoothing and group-blind segmentation unless a reviewer asks.
