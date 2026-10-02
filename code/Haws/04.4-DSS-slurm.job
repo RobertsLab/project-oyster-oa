@@ -13,7 +13,7 @@
 set -euo pipefail
 
 # Settings read by 04.4-DSS-slurm.R
-for v in LO_COV HI_PERC PRESENCE MIN_METH SNP_FILTER SAMPLES MODEL GENO_PCS PERM NCHUNK; do
+for v in LO_COV HI_PERC PRESENCE MIN_METH SNP_FILTER SAMPLES MODEL GENO_PCS PERM NCHUNK SIM_DELTA SIM_N SIM_REP; do
   [ -n "${!v:-}" ] && export "APPTAINERENV_${v}=${!v}"
 done
 
